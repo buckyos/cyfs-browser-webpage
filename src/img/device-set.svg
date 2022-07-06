@@ -1,0 +1,82 @@
+<svg id="icon_24pt_tabbar_set_" data-name="icon/24pt/tabbar/set /" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #f9e2e2;
+      }
+
+      .cls-3 {
+        fill: #ffbcbc;
+      }
+
+      .cls-4 {
+        fill: #e1e2e2;
+      }
+
+      .cls-5, .cls-6, .cls-9 {
+        fill: none;
+      }
+
+      .cls-6 {
+        stroke: #2a2e31;
+      }
+
+      .cls-7, .cls-8 {
+        stroke: none;
+      }
+
+      .cls-8 {
+        fill: #2a2e31;
+      }
+    </style>
+  </defs>
+  <g id="底板" class="cls-1" transform="translate(5)">
+    <path id="点击范围" class="cls-2" d="M0,0H24V24H0Z" transform="translate(-5)"/>
+    <rect id="视觉范围" class="cls-3" width="16" height="16" transform="translate(-1 4)"/>
+  </g>
+  <circle id="椭圆_213" data-name="椭圆 213" class="cls-4" cx="12" cy="12" r="12"/>
+  <g id="路径_157" data-name="路径 157" class="cls-5" transform="translate(4 4)">
+    <path class="cls-7" d="M8,0A8,8,0,1,1,0,8,8,8,0,0,1,8,0Z"/>
+    <path class="cls-8" d="M 8 1 C 4.140190124511719 1 1 4.140190124511719 1 8 C 1 11.85980987548828 4.140190124511719 15 8 15 C 11.85980987548828 15 15 11.85980987548828 15 8 C 15 4.140190124511719 11.85980987548828 1 8 1 M 8 0 C 12.41827964782715 0 16 3.581720352172852 16 8 C 16 12.41827964782715 12.41827964782715 16 8 16 C 3.581720352172852 16 0 12.41827964782715 0 8 C 0 3.581720352172852 3.581720352172852 0 8 0 Z"/>
+  </g>
+  <g id="路径_118" data-name="路径 118" class="cls-5" transform="translate(8 8)">
+    <path class="cls-7" d="M4,0A4,4,0,1,1,0,4,4,4,0,0,1,4,0Z"/>
+    <path class="cls-8" d="M 4 1 C 2.345789909362793 1 1 2.345789909362793 1 4 C 1 5.654210090637207 2.345789909362793 7 4 7 C 5.654210090637207 7 7 5.654210090637207 7 4 C 7 2.345789909362793 5.654210090637207 1 4 1 M 4 0 C 6.209139823913574 0 8 1.790860176086426 8 4 C 8 6.209139823913574 6.209139823913574 8 4 8 C 1.790860176086426 8 0 6.209139823913574 0 4 C 0 1.790860176086426 1.790860176086426 0 4 0 Z"/>
+  </g>
+  <g id="矩形_16" data-name="矩形 16" class="cls-6" transform="translate(11.5 3)">
+    <rect class="cls-7" width="1" height="2" rx="0.5"/>
+    <rect class="cls-9" x="0.5" y="0.5" height="1"/>
+  </g>
+  <g id="矩形_294" data-name="矩形 294" class="cls-6" transform="translate(21 11.5) rotate(90)">
+    <rect class="cls-7" width="1" height="2" rx="0.5"/>
+    <rect class="cls-9" x="0.5" y="0.5" height="1"/>
+  </g>
+  <g id="矩形_391" data-name="矩形 391" class="cls-6" transform="translate(5 11.5) rotate(90)">
+    <rect class="cls-7" width="1" height="2" rx="0.5"/>
+    <rect class="cls-9" x="0.5" y="0.5" height="1"/>
+  </g>
+  <g id="矩形_17" data-name="矩形 17" class="cls-6" transform="translate(11.5 19)">
+    <rect class="cls-7" width="1" height="2" rx="0.5"/>
+    <rect class="cls-9" x="0.5" y="0.5" height="1"/>
+  </g>
+  <g id="矩形_387" data-name="矩形 387" class="cls-6" transform="translate(18.01 5.282) rotate(45)">
+    <rect class="cls-7" width="1" height="2" rx="0.5"/>
+    <rect class="cls-9" x="0.5" y="0.5" height="1"/>
+  </g>
+  <g id="矩形_388" data-name="矩形 388" class="cls-6" transform="translate(18.718 18.01) rotate(135)">
+    <rect class="cls-7" width="1" height="2" rx="0.5"/>
+    <rect class="cls-9" x="0.5" y="0.5" height="1"/>
+  </g>
+  <g id="矩形_389" data-name="矩形 389" class="cls-6" transform="translate(6.697 16.596) rotate(45)">
+    <rect class="cls-7" width="1" height="2" rx="0.5"/>
+    <rect class="cls-9" x="0.5" y="0.5" height="1"/>
+  </g>
+  <g id="矩形_390" data-name="矩形 390" class="cls-6" transform="translate(7.404 6.697) rotate(135)">
+    <rect class="cls-7" width="1" height="2" rx="0.5"/>
+    <rect class="cls-9" x="0.5" y="0.5" height="1"/>
+  </g>
+</svg>

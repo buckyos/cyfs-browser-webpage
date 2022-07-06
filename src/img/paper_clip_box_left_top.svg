@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="51.999" height="51.999" viewBox="0 0 51.999 51.999">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e1e2e2;
+      }
+
+      .cls-2 {
+        fill: #f2f3f5;
+      }
+
+      .cls-3 {
+        filter: url(#路径_166);
+      }
+    </style>
+    <filter id="路径_166" x="0" y="0" width="51.999" height="51.999" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.078"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="组_147" data-name="组 147" transform="translate(-358 -324)">
+    <g class="cls-3" transform="matrix(1, 0, 0, 1, 358, 324)">
+      <path id="路径_166-2" data-name="路径 166" class="cls-1" d="M28,0V28H0Z" transform="translate(12 8)"/>
+    </g>
+    <path id="路径_261" data-name="路径 261" class="cls-2" d="M0,0V39.669H39.669Z" transform="translate(403.834 326.165) rotate(90)"/>
+  </g>
+</svg>

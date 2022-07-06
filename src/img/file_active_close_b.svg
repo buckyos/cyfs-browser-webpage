@@ -1,0 +1,37 @@
+<svg id="组件_20_1" data-name="组件 20 – 1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #f9e2e2;
+      }
+
+      .cls-3 {
+        fill: #ffbcbc;
+      }
+
+      .cls-4 {
+        fill: none;
+      }
+
+      .cls-5, .cls-6 {
+        stroke: none;
+      }
+
+      .cls-6 {
+        fill: #999;
+      }
+    </style>
+  </defs>
+  <g id="组_75" data-name="组 75" class="cls-1" transform="translate(-8 -8)">
+    <path id="路径_1" data-name="路径 1" class="cls-2" d="M0,0H24V24H0Z" transform="translate(8 8)"/>
+    <rect id="矩形_2" data-name="矩形 2" class="cls-3" width="16" height="16" transform="translate(12 12)"/>
+  </g>
+  <g id="路径_173" data-name="路径 173" class="cls-4" transform="translate(4 6)">
+    <path class="cls-5" d="M1,0H6.566L8.59,2H15a1,1,0,0,1,1,1v8a1,1,0,0,1-1,1H1a1,1,0,0,1-1-1V1A1,1,0,0,1,1,0Z"/>
+    <path class="cls-6" d="M 1 1 L 1 11 L 15 11 L 15 3 L 8.589570045471191 3 L 8.178830146789551 3 L 7.886670112609863 2.71129035949707 L 6.154947280883789 1 L 1 1 M 1 0 L 6.565690040588379 0 L 8.589570045471191 2 L 15 2 C 15.55228042602539 2 16 2.447719573974609 16 3 L 16 11 C 16 11.55228042602539 15.55228042602539 12 15 12 L 1 12 C 0.4477100372314453 12 0 11.55228042602539 0 11 L 0 1 C 0 0.4477195739746094 0.4477100372314453 0 1 0 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,121 @@
+<svg id="组件_15_7" data-name="组件 15 – 7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #f9e2e2;
+      }
+
+      .cls-3 {
+        fill: #ffbcbc;
+      }
+
+      .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-4, .cls-8 {
+        fill: none;
+      }
+
+      .cls-4, .cls-6, .cls-7, .cls-8 {
+        stroke: #0c9;
+      }
+
+      .cls-4, .cls-8 {
+        stroke-linecap: round;
+      }
+
+      .cls-4 {
+        stroke-linejoin: round;
+      }
+
+      .cls-5, .cls-6 {
+        fill: #6a00b6;
+      }
+
+      .cls-5 {
+        stroke: #999;
+      }
+
+      .cls-7 {
+        fill: #0c9;
+      }
+
+      .cls-9 {
+        stroke: none;
+      }
+
+      .cls-10 {
+        clip-path: url(#clip);
+      }
+
+      .cls-11 {
+        clip-path: url(#clip-2);
+      }
+
+      .cls-13 {
+        clip-path: url(#clip-3);
+      }
+
+      .cls-14 {
+        clip-path: url(#clip-4);
+      }
+    </style>
+    <clipPath id="clip">
+      <use xlink:href="#fill"/>
+    </clipPath>
+    <clipPath id="clip-2">
+      <use xlink:href="#fill-2"/>
+    </clipPath>
+    <clipPath id="clip-3">
+      <use xlink:href="#fill-3"/>
+    </clipPath>
+    <clipPath id="clip-4">
+      <use xlink:href="#fill-4"/>
+    </clipPath>
+  </defs>
+  <g id="底板" class="cls-1" transform="translate(0 0.329)">
+    <path id="路径_1" data-name="路径 1" class="cls-2" d="M0,0H40V40H0Z" transform="translate(0 -0.329)"/>
+    <rect id="矩形_2" data-name="矩形 2" class="cls-3" width="16" height="16" transform="translate(12 11.671)"/>
+  </g>
+  <path id="路径_168" data-name="路径 168" class="cls-4" d="M10.5,0A10.5,10.5,0,1,1,0,10.5" transform="translate(35.19 20.345) rotate(135)"/>
+  <path id="路径_169" data-name="路径 169" class="cls-4" d="M6.96,13.92A6.96,6.96,0,1,0,0,6.96" transform="translate(19.6 10.498) rotate(45)"/>
+  <g id="矩形_285" data-name="矩形 285" class="cls-5" transform="translate(18 23.329) rotate(90)">
+    <rect id="fill" class="cls-9" height="1"/>
+    <path class="cls-10" d="M0,0.5h0.000010000005204346962M0.5,0v1M0.000010000005204346962,0.5h-0.000010000005204346962M-0.49998999999479565,1v-1"/>
+  </g>
+  <g id="矩形_287" data-name="矩形 287" class="cls-5" transform="translate(18 17.329) rotate(90)">
+    <rect id="fill-2" class="cls-9" height="1"/>
+    <path class="cls-11" d="M0,0.5h0.000010000005204346962M0.5,0v1M0.000010000005204346962,0.5h-0.000010000005204346962M-0.49998999999479565,1v-1"/>
+  </g>
+  <g id="矩形_386" data-name="矩形 386" class="cls-6" transform="translate(18.5 18.329) rotate(90)">
+    <rect class="cls-9" width="4" height="1" rx="0.5"/>
+    <rect class="cls-12" x="0.5" y="0.5" width="3"/>
+  </g>
+  <g id="矩形_459" data-name="矩形 459" class="cls-6" transform="translate(21.5 16.329) rotate(90)">
+    <rect class="cls-9" width="1" height="1" rx="0.5"/>
+    <rect class="cls-12" x="0.5" y="0.5"/>
+  </g>
+  <g id="矩形_462" data-name="矩形 462" class="cls-6" transform="translate(18.5 16.329) rotate(90)">
+    <rect class="cls-9" width="1" height="1" rx="0.5"/>
+    <rect class="cls-12" x="0.5" y="0.5"/>
+  </g>
+  <g id="矩形_460" data-name="矩形 460" class="cls-7" transform="translate(21.5 23.329) rotate(90)">
+    <rect class="cls-9" width="1" height="1" rx="0.5"/>
+    <rect class="cls-12" x="0.5" y="0.5"/>
+  </g>
+  <g id="矩形_461" data-name="矩形 461" class="cls-6" transform="translate(18.5 23.329) rotate(90)">
+    <rect class="cls-9" width="1" height="1" rx="0.5"/>
+    <rect class="cls-12" x="0.5" y="0.5"/>
+  </g>
+  <g id="矩形_281" data-name="矩形 281" class="cls-5" transform="translate(22 17.329) rotate(90)">
+    <rect id="fill-3" class="cls-9" height="1"/>
+    <path class="cls-13" d="M0,0.5h0.000010000005204346962M0.5,0v1M0.000010000005204346962,0.5h-0.000010000005204346962M-0.49998999999479565,1v-1"/>
+  </g>
+  <g id="矩形_286" data-name="矩形 286" class="cls-5" transform="translate(22 23.329) rotate(90)">
+    <rect id="fill-4" class="cls-9" height="1"/>
+    <path class="cls-14" d="M0,0.5h0.000010000005204346962M0.5,0v1M0.000010000005204346962,0.5h-0.000010000005204346962M-0.49998999999479565,1v-1"/>
+  </g>
+  <path id="路径_147" data-name="路径 147" class="cls-8" d="M-1.2,0H3.471a1.5,1.5,0,1,1,0,3H1.3" transform="translate(18.196 17.329)"/>
+  <path id="路径_170" data-name="路径 170" class="cls-8" d="M-1.2,3H3.471a1.5,1.5,0,0,0,0-3H1.3" transform="translate(18.196 20.329)"/>
+</svg>

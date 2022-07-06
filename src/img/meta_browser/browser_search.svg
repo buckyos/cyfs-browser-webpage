@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        isolation: isolate;
+      }
+
+      .cls-2 {
+        opacity: 0;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        fill: #ffe8e8;
+      }
+
+      .cls-5, .cls-6, .cls-8 {
+        fill: none;
+      }
+
+      .cls-5, .cls-6 {
+        stroke: #333;
+      }
+
+      .cls-6 {
+        stroke-linecap: round;
+      }
+
+      .cls-7 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="组件_8_68" data-name="组件 8 – 68" class="cls-1">
+    <g id="组_39" data-name="组 39" class="cls-2">
+      <rect id="矩形_318" data-name="矩形 318" class="cls-3" width="40" height="40"/>
+      <rect id="矩形_319" data-name="矩形 319" class="cls-4" width="24" height="24" transform="translate(8 8)"/>
+    </g>
+    <g id="椭圆_48" data-name="椭圆 48" class="cls-5" transform="translate(12.75 12.25)">
+      <circle class="cls-7" cx="7" cy="7" r="7"/>
+      <circle class="cls-8" cx="7" cy="7" r="6.5"/>
+    </g>
+    <line id="直线_13" data-name="直线 13" class="cls-6" x2="3" y2="3" transform="translate(24.25 24.75)"/>
+  </g>
+</svg>

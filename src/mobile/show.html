@@ -1,0 +1,55 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>对象详情</title>
+    <script src="../cyfs_sdk/cyfs.js"></script>
+    <script src="../js/lib/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<script>
+</script>
+<body style="background: #F2F3F5;">
+    <div class="file_object_box">
+        <h2 class="header_titile"><i class="header_titile_i">对象类型：</i><span id="header_titile_name">文件(FileObject)</span></h2>
+        <div class="mobile_content_box">
+            <div class="file_object_subtitle_div">
+                <p class="file_object_subtitle file_object_subtitle_float"><span>作者：</span><span id="author_info"></span><span class="file_object_subtitle_span" id="file_object_subtitle_span">未认证</span><i ></i></i></p>
+                <p class="file_object_subtitle">创建时间: <span id="create_time_info"></span></p>
+            </div>
+            <div class="file_object_div_container">
+                <div class="file_object_img_div_box">
+                    <div class="file_object_img_div" id="object_info_div"></div>
+                </div>
+                <div class="file_object_detail">
+                    <p class="color_0c9" id="owner_info">有主对象,Owner:</p>
+                    <p>对象Id: <span id="object_id"></span><span class="file_object_detail_span">未认证</span></p>
+                    <span class="file_object_scan_code" id="open_scan_code">
+                        <div class="transfer_scan_code_box">
+                            <div id="scan_code"></div>
+                        </div>
+                    </span>
+                </div>
+                <div class="file_object_div">
+                    <div class="file_object_div_detail">
+                        <div class="file_object_table_div">
+                            <p class="file_object_table_subtitle" >余额：<span id="balance_dom">0 BBC</span></p>
+                            <p class="file_object_table_subtitle" >总收入:<span id="balance_dom2">0 BBC</span></p>
+                            <span class="pick_up_icon" id="pick_up_open_icon"></span>
+                            <table class="file_object_table" id="open_table">
+                                <thead>
+                                    <th>PeopleID</th>
+                                    <th>交易哈希</th>
+                                    <th>转账时间</th>
+                                    <th>转账金额</th>
+                                </thead>
+                                <tbody id="file_object_tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

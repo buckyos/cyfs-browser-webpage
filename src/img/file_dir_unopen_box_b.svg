@@ -1,0 +1,53 @@
+<svg id="组件_19_3" data-name="组件 19 – 3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #f9e2e2;
+      }
+
+      .cls-3 {
+        fill: #ffbcbc;
+      }
+
+      .cls-4, .cls-5 {
+        fill: none;
+        stroke-linecap: round;
+      }
+
+      .cls-4 {
+        stroke-linejoin: round;
+      }
+
+      .cls-5 {
+        stroke: #565656;
+      }
+
+      .cls-6, .cls-7 {
+        stroke: none;
+      }
+
+      .cls-7 {
+        fill: #565656;
+      }
+    </style>
+  </defs>
+  <g id="组_75" data-name="组 75" class="cls-1" transform="translate(-8 -8)">
+    <path id="路径_1" data-name="路径 1" class="cls-2" d="M0,0H24V24H0Z" transform="translate(8 8)"/>
+    <rect id="矩形_2" data-name="矩形 2" class="cls-3" width="16" height="16" transform="translate(12 12)"/>
+  </g>
+  <g id="路径_175" data-name="路径 175" class="cls-4" transform="translate(6 4)">
+    <path class="cls-6" d="M1,0H11a1,1,0,0,1,1,1v9L6,16H1a1,1,0,0,1-1-1V1A1,1,0,0,1,1,0Z"/>
+    <path class="cls-7" d="M 1 1 L 1 15 L 5.585780143737793 15 L 11 9.585780143737793 L 11 1 L 1 1 M 1 0 L 11 0 C 11.55228042602539 0 12 0.4477100372314453 12 1 L 12 10 L 6 16 L 1 16 C 0.4477100372314453 16 0 15.55228042602539 0 15 L 0 1 C 0 0.4477100372314453 0.4477100372314453 0 1 0 Z"/>
+  </g>
+  <g id="路径_174" data-name="路径 174" class="cls-4" transform="translate(12 14)">
+    <path class="cls-6" d="M1,0H6L3,3,0,6V1A1,1,0,0,1,1,0Z"/>
+    <path class="cls-7" d="M 1 1 L 1 3.585779905319214 L 2.292890071868896 2.292890071868896 L 3.585779905319214 1 L 1 1 M 1 0 L 6 0 L 3 3 L 0 6 L 0 1 C 0 0.4477200508117676 0.4477200508117676 0 1 0 Z"/>
+  </g>
+  <line id="直线_11" data-name="直线 11" class="cls-5" x2="7" transform="translate(8.5 8.5)"/>
+  <line id="直线_12" data-name="直线 12" class="cls-5" x2="7" transform="translate(8.5 11.5)"/>
+  <line id="直线_13" data-name="直线 13" class="cls-5" x2="2" transform="translate(8.5 14.5)"/>
+</svg>

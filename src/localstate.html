@@ -1,0 +1,183 @@
+<html>
+<head>
+    <link href="./css/main.css" rel="stylesheet" />
+    <title></title>
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+
+</head>
+<body style="background-color: #F2F3F5;">
+    <div class="info_header_box">
+        <i class="header_box_icon"></i>
+    </div>
+    <div class="main_box">
+        <div class="reward_record_center_div">
+            <h3 class="reward_record_title"><i class="reward_record_title_i" set-lan="html:Rpath.RootInfo">根信息</i></h3>
+            <table id="open_table">
+                <tr set-lan="html:Rpath.ZoneId">zoneid: <span id="zoneid"></span></tr></br>
+                <tr set-lan="html:Rpath.Root">root: <span id="root"></span></tr></br>
+                <tr set-lan="html:Rpath.Revision">revision: <span id="revision"></span></tr></br>
+                <tr set-lan="html:Rpath.DecRoot">dec_root: <span id="dec_root"></span></tr></br>
+                <tr set-lan="html:Rpath.Revision">dec_revision: <span id="dec_revision"></span></tr></br>
+                <tr set-lan="html:Rpath.Root-State"><a class="color_475" target="_blank" href="cyfs://static/localstate.html?local_cache=false">root-state(default)</a><span id="root-state"></span></tr></br>
+                <tr set-lan="html:Rpath.Local-Cache"><a class="color_475" target="_blank" href="cyfs://static/localstate.html?local_cache=true">local-cache</a><span id="local-cache"></span></tr></br>
+                <tbody id="open_root_table_tbody">
+                </tbody>
+            </table>
+        </div>
+        <div class="tx_content_box">
+            <h3 class="reward_record_title"><i class="reward_record_title_i" set-lan="html:Rpath.DeviceList">设备列表</i></h3>
+            <table class="reward_record_table" id="open_table">
+                <th set-lan="html:Rpath.DeviceId">设备id</th>
+                <th set-lan="html:Rpath.DeviceType">设备类型</th>
+                <tbody id="open_device_table_tbody">
+                </tbody>
+            </table>       
+        </div>
+
+        <div class="tx_content_box">
+            <h3 class="reward_record_title"><i class="reward_record_title_i" set-lan="html:Rpath.DECList">DEC列表</i></h3>
+            <table class="reward_record_table" id="open_table">
+                <th set-lan="html:Rpath.decid">decid</th>
+                <tbody id="open_dec_table_tbody">
+                </tbody>
+            </table>
+            <h3 class="reward_record_title"><i class="reward_record_title_i" set-lan="html:Rpath.ObjectList">目录树</i></h3>
+            <table class="reward_record_table" id="open_table">
+                <th set-lan="html:Rpath.Url">路径</th>
+                <th set-lan="html:Rpath.Type">类型</th>
+                <th set-lan="html:Rpath.ObjectId">对象ID</th>
+                <tbody id="open_tree_table_tbody">
+                </tbody>
+            </table>
+
+            <div class="page_box">
+                <div class="page_box_right">
+                    <button class="first_page"  set-lan="html:ObjectHtml.Last">上一页</button>
+                    <button class="last_page_btn" ></button>
+                    <div class="page_div">
+                        <div id="page_div">
+                            <span class="choose_index">1</span>
+                        </div>
+                    </div>
+                    <button class="last_page"  set-lan="html:ObjectHtml.Next">下一页</button>
+                    <button class="next_page_btn" ></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="reward_record_cover_box" id="reward_record_cover_box" >
+        <div class="reward_record_close_cover"></div>
+        <div class="reward_record_scan_box">
+            <div class="reward_record_scan">
+                <canvas id="reward_record_scan"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="anonymous_box">
+        <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
+        <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+    </div>
+</body>
+<style>
+    button {
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+    .page_box{
+        width: 100%;
+        height: 24px;
+        margin: 33px 0 ;
+    }
+    .page_box_left{
+        float: left;
+        color: #999999;
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .page_box_right{
+        float: right;
+        width: 510px;
+    }
+    .page_chose_box{
+        display: inline-block;
+        width: 64px;
+        height: 24px;
+        border: 1px solid #E1E2E2;
+        border-radius: 2px;
+        margin: 0 7px;
+        float: left;
+    }
+    .page_span{
+        overflow: hidden;
+    }
+    .first_page{
+        width: 64px;
+        height: 24px;
+        float: left;
+        margin-right: 16px;
+    }
+    .last_page{
+        width: 64px;
+        height: 24px;
+        float: right;
+        margin-left: 16px;
+    }
+    .first_page:hover, .last_page:hover{
+        border: 1px solid #333;
+        color: #333;
+    }
+    .first_page, .last_page{
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 24px;
+        border-radius: 2px;
+        border: 1px solid #E1E2E2;
+        color: #999999;
+        background: #FFFFFF;
+    }
+    .last_page_btn, .next_page_btn{
+        width: 24px;
+        height: 24px;
+    }
+    .last_page_btn{
+        float: left;
+        background: url(../img/browser/last_page_icon.svg) no-repeat center center;
+    }
+    .next_page_btn{
+        float: right;
+        background: url(../img/browser/next_page_icon.svg) no-repeat center center;
+    }
+    .page_div{
+        display: inline-block;
+        width: 300px;
+        height: 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        position: relative;
+    }
+    #page_div{
+        position: absolute;
+        top: 0;
+        left: 0;
+        white-space: nowrap;
+        width: 9999999px;
+    }
+    .page_div span{
+        float: left;
+        line-height: 24px;
+        width: 32px;
+        text-align: center;
+    }
+    .page_div .choose_index{
+        width: 32px;
+        height: 22px;
+        color: #26C28D;
+        text-align: center;
+        border: 1px solid #26C28D;
+        padding: 0px;
+    }
+</style>
+</html>

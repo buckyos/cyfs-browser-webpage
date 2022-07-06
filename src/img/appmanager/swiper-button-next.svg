@@ -1,0 +1,17 @@
+<svg id="组_501" data-name="组 501" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #d5d5d5;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #333;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <circle id="椭圆_163" data-name="椭圆 163" class="cls-1" cx="20" cy="20" r="20"/>
+  <path id="路径_607" data-name="路径 607" class="cls-2" d="M14.6,14.6V0H0" transform="translate(16.554 9.679) rotate(45)"/>
+</svg>

@@ -1,0 +1,590 @@
+<html style="width: 100%;">
+<head>
+    <title>首页</title>
+    <script src="../cyfs_sdk/cyfs.js"></script>
+    <script src="../js/lib/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<body>
+    <div class="contaniner-box">
+        <div class="header-box">
+            <div class="header-div">
+                <div class="header-contaniner">
+                    <i class="people-svg" ></i>
+                    <i class="header-name fontbold" id="people_name" >点击绑定</i>
+                    <div class="user-content content-position-box show-box" id="user_content">
+                        <i class="user-content-icon content-position-box-icon"></i>
+                        <div>
+                            <h4 class="content-title">
+                                <span id="people_name2">扫码绑定</span>
+                                <!-- <i class="user-title-i"></i> -->
+                            </h4>
+                            <p class="content-subtitle" id="owner_id"></p>
+                            <div class="scan_box">
+                                <canvas id="scan_box"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-contaniner header-mobile-none" id="nft_list" style="display: none;">
+                    <i class="reward-svg" ></i>
+                    <i class="header-name font400"  id="reward_box"></i>
+                    <div class="reward-position-box show-box" id="reward_box">
+                        <ul id="reward_box_ul">
+                        </ul>
+                    </div>
+                </div>
+                <div class="header-contaniner" style="flex-shrink:0">
+                </div>
+                <div class="header-contaniner header-right-box">
+                    <i class="pc-svg header-right-box-i"></i>
+                    <div class="device-content content-position-box show-box" id="device_content">
+                        <i class="device-content-icon content-position-box-icon"></i>
+                        <div>
+                            <div>
+                                <h4 class="content-title" id="people_name3">设备名称</h4>
+                                <p class="content-subtitle" id="device_id"></p>
+                            </div>
+                            <div class="content-bottom">
+                                <p class="content-bottom-p" id="device_object">对象缓存</p>
+                                <p class="content-bottom-p" id="device_data">数据缓存</p>
+                                <!-- <i class="content-bottom-i"></i> -->
+                            </div>
+                        </div>
+                    </div>
+                    <i class="header-right-box-i router-offline-svg" id="router_svg" ></i>
+                    <div class="ood-content content-position-box show-box" id="ood_content">
+                        <i class="ood-content-icon content-position-box-icon"></i>
+                        <div>
+                            <h4 class="content-title">与OOD的连接：<span id="id_ood_online">断开</span><i class="content-title-i" id="delayed">0ms</i></h4>
+                            <p class="content-subtitle" id="ood_id"></p>
+                        </div>
+                        <div class="content-bottom">
+                            <p class="content-bottom-p" id="ood_object">对象存储数--，新增--</p>
+                            <p class="content-bottom-p" id="ood_data">数据存储数--，新增--</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-box">
+            <div class="search-content-box">
+                <div class="cyfs-icon"></div>
+                <div class="input-div">
+                    <input  class="search-input" id="unsignin_input" placeholder='输入对象ID，查询zone内对象'  />
+                    <i class="browser-search-svg" ></i>
+                </div>
+                <div id="unsignin_app">
+                    <p class="unsignin_app"><a href="javascript:" class="app_click">绑定</a>后查看App信息</p>
+                </div>
+                <ul class="app-ul" id="signin_ul">
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+html, body{
+    width: 100%;
+}
+html {font-size: 625%;}
+@media screen and (min-width:0px) and (max-width:374px) and (orientation:portrait) {
+    html { font-size: 703%; }
+}
+@media screen and (min-width:375px) and (max-width:383px) and (orientation:portrait) {
+    html { font-size: 732.4%; }
+}
+@media screen and (min-width:384px) and (max-width:399px) and (orientation:portrait) {
+    html { font-size: 750%; }
+}
+@media screen and (min-width:400px) and (max-width:413px) and (orientation:portrait) {
+    html { font-size: 781.25%; }
+}
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+    html { font-size: 808.6%; }
+}
+@media screen and (min-width:432px) and (max-width:479px) and (orientation:portrait){
+    html { font-size: 843.75%; }
+}
+@media screen and (min-width:480px) and (max-width:1099px) and (orientation:portrait){
+    html { font-size: 843.75%; }
+}
+@media screen and (min-width:1100px) and (max-width:1399px) and (orientation:portrait){
+    html { font-size: 625%; width: 100%; }
+    .header-div, .content-box{ width: 14rem; }
+    .search-content-box{width:6.54rem;}
+    .header-contaniner{ position: relative; }
+    .app-ul{ align-content:flex-start; }
+    .content-position-box{ width:3.2rem; padding: 0.22rem;}
+}
+.header-div, .content-box, .search-content-box{ width: 100%; }
+.header-mobile-none{display: none;}
+.content-box .app-ul{ display: none; }
+.header-contaniner .ood-content, .header-contaniner .device-content{ right: 0; left: 0 }
+.header-contaniner .user-content { left: 0 }
+.content-position-box{ width:100%; padding: 0; padding-bottom:0.22rem; }
+html, body, h2, a, input, table, thead, tr, td, tbody, p, h4, span, button, h3, ul, li{
+    padding: 0;
+    margin: 0;
+    font-family: PingFang SC;
+    color: #333;
+}
+i{
+    font-style:normal;
+}
+input, button, select{
+    outline: none;
+    border: none;
+}
+ul,li {
+    list-style: none;
+}
+.fontbold{
+    font-weight: bold;
+}
+.font400{
+    font-weight: 400;
+}
+.contaniner-box{
+    width: 100%;
+    overflow: hidden;
+}
+.header-box{
+    width: 100%;
+    height: 0.56rem;
+    border-bottom: 0.01rem solid #D5D5D5;
+}
+.header-div{
+    max-width: 14rem;
+    height: 0.56rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+.header-contaniner{
+    /* position: relative; */
+    height: 0.56rem;
+}
+.header-mobile-none{
+    position: relative;
+}
+.content-position-box{
+    height: 2rem;
+    background: #FFFFFF;
+    box-shadow: 0px 0.06rem 0.16rem rgba(0, 0, 0, 0.16);
+    border-radius: 0.08rem;
+    position: absolute;
+    top: 0.62rem;
+    z-index: 9999;
+    word-wrap: break-word;
+    white-space: normal;
+    word-break: break-all;
+}
+#user_content{
+    display: none;
+}
+#device_content{
+    display: none;
+}
+#ood_content{
+    display: none;
+}
+.user-content{
+}
+.scan_box{
+    width: 1rem;
+    height: 1rem;
+    margin: 0.1rem 0 0 0.67rem;
+}
+.scan_box img{
+    width: 100%;
+    height: 100%;
+}
+.content-position-box-icon{
+    display: block;
+    width: 0.48rem;
+    height: 0.48rem;
+    margin: 0.27rem 0.17rem 0 0.02rem;
+    float: left;
+}
+.user-content-icon{
+    background: url(../img/user-content-icon.svg) no-repeat center center;
+}
+.device-content{
+    right: 0rem;
+}
+.device-content-icon{
+    background: url(../img/device-content-icon.svg) no-repeat center center;
+}
+.ood-content{
+    right: 0rem;
+}
+.ood-content-icon{
+    background: url(../img/ood-content-icon.svg) no-repeat center center;
+}
+.content-title{
+    margin-top: 0.27rem;
+    /* height: 0.26rem; */
+    font-size: 0.18rem;
+    font-weight: bold;
+    line-height: 0.26rem;
+    color: #333333;
+}
+.user-title-i{
+    width: 0.27rem;
+    height: 0.27rem;
+    display: block;
+    float: right;
+    background: url(../img/user-title-i.svg) no-repeat center center;
+}
+.content-subtitle{
+    font-size: 0.16rem;
+    line-height: 0.22rem;
+    color: #999999;
+    padding-top: 0.04rem;
+    padding-left: 0.67rem;
+}
+.people-svg{
+    display: block;
+    width: 0.28rem;
+    height: 0.28rem;
+    margin: 0.14rem;
+    float: left;
+    background: url(../img/people-svg.svg) no-repeat center center;
+    background-size: 100%;
+    cursor: pointer;
+}
+.people-name{
+    font-weight: bold;
+    cursor: pointer;
+}
+.header-name{
+    font-size: 0.14rem;
+    display: inline-block;
+    height: 0.56rem;
+    line-height: 0.56rem;
+    cursor: pointer;
+}
+.reward-svg{
+    display: block;
+    width: 0.4rem;
+    height: 0.4rem;
+    margin: 0.08rem 0;
+    margin-right:0.04rem;
+    float: left;
+    background: url(../img/reward-svg.svg) no-repeat center center;
+    background-size: 100%;
+    cursor: pointer;
+}
+.header-right-box{
+    float: right;
+}
+.header-right-box-i{
+    float: left;
+    display: block;
+    width: 0.24rem;
+    height: 0.24rem;
+    margin: 0.16rem 0.09rem;
+    cursor: pointer;
+}
+.content-bottom{
+    position: relative;
+    padding: 0.36rem 0 0 0.65rem;
+}
+.content-bottom .content-bottom-p{
+    line-height: 0.2rem;
+    height: 0.2rem;
+    padding-bottom: 0.04rem;
+    font-size: 0.14rem;
+    color: #999999;
+}
+.content-title-i{
+    font-size: 0.12rem;
+    color: #999;
+    /* padding-left: 0.17rem; */
+    font-weight: 400;
+}
+.content-bottom-i{
+    display: block;
+    width: 0.26rem;
+    height: 0.25rem;
+    background: url(../img/content-bottom-i.svg) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    right: 0;
+    bottom: 0.03rem;
+}
+.pc-svg{
+    background: url(../img/pc-svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_intranet_strong_svg{
+    background: url(../img/router_intranet_strong_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_intranet_middle_svg{
+    background: url(../img/router_intranet_middle_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_intranet_weak_svg{
+    background: url(./img/router_intranet_weak_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_extranet_strong_svg{
+    background: url(../img/router_extranet_strong_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_extranet_middle_svg{
+    background: url(../img/router_extranet_middle_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_extranet_weak_svg{
+    background: url(../img/router_extranet_weak_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router-offline-svg{
+    background: url(../img/router_offline_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.content-box{
+    max-width: 14rem;
+    margin: 0 auto;
+    /* min-height: 100%; */
+}
+.reward-position-box{
+    display: none;
+    padding: 0.23rem 0.44rem;
+    min-width: 2.4rem;
+    background-color: #fff;
+    position: absolute;
+    top: 0.62rem;
+    left: 0;
+    box-shadow: 0rem 0.06rem 0.16rem rgba(0, 0, 0, 0.16);
+    border-radius: 0.08rem;
+    z-index: 999;
+}
+.reward-position-box li{
+    font-size: 0.14rem;
+    font-weight: 400;
+    height: 0.24rem;
+    line-height: 0.24rem;
+    color: #333333;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.reward-position-box a:hover{
+    text-decoration: underline;
+}
+.search-content-box{
+    max-width:6.54rem;
+    margin:0 auto;
+}
+.cyfs-icon{
+    width: 2rem;
+    height: 1rem;
+    margin: 0 auto;
+    background: url(../img/cyfs-icon.svg) no-repeat center center;
+    background-size: 100%;
+    padding: 0.8rem 0 0.48rem 0;
+}
+.input-div{
+    width: 100%;
+    height: 0.44rem;
+    position: relative;
+    padding-bottom: 0.72rem ;
+}
+.search-input{
+    width: 100%;
+    height: 0.44rem;
+    border: 0.01rem solid #D5D5D5 ;
+    border-radius: 0.22rem;
+    padding-left: 0.2rem;
+    font-size: 0.14rem;
+    padding-right: 0.4rem;
+}
+.unsignin_input{
+    background: #F9F9F9;
+}
+.unsignin_app{
+    height: 0.38rem;
+    font-size: 0.16rem;
+    font-weight: 400;
+    line-height: 0.38rem;
+    text-align: center;
+    color: #00CC99;
+}
+.unsignin_app a {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.24rem;
+    line-height: 0.24rem;
+    border: 0.01rem solid #00CC99;
+    border-radius: 0.04rem;
+    color: #00CC99;
+    text-decoration: none;
+    margin-right: 0.05rem;
+}
+.app-ul{
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: space-between;
+    /* align-content:flex-start; */
+}
+.app-ul li{
+    width: 1.3rem;
+    cursor: pointer;
+}
+.app-ul .last-child-li .app-content{
+    background: #D5D5D5;
+}
+.app-content{
+    width: 0.48rem;
+    height: 0.48rem;
+    background: #FFFFFF;
+    box-shadow: 0px 0.03rem 0.06rem rgba(0, 0, 0, 0.16);
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.app-content img{
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 50%;
+    padding: 0.08rem;
+}
+.app-name{
+    font-weight: 400;
+    line-height: 22px;
+    height: 22px;
+    color: #707070;
+    font-size: 0.16rem;
+    padding: 0.16rem 0;
+    white-space: nowrap;
+    text-align: center;
+}
+.browser-search-svg{
+    display: block;
+    width: 0.4rem;
+    height: 0.4rem;
+    position: absolute;
+    top: 0.02rem;
+    cursor: pointer;
+    right: 0.08rem;
+    background: url(../img/browser-search-svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.add_url_box{
+    width: 4.48rem;
+    height: 2.23rem;
+    background: #FFFFFF;
+    box-shadow: 0rem 0.06rem 0.16rem rgba(0, 0, 0, 0.16);
+    border-radius: 0.08rem;
+    position: absolute;
+    top: 3rem;
+    left:50%;
+    margin-left:-2.24rem;
+    display: none;
+}
+.add_url_title{
+    text-align: center;
+    height: 0.25rem;
+    font-size: 0.18rem;
+    font-weight: bold;
+    line-height: 0.25rem;
+    color: #333333;
+    padding: 0.32rem 0;
+}
+.add_url_icon{
+    display: block;
+    float: right;
+    width: 0.32rem;
+    height: 0.32rem;
+    background: url(../img/add_url_icon.svg) no-repeat center center;
+    background-size: 100%;
+    margin: -0.24rem 0.08rem 0 0 ;
+    cursor: pointer;
+}
+.add_url_span{
+    height: 0.3rem;
+    font-size: 0.12rem;
+    font-weight: 400;
+    line-height: 0.3rem;
+    color: #333333;
+    padding: 0 0.15rem 0 0.24rem;
+    display: inline-block;
+    float: left;
+}
+.add_url_input{
+    display: inline-block;
+    float: left;
+    width: 3.37rem;
+    height: 0.3rem;
+    background: #FFFFFF;
+    border: 0.01rem solid #D5D5D5;
+    border-radius: 0.04rem;
+    padding-left: 0.1rem;
+}
+.app-content .fixed-app-img{
+    width:0.32rem;
+    height:0.32rem;
+    padding:0.08rem;
+}
+.add_url_content{
+    padding: 0.05rem 0 0.43rem 0 ;
+    height: 0.3rem;
+}
+.add_url_button{
+    width: 1.46rem;
+    height: 0.32rem;
+    display: block;
+    margin: 0 auto;
+    background: #00CC99;
+    border-radius: 0.04rem;
+    color: #fff;
+}
+#toast{
+    font-size: 0.14rem;
+    line-height: 1;
+    padding: 0.1rem;
+    border-radius: 0.03rem;
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    z-index: 9999;
+}
+.success_toast{
+    background: #fff;
+    border: 0.01rem solid #009e73;
+    color: #009e73;
+}
+.warn_toast{
+    background: #fff;
+    border: 0.01rem solid #f73131;
+    color: #f73131;
+}
+.primary_toast{
+    background: #fff;
+    border: 0.01rem solid #245BC8;
+    color: #245BC8;
+}
+.hide{
+    display: none;
+}
+.fadeOut{
+    animation: fadeOut .5s;
+}
+.fadeIn{
+    animation:fadeIn .5s;
+}
+</style>
+</html>

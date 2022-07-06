@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="224" height="224" viewBox="0 0 224 224">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #f9e2e2;
+      }
+
+      .cls-3 {
+        fill: #ffbcbc;
+      }
+
+      .cls-4 {
+        fill: #ffdb4d;
+      }
+
+      .cls-5 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-6 {
+        filter: url(#路径_173);
+      }
+    </style>
+    <filter id="路径_173" x="13" y="40" width="198" height="160" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#feba61" flood-opacity="0.478"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fc0"/>
+      <stop offset="1" stop-color="#ffdb4d"/>
+    </linearGradient>
+  </defs>
+  <g id="组_641" data-name="组 641" transform="translate(-320 -100)">
+    <g id="组_75" data-name="组 75" class="cls-1" transform="translate(320 100)">
+      <path id="路径_1" data-name="路径 1" class="cls-2" d="M0,0H224V224H0Z" transform="translate(0 0)"/>
+      <rect id="矩形_2" data-name="矩形 2" class="cls-3" width="148" height="148" transform="translate(38 38)"/>
+    </g>
+    <g class="cls-6" transform="matrix(1, 0, 0, 1, 320, 100)">
+      <path id="路径_173-2" data-name="路径 173" class="cls-4" d="M9.375,0H61.553L80.527,18.667h60.1A9.354,9.354,0,0,1,150,28v74.667A9.354,9.354,0,0,1,140.625,112H9.375A9.354,9.354,0,0,1,0,102.667V9.333A9.354,9.354,0,0,1,9.375,0Z" transform="translate(37 56)"/>
+    </g>
+    <rect id="矩形_894" data-name="矩形 894" class="cls-5" width="150" height="94" rx="4" transform="translate(357 174)"/>
+  </g>
+</svg>

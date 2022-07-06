@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0c9;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+      }
+    </style>
+  </defs>
+  <g id="组_524" data-name="组 524" transform="translate(-1510 -223)">
+    <circle id="椭圆_81" data-name="椭圆 81" class="cls-1" cx="16" cy="16" r="16" transform="translate(1510 223)"/>
+    <line id="直线_48" data-name="直线 48" class="cls-2" x2="20" transform="translate(1516.375 239.4)"/>
+    <line id="直线_49" data-name="直线 49" class="cls-2" x2="20" transform="translate(1526.4 229.375) rotate(90)"/>
+  </g>
+</svg>

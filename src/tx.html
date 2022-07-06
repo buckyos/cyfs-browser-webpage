@@ -1,0 +1,177 @@
+<html>
+<head>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="./css/main.css" rel="stylesheet" />
+    <title></title>
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+
+</head>
+<body style="background-color: #F2F3F5;">
+    <div class="info_header_box">
+        <div style="width: 1180px;margin: 0 auto;">
+            <i class="header_box_icon"></i>
+        </div>
+    </div>
+    <div class="main_box">
+        <div class="reward_record_center_div">
+            <p class="reward_record_name" set-lan="html:OODName">—— 友好名称：<span id="friendly_name"></span> ——</p>
+            <p class="reward_record_subname">Id: <span id="device_id_info"></span></p>
+        </div>
+        <div class="tx_content_box">
+            <h3 class="reward_record_title"><i class="reward_record_title_i" set-lan="html:Tx.Overview"></i></h3>
+            <div class="reward_record_div">
+                <div class="reward_record_div_box">
+                    <p set-lan="html:Tx.TotalIncome">
+                        总收入： <span id="balance_dom"> </span>
+                    </p>
+                </div>
+                <div class="reward_record_div_box">
+                    <p set-lan="html:Tx.Balance">设备余额： <span id="balance_dom2"></span> ECC <button class="with_drawal">提现</button></p>
+                </div>
+                <div class="clear_both"></div>
+            </div>
+        </div>
+        <div class="tx_content_box">
+            <h3 class="reward_record_title"><i class="reward_record_title_i" set-lan="html:Tx.Transactions">交易列表</i></h3>
+            <table class="reward_record_table" id="open_table">
+                <th set-lan="html:Tx.Hash">交易hash</th>
+                <th set-lan="html:Tx.Time">转账时间</th>
+                <th set-lan="html:Tx.Type">类型</th>
+                <th set-lan="html:Tx.From">来自</th>
+                <th set-lan="html:Tx.GasFee">手续费</th>
+                <th set-lan="html:Tx.TransferAmount">转账金额</th>
+                <th set-lan="html:Tx.Status">状态</th>
+                <tbody id="open_table_tbody">
+                </tbody>
+            </table>
+            <div class="page_box">
+                <div class="page_box_right">
+                    <button class="first_page"  set-lan="html:ObjectHtml.Last">上一页</button>
+                    <button class="last_page_btn" ></button>
+                    <div class="page_div">
+                        <div id="page_div">
+                            <span class="choose_index">1</span>
+                        </div>
+                    </div>
+                    <button class="last_page"  set-lan="html:ObjectHtml.Next">下一页</button>
+                    <button class="next_page_btn" ></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="reward_record_cover_box" id="reward_record_cover_box" >
+        <div class="reward_record_close_cover"></div>
+        <div class="reward_record_scan_box">
+            <div class="reward_record_scan">
+                <canvas id="reward_record_scan"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="anonymous_box">
+        <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
+        <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+    </div>
+</body>
+<style>
+    button {
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+    .page_box{
+        width: 100%;
+        height: 24px;
+        margin: 33px 0 ;
+    }
+    .page_box_left{
+        float: left;
+        color: #999999;
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .page_box_right{
+        float: right;
+        width: 510px;
+    }
+    .page_chose_box{
+        display: inline-block;
+        width: 64px;
+        height: 24px;
+        border: 1px solid #E1E2E2;
+        border-radius: 2px;
+        margin: 0 7px;
+        float: left;
+    }
+    .page_span{
+        overflow: hidden;
+    }
+    .first_page{
+        width: 64px;
+        height: 24px;
+        float: left;
+        margin-right: 16px;
+    }
+    .last_page{
+        width: 64px;
+        height: 24px;
+        float: right;
+        margin-left: 16px;
+    }
+    .first_page:hover, .last_page:hover{
+        border: 1px solid #333;
+        color: #333;
+    }
+    .first_page, .last_page{
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 24px;
+        border-radius: 2px;
+        border: 1px solid #E1E2E2;
+        color: #999999;
+        background: #FFFFFF;
+    }
+    .last_page_btn, .next_page_btn{
+        width: 24px;
+        height: 24px;
+    }
+    .last_page_btn{
+        float: left;
+        background: url(../img/browser/last_page_icon.svg) no-repeat center center;
+    }
+    .next_page_btn{
+        float: right;
+        background: url(../img/browser/next_page_icon.svg) no-repeat center center;
+    }
+    .page_div{
+        display: inline-block;
+        width: 300px;
+        height: 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        position: relative;
+    }
+    #page_div{
+        position: absolute;
+        top: 0;
+        left: 0;
+        white-space: nowrap;
+        width: 9999999px;
+    }
+    .page_div span{
+        float: left;
+        line-height: 24px;
+        width: 32px;
+        text-align: center;
+    }
+    .page_div .choose_index{
+        width: 32px;
+        height: 22px;
+        color: #26C28D;
+        text-align: center;
+        border: 1px solid #26C28D;
+        padding: 0px;
+    }
+</style>
+</html>

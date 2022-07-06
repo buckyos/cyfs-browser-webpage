@@ -1,0 +1,39 @@
+<html>
+<head>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="./css/main.css" rel="stylesheet" />
+    <title></title>
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+</head>
+
+<body style="background: #F2F3F5;">
+    <div class="info_header_box">
+        <div style="width: 1200px;margin: 0 auto;">
+            <i class="header_box_icon"></i>
+        </div>
+    </div>
+    <textarea id="copy_textarea" style="display:none;"></textarea>
+    <div class="overflow_h">
+        <div class="info_main_box">
+            <img class="info_main_portrait" src="./img/info_ood_defalut_svg.svg" alt="">
+            <p class="info_main_name"></p>
+            <p class="info_main_id"><span class="info_main_copy_id" id="owner_id"></span> <i class="info_main_copy_svg info_main_copy_owner_svg">&nbsp;</i></p>
+            <h1 class="info_zone_title"><span class="info_zone_title_span">Zone</span> <span id="zone_id" class="info_zone_title_id">(   <i class="info_main_copy_svg info_main_copy_zone_svg">&nbsp;</i>)</span><i class="info_main_introduce_svg">&nbsp;<span class="info_floating_window">Zone: All the OODs and Devices that belong to you form a zone.</span></i></h1>
+            <div class="info_list_container">
+                <h3 class="reward_record_title"><i class="reward_record_title_i">OOD</i></h3>
+                <div class="info_ood_list_box">
+                </div>
+                <h3 class="device_record_title reward_record_title"><i class="reward_record_title_i">Device</i></h3>
+                <div class="info_device_list_box">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="anonymous_box">
+        <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
+        <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+    </div>
+</body>
+
+</html>

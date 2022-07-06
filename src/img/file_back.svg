@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #333;
+      }
+    </style>
+  </defs>
+  <g id="icon_24pt_nav_back_1" data-name="icon/24pt/nav/back – 1" transform="translate(32) rotate(90)">
+    <g id="底板">
+      <path id="路径_1" data-name="路径 1" class="cls-1" d="M0,0H32V32H0Z"/>
+      <rect id="矩形_2" data-name="矩形 2" class="cls-1" width="24" height="24" transform="translate(4 4)"/>
+    </g>
+    <rect id="矩形_1003" data-name="矩形 1003" class="cls-2" width="32" height="32" rx="4"/>
+    <rect id="矩形_9" data-name="矩形 9" class="cls-3" width="14.271" height="1" rx="0.5" transform="translate(4.885 16) rotate(-45)"/>
+    <rect id="矩形_410" data-name="矩形 410" class="cls-3" width="14.27" height="1" rx="0.5" transform="translate(5.592 15.293) rotate(45)"/>
+    <rect id="矩形_13" data-name="矩形 13" class="cls-3" width="21.35" height="1" rx="0.5" transform="translate(5.885 15.5)"/>
+  </g>
+</svg>

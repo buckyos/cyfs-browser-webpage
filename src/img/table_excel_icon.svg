@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-5 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #039e55;
+      }
+
+      .cls-3 {
+        fill: #b6ffe2;
+      }
+
+      .cls-4 {
+        fill: none;
+      }
+
+      .cls-5 {
+        font-size: 8px;
+        font-family: SourceHanSansCN-Regular, Source Han Sans CN;
+      }
+    </style>
+  </defs>
+  <g id="组_696" data-name="组 696" transform="translate(-137 -130)">
+    <g id="组_663" data-name="组 663" transform="translate(137 130)">
+      <rect id="矩形_895" data-name="矩形 895" class="cls-1" width="24" height="24"/>
+      <g id="组_646" data-name="组 646" transform="translate(6 4)">
+        <g id="icon_24pt_all_DOC" data-name="icon/24pt/all/DOC">
+          <path id="路径_175" data-name="路径 175" class="cls-2" d="M1,16H11a1,1,0,0,0,1-1V4.1L7.438,0H1A1,1,0,0,0,0,1V15A1,1,0,0,0,1,16Z"/>
+          <path id="路径_174" data-name="路径 174" class="cls-3" d="M.756,4.1h3.78L2.268,2.052,0,0V3.42A.723.723,0,0,0,.756,4.1Z" transform="translate(7.464)"/>
+          <line id="直线_11" data-name="直线 11" class="cls-4" x2="7" transform="translate(2.5 11.5)"/>
+          <line id="直线_12" data-name="直线 12" class="cls-4" x2="7" transform="translate(2.5 8.5)"/>
+          <line id="直线_13" data-name="直线 13" class="cls-4" x2="2" transform="translate(2.5 5.5)"/>
+        </g>
+      </g>
+    </g>
+    <text id="X" class="cls-5" transform="translate(149 147)"><tspan x="-2.292" y="0">X</tspan></text>
+  </g>
+</svg>

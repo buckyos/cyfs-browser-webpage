@@ -1,0 +1,417 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <script src="../cyfs_sdk/cyfs.js"></script>
+  <script src="../js/lib/jquery.js"></script>
+  <link rel="stylesheet" href="../js/lib/swiper-bundle.min.css">
+  <script src="../js/lib/swiper-bundle.min.js"> </script>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+
+<body style="background: #F2F3F5;">
+  <div class="app_box">
+    <div class="app_header_box">
+      <div class="browser_header">
+        <h2 set-lan="html:AppHtml.DecAppManagement"></h2>
+        <div>
+          <a class="browser_header_a browser_active_a" href="./app_installed.html" set-lan="html:AppHtml.InstalledApplication"></a>
+          <a class="browser_header_a" href="../appmanager.html" set-lan="html:AppHtml.Homepage"></a>
+        </div>
+      </div>
+    </div>
+    <div class="centent_box">
+      <h3 class="content_box_h3"><span set-lan="html:AppHtml.InstalledApplication"></span></h3>
+      <ul class="installed_ul" id="install_list">
+      </ul>
+    </div>
+    <div class="cover_box" id="remove_box">
+      <div class="popup_box">
+        <h3 set-lan="html:AppHtml.Warning"></h3>
+        <div class="cover_input_box">
+          <p set-lan="html:AppHtml.WarningQuestion"></p>
+        </div>
+        <p style="width: 380px;margin: 0 auto;">
+          <button class="remove_btn comfirm_remove_btn" set-lan="html:AppHtml.Confirm"></button>
+          <button class="remove_btn cancel_remove_btn" set-lan="html:AppHtml.Cancel"></button>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="anonymous_box">
+    <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
+    <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+  </div>
+</body>
+
+<style>
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+
+  html,
+  body,
+  h2,
+  a,
+  input,
+  table,
+  thead,
+  tr,
+  td,
+  tbody,
+  p,
+  h4,
+  span,
+  button,
+  h3,
+  button,
+  ul,
+  li {
+    padding: 0;
+    margin: 0;
+    font-family: 'PingFang SC', '微软雅黑';
+    color: #333;
+  }
+
+  input,
+  button,
+  select {
+    outline: none;
+    border: none;
+  }
+
+  ul,
+  li {
+    list-style: none;
+  }
+
+  .clear_both {
+    clear: both;
+  }
+
+  .float_l {
+    float: left;
+  }
+
+  .float_r {
+    float: right;
+  }
+
+  .app_header_box {
+    width: 100%;
+    height: 80px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    background: #fff;
+  }
+
+  .browser_header {
+    width: 1180px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .browser_header h2 {
+    line-height: 40px;
+    height: 40px;
+    padding: 22px 0 18px 0;
+    font-size: 28px;
+    float: left;
+    color: #00CC99;
+    font-weight: bold;
+  }
+
+  .browser_header_a {
+    float: right;
+    text-decoration: none;
+    color: #333;
+    line-height: 80px;
+    height: 80px;
+    font-size: 16px;
+    padding: 0 12px;
+    font-weight: 400;
+  }
+
+  .browser_active_a {
+    color: #00CC99;
+  }
+
+  .browser_header .browser_header_a:nth-child(1) {
+    padding-right: 0;
+  }
+
+  .content_box_h3 {
+    border-bottom: 2px solid #E3E3E3;
+  }
+
+  .content_box_h3 span {
+    display: inline-block;
+    height: 33px;
+    line-height: 33px;
+    font-size: 22px;
+    color: #00CC99;
+    padding: 13px 0;
+    border-bottom: 2px solid #00CC99;
+    margin-bottom: -2px;
+    font-weight: 400;
+  }
+
+  .centent_box {
+    width: 1180px;
+    margin: 0 auto;
+    padding-top: 58px;
+    padding-bottom: 60px;
+  }
+
+  .installed_ul {
+    padding: 18px 5px 30px 5px ;
+    overflow: hidden;
+  }
+
+  .clear_both {
+    clear: both;
+  }
+
+  .installed_ul li {
+    width: 216px;
+    padding: 0 24px;
+    height: 458px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 8px rgba(51, 51, 51, 0.16);
+    margin: 30px 36px 0 0;
+    float: left;
+    position: relative;
+    border-radius: 8px;
+  }
+
+  .installed_ul li:nth-child(4n) {
+    margin-right: 0;
+  }
+
+  .installed_title {
+    height: 30px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    color: #000000;
+    padding: 24px 0;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .installed_img_box {
+    width: 216px;
+    height: 216px;
+    background: #E1E1E3;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .installed_img_box img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .install_btn_box button {
+    width: 100px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 16px;
+    font-size: 16px;
+    background-color: #fff;
+    border: 1px solid #D5D5D5;
+    margin-bottom: 16px;
+    float: left;
+    cursor: pointer;
+  }
+
+  .install_btn_box button:nth-child(2n) {
+    float: right;
+  }
+
+  .install_btn_box button:hover {
+    background: #00CC99;
+    color: #fff;
+    border: 1px solid #00CC99;
+  }
+
+  .install_btn_box button:disabled,
+  .install_btn_box button[disabled]:hover {
+    color: #ccc !important;
+    border: 1px solid #ccc !important;
+    background-color: #fff;
+  }
+
+  .installed_introduce {
+    height: 20px;
+    padding: 16px 0 24px 0;
+  }
+
+  .installed_introduce span {
+    height: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #999999;
+  }
+
+  .webdir_open_i {
+    display: block;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    background: url(../../img/appmanager/webdir_open_icon.svg) no-repeat center center;
+    background-size: 100%;
+  }
+
+
+  .cover_box {
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(51, 51, 51, 0.4);
+    display: none;
+  }
+
+  .cover_fff_box{
+    width: 448px;
+    height: 146px;
+    background: #FFFFFF;
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.16);
+    border-radius: 8px;
+    position: absolute;
+    top: 329px;
+    left: 50%;
+    margin-left: -224px;
+  }
+
+  .popup_box {
+    width: 448px;
+    height: 233px;
+    background: #fff;
+    border-radius: 8px;
+    margin: 0 auto;
+    margin-top: 300px;
+  }
+
+  .popup_box h3 {
+    font-family: Noto Sans CJK;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    line-height: 25px;
+    height: 25px;
+    padding: 32px 0 37px 0;
+    position: relative;
+  }
+
+  .popup_box .close_svg {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background: url(../img/appmanager/close_cover.svg) no-repeat center center;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+  }
+
+  .cover_input_box {
+    width: 400px;
+    margin: 0 auto;
+    padding: 0 0 43px 0;
+  }
+  
+  .cover_input_box p{
+    text-align: center;
+  }
+
+  .cover_label {
+    display: inline-block;
+    color: #333333;
+    font-size: 12px;
+    line-height: 30px;
+  }
+
+  .cover_input {
+    width: 337px;
+    height: 30px;
+    background: #FFFFFF;
+    border: 1px solid #D5D5D5;
+    margin-left: 10px;
+    padding-left: 10px;
+    border-radius: 4px;
+  }
+
+  .cover_btn {
+    width: 146px;
+    height: 32px;
+    background: #00CC99;
+    border-radius: 16px;
+    color: #fff;
+    font-size: 16px;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+  }
+
+  .remove_btn {
+    width: 150px;
+    float: left;
+    height: 32px;
+    background: #00CC99;
+    background: #00CC99;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    display: block;
+    margin: 0 20px;
+    cursor: pointer;
+  }
+  .anonymous_box{
+      width: 100%;
+      height: 80px;
+      background: #ADADAD;
+      position: absolute;
+      top: 0 ;
+      left: 0;
+      display: none;
+  }
+  .anonymous_box p{
+    text-align: center;
+  }
+  .anonymous_title{
+    height: 32px;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 32px;
+    color: #FFFFFF;
+    padding: 14px 0 4px 0;
+  }
+  .anonymous_subtitle{
+    height: 17px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    cursor: pointer;
+  }
+  .browser_tutorial{
+    cursor: pointer;
+    color: #475CD9;
+  }
+</style>
+
+</html>

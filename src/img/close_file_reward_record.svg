@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #ffe8e8;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: #999;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <g id="组件_6_4" data-name="组件 6 – 4" transform="translate(40 40) rotate(180)">
+    <g id="组_42" data-name="组 42" class="cls-1">
+      <rect id="矩形_318" data-name="矩形 318" class="cls-2" width="40" height="40"/>
+      <rect id="矩形_319" data-name="矩形 319" class="cls-3" width="16" height="16" transform="translate(12 12)"/>
+    </g>
+    <path id="多边形_2" data-name="多边形 2" class="cls-4" d="M6.156,1.326a1,1,0,0,1,1.687,0l5.178,8.137A1,1,0,0,1,12.178,11H1.822A1,1,0,0,1,.978,9.463Z" transform="translate(27 25.5) rotate(180)"/>
+  </g>
+</svg>

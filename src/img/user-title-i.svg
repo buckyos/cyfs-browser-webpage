@@ -1,0 +1,19 @@
+<svg id="组件_10_4" data-name="组件 10 – 4" xmlns="http://www.w3.org/2000/svg" width="26.87" height="26.87" viewBox="0 0 26.87 26.87">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #333;
+      }
+    </style>
+  </defs>
+  <circle id="椭圆_77" data-name="椭圆 77" class="cls-1" cx="12" cy="12" r="12" transform="translate(1.435 1.393)"/>
+  <g id="组_88" data-name="组 88" transform="translate(13.435 -3.536) rotate(45)">
+    <path id="路径_197" data-name="路径 197" class="cls-2" d="M9,21.571v-4.5a4.5,4.5,0,0,0-9,0v4.5" transform="translate(8 -11.571)"/>
+    <path id="路径_199" data-name="路径 199" class="cls-2" d="M9,12.571v4.5a4.5,4.5,0,0,1-9,0v-4.5" transform="translate(8 1.429)"/>
+    <line id="直线_9" data-name="直线 9" class="cls-2" x2="16" transform="translate(4 12)"/>
+  </g>
+</svg>

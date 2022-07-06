@@ -1,0 +1,1363 @@
+<html style="width: 100%;">
+<head>
+    <title></title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<body style="background: #F2F3F5;">
+    <div class="contaniner-box">
+        <div class="header-box">
+            <div class="header-div">
+                <div class="anonymous_box"><p class="anonymous_title" set-lan="html:AnonymousMode"></div>
+                <div class="review_anonymous_box">
+                    <p class="anonymous_subtitle" set-lan="html:ReviewTheTutorial"></p>
+                </div>
+            </div>
+            <div class="header-contaniner header-right-box">
+                <div id="people_name2" class="browser_people_name"></div>
+                <i class="browser-people-icon header-right-box-i" id="user_switch"></i>
+                <!-- <img class="browser-people-icon header-right-box-i" id="user_switch" src="" alt=""> -->
+                <i class="ood_status_icon header-right-box-i" id="ood_status_icon"></i>
+                <div class="device-content content-position-box show-box" id="scan_content">
+                    <div class="scan_box">
+                        <canvas id="scan_box"></canvas>
+                    </div>
+                    <p class="browser_qr_p" set-lan="html:ScanCodeActivate"></p>
+                    <p class="browser_qr_ptwo">
+                        <a href="https://www.cyfs.com/ood_en.html" set-lan="html:HowToGetStart"></a>
+                    </p>
+                </div>
+                <textarea id="copy_textarea" style="display:none;"></textarea>
+                <div class="device-content content-position-box show-box" id="activate_success_content">
+                    <div class="activate_success_icon"></div>
+                    <p class="activate_success_content_p" set-lan="html:ActivatedSuccessfully"></p>
+                </div>
+            </div>
+        </div>
+        <div class="content-box">
+            <div class="search-content-box">
+                <div class="cyfs-icon"></div>
+                <div class="input-div">
+                    <input class="search-input" id="unsignin_input" placeholder="搜索信息或哈希" set-lan="placeholder:BrowserInputText"  />
+                    <div class="search_history_list_box">
+                    </div>
+                    <i class="browser-search-svg" ></i>
+                </div>
+                <!-- <div id="unsignin_app">
+                    <p class="unsignin_app" set-lan="html:BindAfterApp"><a href="javascript:" class="app_click">绑定</a>后查看App信息</p>
+                </div> -->
+                <div style="position: relative;width: 800px;margin-left: -64px;">
+                    <ul class="app-ul" id="signin_ul">
+                        <!-- <li class="last-child-li">
+                            <div class="app-content manager_app" id="manager_app">
+                                <img src='./img/add_shoutcut_i.svg' alt="">
+                            </div>
+                            <p class="app-name" set-lan="html:Browser.AddShortcut"></p>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="browser_cover_box browser_cover_box_guide">
+        <div class="browser_guide_box_welcome browser_guide_box">
+            <div class="browser_guide_box_bg"></div>
+            <div class="browser_guide_welcome_introduce">
+                <h2 class="browser_guide_box_title" set-lan="html:WelcomeToBrowser">Welcome to CYFS Browser!</h2>
+                <p class="browser_guide_box_introduce_p" set-lan="html:WelcomeToBrowserIntroduce">We prepare a wide variety of DEC app for you to explore and experience Web 3.0 world. The following steps will lead you to activate CYFS Browser, so that you can use the full functionality. Otherwise, most of operations will be limited.</p>
+            </div>
+            <div class="browser_guide_btn_box">
+                <button class="browser_guide_btn browser_guide_confirm_btn browser_guide_last_next" data-next="browser_guide_box_one" set-lan="html:Next">Next</button>
+                <button class="browser_guide_btn browser_guide_cancel_btn" set-lan="html:Skip">Skip</button>
+            </div>
+        </div>
+        <div class="browser_guide_box_one browser_guide_box">
+            <div class="browser_guide_box_bg"></div>
+            <ul class="browser_switch_block">
+                <li class="browser_switch_active_block"></li>
+                <li></li>
+                <li></li>
+                <li class="browser_switch_block_last"></li>
+            </ul>
+            <div class="browser_guide_box_introduce">
+                <h2 class="browser_guide_step_title">Step<span>1</span></h2>
+                <p class="browser_guide_box_introduce_p" set-lan="html:WelcomeStep1">You need to set up an OOD as your personal sever since all DEC apps will be running under the OOD. You can find the tutorial from CYFS official website to understand about <a class="color475 text_decoration_none" href="https://www.cyfs.com/ood_en.html">how to access an OOD.</a></p>
+            </div>
+            <div class="browser_guide_btn_box">
+                <button class="browser_guide_btn browser_guide_confirm_btn browser_guide_first_btn browser_guide_last_next" data-last="browser_guide_box_welcome"  set-lan="html:Previous">Previous</button>
+                <button class="browser_guide_btn browser_guide_confirm_btn browser_guide_last_next" data-next="browser_guide_box_two" set-lan="html:Next">Next</button>
+                <button class="browser_guide_btn browser_guide_cancel_btn" set-lan="html:Skip">Skip</button>
+            </div>
+        </div>
+        <div class="browser_guide_box_two browser_guide_box">
+            <div class="browser_guide_box_bg"></div>
+            <ul class="browser_switch_block">
+                <li></li>
+                <li class="browser_switch_active_block"></li>
+                <li></li>
+                <li class="browser_switch_block_last"></li>
+            </ul>
+            <div class="browser_guide_box_introduce">
+                <h2 class="browser_guide_step_title">Step<span>2</span></h2>
+                <p class="browser_guide_box_introduce_p" set-lan="html:WelcomeStep2"></p>
+            </div>
+            <div class="browser_guide_btn_box">
+                <button class="browser_guide_btn browser_guide_confirm_btn browser_guide_first_btn browser_guide_last_next" data-last="browser_guide_box_one" set-lan="html:Previous">Previous</button>
+                <button class="browser_guide_btn browser_guide_confirm_btn browser_guide_last_next" data-next="browser_guide_box_three" set-lan="html:Next">Next</button>
+                <button class="browser_guide_btn browser_guide_cancel_btn" set-lan="html:Skip">Skip</button>
+            </div>
+        </div>
+        <div class="browser_guide_box_three browser_guide_box">
+            <div class="browser_guide_box_bg">
+                <div class="scan_box_canvas_box">
+                    <canvas class="scan_box_canvas" id="scan_box_canvas"></canvas>
+                </div>
+            </div>
+            <ul class="browser_switch_block">
+                <li></li>
+                <li></li>
+                <li class="browser_switch_active_block"></li>
+                <li class="browser_switch_block_last"></li>
+            </ul>
+            <div class="browser_guide_box_introduce">
+                <h2 class="browser_guide_step_title">Step<span>3</span></h2>
+                <p class="browser_guide_box_introduce_p" set-lan="html:WelcomeStep3"></p>
+            </div>
+            <div class="browser_guide_btn_box">
+                <button class="browser_guide_btn browser_guide_confirm_btn browser_guide_first_btn browser_guide_last_next" data-last="browser_guide_box_two" set-lan="html:Previous">Previous</button>
+                <button class="browser_guide_btn browser_guide_cancel_btn" set-lan="html:Skip">Skip</button>
+                <!-- <button class="browser_guide_btn browser_guide_confirm_btn" data-next="" set-lan="html:Finish">FINISH</button> -->
+            </div>
+        </div>
+    </div>
+    <div class="browser_cover_box browser_cover_box_confirm">
+        <div class="browser_confirm_box">
+            <p class="browser_confirm_p" set-lan="html:CancelGuide"></p>
+            <div class="browser_confirm_btn_box">
+                <button class="browser_guide_btn browser_guide_cancel_btn browser_cover_yes_btn" set-lan="html:Browser.Yes">YES</button>
+                <button class="browser_guide_btn browser_guide_confirm_btn browser_cover_close_btn" set-lan="html:Browser.Cancel">CANCEL</button>
+            </div>
+        </div>
+    </div>
+    <div class="browser_cover_box browser_cover_box_loading">
+        <div class="browser_loading_box">
+            <div class="browser_cover_loading"></div>
+            <p class="browser_loading_title" set-lan="html:Browser.AlmostThere">Almost there!</p>
+            <p class="browser_loading_p" set-lan="html:Browser.JustAMinute">Just a minute, CYFS Browser is activating!</p>
+        </div>
+    </div>
+    <div class="browser_cover_box browser_cover_box_activate">
+        <div class="browser_activate_box">
+            <ul class="browser_switch_block">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li class="browser_switch_active_block browser_switch_block_last"></li>
+                <i class="browser_activate_close"></i>
+            </ul>
+            <div class="browser_activate_success"></div>
+            <p class="browser_activate_success_title" set-lan="html:Browser.ActivateSuccessfully">Activate successfully!</p>
+            <p class="browser_activate_success_p" set-lan="html:Browser.AllDone">All done, congratulation! <br/> Please manully close and reopen CYFS Browser to initialize your Digital Identity, or you can keep using the read-only mode until the next time you reboot CYFS Browser</p>
+            <button class="browser_guide_btn browser_guide_confirm_btn browser_activate_success_btn">OK</button>
+        </div>
+    </div>
+    <div class="browser_cover_box browser_cover_box_activate_false">
+        <div class="browser_activate_false_box">
+            <div class="browser_activate_false"></div>
+            <div class="browser_activate_false_close"></div>
+            <p class="browser_activate_false_title" set-lan="html:Browser.OOPS">OOPS!</p>
+            <p class="browser_activate_false_p" set-lan="html:Browser.ActivateFalseTxt"></p>
+            <button class="browser_guide_btn browser_guide_confirm_btn browser_activate_false_btn browser_guide_last_next" data-next="browser_guide_box_three" >Go back</button>
+        </div>
+    </div>
+    <div class="add_url_cover_box">
+        <div class="add_url_box">
+            <div class="overflow_h">
+                <h3 class="add_url_title" set-lan="html:Browser.AddShortcut"></h3>
+                <i class="add_url_box_close_i"></i>
+            </div>
+            <ul>
+                <li>
+                    <p class="add_url_p" set-lan="html:Browser.Name"></p>
+                    <input class="add_url_input add_url_input_name" placeholder="" />
+                </li>
+                <li>
+                    <p class="add_url_p">URL</p>
+                    <input class="add_url_input add_url_input_url" placeholder="" />
+                </li>
+            </ul>
+            <div class="add_url_btn_box">
+                <button class="add_url_btn_save" data-isAdd="true" set-lan="html:Browser.Save"></button>
+                <button class="add_url_btn_cancel" set-lan="html:Browser.Cancel"></button>
+            </div>
+        </div>
+    </div>
+    <div class="browser_guide_success_cover">
+        <div class="guide_header_box">
+            <div class="browser_cyfs_icon"></div>
+        </div>
+        <div class="guide_content_box">
+            <div class="browser_guide_acivate_success_box">
+                <i class="browser_guide_acivate_success_icon"></i>
+                <p class="browser_guide_false_title" set-lan="html:Guide.ActivateSuccess"></p>
+                <p class="browser_guide_acivate_success_p" set-lan="html:Guide.ActivateSuccessInfo"></p>
+                <div class="guide_acivate_success_box">
+                    <button class="guide_acivate_success_cancel_btn" set-lan="html:Cancel"></button>
+                    <button class="guide_acivate_success_confirm_btn" set-lan="html:Guide.Restart"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+.anonymous_box{
+    width: 100%;
+    position: absolute;
+    top: 0 ;
+    left: 0;
+    display: none;
+}
+.anonymous_box p{
+    text-align: center;
+}
+.review_anonymous_box{
+    width: 100%;
+    position: absolute;
+    bottom: 0 ;
+    left: 0;
+    padding: 21px 0;
+}
+.anonymous_title{
+    height: 32px;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 32px;
+    padding: 14px 0 4px 0;
+}
+.anonymous_subtitle_i{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+    background: url(./img/anonymous_subtitle_i.svg) no-repeat center center;
+}
+.anonymous_subtitle{
+    text-align: center;
+    height: 24px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    cursor: pointer;
+}
+.browser_tutorial{
+    display: inline-block;
+    cursor: pointer;
+    color: #475CD9;
+    height: 24px;
+    line-height: 24px;
+    vertical-align: top;
+}
+html, body{
+    width: 100%;
+}
+html, body, h2, a, input, table, thead, tr, td, tbody, p, h4, span, button, h3, ul, li{
+    padding: 0;
+    margin: 0;
+    font-family: 'Microsoft YaHei', Roboto, PingFang SC;
+    color: #333;
+}
+i{
+    font-style:normal;
+}
+input, button, select{
+    outline: none;
+    border: none;
+}
+ul,li {
+    list-style: none;
+}
+.color19B{
+    color: #19B796!important;
+}
+.color475{
+    color: #475CD9!important;
+}
+.text_decoration_none{
+    text-decoration: none;
+}
+.fontbold{
+    font-weight: bold;
+}
+.font400{
+    font-weight: 400;
+}
+.overflow_h{
+    overflow: hidden;
+}
+.contaniner-box{
+    width: 100%;
+    /* overflow: hidden; */
+}
+.header-box{
+    width: 100%;
+    height: 56px;
+    background: #fff;
+}
+.header-div{
+    max-width: 1400px;
+    height: 56px;
+    margin: 0 auto;
+}
+.header-contaniner{
+    position: relative;
+    height: 56px;
+}
+.header-mobile-none{
+    position: relative;
+}
+.content-position-box{
+    width:340px;
+    height: 224px;
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    position: absolute;
+    top: 68px;
+    z-index: 9999;
+    word-wrap: break-word;
+    white-space: normal;
+    word-break: break-all;
+}
+#people_content{
+    display: none;
+}
+#scan_content{
+    display: none;
+}
+.activate_success_icon{
+    width:  56px;
+    height: 56px;
+    margin:0 auto;
+    margin-top: 49px;
+    margin-bottom: 40px;
+    background: url(./img/activate_success_icon.svg) no-repeat left top;
+}
+#activate_success_content{
+    padding: 0;
+    display: none;
+}
+.activate_success_content_p{
+    padding: 0 28px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+}
+.browser_qr_p{
+    height: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    padding: 4px 13px 8px 14px;
+}
+.browser_qr_ptwo a{
+    height: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2873F7;
+    line-height: 16px;
+    padding-left: 14px;
+}
+.scan_box{
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    padding: 24px 0 16px 0;
+}
+.scan_box img, .scan_box_canvas_box img{
+    width: 100%;
+    height: 100%;
+}
+.scan_box_canvas_box{
+    width: 144px;
+    height: 144px;
+    position: absolute;
+    top: 81px;
+    left: 280px;
+}
+.content-position-box-icon{
+    display: block;
+    width: 56px;
+    height: 56px;
+    margin: 24px 12px 0 0;
+    float: left;
+}
+.user-content-icon{
+    background: url(./img/user-content-icon.svg) no-repeat center center;
+    border-radius: 100%;
+}
+.device-content{
+    right: 0;
+}
+.device-content-icon{
+    background: url(./img/device-content-icon.svg) no-repeat center center;
+}
+.device-set-box{
+    position: relative;
+    overflow: hidden;
+}
+.device-set{
+    display: block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 16px;
+    right: 0;
+    background: url(./img/device-set.svg) no-repeat center center;
+    background-size: 100%;
+    cursor: pointer;
+}
+.ood-content{
+    right: 0;
+}
+.ood-content-icon{
+    background: url(./img/ood-content-icon.svg) no-repeat center center;
+}
+.content-title{
+    margin-top: 37px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 26px;
+    height: 26px;
+    color: #333333;
+}
+.user-title-i{
+    width: 27px;
+    height: 27px;
+    display: block;
+    float: right;
+    background: url(./img/user-title-i.svg) no-repeat center center;
+}
+.content-subtitle{
+    font-size: 16px;
+    line-height: 22px;
+    color: #999999;
+    padding-top: 4px;
+    padding-left: 67px;
+}
+.people-name{
+    font-weight: bold;
+    cursor: pointer;
+}
+.header-name{
+    font-size: 14px;
+    display: inline-block;
+    height: 56px;
+    line-height: 56px;
+    cursor: pointer;
+}
+.header-right-box{
+    float: right;
+    position: absolute;
+    top: 0 ;
+    right: 0;
+}
+.header-right-box-i{
+    float: left;
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 12px 0 22px 24px;
+    cursor: pointer;
+}
+.browser-people-icon{
+    float: right;
+    border-radius: 100%;
+}
+.content-bottom{
+    padding: 25px 0 16px 0;
+}
+.ood_status_icon{
+    float: right;
+    border-radius: 100%;
+    cursor: default;
+}
+.browser_people_name{
+    float: right;
+    padding: 0 12px;
+    height: 56px;
+    line-height: 56px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+}
+.content-bottom .content-bottom-p{
+    line-height: 24px;
+    height: 24px;
+    padding: 4px 0;
+    font-size: 14px;
+    color: #333;
+}
+.content-bottom-p span, .route-to-tx{
+    line-height: 24px;
+    height: 24px;
+    font-size: 14px;
+    color: #333;
+}
+.content-bottom-p span:nth-child(2){
+    font-weight: 500;
+}
+.content-title-i{
+    font-size: 12px;
+    color: #999;
+    font-weight: 400;
+}
+.content-bottom-icon{
+    display: block;
+    width: 24px;
+    height: 24px;
+    float: left;
+}
+.browser-balance-svg{
+    background: url(./img/browser-balance-svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.browser-people-svg{
+    background: url(./img/browser-people-svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.browser-ood-svg{
+    background: url(./img/browser-ood-svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.browser-copy-svg{
+    background: url(./img/browser-copy-svg.svg) no-repeat center center;
+    background-size: 100%;
+    float: right;
+    cursor: pointer;
+}
+.route-to-tx{
+    color: #475CD9;
+    text-decoration: none;
+    font-weight: 500;
+}
+.content-bottom-i{
+    display: block;
+    width: 26px;
+    height: 25px;
+    background: url(./img/content-bottom-i.svg) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    right: 0;
+    bottom: 3px;
+}
+.router_intranet_strong_svg{
+    background: url(./img/router_intranet_strong_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_intranet_middle_svg{
+    background: url(./img/router_intranet_middle_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_intranet_weak_svg{
+    background: url(./img/router_intranet_weak_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_extranet_strong_svg{
+    background: url(./img/router_extranet_strong_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_extranet_middle_svg{
+    background: url(./img/router_extranet_middle_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router_extranet_weak_svg{
+    background: url(./img/router_extranet_weak_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.router-offline-svg{
+    background: url(./img/router_offline_svg.svg) no-repeat center center;
+    background-size: 100%;
+}
+.content-box{
+    width: 1400px;
+    margin: 0 auto;
+}
+.reward-position-box{
+    display: none;
+    padding: 23px 44px;
+    min-width: 240px;
+    background-color: #fff;
+    position: absolute;
+    top: 62px;
+    left: 0;
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.16);
+    border-radius:8px;
+    z-index: 999;
+}
+.reward-position-box li{
+    font-size: 14px;
+    font-weight: 400;
+    height: 24px;
+    line-height: 24px;
+    color: #333333;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.reward-position-box a:hover{
+    text-decoration: underline;
+}
+.search-content-box{
+    width:674px;
+    margin:0 auto;
+}
+.cyfs-icon{
+    width: 200px;
+    height: 100px;
+    margin: 0 auto;
+    background: url(./img/cyfs-icon.svg) no-repeat center center;
+    background-size: 100%;
+    padding: 80px 0 48px 0;
+    cursor: pointer;
+}
+.input-div{
+    width: 100%;
+    height: 44px;
+    position: relative;
+    margin-bottom: 72px ;
+}
+.search-input{
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.08);
+    border-radius: 22px;
+    padding-left: 20px;
+    z-index: 9;
+    font-size: 14px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.unsignin_input{
+    background: #F9F9F9;
+}
+.search_history_list_box{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #FFFFFF;
+    width: 100%;
+    border-radius: 16px;
+    padding-top: 44px;
+    z-index: 5;
+    overflow: hidden;
+    display: none;
+}
+.search_history_p{
+    width: 100%;
+    height: 52px;
+}
+.search_history_p:hover{
+    background: #F6F7FC;
+}
+.search_history_time_i{
+    display: block;
+    float: left;
+    width: 24px;
+    height: 24px;
+    background: url(./img/search_history_time_i.svg) no-repeat center center;
+    margin: 14px 15px 14px 21px;
+    cursor: pointer;
+}
+.search_history_a{
+    display: block;
+    float: left;
+    line-height: 52px;
+    text-decoration: none;
+    width: 550px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.search_history_p:hover .search_history_close{
+    display: block;
+}
+.search_history_close{
+    display: none;
+    float: right;
+    width: 24px;
+    height: 24px;
+    background: url(./img/search_history_close.svg) no-repeat center center;
+    margin: 19px 14px 14px 10px;
+    cursor: pointer;
+}
+.unsignin_app{
+    height: 38px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 38px;
+    text-align: center;
+    color: #00CC99;
+}
+.unsignin_app a {
+    display: inline-block;
+    width: 45px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #00CC99;
+    border-radius: 4px;
+    color: #00CC99;
+    text-decoration: none;
+    margin-right: 5px;
+}
+.app-ul{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    align-content:flex-start;
+}
+.app-ul li{
+    width: 200px;
+    cursor: pointer;
+    padding-top: 18px;
+    position:relative;
+}
+.app-ul li:hover{
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 16px 16px 16px 16px;
+}
+.app-ul li:hover .app_edit_btn{
+    display: block;
+}
+.app_edit_btn{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    background: url(./img/app_edit_btn.svg) no-repeat center center;
+    display: none;
+}
+.app_edit_btn:hover{
+    background: url(./img/app_edit_hover_btn.svg) no-repeat center center;
+}
+.app_edit_box{
+    width: 128px;
+    height: 80px;
+    background: #FFFFFF;
+    box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.16);
+    border-radius: 8px 8px 8px 8px;
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    overflow: hidden;
+    display: none;
+}
+.app_edit_box p{
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    font-weight: 400;
+    font-size: 18px;
+}
+.app_edit_box p:hover{
+    background: #F6F7FC;
+}
+.app-content{
+    width: 72px;
+    height: 72px;
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.app-content img{
+    width: 56px;
+    height: 56px;
+    padding: 8px;
+}
+.last-child-li{
+    position: relative;
+}
+.app-ul .last-child-li img{
+    width: 24px;
+    height: 24px;
+    padding: 24px;
+    border-radius: 0;
+}
+.app-name{
+    font-weight: 400;
+    line-height: 22px;
+    height: 22px;
+    color: #707070;
+    font-size: 16px;
+    padding: 16px 0;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+.browser-search-svg{
+    display: block;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 2px;
+    cursor: pointer;
+    right: 8px;
+    background: url(./img/browser-search-svg.svg) no-repeat center center;
+    background-size: 100%;
+    z-index: 10;
+}
+.app-content .fixed-app-img{
+    width:56px;
+    height:56px;
+    padding:8px;
+}
+.add_url_span{
+    height: 30px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 30px;
+    color: #333333;
+    padding: 0 15px 0 24px;
+    display: inline-block;
+    float: left;
+}
+.add_url_content{
+    padding: 50px 0 43px 0 ;
+    height: 30px;
+}
+.add_url_button{
+    width: 146px;
+    height: 32px;
+    display: block;
+    margin: 0 auto;
+    background: #00CC99;
+    border-radius: 4px;
+    color: #fff;
+}
+#toast{
+    font-size: 14px;
+    line-height: 1;
+    padding: 1px;
+    border-radius: 3px;
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    z-index: 9999;
+}
+.success_toast{
+    background: #fff;
+    border: 1px solid #009e73;
+    color: #009e73;
+}
+.warn_toast{
+    background: #fff;
+    border: 1px solid #f73131;
+    color: #f73131;
+}
+.primary_toast{
+    background: #fff;
+    border: 1px solid #245BC8;
+    color: #245BC8;
+}
+.hide{
+    display: none;
+}
+.fadeOut{
+    animation: fadeOut .5s;
+}
+.fadeIn{
+    animation:fadeIn .5s;
+}
+.browser_cover_box{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(51, 51, 51, 0.39);
+    display: none;
+    z-index: 99;
+}
+.browser_confirm_box{
+    width: 430px;
+    height: 262px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    position: absolute;
+    top: 263px;
+    left: 50%;
+    margin-left: -215px;
+    padding-top: 13px;
+}
+.browser_confirm_p{
+    padding: 43px 32px;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 30px;
+    -webkit-text-stroke: 1 rgba(0, 0, 0, 0);
+    text-stroke: 1 rgba(0, 0, 0, 0);
+}
+.browser_confirm_btn_box{
+    width: 248px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0 20px 20px 20px;
+}
+.browser_confirm_btn_box .browser_guide_btn{
+    margin: 0;
+}
+.browser_guide_btn_box .browser_guide_first_btn{
+    float: left;
+    margin: 0;
+}
+.browser_confirm_btn_box .browser_guide_btn:nth-child(1){
+    margin-right: 40px;
+    float: left;
+}
+.browser_guide_box{
+    width: 704px;
+    height: 520px;
+    background: #fff;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    position: absolute;
+    top: 170px;
+    left: 50%;
+    margin-left: -352px;
+    display: none;
+}
+.browser_guide_box_bg{
+    width: 100%;
+    height: 277px;
+}
+.browser_guide_box_welcome .browser_guide_box_bg{
+    background: url(./img/browser_guide_box_bg_welcome.svg) no-repeat center center;
+    background-size: 100%;
+}
+.browser_loading_box{
+    width: 569px;
+    height: 302px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    position: absolute;
+    top: 263px;
+    left: 50%;
+    margin-left: -285px;
+}
+.browser_activate_box{
+    width: 704px;
+    height: 442px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    position: absolute;
+    top: 263px;
+    left: 50%;
+    margin-left: -356px;
+}
+.browser_activate_false_box{
+    width: 596px;
+    height: 390px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    position: absolute;
+    top: 235px;
+    left: 50%;
+    margin-left: -298px;
+}
+.browser_activate_box .browser_switch_block{
+    padding: 19px 0 44px 0;
+    position: relative;
+}
+.browser_activate_close{
+    display: block;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 14px;
+    right: -280px;
+    background: url(./img/browser_activate_close.svg) no-repeat center center;
+    background-size: 100%;
+    cursor: pointer;
+}
+.browser_activate_false{
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background: url(./img/browser_activate_false.svg) no-repeat center center;
+    background-size: 100%;
+    margin-top: 71px;
+    margin-bottom: 35px;
+}
+.browser_activate_false_close{
+    width: 32px;
+    height: 32px;
+    background: url(./img/browser_activate_false_close.svg) no-repeat center center;
+    background-size: 100%;
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    cursor: pointer;
+}
+.browser_activate_false_title{
+    height: 24px;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 24px;
+    padding-left: 250px;
+}
+.browser_activate_false_p{
+    height: 24px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    padding: 29px 33px 34px 33px;
+    text-align: center;
+}
+.browser_activate_success{
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background: url(./img/browser_activate_success.svg) no-repeat center center;
+    background-size: 100%;
+}
+.browser_activate_success_title{
+    height: 40px;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 40px;
+    text-align: center;
+    padding-top: 35px;
+}
+.browser_activate_success_p{
+    width: 638px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    padding: 29px 33px 34px 33px;
+}
+.browser_activate_box .browser_activate_success_btn{
+    margin-left: 300px;
+    width: 104px;
+    height: 40px;
+}
+.browser_cover_box_activate_false .browser_activate_false_btn{
+    margin-left: 246px;
+    width: 104px;
+    height: 40px;
+}
+.browser_cover_loading{
+    width: 80px;
+    height: 80px;
+    background: url(./img/browser_cover_loading.gif) no-repeat center center;
+    background-size: 100%;
+    margin: 0 auto;
+    margin-top: 58px;
+}
+.browser_loading_title{
+    height: 40px;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 40px;
+    padding: 35px 0 5px 0;
+    text-align: center;
+}
+.browser_loading_p{
+    text-align: center;
+    height: 19px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #333333;
+}
+.browser_guide_welcome_introduce{
+    padding: 35px 48px 0 48px;
+}
+.browser_guide_box_introduce{
+    padding: 0 48px 0 48px;
+}
+.browser_guide_box_title{
+    height: 35px;
+    font-size: 30px;
+    font-family: 'Microsoft YaHei', Roboto;
+    font-weight: bold;
+    line-height: 35px;
+    color: #333333;
+    padding: 0 0 20px 0;
+}
+.browser_guide_box_introduce_p{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #333333;
+    -webkit-text-stroke: 1 rgba(0, 0, 0, 0);
+    text-stroke: 1 rgba(0, 0, 0, 0);
+}
+.browser_guide_cancel_btn{
+    background: rgb(213, 213, 213);
+}
+.browser_guide_confirm_btn{
+    background: linear-gradient(270deg, #12DBBB 0%, #00BFA8 100%);
+    box-shadow: 0px 6px 12px rgba(29, 191, 162, 0.32);
+}
+.browser_guide_btn{
+    width: 104px;
+    height: 40px;
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 40px;
+    color: #FFFFFF;
+    margin-left: 40px;
+    cursor: pointer;
+}
+.browser_guide_btn_box{
+    padding: 34px 48px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 608px;
+}
+.browser_guide_btn_box button{
+    float: right;
+}
+.browser_guide_box_one{
+    height: 563px;
+}
+.browser_guide_box_one .browser_guide_box_bg{
+    background: url(./img/browser_guide_box_one.svg) no-repeat center center;
+    background-size: 100%;
+}
+.browser_guide_step_title{
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 34px;
+    height: 34px;
+    color: #1DBFA2;
+    margin-bottom: 20px;
+}
+.browser_guide_step_title span{
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    background: #1DBFA2;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 300;
+    font-size: 30px;
+    text-align: center;
+    margin-left: 15px;
+}
+.browser_switch_block{
+    padding: 23px 0;
+    height: 8px;
+    width: 105px;
+    margin: 0 auto;
+}
+.browser_switch_block li{
+    float: left;
+    width: 8px;
+    height: 8px;
+    background: #D5D5D5;
+    border-radius: 50%;
+    margin-right: 16px;
+}
+.browser_switch_block .browser_switch_block_last{
+    margin: 0px;
+}
+.browser_switch_block .browser_switch_active_block{
+    width: 32px;
+    height: 8px;
+    background: #1DBFA2;
+    border-radius: 8px;
+}
+.browser_guide_box_two {
+    height: 585px;
+}
+.browser_guide_box_two .browser_guide_box_bg{
+    background: url(./img/browser_guide_box_two.svg) no-repeat center center;
+    background-size: 100%;
+}
+.browser_guide_box_three {
+    height: 560px;
+}
+.browser_guide_box_three .browser_guide_btn_box{
+    padding-top: 56px;
+}
+.browser_guide_box_three .browser_guide_box_bg{
+    position: relative;
+    background: url(./img/browser_guide_box_three.svg) no-repeat center center;
+    background-size: 100%;
+}
+.browser_guide_success_cover{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0 ;
+    left: 0;
+    background: #fff;
+    display: none;
+    z-index: 12;
+}
+.guide_header_box{
+    width: 1180px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.browser_guide_acivate_success_icon{
+    display: block;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    margin-top: 236px;
+    margin-bottom: 61px;
+    background: url(./img/browser_guide_acivate_success_icon.svg) no-repeat center center;
+}
+.browser_guide_false_title{
+    text-align: center;
+    height: 19px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    line-height: 19px;
+}
+.browser_guide_acivate_success_p{
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    line-height: 19px;
+    margin: 19px 0 95px 0;
+}
+.guide_acivate_success_box{
+    width: 540px;
+    height: 40px;
+    margin: 0 auto;
+}
+.guide_acivate_success_box button{
+    width: 104px;
+    height: 40px;
+    border-radius: 4px 4px 4px 4px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+}
+.guide_acivate_success_confirm_btn{
+    background: linear-gradient(270deg, #0AD7B6 0%, #00BFA8 100%);
+    float: right;
+    color: #FFFFFF;
+}
+.guide_acivate_success_cancel_btn{
+    border: 1px solid #D5D5D5;
+    background: #fff;
+    float: left;
+    color: #0AD7B6;
+}
+.guide_content_box{
+    width: 933px;
+    margin: 0 auto;
+}
+.browser_cyfs_icon{
+    width: 100px;
+    height: 38px;
+    float: left;
+    background: url(./img/browser_cyfs_icon.svg) no-repeat center center;
+    margin: 17px 0 24px 0;
+}
+.add_url_cover_box{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0 ;
+    left: 0;
+    background: rgba(51, 51, 51, 0.4);
+    display: none;
+    z-index: 12;
+}
+.add_url_box{
+    width: 513px;
+    height: 288px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px 1px rgba(0, 0, 0, 0.08);
+    border-radius: 16px 16px 16px 16px;
+    position: absolute;
+    top: 316px;
+    left: 50%;
+    margin-left: -257px;
+}
+.add_url_title{
+    height: 22px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 22px;
+    float: left;
+    padding: 24px 0 8px 19px;
+}
+.add_url_input{
+    width: 473px;
+    height: 32px;
+    background: #F6F7FC;
+    border-radius: 4px 4px 4px 4px;
+    margin-left: 19px;
+    outline: none;
+    padding-left: 20px;
+}
+.add_url_p{
+    height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 20px 0 4px 19px;
+}
+.add_url_box_close_i{
+    display: block;
+    float: right;
+    width: 32px;
+    height: 32px;
+    margin: 11px 21px 0 0;
+    cursor: pointer;
+    background: url(./img/add_url_box_close_i.svg) no-repeat center center;
+}
+.add_url_btn_box{
+    float: right;
+    padding: 32px 21px 0 0;
+    overflow: hidden;
+}
+.add_url_btn_box button{
+    float: right;
+    width: 88px;
+    height: 33px;
+    margin-left: 8px;
+    font-weight: 400;
+    line-height: 33px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.add_url_btn_cancel{
+    border: 1px solid rgba(8, 203, 177, 0.6);
+    color: #07CAB0;
+    background: #fff;
+}
+.add_url_btn_save{
+    background: linear-gradient(135deg, #00BFA8 0%, #12DBBB 100%);
+    color: #fff;
+}
+</style>
+</html>

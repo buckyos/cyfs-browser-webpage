@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #9e6df3;
+      }
+
+      .cls-3 {
+        fill: #c9a0ff;
+      }
+
+      .cls-4 {
+        fill: none;
+      }
+
+      .cls-5 {
+        fill: #61a5fe;
+      }
+    </style>
+  </defs>
+  <g id="组_698" data-name="组 698" transform="translate(-286 -130)">
+    <rect id="矩形_895" data-name="矩形 895" class="cls-1" width="24" height="24" transform="translate(286 130)"/>
+    <g id="icon_24pt_all_DOC" data-name="icon/24pt/all/DOC" transform="translate(292 134)">
+      <path id="路径_175" data-name="路径 175" class="cls-2" d="M1,16H11a1,1,0,0,0,1-1V4.1L7.438,0H1A1,1,0,0,0,0,1V15A1,1,0,0,0,1,16Z"/>
+      <path id="路径_174" data-name="路径 174" class="cls-3" d="M.756,4.1h3.78L2.268,2.052,0,0V3.42A.723.723,0,0,0,.756,4.1Z" transform="translate(7.464)"/>
+      <line id="直线_11" data-name="直线 11" class="cls-4" x2="7" transform="translate(2.5 11.5)"/>
+      <line id="直线_12" data-name="直线 12" class="cls-4" x2="7" transform="translate(2.5 8.5)"/>
+      <line id="直线_13" data-name="直线 13" class="cls-4" x2="2" transform="translate(2.5 5.5)"/>
+    </g>
+    <path id="路径_456" data-name="路径 456" class="cls-5" d="M559.259,323.36" transform="translate(-258.058 -181.777)"/>
+    <g id="组_537" data-name="组 537" transform="translate(295 141.104)">
+      <path id="路径_435" data-name="路径 435" class="cls-6" d="M543.434,402.527a.157.157,0,0,0-.157.158V406.9a.157.157,0,0,0,.157.158h5.019a.158.158,0,0,0,.157-.158h0v-4.212a.158.158,0,0,0-.157-.158h-5.019Zm0-.526h5.019a.682.682,0,0,1,.68.685V406.9a.683.683,0,0,1-.68.685h-5.019a.682.682,0,0,1-.68-.685h0v-4.212A.682.682,0,0,1,543.434,402Z" transform="translate(-542.754 -402)"/>
+      <path id="路径_436" data-name="路径 436" class="cls-6" d="M551.116,406.871a.361.361,0,0,1-.161.541l-1.75.883a.522.522,0,0,1-.644-.136.348.348,0,0,1-.067-.2v-1.766a.437.437,0,0,1,.47-.394.539.539,0,0,1,.241.056l1.75.882a.438.438,0,0,1,.161.135Zm-2.049-.527v1.46l1.446-.73-1.446-.73Z" transform="translate(-546.527 -404.283)"/>
+    </g>
+  </g>
+</svg>

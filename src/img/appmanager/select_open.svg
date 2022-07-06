@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g id="展开" transform="translate(-9 -12)">
+    <rect id="矩形_449" data-name="矩形 449" class="cls-1" width="16" height="16" transform="translate(9 12)"/>
+    <path id="多边形_2" data-name="多边形 2" class="cls-2" d="M3,0,6,5H0Z" transform="translate(20 17) rotate(90)"/>
+  </g>
+</svg>

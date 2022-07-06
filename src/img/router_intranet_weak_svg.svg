@@ -1,0 +1,57 @@
+<svg id="组件_107_4" data-name="组件 107 – 4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #ccc;
+      }
+
+      .cls-3, .cls-5, .cls-6, .cls-8 {
+        fill: none;
+      }
+
+      .cls-3, .cls-6 {
+        stroke: #6a00b6;
+      }
+
+      .cls-3, .cls-5, .cls-6 {
+        stroke-linecap: round;
+      }
+
+      .cls-3 {
+        stroke-linejoin: round;
+      }
+
+      .cls-4 {
+        fill: #6a00b6;
+      }
+
+      .cls-5 {
+        stroke: #ccc;
+      }
+
+      .cls-7 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="底板" class="cls-1" transform="translate(5)">
+    <path id="点击范围" class="cls-2" d="M0,0H24V24H0Z" transform="translate(-5)"/>
+    <rect id="视觉范围" class="cls-2" width="16" height="16" transform="translate(-1 4)"/>
+  </g>
+  <g id="矩形_402" data-name="矩形 402" class="cls-3" transform="translate(4 14)">
+    <rect class="cls-7" width="16" height="5" rx="1"/>
+    <rect class="cls-8" x="0.5" y="0.5" width="15" height="4" rx="0.5"/>
+  </g>
+  <rect id="矩形_3" data-name="矩形 3" class="cls-2" width="1" height="1" rx="0.5" transform="translate(17 16) rotate(90)"/>
+  <rect id="矩形_4" data-name="矩形 4" class="cls-2" width="1" height="1" rx="0.5" transform="translate(14 16) rotate(90)"/>
+  <rect id="矩形_289" data-name="矩形 289" class="cls-4" width="1" height="1" rx="0.5" transform="translate(11 16) rotate(90)"/>
+  <rect id="矩形_422" data-name="矩形 422" class="cls-4" width="1" height="1" rx="0.5" transform="translate(8 16) rotate(90)"/>
+  <path id="路径_221" data-name="路径 221" class="cls-5" d="M9,9A4.5,4.5,0,0,0,0,9" transform="translate(7.5 3)"/>
+  <path id="路径_220" data-name="路径 220" class="cls-5" d="M15,15A7.5,7.5,0,0,0,0,15" transform="translate(4.5 -3)"/>
+  <path id="路径_222" data-name="路径 222" class="cls-6" d="M3,3A1.5,1.5,0,0,0,0,3" transform="translate(10.5 9)"/>
+  <rect id="矩形_425" data-name="矩形 425" class="cls-4" width="2" height="1" rx="0.5" transform="translate(12.5 13) rotate(90)"/>
+</svg>

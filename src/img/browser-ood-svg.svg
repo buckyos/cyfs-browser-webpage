@@ -1,0 +1,71 @@
+<svg id="组件_45_3" data-name="组件 45 – 3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-6, .cls-7, .cls-8 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-3 {
+        opacity: 0;
+      }
+
+      .cls-4 {
+        fill: #f9e2e2;
+      }
+
+      .cls-5 {
+        fill: #ffbcbc;
+      }
+
+      .cls-6, .cls-8 {
+        stroke-linecap: round;
+      }
+
+      .cls-6, .cls-7 {
+        stroke-linejoin: round;
+      }
+
+      .cls-7, .cls-8 {
+        stroke: #1c201e;
+      }
+
+      .cls-7 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-10, .cls-9 {
+        stroke: none;
+      }
+
+      .cls-10 {
+        fill: #1c201e;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#19b796"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <circle id="椭圆_171" data-name="椭圆 171" class="cls-1" cx="12" cy="12" r="12"/>
+  <circle id="椭圆_212" data-name="椭圆 212" class="cls-2" cx="5" cy="5" r="5" transform="translate(12 13)"/>
+  <g id="组_83" data-name="组 83" class="cls-3" transform="translate(-8 -8)">
+    <path id="路径_1" data-name="路径 1" class="cls-4" d="M0,0H24V24H0Z" transform="translate(8 8)"/>
+    <rect id="矩形_2" data-name="矩形 2" class="cls-5" width="16" height="16" transform="translate(12 12)"/>
+  </g>
+  <g id="多边形_4" data-name="多边形 4" class="cls-6" transform="translate(5 20) rotate(-90)">
+    <path class="cls-9" d="M11.42,0a1,1,0,0,1,.868.5l3.429,6a1,1,0,0,1,0,.992l-3.429,6a1,1,0,0,1-.868.5H4.58a1,1,0,0,1-.868-.5L.284,7.5a1,1,0,0,1,0-.992L3.712.5A1,1,0,0,1,4.58,0Z"/>
+    <path class="cls-10" d="M 4.580320358276367 0.9999990463256836 L 1.151749610900879 6.999999523162842 L 4.580320358276367 13 L 11.41967964172363 13 L 14.84825038909912 6.999999523162842 L 11.41967964172363 0.9999990463256836 L 4.580320358276367 0.9999990463256836 M 4.580320358276367 -9.5367431640625e-07 L 11.41967964172363 -9.5367431640625e-07 C 11.77853012084961 -9.5367431640625e-07 12.1098804473877 0.1922893524169922 12.28791999816895 0.5038595199584961 L 15.71648979187012 6.503859519958496 C 15.89216995239258 6.811289310455322 15.89216995239258 7.188709735870361 15.71648979187012 7.496139526367188 L 12.28791999816895 13.49613952636719 C 12.1098804473877 13.80770969390869 11.77853012084961 14 11.41967964172363 14 L 4.580320358276367 14 C 4.221460342407227 14 3.890119552612305 13.80770969390869 3.712080001831055 13.49613952636719 L 0.2835102081298828 7.496139526367188 C 0.1078300476074219 7.188709735870361 0.1078300476074219 6.811289310455322 0.2835102081298828 6.503859519958496 L 3.712080001831055 0.5038595199584961 C 3.890119552612305 0.1922893524169922 4.221469879150391 -9.5367431640625e-07 4.580320358276367 -9.5367431640625e-07 Z"/>
+  </g>
+  <g id="组_85" data-name="组 85" transform="translate(0.5 0.316)">
+    <path id="路径_311" data-name="路径 311" class="cls-7" d="M3031.791,1416.433a1.871,1.871,0,1,1-.832,1.556" transform="translate(-3020.718 -1406.176)"/>
+    <path id="路径_312" data-name="路径 312" class="cls-7" d="M3094.994,1416.118a1.871,1.871,0,1,1,0,3.741" transform="translate(-3080.365 -1406.176)"/>
+    <path id="路径_313" data-name="路径 313" class="cls-7" d="M2979.27,1419.545a1.871,1.871,0,1,1,.832-1.556" transform="translate(-2969.861 -1406.176)"/>
+  </g>
+  <line id="直线_13" data-name="直线 13" class="cls-8" y2="3" transform="translate(12 16)"/>
+  <path id="路径_315" data-name="路径 315" class="cls-8" d="M0,1.634V0" transform="translate(7.165 9.25) rotate(120)"/>
+  <path id="路径_316" data-name="路径 316" class="cls-8" d="M0,0V1.634" transform="translate(18.415 8.433) rotate(60)"/>
+</svg>

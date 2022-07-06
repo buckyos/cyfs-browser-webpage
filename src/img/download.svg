@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="69" height="69" viewBox="0 0 69 69">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #e1e2e2;
+        stroke-width: 6px;
+        mix-blend-mode: multiply;
+        isolation: isolate;
+      }
+
+      .cls-2, .cls-3 {
+        stroke: #1dbfa2;
+        stroke-linecap: round;
+        stroke-width: 4px;
+      }
+
+      .cls-3 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <g id="组_1311" data-name="组 1311" transform="translate(-1166 -971)">
+    <g id="组_1298" data-name="组 1298" transform="translate(1169 974)">
+      <path id="路径_155" data-name="路径 155" class="cls-1" d="M31.5,0A31.5,31.5,0,1,1,0,31.5,31.5,31.5,0,0,1,31.5,0Z"/>
+    </g>
+    <line id="直线_39" data-name="直线 39" class="cls-2" x2="28" transform="translate(1214.5 1020.386) rotate(180)"/>
+    <line id="直线_40" data-name="直线 40" class="cls-2" y2="22.012" transform="translate(1200.5 1011.012) rotate(180)"/>
+    <path id="路径_665" data-name="路径 665" class="cls-3" d="M8850.5,898.581V880.25h18.331" transform="translate(6836.355 7892.604) rotate(-135)"/>
+  </g>
+</svg>

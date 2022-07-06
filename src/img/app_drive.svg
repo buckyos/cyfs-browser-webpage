@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56" height="56" viewBox="0 0 56 56">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #99d6ff;
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-5 {
+        fill: none;
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-7 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-8 {
+        opacity: 0;
+      }
+
+      .cls-9 {
+        fill: #0c9;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#3249d1"/>
+      <stop offset="1" stop-color="#59a1ff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.5" y1="0.293" x2="0.228" y2="0.73" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#99daff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="0.259" y1="0.5" x2="1.126" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0.052" stop-color="#fff"/>
+      <stop offset="0.163" stop-color="#fafdff"/>
+      <stop offset="0.919" stop-color="#99daff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" x1="0.835" y1="0.614" x2="0.5" y2="0" xlink:href="#linear-gradient-2"/>
+  </defs>
+  <g id="组_101" data-name="组 101" transform="translate(-7246.745 -834.286)">
+    <circle id="椭圆_72" data-name="椭圆 72" class="cls-1" cx="28" cy="28" r="28" transform="translate(7246.745 834.286)"/>
+    <g id="组_843" data-name="组 843" transform="translate(7255.87 842.25)">
+      <path id="路径_577" data-name="路径 577" class="cls-2" d="M7311.137,864.712a4.627,4.627,0,0,1,4.628,4.628v14.076l-4.628,2.672-4.626-2.672V869.34a4.627,4.627,0,0,1,4.626-4.628m0-4.628a9.267,9.267,0,0,0-9.255,9.256v16.748l2.314,1.336,4.627,2.672,2.313,1.336,2.315-1.336,4.629-2.672,2.313-1.336V869.34a9.267,9.267,0,0,0-9.257-9.256Z" transform="translate(-7292.002 -860.084)"/>
+      <path id="路径_578" data-name="路径 578" class="cls-2" d="M7291.719,895l4.629,2.673v5.344l-2.315,1.336-2.313,1.337-7.562,4.366a4.628,4.628,0,1,1-4.628-8.016l7.563-4.365,2.314-1.336,2.313-1.337m0-5.344-2.312,1.336-2.314,1.336-2.314,1.336-7.562,4.366a9.261,9.261,0,0,0-3.389,12.644,9.257,9.257,0,0,0,12.646,3.388l7.56-4.366,2.315-1.336,2.313-1.336,2.316-1.336V895l-2.316-1.336-4.629-2.672-2.313-1.336Z" transform="translate(-7272.584 -879.682)"/>
+      <path id="路径_579" data-name="路径 579" class="cls-2" d="M7311.137,895l2.315,1.337,2.313,1.336,7.563,4.365a4.628,4.628,0,1,1-4.627,8.016l-7.564-4.366-2.313-1.337-2.313-1.336V897.67l4.626-2.673m0-5.344-2.313,1.336-4.627,2.672L7301.882,895v10.688l2.314,1.336,2.314,1.336,2.313,1.336,7.562,4.366a9.256,9.256,0,0,0,9.257-16.032l-7.562-4.366-2.316-1.336-2.313-1.336-2.315-1.336Z" transform="translate(-7292.002 -879.682)"/>
+      <path id="路径_580" data-name="路径 580" class="cls-3" d="M7320.233,900.25l-4.628-2.672v5.344Z" transform="translate(-7301.097 -884.934)"/>
+      <path id="路径_581" data-name="路径 581" class="cls-3" d="M7320.233,931.943l-4.628-2.672v5.344Z" transform="translate(-7301.097 -905.94)"/>
+      <path id="路径_582" data-name="路径 582" class="cls-3" d="M7347.679,916.1l-4.625-2.672v5.344Z" transform="translate(-7319.29 -895.437)"/>
+      <path id="路径_583" data-name="路径 583" class="cls-4" d="M7347.666,887.256v6.169l-4.657-2.689.006-2.953Z" transform="translate(-7319.26 -878.092)"/>
+      <path id="路径_584" data-name="路径 584" class="cls-5" d="M7315.6,908.173v5.344l4.628,2.672,4.627-2.672v-5.344l-4.627-2.672Z" transform="translate(-7301.097 -890.185)"/>
+      <path id="路径_585" data-name="路径 585" class="cls-6" d="M7286.034,908.586l5.342-3.085v5.379l-2.56,1.469Z" transform="translate(-7281.497 -890.185)"/>
+      <path id="路径_586" data-name="路径 586" class="cls-7" d="M7334.7,950.886l-5.368-3.04,4.633-2.728,2.566,1.462Z" transform="translate(-7310.193 -916.443)"/>
+    </g>
+    <g id="组_851" data-name="组 851" class="cls-8" transform="translate(7284.606 834.286)">
+      <circle id="椭圆_57" data-name="椭圆 57" class="cls-9" cx="9" cy="9" r="9" transform="translate(0.139)"/>
+    </g>
+  </g>
+</svg>

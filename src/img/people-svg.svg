@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #d5d5d5;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="用户图标" transform="translate(-865 -522)">
+    <circle id="椭圆_76" data-name="椭圆 76" class="cls-1" cx="14" cy="14" r="14" transform="translate(865 522)"/>
+    <path id="矩形_437" data-name="矩形 437" class="cls-2" d="M5,0h6a5,5,0,0,1,5,5V9a0,0,0,0,1,0,0H0A0,0,0,0,1,0,9V5A5,5,0,0,1,5,0Z" transform="translate(871 537)"/>
+    <circle id="椭圆_48" data-name="椭圆 48" class="cls-2" cx="5" cy="5" r="5" transform="translate(874 526)"/>
+  </g>
+</svg>

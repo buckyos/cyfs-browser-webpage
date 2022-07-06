@@ -1,0 +1,171 @@
+<html>
+<head>
+    <title>设备信息</title>
+    <script src="../cyfs_sdk/cyfs.js"></script>
+    <script src="../js/lib/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+
+<body style="background: #F2F3F5;">
+    <div class="main_box  info_box">
+        <h2 class="header_titile"><i class="header_titile_i">友好名称： </i><span id="title_box"></span></h2>
+        <div class="paper_clip_content_box">
+            <div class="paper_clip_box friendly_name_centent_box">
+                <i class="paper_clip"></i>
+                <div class="friendly_name_text_box">
+                    <p class="overflow_h">
+                        <span class="float_l font_weight_bold">DeviceId: <span id="device_id"></span></span>
+                        <span class="float_r color_21 font_weight_bold">已上链</span>
+                    </p>
+                    <p class="overflow_h" style="border: none;">
+                        <span class="float_l font_weight_bold">设备余额：<span id="balance_device"></span> ECC </span>
+                    </p>
+                    <p class="overflow_h">
+                        <a class="float_l view_transfer_records" >查看转账记录</a>
+                    </p>
+                    <p class="overflow_h">
+                        <span class="float_l"><span class="font_weight_bold">ZoneId:</span> <i class="color_0c9" id="zone_id"></i></span>
+                        <span class="float_r color_21 font_weight_bold" id="id_ood_online"></span>
+                    </p>
+                    <p class="overflow_h" style="border: none;">
+                        <span class="float_l"><span class="font_weight_bold">Owner:</span> <i class="color_0c9" id="owner_id"></i></span>
+                    </p>
+                    <p class="overflow_h" style="padding-bottom: 0.4rem;">
+                        <span class="float_l color_999">区域：<span id="area_code">其它</span></span>
+                    </p>
+                </div>
+                <div class="access_information_box">
+                    <h3 class="box_title">接入信息</h3>
+                    <div class="access_information_content_box">
+                        <div id="intranet_show_box">
+                            <div class="item_flex_grow_1">
+                                <p class="access_information_flexbox_p font_weight_bold">IPv4 NAT接入</p>
+                            </div>
+                            <div class="access_information_flexbox" id="intranet_show">
+                                <div class="item_flex_grow_1">
+                                    <div class="access_information_computer"></div>
+                                </div>
+                                <div class="item_flex_grow_1">
+                                    <div class="access_information_arrow"></div>
+                                </div>
+                                <div class="item_flex_grow_1">
+                                    <div class="access_information_router"></div>
+                                </div>
+                                <div class="item_flex_grow_1"></div>
+                                <div class="item_flex_grow_1"></div>
+                            </div>
+                            <div class="access_information_flexbox" id="intranet_show">
+                                <div class="item_flex_grow_1">
+                                    <div class="access_information_arrow"></div>
+                                </div>
+                                <div class="item_flex_grow_1">
+                                    <div class="access_information_internet"></div>
+                                </div>
+                                <div class="item_flex_grow_1"></div>
+                                <div class="item_flex_grow_1"></div>
+                                <div class="item_flex_grow_1"></div>
+                            </div>
+                        </div>
+                        <div id="internet_show_box">
+                            <div class="item_flex_grow_1">
+                                <p class="access_information_flexbox_p font_weight_bold">IPv6 公网接入&nbsp; </p>
+                            </div>
+                            <div class="access_information_flexbox" id="internet_show">
+                                <div class="item_flex_grow_1">
+                                    <div class="access_information_computer"></div>
+                                </div>
+                                <div class="item_flex_grow_1">
+                                    <div class="access_information_arrow"></div>
+                                </div>
+                                <div class="item_flex_grow_1">
+                                    <div class="access_information_internet"></div>
+                                </div>
+                                <div class="item_flex_grow_1  visibility_hidden">
+                                    <div class="access_information_arrow"></div>
+                                </div>
+                                <div class="item_flex_grow_1 visibility_hidden">
+                                    <div class="item_flex_grow_1">
+                                        <div class="access_information_router"></div>
+                                    </div>
+                                </div>
+                                <div class="item_flex_grow_1"></div>
+                            </div>
+                        </div>
+                        <div class="access_information_flexbox">
+                            <div class="item_flex_grow_1 access_information_address_p">
+                                <p>内网地址：<span id="intranet_address"></span></p>
+                                <p>外网地址：<span id="internet_address"></span></p>
+                            </div>
+                            <div class="item_flex_grow_1 access_information_address_p">
+                                <p>SN:<span class="color_0c9" id="sn_info">xxxxxxxxxx</span></p>
+                                <p>PN:<span class="color_0c9">未设置</span></p>
+                            </div>
+                            <div class="item_flex_grow_1 access_information_address_p access_information_isconnect_p color_0c9 text_r">
+                                <p id="sn_info_connnet">未连接</p>
+                                <p>未连接</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="device_status_box">
+                    <h3 class="box_title">设备状态</h3>
+                    <div class="device_status_flexbox">
+                        <div class="circular_graph ">
+                            <div class="circle_div margin_auto">
+                                <svg xmlns="http://www.w3.org/200/svg" height="1rem" width="1rem">
+                                    <circle cx="0.5rem" cy="0.5rem" r="0.46rem" fill="none" stroke="#E1E2E2" stroke-width="0.08rem" stroke-linecap="round"/>
+                                    <circle class="circle_download" id="cpu_progress" cx="0.5rem" cy="0.5rem" r="0.46rem" fill="none" stroke="#00CC99" stroke-width="0.08rem" stroke-dasharray="0,1000"/>
+                                </svg>
+                                <p class="circle_p"><span class="circle_span" id="cpu_progress_span">读取中</span></p>
+                            </div>
+                            <p class="circular_graph_p margin_auto">CPU</p>
+                        </div> 
+                        <div class="circular_graph ">
+                            <div class="circle_div margin_auto">
+                                <svg xmlns="http://www.w3.org/200/svg"  height="1rem" width="1rem">
+                                    <circle cx="0.5rem" cy="0.5rem" r="0.46rem" fill="none" stroke="#E1E2E2" stroke-width="0.08rem" stroke-linecap="round"/>
+                                    <circle class="circle_download" id="memory_progress" cx="0.5rem" cy="0.5rem" r="0.46rem" fill="none" stroke="#00CC99" stroke-width="0.08rem" stroke-dasharray="0,1000"/>
+                                </svg>
+                                <p class="circle_p"><span class="circle_span" id="memory_progress_span">读取中</span></p>
+                            </div>
+                            <p class="circular_graph_p margin_auto"  id="memory_progress_p">内存0M/0M</p>
+                        </div> 
+                    </div>
+                    <div class="device_status_flexbox">
+                        <div class="circular_graph item_flex_grow_1">
+                            <div class="circle_div margin_auto">
+                                <svg xmlns="http://www.w3.org/200/svg"  height="1rem" width="1rem">
+                                    <circle cx="0.5rem" cy="0.5rem" r="0.46rem" fill="none" stroke="#E1E2E2" stroke-width="0.08rem"  stroke-linecap="round"/>
+                                    <circle class="circle_download" id="upload_progress" cx="0.5rem" cy="0.5rem" r="0.46rem"  fill="none" stroke="#00CC99" stroke-width="8" stroke-dasharray="0,1000"/>
+                                </svg>
+                                <i class="upload_i"></i>
+                            </div>
+                            <p class="circular_graph_p margin_auto" id="upload_progress_p">上传0KB/S</p>
+                        </div> 
+                        <div class="circular_graph item_flex_grow_1">
+                            <div class="circle_div margin_auto">
+                                <svg xmlns="http://www.w3.org/200/svg"  height="1rem" width="1rem">
+                                    <circle cx="0.5rem" cy="0.5rem" r="0.46rem" fill="none" stroke="#E1E2E2" stroke-width="0.08rem"  stroke-linecap="round"/>
+                                    <circle class="circle_download" id="J_demo2" cx="0.5rem" cy="0.5rem" r="0.46rem"  fill="none" stroke="#00CC99" stroke-width="8" stroke-dasharray="0,1000"/>
+                                </svg>
+                                <i class="download_i"></i>
+                            </div>
+                            <p class="circular_graph_p margin_auto" id="download_progress_p">下载0KB/S</p>
+                        </div>
+                    </div>
+                    <div class="device_status_flexbox">
+                        <div class=" device_status_last_item">
+                            <p>Named Object: <span id="named_object">0</span></p>
+                            <p>Chunk : <span id="chunk"> 0(0MB)</span></p>
+                        </div>
+                        <div class=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="unbind_btn_box">
+            <button class="unbind_btn" id="unbind" >解除绑定</button>
+        </div> -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0c9;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g id="组_120" data-name="组 120" transform="translate(-592 -1048)">
+    <path id="路径_177" data-name="路径 177" class="cls-1" d="M0,0H40V40Z" transform="translate(592 1048)"/>
+    <g id="组件_11_11" data-name="组件 11 – 11" transform="translate(619.515 1070.485) rotate(-135)">
+      <path id="路径_149" data-name="路径 149" class="cls-2" d="M10,0V10H0" transform="translate(7.071 2.929) rotate(45)"/>
+      <line id="直线_12" data-name="直线 12" class="cls-2" y2="17" transform="translate(7.071)"/>
+      <path id="路径_149-2" data-name="路径 149" class="cls-2" d="M10,0V10H0" transform="translate(7.071 2.929) rotate(45)"/>
+      <line id="直线_12-2" data-name="直线 12" class="cls-2" y2="17" transform="translate(7.071)"/>
+    </g>
+  </g>
+</svg>

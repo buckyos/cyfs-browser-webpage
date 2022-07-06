@@ -1,0 +1,51 @@
+<html style="width: 100%">
+<head>
+    <title>打赏记录</title>
+    <script src="../cyfs_sdk/cyfs.js"></script>
+    <script src="../js/lib/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<body style="background-color: #F2F3F5;">
+    <div class="tx_box">
+        <h2 class="header_titile"><i class="header_titile_i">打赏记录</i></h2>
+        <div class="reward_record_center_div mobile_content_box">
+            <p>友好名称：<span id="friendly_name"></span></p>
+            <p>DeviceId: <span id="device_id_info"></span></p>
+        </div>
+        <div class="scann_code_box paper_clip_box_left_top mobile_content_box">
+            <i class="paper_clip"></i>
+            <h3 class="reward_record_title">设备余额管理</h3>
+            <div class="reward_record_div">
+                <div>
+                    <p>
+                        总收入： <span id="balance_dom"></span>ECC 
+                    </p>
+                </div>
+                <div>
+                    <p>设备余额： <span id="balance_dom2"></span> ECC <button class="with_drawal" >提现</button></p>
+                </div>
+            </div>
+        </div>
+        <div class="reward_record_table_div mobile_content_box">
+            <table class="reward_record_table" id="open_table">
+                <thead>
+                    <th>PeopleID</th>
+                    <th>订单号</th>
+                    <th>转账时间</th>
+                    <th>转账金额</th>
+                </thead>
+                <tbody id="open_table_tbody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="reward_record_cover_box" id="reward_record_cover_box" >
+        <div class="reward_record_close_cover"></div>
+        <div class="reward_record_scan_box">
+            <div class="reward_record_scan">
+                <canvas id="reward_record_scan"></canvas>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

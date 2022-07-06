@@ -1,0 +1,41 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint/eslint-plugin"
+  ],
+  "extends": [
+    "alloy",
+    "alloy/typescript"
+  ],
+  "settings": {
+  },
+  "env": {
+    "jquery": true,
+    "node": true
+  },
+  "globals": {
+  },
+  "include": [
+    "src/js/*.ts"
+  ],
+  "exclude": [
+    "node_modules", "cyfs-ts-sdk", "cyf_sdk"
+  ],
+  "rules": {
+    "no-var": 0,
+    "no-empty": 0,
+    "no-var-requires": 0,
+    "@typescript-eslint/prefer-for-of": 0,
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/no-invalid-this": 0,
+    "no-undef": 0,
+    "no-trailing-spaces": 1,
+    "@typescript-eslint/no-unused-expressions": 0,
+    "no-irregular-whitespace": 0,
+    "no-param-reassign": 0,
+    "@typescript-eslint/no-require-imports": 0,
+    "radix": 0,
+    "max-params": [0, 5],
+    "eqeqeq": 0
+  }
+}

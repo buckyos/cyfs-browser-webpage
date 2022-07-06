@@ -1,0 +1,51 @@
+<html>
+<head>
+    <!-- <link href="/static/css/main.css" rel="stylesheet" /> -->
+    <title>Hello CYFS!</title>
+</head>
+<body>
+    <div class="main_box">
+        <div class="scann_code_box paper_clip_box">
+            <div class="scann_code_box_img1" id="scann_code_box_img1"></div>
+            <div class="box_title" id="box_title">使用Cyfs通行证扫码激活，如果您的通行证安装在此手机，也可以点击下方按钮进行激活。了解详情请查看<a href="https://cyfs.com/">https://cyfs.com</a></div>
+            <button class="button1" id="button1">跳转到通行证激活</button>
+        </div>
+    </div>
+</body>
+<script src="./cyfs_sdk/cyfs.js"></script>
+</html>
+
+<style>
+    body {
+        text-align: center;
+    }
+    #scann_code_box_img1 {
+        position: relative;
+        margin: 45% auto 7% auto;
+        width: 480;
+        height: 480;
+    }
+    #box_title {
+        position: relative;
+        margin: 8% auto 2% auto ;
+        font-size: 26px;
+        text-align: center;
+        text-decoration: none;
+        min-width: 40%;
+        max-width: 70%;
+    }
+    #button1 {
+        position: relative;
+        margin: 1% auto 30% auto ;
+        border: none;
+        border-radius:4px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        width: 30%;
+        height: 60px;
+    }
+</style>

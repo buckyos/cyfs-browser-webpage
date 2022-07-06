@@ -1,0 +1,696 @@
+<html>
+<head>
+    <link rel="shortcut icon" href="./img/favicon.svg" type="image/x-icon" />
+    <title></title>
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+
+<body>
+    <div class="guide_box">
+        <div class="guide_header_box">
+            <div class="browser_cyfs_icon"></div>
+        </div>
+        <div class="guide_content_box">
+            <div class="browser_guide_index">
+                <i class="browser_guide_index_icon"></i>
+                <h3 class="browser_guide_index_title browser_guide_title" set-lan="html:Guide.WelcomeTo"></h3>
+                <p class="browser_guide_index_subtitle browser_guide_subtitle" set-lan="html:Guide.WelcomeToInfo"></p>
+                <button class="browser_guide_index_btn browser_guide_btn" data-current="browser_guide_index" data-next="browser_guide_one_box" set-lan="html:Guide.GetStarted"></button>
+            </div>
+            <div class="browser_guide_one_box" style="display: none;">
+                <i class="browser_guide_one_icon"></i>
+                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.StartJourney"></h3>
+                <p class="browser_guide_index_subtitle browser_guide_subtitle" set-lan="html:Guide.StartJourneyInfo"></p>
+                <div class="guide_switch_btn_box">
+                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
+                    <div class="guide_switch_box">
+                        <span class="guide_switch_active_span"></span>
+                        <span data-current="browser_guide_one_box" data-direction="left" data-next="browser_guide_two_box"></span>
+                        <span data-current="browser_guide_one_box" data-direction="left" data-next="browser_guide_three_box"></span>
+                    </div>
+                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_one_box" data-next="browser_guide_two_box" set-lan="html:Next"></button>
+                </div>
+            </div>
+            <div class="browser_guide_two_box" style="display: none;">
+                <i class="browser_guide_two_icon"></i>
+                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.CreateIdentity"></h3>
+                <p class="browser_guide_one_subtitle browser_guide_subtitle" set-lan="html:Guide.CreateIdentityInfo"></p>
+                <div class="guide_switch_btn_box">
+                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
+                    <div class="guide_switch_box">
+                        <span data-current="browser_guide_two_box" data-direction="right" data-next="browser_guide_one_box"></span>
+                        <span class="guide_switch_active_span"></span>
+                        <span data-current="browser_guide_two_box" data-direction="left" data-next="browser_guide_three_box"></span>
+                    </div>
+                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_two_box" data-next="browser_guide_three_box" set-lan="html:Next"></button>
+                </div>
+            </div>
+            <div class="browser_guide_three_box" style="display: none;">
+                <i class="browser_guide_three_icon"></i>
+                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.AccessOOD"></h3>
+                <p class="browser_guide_subtitle" set-lan="html:Guide.AccessOODInfo"></p>
+                <p class="browser_guide_three_subtitle browser_guide_subtitle" set-lan="html:Guide.AccessOODInfoTwo"></p>
+                <div class="guide_switch_btn_box">
+                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
+                    <div class="guide_switch_box">
+                        <span data-current="browser_guide_three_box" data-direction="right" data-next="browser_guide_one_box"></span>
+                        <span data-current="browser_guide_three_box" data-direction="right" data-next="browser_guide_two_box"></span>
+                        <span class="guide_switch_active_span"></span>
+                    </div>
+                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_three_box" data-next="browser_guide_success_box" set-lan="html:Next"></button>
+                </div>
+            </div>
+            <div class="browser_guide_success_box" style="display: none;">
+                <i class="browser_guide_success_icon"></i>
+                <h3 class="browser_guide_success_title browser_guide_title" set-lan="html:Guide.WhatToDoNext"></h3>
+                <button class="guide_success_confirm_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_acivate_box" set-lan="html:Guide.GoToActivateBtn"></button>
+                <button class="guide_success_confirm_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button>
+                <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button>
+            </div>
+            <div class="browser_guide_loading_box" style="display: none;">
+                <i class="browser_guide_loading_icon"></i>
+                <p class="browser_guide_loading_p" set-lan="html:Guide.Activating"></p>
+            </div>
+            <div class="browser_guide_false_box" style="display: none;">
+                <i class="browser_guide_false_icon"></i>
+                <p class="browser_guide_false_title" set-lan="html:Guide.ActivateFalse"></p>
+                <p class="browser_guide_false_p" set-lan="html:Guide.ActivateFalseInfo"></p>
+                <button class="guide_false_btn browser_guide_btn"  data-current="browser_guide_false_box" data-next="browser_guide_acivate_box" set-lan="html:Guide.BACK"></button>
+            </div>
+            <div class="browser_guide_acivate_success_box" style="display: none;">
+                <i class="browser_guide_acivate_success_icon"></i>
+                <p class="browser_guide_false_title" set-lan="html:Guide.ActivateSuccess"></p>
+                <p class="browser_guide_acivate_success_p" set-lan="html:Guide.ActivateSuccessInfo"></p>
+                <div class="guide_acivate_success_box">
+                    <button class="guide_acivate_success_cancel_btn" set-lan="html:Cancel"></button>
+                    <button class="guide_acivate_success_confirm_btn" set-lan="html:Guide.Restart"></button>
+                </div>
+            </div>
+            <div class="browser_guide_acivate_box" style="display: none;">
+                <i class="browser_guide_acivate_icon">
+                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_acivate_box" data-next="browser_guide_success_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
+                    <div class="scan_canvas_box">
+                        <canvas class="scan_canvas" id="scan_canvas"></canvas>
+                    </div>
+                </i>
+                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.AlmostThere"></h3>
+                <p class="browser_guide_acivate_p" set-lan="html:Guide.AlmostThereInfo"></p>
+                <div class="guide_acivate_info_box">
+                    <div class="guide_acivate_info_one">
+                        <i></i>
+                        <p set-lan="html:Guide.OpenCyberChat"></p>
+                    </div>
+                    <div class="guide_acivate_info_two">
+                        <i></i>
+                        <p set-lan="html:Guide.ClickScan"></p>
+                    </div>
+                    <div class="guide_acivate_info_three">
+                        <i></i>
+                        <p set-lan="html:Guide.EditInformation"></p>
+                    </div>
+                    <div class="clear_both" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="browser_guide_intro_one_box" style="display: none;">
+                <i class="browser_guide_intro_one_icon">
+                    <button class="guide_back_btn guide_back_btn browser_guide_btn"  data-current="browser_guide_intro_one_box" data-next="browser_guide_success_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
+                </i>
+                <h3 class="browser_guide_one_title browser_guide_title"  set-lan="html:Guide.WhatHowWorks"></h3>
+                <p class="browser_guide_one_subtitle" set-lan="html:Guide.WhatHowWorksInfo"> </p>
+                <div class="guide_switch_btn_box">
+                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
+                    <div class="guide_switch_box">
+                        <span class="guide_switch_active_span"></span>
+                        <span data-current="browser_guide_intro_one_box" data-direction="left" data-next="browser_guide_intro_two_box"></span>
+                        <span data-current="browser_guide_intro_one_box" data-direction="left" data-next="browser_guide_intro_three_box"></span>
+                    </div>
+                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_intro_one_box" data-next="browser_guide_intro_two_box" set-lan="html:Next"></button>
+                </div>
+            </div>
+            <div class="browser_guide_intro_two_box" style="display: none;">
+                <i class="browser_guide_intro_two_icon">
+                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_intro_two_box" data-next="browser_guide_success_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
+                </i>
+                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.TryAnySite"></h3>
+                <p class="guide_intro_two_p" set-lan="html:Guide.TryAnySiteInfoOne"></p>
+                <p class="guide_intro_two_p" set-lan="html:Guide.TryAnySiteInfoTwo"></p>
+                <p class="guide_intro_two_p guide_intro_two_btm" set-lan="html:Guide.TryAnySiteInfoThree"></p>
+                <div class="guide_switch_btn_box">
+                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
+                    <div class="guide_switch_box">
+                        <span data-current="browser_guide_intro_two_box" data-direction="right" data-next="browser_guide_intro_one_box"></span>
+                        <span class="guide_switch_active_span"></span>
+                        <span data-current="browser_guide_intro_two_box" data-direction="left" data-next="browser_guide_intro_three_box"></span>
+                    </div>
+                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_intro_two_box" data-next="browser_guide_intro_three_box" set-lan="html:Next"></button>
+                </div>
+            </div>
+            <div class="browser_guide_intro_three_box" style="display: none;">
+                <i class="browser_guide_intro_three_icon">
+                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_intro_three_box" data-next="browser_guide_success_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
+                </i>
+                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.BuildTRealWeb3"></h3>
+                <p class="guide_intro_two_p" set-lan="html:Guide.BuildTRealWeb3Info"></p>
+                <p class="guide_intro_three_p" set-lan="html:Guide.BuildTRealWeb3InfoTwo"></p>
+                <div class="guide_switch_btn_box">
+                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
+                    <div class="guide_switch_box">
+                        <span data-current="browser_guide_intro_three_box" data-direction="right" data-next="browser_guide_intro_one_box"></span>
+                        <span data-current="browser_guide_intro_three_box" data-direction="right" data-next="browser_guide_intro_two_box"></span>
+                        <span class="guide_switch_active_span"></span>
+                    </div>
+                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_intro_three_box" data-next="browser_guide_acivate_box" style="width: 152px;" set-lan="html:Guide.GoToActivate"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="guide_shadow_box">
+        <div class="guide_confirm_box">
+            <p class="guide_confirm_p" set-lan="html:Guide.GoToActivateWarn"></p>
+            <div class="guide_confirm_btn_box">
+                <button class="guide_confirm_cancel_btn" set-lan="html:Cancel"></button>
+                <button class="guide_confirm_yes_btn" set-lan="html:Yes"></button>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+html, body{
+    width: 100%;
+}
+html, body, h2, a, input, table, thead, tr, td, tbody, p, h4, span, button, h3, ul, li{
+    padding: 0;
+    margin: 0;
+    font-family: 'Microsoft YaHei', Roboto, PingFang SC;
+    color: #333;
+}
+button{
+    cursor: pointer;
+}
+.clear_both {
+    clear: both;
+}
+input, button, select{
+    outline: none;
+    border: none;
+}
+.guide_confirm_btn{
+    border-radius: 4px 4px 4px 4px;
+    background: linear-gradient(270deg, #0AD7B6 0%, #00BFA8 100%);
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+}
+.color287{
+   color: #2873F7; 
+}
+.text_decoration_none{
+    text-decoration: none;
+}
+.guide_box{
+    width: 100%;
+}
+.guide_header_box{
+    width: 1180px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.browser_cyfs_icon{
+    width: 100px;
+    height: 38px;
+    float: left;
+    background: url(./img/browser_cyfs_icon.svg) no-repeat center center;
+    margin: 17px 0 24px 0;
+    cursor: pointer;
+}
+.guide_content_box{
+    width: 933px;
+    margin: 0 auto;
+}
+.browser_guide_index_icon{
+    display: block;
+    width: 221px;
+    height: 221px;
+    margin: 0 auto;
+    padding-top: 107px;
+    padding-bottom: 80px;
+    background: url(./img/browser_guide_index_icon.svg) no-repeat center center;
+}
+.browser_guide_index_title{
+    padding-bottom: 19px;
+}
+.browser_guide_title{
+    text-align: center;
+    height: 40px;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 40px;
+}
+.browser_guide_index_subtitle{
+    padding-bottom: 119px;
+}
+.browser_guide_subtitle{
+    font-size: 14px;
+    font-weight: 400;
+    text-align: left;
+    line-height: 24px;
+}
+.browser_guide_index_btn{
+    display: block;
+    width: 152px;
+    height: 40px;
+    background: #0AD7B6;
+    border-radius: 4px 4px 4px 4px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 40px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.browser_guide_one_icon{
+    display: block;
+    width: 933px;
+    height: 373px;
+    margin: 0 auto;
+    margin-top: 31px;
+    background: url(./img/browser_guide_one_icon.svg) no-repeat center center;
+}
+.browser_guide_two_icon{
+    display: block;
+    width: 933px;
+    height: 373px;
+    margin: 0 auto;
+    margin-top: 31px;
+    background: url(./img/browser_guide_two_icon.svg) no-repeat center center;
+}
+.browser_guide_three_icon{
+    display: block;
+    width: 933px;
+    height: 373px;
+    margin: 0 auto;
+    margin-top: 31px;
+    background: url(./img/browser_guide_three_icon.svg) no-repeat center center;
+}
+.browser_guide_success_icon{
+    display: block;
+    width: 933px;
+    height: 373px;
+    margin: 0 auto;
+    margin-top: 31px;
+    background: url(./img/browser_guide_success_icon.svg) no-repeat center center;
+}
+.guide_switch_btn_box{
+    width: 541px;
+    height: 40px;
+    margin: 0 auto;
+}
+.guide_last_btn{
+    width: 104px;
+    height: 40px;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #D5D5D5;
+    font-size: 18px;
+    font-weight: 400;
+    color: #0AD7B6;
+    line-height: 40px;
+    text-align: center;
+    float: left;
+    background: #fff;
+}
+.guide_next_btn{
+    width: 104px;
+    height: 40px;
+    font-size: 18px;
+    color: #fff;
+    line-height: 40px;
+    float: right;
+    border-radius: 4px 4px 4px 4px; 
+    background: linear-gradient(270deg, #0AD7B6 0%, #00BFA8 100%);
+}
+.guide_switch_box{
+    width: 81px;
+    padding: 16px 0 0 126px;
+    overflow: hidden;
+    float: left;
+}
+.guide_switch_box span{
+    display: block;
+    float: left;
+    width: 8px;
+    height: 8px;
+    background: #D5D5D5;
+    border-radius: 100%;
+    margin-right: 16px;
+    cursor: pointer;
+}
+.guide_switch_box span:last-child{
+    margin-right: 0px;
+}
+.guide_switch_box .guide_switch_active_span{
+    width: 32px;
+    background: #0AD7B6;
+    border-radius: 8px 8px 8px 8px;
+}
+.browser_guide_one_title{
+    padding: 4px 0 19px 0;
+}
+.browser_guide_one_subtitle{
+    padding-bottom: 95px;
+}
+.browser_guide_three_subtitle{
+    padding: 19px 0 57px 0;
+}
+.guide_success_confirm_btn{
+    width: 365px;
+    height: 40px;
+    background: linear-gradient(270deg, #0AD7B6 0%, #00BFA8 100%);
+    border-radius: 4px 4px 4px 4px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 40px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 23px;
+}
+.guide_success_cancel_btn{
+    width: 365px;
+    height: 40px;
+    background: #fff;
+    border: 1px solid #D5D5D5;
+    border-radius: 4px 4px 4px 4px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+    color: #0AD7B6;
+    line-height: 40px;
+    display: block;
+    margin: 0 auto;
+}
+.browser_guide_success_title{
+    padding: 4px 0 50px 0;
+}
+.browser_guide_loading_icon{
+    display: block;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    margin-top: 236px;
+    margin-bottom: 61px;
+    background: url(./img/browser_guide_loading_icon.gif) no-repeat center center;
+}
+.browser_guide_loading_p{
+    text-align: center;
+    height: 19px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 19px;
+}
+.browser_guide_false_icon{
+    display: block;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    margin-top: 236px;
+    margin-bottom: 61px;
+    background: url(./img/browser_guide_false_icon.svg) no-repeat center center;
+}
+.browser_guide_false_title{
+    text-align: center;
+    height: 19px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    line-height: 19px;
+}
+.browser_guide_false_p{
+    height: 19px;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    line-height: 19px;
+    margin: 19px 0 119px 0;
+}
+.guide_false_btn{
+    width: 104px;
+    height: 40px;
+    background: linear-gradient(270deg, #0AD7B6 0%, #00BFA8 100%);
+    font-size: 18px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 40px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px 4px 4px 4px;
+}
+.browser_guide_acivate_success_icon{
+    display: block;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    margin-top: 236px;
+    margin-bottom: 61px;
+    background: url(./img/browser_guide_acivate_success_icon.svg) no-repeat center center;
+}
+.browser_guide_acivate_success_p{
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    line-height: 19px;
+    margin: 19px 0 95px 0;
+}
+.guide_acivate_success_box{
+    width: 540px;
+    height: 40px;
+    margin: 0 auto;
+}
+.guide_acivate_success_box button{
+    width: 104px;
+    height: 40px;
+    border-radius: 4px 4px 4px 4px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+}
+.guide_acivate_success_confirm_btn{
+    background: linear-gradient(270deg, #0AD7B6 0%, #00BFA8 100%);
+    float: right;
+    color: #FFFFFF;
+}
+.guide_acivate_success_cancel_btn{
+    border: 1px solid #D5D5D5;
+    background: #fff;
+    float: left;
+    color: #0AD7B6;
+}
+.guide_shadow_box{
+    width: 100%;
+    height: 100%;
+    background: rgba(51, 51, 51, 0.4);
+    z-index: 99;
+    position: fixed;
+    top: 0 ;
+    left: 0;
+    display: none;
+}
+.guide_confirm_box{
+    width: 430px;
+    height: 262px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px 1px rgba(0, 0, 0, 0.08);
+    border-radius: 16px 16px 16px 16px;
+    position: absolute;
+    top: 374px;
+    left: 50%;
+    margin-left: -215px;
+}
+.guide_confirm_p{
+    width: 366px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 30px;
+    padding: 56px 32px 24px 32px;
+    height: 102px;
+}
+.guide_confirm_btn_box{
+    width: 248px;
+    height: 40px;
+    margin: 0 auto;
+}
+.guide_confirm_btn_box button{
+    width: 104px;
+    height: 40px;
+    border-radius: 4px 4px 4px 4px;
+    font-size: 18px;
+    line-height: 40px;
+    font-weight: 400;
+}
+.guide_confirm_cancel_btn{
+    border: 1px solid #D5D5D5;
+    color: #0AD7B6;
+    background: #fff;
+    float: left;
+}
+.guide_confirm_yes_btn{
+    background: #0AD7B6;
+    color: #fff;
+    float: right;
+}
+.browser_guide_acivate_icon{
+    display: block;
+    width: 933px;
+    height: 373px;
+    margin: 0 auto;
+    margin-top: 31px;
+    background: url(./img/browser_guide_acivate_icon.svg) no-repeat center center;
+    position: relative;
+}
+.guide_acivate_info_box{
+    width: 801px;
+    padding-bottom: 30px;
+    height: 230px;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+.guide_acivate_info_box div{
+    width: 239px;
+    height: 230px;
+    box-shadow: 0px 8px 10px 1px rgba(0, 0, 0, 0.08);
+    border-radius: 4px 4px 0px 0px;
+    float: left;
+    margin: 0 14px;
+}
+.browser_guide_acivate_p{
+    text-align: center;
+    height: 19px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
+}
+.guide_acivate_info_box div i{
+    display: block;
+    width: 239px;
+    height: 135px;
+}
+.guide_acivate_info_box div p{
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 24px;
+    padding: 16px 11px;
+}
+.guide_acivate_info_one i{
+    background: url(./img/guide_acivate_info_one.svg) no-repeat left top;
+}
+.guide_acivate_info_two i{
+    background: url(./img/guide_acivate_info_two.svg) no-repeat left top;
+}
+.guide_acivate_info_three i{
+    background: url(./img/guide_acivate_info_three.svg) no-repeat left top;
+}
+.guide_acivate_info_two span{
+    float: left;
+}
+.guide_acivate_info_two_add, .guide_acivate_info_two_scan{
+    display: block;
+    width: 24px;
+    height: 24px;
+    float: left;
+}
+.guide_acivate_info_two_add{
+    background: url(./img/guide_acivate_info_two_add.svg) no-repeat center center;
+}
+.guide_acivate_info_two_scan{
+    background: url(./img/guide_acivate_info_two_scan.svg) no-repeat center center;
+}
+.guide_back_btn{
+    width: 105px;
+    height: 32px;
+    background: #F2F3F5;
+    border-radius: 4px 4px 4px 4px;
+    position: absolute;
+    top: -11px;
+    left: -94px;
+}
+.guide_back_icon{
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: url(./img/guide_back_icon.svg) no-repeat center center;
+    margin-top: 4px;
+    margin-left: 12px;
+    float: left;
+}
+.guide_back_btn span{
+    display: block;
+    float: left;
+    font-size: 16px;
+    font-weight: 400;
+    color: #04C9AE;
+    line-height: 32px;
+    margin-left: 4px;
+}
+.browser_guide_intro_one_icon{
+    display: block;
+    width: 933px;
+    height: 373px;
+    margin: 0 auto;
+    margin-top: 31px;
+    background: url(./img/browser_guide_intro_one_icon.svg) no-repeat center center;
+    position: relative;
+}
+.guide_intro_two_p{
+    width: 933px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 24px;
+    padding-bottom: 19px;
+}
+.guide_intro_two_btm{
+    padding-bottom: 57px;
+}
+.browser_guide_intro_two_icon{
+    display: block;
+    width: 933px;
+    height: 373px;
+    margin: 0 auto;
+    margin-top: 31px;
+    background: url(./img/browser_guide_intro_two_icon.svg) no-repeat center center;
+    position: relative;
+}
+.browser_guide_intro_three_icon{
+    display: block;
+    width: 933px;
+    height: 373px;
+    margin: 0 auto;
+    margin-top: 31px;
+    background: url(./img/browser_guide_intro_three_icon.svg) no-repeat center center;
+    position: relative;
+}
+.guide_intro_three_p{
+    height: 19px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    line-height: 24px;
+    padding-bottom: 81px;
+}
+.scan_canvas_box{
+    width: 144px;
+    height: 144px;
+    position: absolute;
+    top: 109px;
+    left: 418px;
+}
+.scan_canvas_box img{
+    width: 100%;
+    height: 100%;
+}
+</style>
+</html>

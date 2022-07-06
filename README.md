@@ -1,23 +1,23 @@
-# cyber browser 浏览器 内嵌页
+## Cyber browser built-in page
+[中文文档](./README.zh-CN.md)
+## Compiler Environment Requirements
+- Node.js > 12
 
+## Preparing dependencies
+- Clone the cyfs-ts-sdk repository `git clone https://github.com/buckyos/cyfs-ts-sdk.git`
+- In the root of the cyfs-ts-sdk repository, compile the h5 version of cyfs sdk `npm i && npm run build:h5`
+- Copy the resulting `out/cyfs.d.ts` file to the `src/cyfs_sdk/` directory of this repository
 
+## Development Debugging
+- Install the CYFS browser and activate it correctly
+- Run `npm run start`, which will replace the built-in pages in the CYFS browser with the local version
 
-# 目录说明
+## Package
+Run `npm run build` in the root directory and the files for the built-in pages will be generated in the `www` folder
 
+## Directory description
+- `src` The source files for the built-in pages  
+- `tool` node tool script for handling directories and files   
+- `www` The directory where the built-in pages are generated
 
-cyfs-ts-sdk cyfs sdk submodule的目录  
-src 内嵌页的源码文件  
-tool  处理目录和文件的node 工具脚本   
-www  build的目标目录
-
-
-# 开发
-先通过git submodule 下载sdk的源码  
-然后
-`npm run sdk` 生成sdk
-然后再`npm run start`, 即可
-
-
-# 打包
-直接运行`npm run build`
-会在当前目录下生成`www`文件夹
+Translated with www.DeepL.com/Translator (free version)

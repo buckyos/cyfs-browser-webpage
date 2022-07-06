@@ -4,13 +4,8 @@
   "description": "1",
   "main": "index.js",
   "scripts": {
-    "sdk": "cd cyfs-ts-sdk && git pull origin master && npm i && npm run build:h5 && cd .. && node tool/tool.js",
     "start": "npx webpack -w",
     "build": "npx webpack --mode=production ",
-    "checkout:nightly": "git submodule && cd cyfs-ts-sdk && git checkout master && cd .. && git submodule",
-    "checkout:beta": "git submodule && cd cyfs-ts-sdk && git checkout beta && cd .. && git submodule",
-    "build:nightly": "npm run checkout:nightly && npx webpack --mode=production ",
-    "build:beta": "npm run checkout:beta && npx webpack --mode=production ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tscheck": "eslint src/js/*.ts"
   },

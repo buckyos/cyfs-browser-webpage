@@ -28,8 +28,6 @@ module.exports = (env, argv) => {
             'appmanager': './src/js/appmanager.ts',
             'm_appmanager': './src/js/mobile/appmanager.ts',
             'index': './src/js/index.ts',
-            'init': './src/js/init.ts',
-            'm_init': './src/js/mobile/init.ts',
             'activate': './src/js/activate.ts',
             'show': './src/js/show.ts',
             'm_show': './src/js/mobile/show.ts',
@@ -103,11 +101,6 @@ module.exports = (env, argv) => {
                 chunks: ['index']
             }),
             new HtmlWebpackPlugin({
-                template: './src/init.html',
-                filename: '../init.html',
-                chunks: ['init']
-            }),
-            new HtmlWebpackPlugin({
                 template: './src/appmanager.html',
                 filename: '../appmanager.html',
                 chunks: [ 'app_index' ]
@@ -136,11 +129,6 @@ module.exports = (env, argv) => {
                 template: './src/mobile/objects.html',
                 filename: '../mobile/objects.html',
                 chunks: ['m_objects']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/mobile/init.html',
-                filename: '../mobile/init.html',
-                chunks: ['m_init']
             }),
             new HtmlWebpackPlugin({
                 template: './src/mobile/info.html',

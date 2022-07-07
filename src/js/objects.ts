@@ -99,13 +99,15 @@ class ObjectManager {
                 }
             }
         }
-        console.origin.log("objects:", objects);
+        console.origin.log("--------------objects:", objects);
         RET_OBJECTS = objects;
         if (!objects || objects.length == 0) {
             $('#browser_tbody').html("");
         }
         ALL_OBJECT = [];
-        objects.forEach(async (element: { object: cyfs.AnyNamedObject | undefined, object_raw: Uint8Array | undefined }) => {
+        let temporaryObj = [];
+        for (let index = 0; index < objects.length; index++) {
+            const element = objects[index];
             //所有者
             let owner_info = "";
             if (element.object?.desc().owner()) {
@@ -124,7 +126,7 @@ class ObjectManager {
             }
             console.log('----calculate_id',element.object!.desc().calculate_id().toString())
 
-            ALL_OBJECT.push({ 
+            temporaryObj.push({ 
                 id: element.object!.desc().calculate_id().toString(),
                 type: element.object?.desc().obj_type_code(),
                 owner_info: owner_info,
@@ -132,11 +134,10 @@ class ObjectManager {
                 decid: decid,
                 nftIcon: nftIcon
             });
-            if(ALL_OBJECT.length == objects.length){
-                console.origin.log('1111', ALL_OBJECT)
-                handleObject();
-            }
-        });
+        }
+        ALL_OBJECT = temporaryObj;
+        console.origin.log('ALL_OBJECT', ALL_OBJECT)
+        handleObject();
     }
 }
 
@@ -550,6 +551,7 @@ function handleObject(){
     let attrType = $('.browser_filter_attr_ul .browser_filter_active').attr("data-attr");
     let filterObjects: { id: string, type: cyfs.ObjectTypeCode | undefined, owner_info:string, time: cyfs.JSBI, decid: string, nftIcon: string }[] = [];
     if(type){
+        console.origin.log('------------------ALL_OBJECT', ALL_OBJECT)
         if(type == 'all' && attrType == 'all'){
             filterObjects = ALL_OBJECT;
         }else{

@@ -101,7 +101,6 @@ class ObjectManager {
                 if (item.object != null) {
                     object_tmp.object = item.object;
                 }
-                // TODO: 在此解码到具体的类型
                 if (item.object_raw != null) {
                     object_tmp.object_raw = item.object_raw;
                 }

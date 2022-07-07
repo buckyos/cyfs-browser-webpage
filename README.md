@@ -19,5 +19,3 @@ Run `npm run build` in the root directory and the files for the built-in pages w
 - `src` The source files for the built-in pages  
 - `tool` node tool script for handling directories and files   
 - `www` The directory where the built-in pages are generated
-
-Translated with www.DeepL.com/Translator (free version)

@@ -1,0 +1,194 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="../css/app.css">
+  <script src="../cyfs_sdk/cyfs.js"></script>
+  <script src="../js/lib/jquery.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<body style="background: #F7F7F7;">
+  <div class="app_box">
+    <div class="app_header_box">
+      <h2 class="app_header_title">Dec App Store</h2>
+      <div class="float_r app_header_right">
+      </div>
+    </div>
+    <div class="app_content_box">
+      <div class="app_content_title_box">
+        <div class="app_title_box">
+          <h3 class="app_content_title">UpLoad Dec App</h3>
+          <a href="cyfs://static/DecAppStore/app_store_list.html" class="app_content_title_href">Dec App List</a>
+        </div>
+      </div>
+      <div class="upload_app_box">
+        <div class="upload_get_app_info">
+            <p class="upload_get_app_info_p">Dec App URL:</p>
+            <input class="get_app_input" type="text">
+            <button class="get_app_info_btn app_primary_btn">Install</button>
+        </div>
+      </div>
+      <h3 class="upload_app_info_title">App info</h3>
+      <div class="upload_app_info_box">
+        <ul>
+            <li class="overflow_h upload_app_info_li">
+                <div class="float_l upload_app_info_label">Dec-ID:</div>
+                <div class="float_l upload_app_info_input">
+                    <p class="upload_app_info_dec_id">5bnZVFgWfofSgaUpdPmo2VXkPRpcjiFiFHWgWFPfkcX5</p>
+                    <i class="upload_app_info_id_copy"></i>
+                </div>
+                <div class="float_l"></div>
+            </li>
+            <li class="overflow_h upload_app_info_li">
+                <div class="float_l upload_app_info_label">Dec app name:</div>
+                <div class="float_l upload_app_info_input">
+                    <input class="upload_app_info_name" type="text" name="" id="">
+                </div>
+                <div class="float_l">
+                    <i class="upload_app_info_asterisk"></i>
+                </div>
+            </li>
+            <li class="overflow_h upload_app_info_li">
+                <div class="float_l upload_app_info_label">Overview:</div>
+                <div class="float_l upload_app_info_input"></div>
+                <div class="float_l"></div>
+            </li>
+            <li class="overflow_h upload_app_info_li">
+                <div class="float_l upload_app_info_label">App Icon</div>
+                <div class="float_l upload_app_info_input"></div>
+                <div class="float_l"></div>
+            </li>
+            <li class="overflow_h upload_app_info_li">
+                <div class="float_l upload_app_info_label">Tag:</div>
+                <div class="float_l upload_app_info_input"></div>
+                <div class="float_l"></div>
+            </li>
+            <li class="overflow_h upload_app_info_li">
+                <div class="float_l upload_app_info_label">Is client software required ?</div>
+                <div class="float_l upload_app_info_input"></div>
+                <div class="float_l"></div>
+            </li>
+            <li class="overflow_h upload_app_info_li">
+                <div class="float_l upload_app_info_label">Community:</div>
+                <div class="float_l upload_app_info_input"></div>
+                <div class="float_l"></div>
+            </li>
+        </ul>
+      </div>
+    </div>
+    <div class="app_footer_box">
+      <div class="app_footer_content_box">
+        <div class="float_l app_footer_box_l">
+          <p><a href="javascript:">How Cyfs work ?</a></p>
+          <p><a href="javascript:">How to develop Dec App ?</a></p>
+        </div>
+        <div class="float_r app_footer_box_r">
+          <i class="app_footer_discard_i"></i>
+          <i class="app_footer_cyfs_i"></i>
+          <p class="float_r">Developer community</p>
+        </div>
+      </div>
+    </div>
+    <div class="anonymous_box">
+      <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
+      <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+    </div>
+  </div>
+  <div class="app_cover_box">
+    <div class="app_cover_content_box">
+      <i class="app_cover_close_i"></i>
+      <h3 class="app_cover_title">Install From URL</h3>
+      <p class="app_cover_input_p">Dec App URL</p>
+      <div class="overflow_h">
+        <input class="app_cover_input float_l" type="text">
+        <button class="app_primary_btn app_cover_input_btn float_r">Get App Info</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+<style>
+    .upload_app_box{
+        width: 948px;
+        margin-top: 44px;
+    }
+    .upload_get_app_info{
+        height: 32px;
+        padding: 24px;
+        width: 900px;
+        background: #FFFFFF;
+        box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+        border-radius: 8px 8px 8px 8px;
+    }
+    .upload_get_app_info_p{
+        height: 32px;
+        line-height: 28px;
+        float: left;
+    }
+    .get_app_input{
+        width: 578px;
+        height: 32px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid #DADCE0;
+        margin: 0 14px 0 22px;
+        float: left;
+    }
+    .get_app_info_btn{
+        width: 118px;
+        height: 32px;
+    }
+    .upload_app_info_title{
+        height: 29px;
+        font-size: 22px;
+        font-weight: 400;
+        color: #202124;
+        line-height: 28px;
+        padding: 16px 0 40px 0;
+    }
+    .upload_app_info_box{
+        width: 100%;
+        background: #FFFFFF;
+        box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+        border-radius: 8px 8px 8px 8px;
+    }
+    .upload_app_info_li{
+        padding: 11px 0;
+    }
+    .upload_app_info_label{
+        width: 209px;
+        height: 19px;
+        font-weight: 400;
+        line-height: 28px;
+        padding: 6px 0 7px 0;
+        text-align: right;
+    }
+    .upload_app_info_input{
+        width: 473px;
+        padding: 0 8px 0 24px;
+    }
+    .upload_app_info_dec_id{
+        height: 19px;
+        font-weight: 400;
+        line-height: 28px;
+        padding: 3px 20px 2px 0;
+        float: left;
+    }
+    .upload_app_info_name{
+        width: 473px;
+        height: 32px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid #DADCE0;
+    }
+    .upload_app_info_asterisk{
+        display: block;
+        float: left;
+        width: 16px;
+        height: 16px;
+        margin-top: 8px;
+        background: url(../img/app/upload_app_info_asterisk.svg) no-repeat center center;
+    }
+</style>
+
+</html>

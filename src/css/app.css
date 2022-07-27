@@ -1,0 +1,245 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+html, body, div, span, p, h1, h2, h3, h4, h5, strong, h6, i, b, a, button, table, thead, tbody, th, tr, td, ul, li{
+    padding: 0;
+    margin: 0;
+    font-family: 'PingFang SC', '微软雅黑';
+    font-size: 14px;
+    color: #333;
+    font-weight: 400;
+}
+input, button, select {
+    outline: none;
+    border: none;
+}
+ul, li {
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+.overflow_h{
+    overflow: hidden;
+}
+.clear_both {
+    clear: both;
+}
+.float_l {
+    float: left;
+}
+.float_r {
+    float: right;
+}
+.anonymous_box{
+    width: 100%;
+    height: 80px;
+    background: #ADADAD;
+    position: absolute;
+    top: 0 ;
+    left: 0;
+    display: none;
+}
+.anonymous_box p{
+    text-align: center;
+}
+.anonymous_title{
+    height: 32px;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 32px;
+    color: #FFFFFF;
+    padding: 14px 0 4px 0;
+}
+.anonymous_subtitle{
+    height: 17px;
+    font-weight: 400;
+    line-height: 17px;
+    cursor: pointer;
+}
+.app_box{
+    position: relative;
+    min-height: 100%;
+}
+.app_header_box{
+    width: 100%;
+    height: 56px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 8px 1px rgba(0,0,0,0.0800);
+}
+.app_header_title{
+    float: left;
+    height: 56px;
+    line-height: 56px;
+    margin-left: 77px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #1DBFA2;
+}
+.app_header_right{
+    margin-right: 72px;
+}
+.ood_status{
+    width: 32px;
+    height: 32px;
+    margin: 12px 0;
+}
+.people_head_sculpture{
+    width: 32px;
+    height: 32px;
+    margin: 12px 12px 12px 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.people_name{
+    display: block;
+    float: right;
+    height: 56px;
+    font-weight: 400;
+    line-height: 56px;
+}
+.app_content_box{
+    width: 1200px;
+    margin: 0 auto;
+    margin-top: 74px;
+    padding-bottom: 260px;
+}
+.app_title_box{
+    width: 100%;
+    height: 29px;
+    padding: 4px 0;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px 1px rgba(0,0,0,0.08);
+}
+.app_content_title{
+    height: 29px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #1DBFA2;
+    line-height: 29px;
+    padding-left: 10px;
+    border-left: 4px solid #34C5AB;;
+    float: left;
+}
+.app_content_title_href{
+    float: right;
+    height: 29px;
+    line-height: 29px;
+    padding-right: 37px;
+}
+.app_subtitle_box{
+    margin-top: 15px;
+    overflow: hidden;
+}
+.app_primary_btn{
+    font-weight: 400;
+    color: #FFFFFF;
+    background: #0AD7B6;
+    border-radius: 4px 4px 4px 4px;
+    cursor: pointer;
+    line-height: 1;
+}
+.app_disable_btn{
+    font-weight: 400;
+    color: #FFFFFF;
+    background: #D5D5D5;
+    border-radius: 4px 4px 4px 4px;
+    cursor: pointer;
+    line-height: 1;
+}
+.app_plain_btn{
+    height: 24px;
+    line-height: 24px;
+    padding: 0 23px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #0AD7B6;
+    border-radius: 3px 3px 3px 3px;
+    border: 1px solid #0AD7B6;
+    background: none;
+    cursor: pointer;
+}
+.app_footer_box{
+    width: 100%;
+    height: 172px;
+    background: #0AD7B6;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.app_footer_content_box{
+    width: 1200px;
+    margin: 0 auto;
+}
+.app_footer_content_box p a, .app_footer_content_box p{
+    height: 20px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 20px;
+}
+.app_footer_box_l p:nth-child(1){
+    height: 20px;
+    padding: 58px 0 17px 0;
+}
+.app_footer_box_r{
+    height: 32px;
+    line-height: 32px;
+    padding-top: 89px;
+}
+.app_footer_box_r i{
+    float: right;
+    display: block;
+    width: 32px;
+    height: 32px;
+}
+.app_footer_discard_i{
+    background: url(../img/app/app_footer_discard_i.svg) no-repeat center center;
+}
+.app_footer_cyfs_i{
+    background: url(../img/app/app_footer_cyfs_i.svg) no-repeat center center;
+    margin: 0px 4px 0 17px;
+}
+.app_footer_box_r p{
+    height: 32px;
+    line-height: 32px;
+}
+.app_cover_box{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(51, 51, 51, 0.4);
+    display: none;
+}
+.upload_app_info_id_copy{
+    display: block;
+    float: left;
+    width: 24px;
+    height: 24px;
+    background: url(../img/app/upload_app_info_id_copy.svg) no-repeat center center;
+}
+.app_table{
+    border: 1px solid #DADCE0;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    text-align: center;
+}
+.app_table thead td{
+    height: 46px;
+}
+.app_table tbody td{
+    height: 46px;
+    border-top: 1px solid #DADCE0;
+    line-height: 46px;
+}
+.app_vicebox_title{
+    height: 29px;
+    font-size: 22px;
+    color: #202124;
+    line-height: 28px;
+    padding: 39px 0 16px 0;
+}

@@ -70,6 +70,26 @@ class NONObject {
       }
     }
   }
+
+  async postObj(obj:cyfs.DecApp|cyfs.AppCmd) {
+    const router = this.m_router;
+    let buf_len = obj.raw_measure().unwrap();
+    let buf = new Uint8Array(buf_len);
+    obj.raw_encode(buf);
+    let r = await router.post_object({
+      object: new cyfs.NONObjectInfo(obj.desc().calculate_id(), buf),
+      common: {
+        level: cyfs.NONAPILevel.Router,
+        flags: 0
+      }
+    });
+    console.origin.log('--------postObj-r', r)
+    if (r.err && r.val.code != cyfs.BuckyErrorCode.Ignored) {
+      return r;
+    } else {
+      return r;
+    }
+  }
 }
 
 export const ObjectUtil = new NONObject;

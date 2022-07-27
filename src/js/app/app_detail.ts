@@ -6,7 +6,7 @@ import { ObjectUtil, formatDate, LANGUAGESTYPE } from '../lib/util'
 
 $(function(){
   if(LANGUAGESTYPE == 'zh'){
-    $('title').html('应用管理');
+    $('title').html('应用详情');
   }else{
     $('title').html('DEC App Management');
   }

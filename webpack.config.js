@@ -39,7 +39,14 @@ module.exports = (env, argv) => {
             'app_detail': './src/js/app/app_detail.ts',
             'app_installed': './src/js/app/app_installed.ts',
             'localstate': './src/js/localstate.ts',
-            'guide': './src/js/guide.ts'
+            'guide': './src/js/guide.ts',
+            'app_util': './src/js/app/app_util.ts',
+            'app_store_list': './src/js/app/app_store_list.ts',
+            'dec_app_detail': './src/js/app/dec_app_detail.ts',
+            'upload_dec_app': './src/js/app/upload_dec_app.ts',
+            'app_like_tip_list': './src/js/app/app_like_tip_list.ts',
+            'app_tag': './src/js/app/app_tag.ts',
+            'app_installed_list': './src/js/app/app_installed_list.ts',
         },
         mode: env.production ? 'production' : 'development',
         // mode: 'development',
@@ -169,6 +176,37 @@ module.exports = (env, argv) => {
                 template: './src/localstate.html',
                 filename: '../localstate.html',
                 chunks: ['localstate']
+            }),
+            // app应用商店
+            new HtmlWebpackPlugin({
+                template: './src/DecAppStore/app_store_list.html',
+                filename: '../DecAppStore/app_store_list.html',
+                chunks: ['app_store_list', 'app_util']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/DecAppStore/app_detail.html',
+                filename: '../DecAppStore/app_detail.html',
+                chunks: ['dec_app_detail', 'app_util']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/DecAppStore/upload_dec_app.html',
+                filename: '../DecAppStore/upload_dec_app.html',
+                chunks: ['upload_dec_app', 'app_util']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/DecAppStore/app_like_tip_list.html',
+                filename: '../DecAppStore/app_like_tip_list.html',
+                chunks: ['app_like_tip_list', 'app_util']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/DecAppStore/app_tag.html',
+                filename: '../DecAppStore/app_tag.html',
+                chunks: ['app_tag', 'app_util']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/DecAppStore/app_installed_list.html',
+                filename: '../DecAppStore/app_installed_list.html',
+                chunks: ['app_installed_list', 'app_util']
             }),
         ],
         externals: [

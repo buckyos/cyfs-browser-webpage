@@ -1,0 +1,293 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="../css/app.css">
+  <script src="../cyfs_sdk/cyfs.js"></script>
+  <script src="../js/lib/jquery.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<body style="background: #F7F7F7;">
+  <div class="app_box">
+    <div class="app_header_box">
+      <h2 class="app_header_title">Dec App Store</h2>
+      <div class="float_r app_header_right">
+      </div>
+    </div>
+    <div class="app_content_box">
+      <div class="app_content_title_box">
+        <div class="app_title_box">
+          <h3 class="app_content_title">Dec App Detail</h3>
+          <a href="cyfs://static/DecAppStore/app_store_list.html" class="app_content_title_href">Dec App List</a>
+        </div>
+        <div class="app_subtitle_box">
+          <i class="float_r "></i>
+          <button class="float_r app_plain_btn open_install_app_btn">Install From URL</button>
+          <i class="float_r"></i>
+        </div>
+      </div>
+      <div class="app_detail_box">
+        <div class="app_detail_icon_box">
+          <img class="app_detail_icon" src="" alt="">
+        </div>
+        <div class="float_l" >
+          <h3 class="app_detail_title">Cyber Chat</h3>
+          <p class="app_detail_overview"><span  class="app_detail_overview_extra">Overview：</span><span class="app_detail_overview_more">more</span></p>
+          <p class="app_detail_dec_id_p"><span class="app_detail_dec_id">Dec-ID：</span><i class="upload_app_info_id_copy"></i></p>
+          <p class="app_detail_developer_p">
+            <span class="app_detail_developer">Developer：</span><i class="upload_app_info_id_copy"></i>
+          </p>
+          <ul class="app_detail_ul">
+            <li class="app_detail_share_box">
+              <i class="app_detail_share_cyfs"></i>
+              <i class="app_detail_share_discard"></i>
+              <i class="app_detail_share_twitter"></i>
+              <i class="app_detail_share_github"></i>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="app_detail_version_box">
+        <h3 class="app_vicebox_title">Version List</h3>
+        <div class="app_detail_version_list">
+          <table class="app_detail_version_table app_table">
+            <thead>
+              <td>Version</td>
+              <td>Summary</td>
+              <td>Release date</td>
+              <td></td>
+            </thead>
+            <tbody class="app_detail_version_tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="app_detail_software_box">
+        <h3 class="app_vicebox_title">Client Software</h3>
+        <ul class="app_detail_software_list">
+          <li>
+            <i class="app_detail_software_android"></i>
+            <span>Android</span>
+          </li>
+          <li>
+            <i class="app_detail_software_ios"></i>
+            <span>IOS</span>
+          </li>
+          <li>
+            <i class="app_detail_software_windows"></i>
+            <span>Windows</span>
+          </li>
+          <li>
+            <i class="app_detail_software_macos"></i>
+            <span>MacOS</span>
+          </li>
+          <li>
+            <i class="app_detail_software_linux"></i>
+            <span>Linux</span>
+          </li>
+          <li>
+            <i class="app_detail_software_other"></i>
+            <span>Other</span>
+          </li>
+          <div class="clear_both"></div>
+        </ul>
+      </div>
+    </div>
+    <div class="app_footer_box">
+      <div class="app_footer_content_box">
+        <div class="float_l app_footer_box_l">
+          <p><a href="javascript:">How Cyfs work ?</a></p>
+          <p><a href="javascript:">How to develop Dec App ?</a></p>
+        </div>
+        <div class="float_r app_footer_box_r">
+          <i class="app_footer_discard_i"></i>
+          <i class="app_footer_cyfs_i"></i>
+          <p class="float_r">Developer community</p>
+        </div>
+      </div>
+    </div>
+    <div class="anonymous_box">
+      <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
+      <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+    </div>
+  </div>
+  <div class="app_cover_box">
+    <div class="app_cover_content_box">
+      <i class="app_cover_close_i"></i>
+      <h3 class="app_cover_title">Install From URL</h3>
+      <p class="app_cover_input_p">Dec App URL</p>
+      <div class="overflow_h">
+        <input class="app_cover_input float_l" type="text">
+        <button class="app_primary_btn app_cover_input_btn float_r">Get App Info</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+<style>
+.app_detail_box{
+  border-bottom: 1px solid #E3E3E3;
+  padding: 44px 0 33px 0;
+  overflow: hidden;
+}
+.app_detail_icon_box{
+  float: left;
+  width: 112px;
+  height: 112px;
+  overflow: hidden;
+  margin-right: 12px;
+}
+.app_detail_icon_box img{
+  width: 100%;
+  height: 100%;
+}
+.app_detail_title{
+  width: 122px;
+  height: 29px;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 28px;
+  padding: 12px 0;
+}
+.app_detail_overview span, .app_detail_dec_id_p span, .app_detail_developer_p span{
+  display: block;
+  float: left;
+  line-height: 24px;
+}
+.app_detail_overview_extra{
+  width: 477px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-bottom: 14px;
+}
+.app_detail_overview_more{
+  margin-left: 10px;
+  color: #2873F7;
+}
+.app_detail_dec_id{
+  height: 19px;
+  padding: 2px 0 3px 0;
+  margin-right: 19px;
+  padding-bottom: 14px;
+}
+.app_detail_dec_id_p, .app_detail_overview, .app_detail_developer_p{
+  overflow: hidden;
+}
+.app_detail_developer{
+  padding-bottom: 17px;
+}
+.app_detail_ul{
+  height: 32px;
+}
+.app_detail_ul li{
+  float: left;
+  padding: 0 24px;
+  height: 19px;
+  border-left: 1px solid #000000;
+}
+.app_detail_ul li:nth-child(1){
+  padding-left: 0;
+  border: none;
+}
+.app_detail_share_box i{
+  display: block;
+  width: 32px;
+  height: 32px;
+  float: left;
+  margin-top: -6px;
+  margin-right: 4px;
+  cursor: pointer;
+}
+.app_detail_share_cyfs{
+  background: url(../img/app/app_detail_share_cyfs.svg) no-repeat center center;
+  background-size: 100%;
+}
+.app_detail_share_discard{
+  background: url(../img/app/app_detail_share_discard.svg) no-repeat center center;
+  background-size: 100%;
+}
+.app_detail_share_twitter{
+  background: url(../img/app/app_detail_share_twitter.svg) no-repeat center center;
+  background-size: 100%;
+}
+.app_detail_share_github{
+  background: url(../img/app/app_detail_share_github.svg) no-repeat center center;
+  background-size: 100%;
+}
+.app_detail_version_list{
+  padding: 24px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+  border-radius: 8px;  
+}
+.app_detail_version_table tbody td:last-child{
+  width: 208px;
+}
+.app_detail_version{
+  color: #2873F7;
+  cursor: pointer;
+}
+.app_detail_version_install, .app_detail_version_installed{
+  width: 88px;
+  height: 24px;
+  margin-right: 64px;
+  float: left;
+}
+.app_detail_version_share{
+  display: block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  background: url(../img/app/app_detail_version_share.svg) no-repeat center center;
+  cursor: pointer;
+}
+.app_detail_software_list li {
+  float: left;
+  width: 186px;
+  height: 64px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+  border-radius: 8px 8px 8px 8px;
+  margin-left: 16px;
+  cursor: pointer;
+}
+.app_detail_software_list li:first-child{
+  margin-left: 0;
+}
+.app_detail_software_list i{
+  display: block;
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin: 20px 16px 20px 47px;
+}
+.app_detail_software_list span{
+  display: block;
+  float: left;
+  height: 64px;
+  line-height: 64px;
+}
+.app_detail_software_android{
+  background: url(../img/app/app_detail_software_android.svg) no-repeat center center;
+}
+.app_detail_software_ios{
+  background: url(../img/app/app_detail_software_ios.svg) no-repeat center center;
+}
+.app_detail_software_windows{
+  background: url(../img/app/app_detail_software_windows.svg) no-repeat center center;
+}
+.app_detail_software_macos{
+  background: url(../img/app/app_detail_software_macos.svg) no-repeat center center;
+}
+.app_detail_software_linux{
+  background: url(../img/app/app_detail_software_linux.svg) no-repeat center center;
+}
+.app_detail_software_other{
+  background: url(../img/app/app_detail_software_other.svg) no-repeat center center;
+}
+</style>
+
+</html>

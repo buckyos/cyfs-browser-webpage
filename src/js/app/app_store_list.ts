@@ -127,6 +127,25 @@ class AppStoreListClass {
                         if (appBody.content().desc.is_some()) {
                             app_introduce = appBody.content().desc.unwrap().toString();
                         }
+                        let tagsHtml = '';
+                        let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
+                        console.log('appExtId:', appExtId);
+                        let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
+                        console.log('appExt:', appExt);
+                        if (!appExt.err) {
+                          if (appExt[0]) {
+                            let info = JSON.parse(appExt[0].info());
+                            console.origin.log('appExt-info', app.app_name, info);
+                            if (info.default && info.default['cyfs-app-store']){
+                              if(info.default['cyfs-app-store'].tag){
+                                  let tags = info.default['cyfs-app-store'].tag;
+                                  tags.forEach(tag => {
+                                    tagsHtml += `<a href="javascript:"># ${tag}</a>`;
+                                  });
+                              }
+                            }
+                          }
+                        }
                         if (app.app_name.indexOf(name) > -1 || !name) {
                             storeHtml +=  `<li>
                                             <div class="app_list_info">
@@ -139,10 +158,7 @@ class AppStoreListClass {
                                               </div>
                                             </div>
                                             <div class="app_list_extra_info">
-                                              <div class="app_list_extra_info_l">
-                                                <a href="javascript:"># chat</a>
-                                                <a href="javascript:"># wallet</a>
-                                              </div>
+                                              <div class="app_list_extra_info_l">${tagsHtml}</div>
                                               <div class="app_list_extra_info_r"></div>
                                             </div>
                                           </li>`;
@@ -163,7 +179,7 @@ AppStoreList.getAllAppList();
 // open app detail
 $('.app_list_box').on('click', '.app_list_info_l, .app_list_info_title', function () {
   let id = $(this).attr('data-id');
-  window.location.href = 'cyfs://static/DecAppStore/app_detail.html?id=' + id;
+  window.open('cyfs://static/DecAppStore/app_detail.html?id=' + id);
 })
 
 // open install app pop

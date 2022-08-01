@@ -90,6 +90,27 @@ class NONObject {
       return r;
     }
   }
+
+  async objectIdFormat(id:string | cyfs.DecAppId) {
+    let obj_id: cyfs.ObjectId;
+    if (typeof (id) == 'string') {
+        let idRet = cyfs.ObjectId.from_base_58(id);
+        console.log('idRet', idRet)
+        if (idRet.err) {
+            toast({
+            message: LANGUAGESTYPE == 'zh'? 'id格式错误': 'id error',
+            time: 1500, 
+            type: 'warn'
+            });
+            return;
+        } else {
+          obj_id = idRet.unwrap();
+        }
+    }else{
+      obj_id = id;
+    }
+    return obj_id;
+  }
 }
 
 export const ObjectUtil = new NONObject;
@@ -154,6 +175,19 @@ export function hasPC() {
     }
   }
   return ISPC;
+}
+
+// copy data
+export function copyData (data:string) {
+  $('#copy_textarea').text(data).show();
+  $('#copy_textarea').select();
+  document.execCommand('copy', false, '');
+  $('#copy_textarea').hide();
+  toast({
+      message: LANGUAGESTYPE == 'zh'?"复制成功":'Copied successfully',
+      time: 1500,
+      type: 'success'
+  });
 }
 
 //ecc转换

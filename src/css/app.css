@@ -149,9 +149,7 @@ a{
     line-height: 1;
 }
 .app_plain_btn{
-    height: 24px;
-    line-height: 24px;
-    padding: 0 23px;
+    line-height: 1;
     font-size: 12px;
     font-weight: 400;
     color: #0AD7B6;
@@ -207,7 +205,7 @@ a{
 .app_cover_box{
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     background: rgba(51, 51, 51, 0.4);
@@ -218,6 +216,7 @@ a{
     float: left;
     width: 24px;
     height: 24px;
+    cursor: pointer;
     background: url(../img/app/upload_app_info_id_copy.svg) no-repeat center center;
 }
 .app_table{
@@ -242,4 +241,78 @@ a{
     color: #202124;
     line-height: 28px;
     padding: 39px 0 16px 0;
+}
+.open_install_app_btn{
+    width: 140px;
+    height: 24px;
+}
+.close_cover_i{
+    display: block;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 11px;
+    right: 20px;
+    background: url(../img/app/app_cover_close_i.svg) no-repeat center center;
+    cursor: pointer;
+}
+/* switch css */
+.switch_label .switch_i {
+    width: 28px;
+    height: 16px;
+    position: relative;
+    border: 1px solid #BAC7CD;
+    background-color: #fff;
+    /* box-shadow: #dfdfdf 0 0 0 0 inset; */
+    border-radius: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-clip: content-box;
+    display: inline-block;
+    -webkit-appearance: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: none;
+    cursor: pointer;
+}
+/* block css */
+.switch_label .switch_i:before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 2px;
+    background-color: #BAC7CD;
+    left: 1px;
+    border-radius: 20px;
+    border-radius: 50%;
+    /* box-shadow: 0 1px 3px rgba(0,0,0,0.4); */
+}
+/* block moving distance to the right */
+.switch_label input:checked + .switch_i:before {
+    left:15px;
+    background-color: #0AD7B6;
+}
+/* hide checkbox */
+.switch_label input {
+    position:absolute;
+    opacity:0;
+    visibility:hidden;
+}
+/* block moving transition to the right */
+.switch_label.switch_animbg .switch_i:before {
+    -webkit-transition:left 0.3s;
+    transition:left 0.3s;
+}
+/* block moving color to the right */
+.switch_label.switch_animbg input:checked + .switch_i {
+    /* box-shadow:#dfdfdf 0 0 0 0 inset; */
+    /* background-color:#64bd63; */
+    border: 1px solid #0AD7B6;
+    -webkit-transition:border-color 0.4s,background-color ease 0.4s;
+    transition:border-color 0.4s,background-color ease 0.4s;
 }

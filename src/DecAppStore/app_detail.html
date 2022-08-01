@@ -12,51 +12,55 @@
 <body style="background: #F7F7F7;">
   <div class="app_box">
     <div class="app_header_box">
-      <h2 class="app_header_title">Dec App Store</h2>
+      <h2 class="app_header_title" set-lan="html:DecAppHtml.DecAppStore"></h2>
       <div class="float_r app_header_right">
       </div>
     </div>
     <div class="app_content_box">
       <div class="app_content_title_box">
         <div class="app_title_box">
-          <h3 class="app_content_title">Dec App Detail</h3>
-          <a href="cyfs://static/DecAppStore/app_store_list.html" class="app_content_title_href">Dec App List</a>
+          <h3 class="app_content_title" set-lan="html:DecAppHtml.DecAppDetail"></h3>
+          <a href="cyfs://static/DecAppStore/app_store_list.html" class="app_content_title_href" set-lan="html:DecAppHtml.DecAppList" target="_blank"></a>
         </div>
-        <div class="app_subtitle_box">
-          <i class="float_r "></i>
-          <button class="float_r app_plain_btn open_install_app_btn">Install From URL</button>
-          <i class="float_r"></i>
+        <div class="app_subtitle_box app_subtitle_detail_box">
+          <button class="float_r app_plain_btn app_tip_btn" set-lan="html:DecAppHtml.TipIt"></button>
+        </div>
+        <div class="app_subtitle_box app_subtitle_installed_box">
+          <button class="float_r app_plain_btn uninstall_installed_btn" set-lan="html:DecAppHtml.Uninstall"></button>
+          <button class="float_r app_plain_btn select_update_installed_btn" set-lan="html:DecAppHtml.SelectUpdateVersion"></button>
+          <button class="float_r app_primary_btn update_installed_btn" set-lan="html:DecAppHtml.Update"></button>
         </div>
       </div>
       <div class="app_detail_box">
         <div class="app_detail_icon_box">
-          <img class="app_detail_icon" src="" alt="">
+          <img class="app_detail_icon" src="../img/app/app_default_icon.svg" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
         </div>
         <div class="float_l" >
-          <h3 class="app_detail_title">Cyber Chat</h3>
+          <h3 class="app_detail_title"></h3>
           <p class="app_detail_overview"><span  class="app_detail_overview_extra">Overview：</span><span class="app_detail_overview_more">more</span></p>
-          <p class="app_detail_dec_id_p"><span class="app_detail_dec_id">Dec-ID：</span><i class="upload_app_info_id_copy"></i></p>
+          <p class="app_detail_dec_id_p"><span class="app_detail_dec_id">Dec-ID：</span></p>
           <p class="app_detail_developer_p">
-            <span class="app_detail_developer">Developer：</span><i class="upload_app_info_id_copy"></i>
+            <span class="app_detail_developer">Developer：</span>
           </p>
           <ul class="app_detail_ul">
-            <li class="app_detail_share_box">
+            <li class="app_detail_tag_box"></li>
+            <!-- <li class="app_detail_share_box">
               <i class="app_detail_share_cyfs"></i>
               <i class="app_detail_share_discard"></i>
               <i class="app_detail_share_twitter"></i>
               <i class="app_detail_share_github"></i>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
       <div class="app_detail_version_box">
-        <h3 class="app_vicebox_title">Version List</h3>
+        <h3 class="app_vicebox_title" set-lan="html:DecAppHtml.VersionList"></h3>
         <div class="app_detail_version_list">
           <table class="app_detail_version_table app_table">
             <thead>
-              <td>Version</td>
-              <td>Summary</td>
-              <td>Release date</td>
+              <td set-lan="html:DecAppHtml.Version"></td>
+              <td set-lan="html:DecAppHtml.Summary"></td>
+              <td set-lan="html:DecAppHtml.ReleaseDate"></td>
               <td></td>
             </thead>
             <tbody class="app_detail_version_tbody">
@@ -65,38 +69,57 @@
         </div>
       </div>
       <div class="app_detail_software_box">
-        <h3 class="app_vicebox_title">Client Software</h3>
+        <h3 class="app_vicebox_title" set-lan="html:DecAppHtml.ClientSoftware"></h3>
         <ul class="app_detail_software_list">
-          <li>
+          <li class="app_software_android">
             <i class="app_detail_software_android"></i>
             <span>Android</span>
           </li>
-          <li>
+          <li class="app_software_ios">
             <i class="app_detail_software_ios"></i>
             <span>IOS</span>
           </li>
-          <li>
+          <li class="app_software_windows">
             <i class="app_detail_software_windows"></i>
             <span>Windows</span>
           </li>
-          <li>
+          <li class="app_software_macos">
             <i class="app_detail_software_macos"></i>
             <span>MacOS</span>
           </li>
-          <li>
+          <li class="app_software_linux">
             <i class="app_detail_software_linux"></i>
             <span>Linux</span>
           </li>
-          <li>
+          <li class="app_software_other">
             <i class="app_detail_software_other"></i>
             <span>Other</span>
           </li>
           <div class="clear_both"></div>
         </ul>
       </div>
+      <div class="app_detail_info_container">
+        <h3 class="app_vicebox_title" set-lan="html:DecAppHtml.AppInfo"></h3>
+        <div class="app_detail_info_padding_box">
+          <ul class="app_detail_info_box">
+            <li>
+              <p set-lan="html:DecAppHtml.VersionColon"></p>
+              <p class="app_installed_version"></p>
+            </li>
+            <li>
+              <p set-lan="html:DecAppHtml.SummaryColon"></p>
+              <p class="app_installed_summary"></p>
+            </li>
+            <!-- <li>
+              <p>Install time :</p>
+              <p class="app_installed_time">V 1.4</p>
+            </li> -->
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="app_footer_box">
-      <div class="app_footer_content_box">
+      <!-- <div class="app_footer_content_box">
         <div class="float_l app_footer_box_l">
           <p><a href="javascript:">How Cyfs work ?</a></p>
           <p><a href="javascript:">How to develop Dec App ?</a></p>
@@ -106,24 +129,43 @@
           <i class="app_footer_cyfs_i"></i>
           <p class="float_r">Developer community</p>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="anonymous_box">
       <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
       <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
     </div>
   </div>
-  <div class="app_cover_box">
-    <div class="app_cover_content_box">
-      <i class="app_cover_close_i"></i>
-      <h3 class="app_cover_title">Install From URL</h3>
-      <p class="app_cover_input_p">Dec App URL</p>
-      <div class="overflow_h">
-        <input class="app_cover_input float_l" type="text">
-        <button class="app_primary_btn app_cover_input_btn float_r">Get App Info</button>
+  <div class="app_cover_box app_cover_tip_box">
+    <div class="app_cover_amount_box">
+      <h3 class="app_cover_overview_title" set-lan="html:DecAppHtml.Tip"></h3>
+      <i class="close_cover_i"></i>
+      <div class="app_tip_box">
+        <p class="app_tip_amount_p" set-lan="html:DecAppHtml.Amount"></p>
+        <input type="text" class="app_tip_amount_input">
+        <p class="app_tip_gasfee_p">*Gas fee: 0.0048 ECC</p>
+        <p class="app_tip_payment_p">Payment: XXX ECC</p>
+        <button class="app_tip_next_btn app_primary_btn" set-lan="html:Next"></button>
       </div>
     </div>
   </div>
+  <div class="app_cover_box app_cover_scan_container">
+    <div class="app_cover_scan_box">
+      <i class="close_cover_i"></i>
+      <div class="app_tip_scan_box">
+        <canvas id="app_tip_scan_box"></canvas>
+      </div>
+      <p class="app_tip_scan_p" set-lan="html:DecAppHtml.ScanTip"></p>
+    </div>
+  </div>
+  <div class="app_cover_box app_cover_overview_container">
+    <div class="app_cover_overview_box">
+      <h3 class="app_cover_overview_title" set-lan="html:DecAppHtml.Overview"></h3>
+      <i class="close_cover_i"></i>
+      <div class="app_overview_box"></div>
+    </div>
+  </div>
+  <textarea id="copy_textarea" style="display:none;"></textarea>
 </body>
 
 <style>
@@ -144,12 +186,15 @@
   height: 100%;
 }
 .app_detail_title{
-  width: 122px;
   height: 29px;
   font-size: 22px;
   font-weight: bold;
   line-height: 28px;
   padding: 12px 0;
+}
+.app_detail_subtitle{
+  color: #606060;
+  padding: 0 11px 0 8px;
 }
 .app_detail_overview span, .app_detail_dec_id_p span, .app_detail_developer_p span{
   display: block;
@@ -157,7 +202,7 @@
   line-height: 24px;
 }
 .app_detail_overview_extra{
-  width: 477px;
+  max-width: 477px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -166,6 +211,7 @@
 .app_detail_overview_more{
   margin-left: 10px;
   color: #2873F7;
+  cursor: pointer;
 }
 .app_detail_dec_id{
   height: 19px;
@@ -237,8 +283,8 @@
   float: left;
 }
 .app_detail_version_share{
-  display: block;
-  float: left;
+  display: inline-block;
+  vertical-align: text-bottom;
   width: 24px;
   height: 24px;
   background: url(../img/app/app_detail_version_share.svg) no-repeat center center;
@@ -287,6 +333,155 @@
 }
 .app_detail_software_other{
   background: url(../img/app/app_detail_software_other.svg) no-repeat center center;
+}
+.app_detail_info_box{
+  width: 1117px;
+  border-radius: 8px 8px 8px 8px;
+  border: 1px solid #DADCE0;
+  padding: 7px 0 45px 35px ;
+}
+.app_detail_info_padding_box{
+  padding: 24px;
+  box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.0800);
+  border-radius: 8px 8px 8px 8px;
+  background: #fff;
+}
+.app_detail_info_box li{
+  height: 19px;
+  padding: 7px 0;
+}
+.app_detail_info_box li p{
+  height: 19px;
+  line-height: 24px;
+  float: left;
+  text-align: left;
+}
+.app_detail_info_box li p:nth-child(1){
+  width: 168px;
+}
+.app_detail_software_box, .app_detail_version_box, .app_detail_info_container{
+  display: none;
+}
+.update_installed_btn, .uninstall_installed_btn{
+  width: 88px;
+  height: 24px;
+  margin-left: 10px;
+  float: right;
+}
+.select_update_installed_btn{
+  width: 163px;
+  height: 24px;
+  margin-left: 10px;
+  float: right;
+}
+.app_cover_overview_box{
+  width: 513px;
+  padding-bottom: 64px;
+  background: #fff;
+  position: absolute;
+  top: 320px;
+  left: 50%;
+  margin-left: -256px;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.0800);
+  border-radius: 16px;
+}
+.app_cover_overview_title{
+  height: 21px;
+  font-weight: bold;
+  line-height: 28px;
+  padding: 24px 0 29px 20px;
+}
+.app_overview_box{
+  width: 477px;
+  margin: 0 auto;
+}
+.app_tip_btn{
+  width: 88px;
+  height: 24px;
+}
+.app_subtitle_box{
+  display: none;
+}
+.app_cover_amount_box{
+  width: 513px;
+  height: 278px;
+  background: #fff;
+  position: absolute;
+  top: 320px;
+  left: 50%;
+  margin-left: -256px;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.0800);
+  border-radius: 16px;
+}
+.app_tip_box{
+  width: 473px;
+  padding: 0 20px;
+}
+.app_tip_amount_p{
+  height: 19px;
+  line-height: 28px;
+  padding: 0 0 12px 0;
+}
+.app_tip_amount_input{
+  width: 100%;
+  height: 32px;
+  line-height: 32px;
+  background: #F6F7FC;
+  border-radius: 4px;
+}
+.app_tip_gasfee_p{
+  height: 14px;
+  font-size: 10px;
+  line-height: 28px;
+  color: #606060;
+  padding: 14px 0 10px 0;
+}
+.app_tip_payment_p{
+  height: 19px;
+  line-height: 28px;
+  padding-bottom: 35px;
+}
+.app_tip_next_btn{
+  display: block;
+  width: 72px;
+  height: 32px;
+  margin: 0 auto;
+}
+.app_cover_scan_box{
+  width: 320px;
+  height: 224px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.0800);
+  border-radius: 16px 16px 16px 16px;
+  position: absolute;
+  top: 320px;
+  left: 50%;
+  margin-left: -160px;
+}
+.app_tip_scan_box{
+  width: 88px;
+  height: 88px;
+  margin: 0 auto;
+  margin-top: 59px;
+}
+.app_tip_scan_p{
+  text-align: center;
+  font-size: 12px;
+  height: 16px;
+  line-height: 24px;
+  padding-top: 37px;
+}
+.app_tip_scan_box img{
+    width: 100%;
+    height: 100%;
+}
+.app_detail_tag_box span{
+  display: block;
+  float: left;
+  margin-right: 18px;
+  height: 19px;
+  color: #202124;
+  line-height: 24px;
 }
 </style>
 

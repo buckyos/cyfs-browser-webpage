@@ -12,44 +12,26 @@
 <body style="background: #F7F7F7;">
   <div class="app_box">
     <div class="app_header_box">
-      <h2 class="app_header_title">Dec App Store</h2>
+      <h2 class="app_header_title" set-lan="html:DecAppHtml.DecAppStore"></h2>
       <div class="float_r app_header_right">
       </div>
     </div>
     <div class="app_content_box">
       <div class="app_content_title_box">
         <div class="app_title_box">
-          <h3 class="app_content_title">Dec App List</h3>
-          <a href="javascript:" class="app_content_title_href">Installed</a>
+          <h3 class="app_content_title" set-lan="html:DecAppHtml.DecAppList"></h3>
+          <a href="cyfs://static/DecAppStore/app_installed_list.html" class="app_content_title_href" target="_blank" set-lan="html:DecAppHtml.Installed"></a>
         </div>
         <div class="app_subtitle_box">
-          <button class="float_r app_plain_btn open_install_app_btn">Install From URL</button>
+          <button class="float_r app_plain_btn open_install_app_btn" set-lan="html:DecAppHtml.InstallFromUrl"></button>
         </div>
       </div>
       <ul class="app_list_box">
-        <li>
-          <div class="app_list_info">
-            <div class="app_list_info_l">
-              <img src="../img/access_information_arrow.svg" alt="">
-            </div>
-            <div class="app_list_info_r">
-              <p class="app_list_info_title">Cyber Chat</p>
-              <p class="app_list_info_subtitle"></p>
-            </div>
-          </div>
-          <div class="app_list_extra_info">
-            <div class="app_list_extra_info_l">
-              <a href="javascript:"># chat</a>
-              <a href="javascript:"># wallet</a>
-            </div>
-            <div class="app_list_extra_info_r"></div>
-          </div>
-        </li>
       </ul>
-      <button class="app_primary_btn app_upload_btn">Upload your Dec APP</button>
+      <!-- <button class="app_primary_btn app_upload_btn">Upload your Dec APP</button> -->
     </div>
     <div class="app_footer_box">
-      <div class="app_footer_content_box">
+      <!-- <div class="app_footer_content_box">
         <div class="float_l app_footer_box_l">
           <p><a href="javascript:">How Cyfs work ?</a></p>
           <p><a href="javascript:">How to develop Dec App ?</a></p>
@@ -59,7 +41,7 @@
           <i class="app_footer_cyfs_i"></i>
           <p class="float_r">Developer community</p>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="anonymous_box">
       <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
@@ -69,11 +51,11 @@
   <div class="app_cover_box">
     <div class="app_cover_content_box">
       <i class="app_cover_close_i"></i>
-      <h3 class="app_cover_title">Install From URL</h3>
-      <p class="app_cover_input_p">Dec App URL</p>
+      <h3 class="app_cover_title" set-lan="html:DecAppHtml.InstallFromUrl"></h3>
+      <p class="app_cover_input_p" >Dec App URL</p>
       <div class="overflow_h">
         <input class="app_cover_input float_l" type="text">
-        <button class="app_primary_btn app_cover_input_btn float_r">Get App Info</button>
+        <button class="app_primary_btn app_cover_input_btn float_r" set-lan="html:DecAppHtml.GetAppInfo"></button>
       </div>
     </div>
   </div>

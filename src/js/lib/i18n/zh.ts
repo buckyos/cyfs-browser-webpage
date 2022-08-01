@@ -6,6 +6,7 @@ export const zh =  {
     "Next": "下一步",
     "Cancel": "取消",
     "Yes": "确定",
+    "No": "取消",
     "Previous": "上一步",
     "WelcomeStep1": "数字身份就像是你在网络世界旅行的通行证。要设置数字身份，您需要下载<a class='color475 text_decoration_none'href='https://www.cyfs.com/download_en.html#chat' target='_blank'>超送</a>。如果您已经拥有数字身份，只需单击<a class='color475 text_decoration_none skip_to_scan' target='_blank'>在此处</a>激活CYFS浏览器。",
     "WelcomeStep2": "干得好!<br/>下一步，你需要设置一个OOD作为你的个人服务器，因为所有DEC应用都将在OOD上运行。你可以在CYFS官方网站上找到教程，了解<a class='color475 text_decoration_none'href='https://www.cyfs.com/ood_en.html' target='_blank'>如何访问OOD</a>",
@@ -168,4 +169,40 @@ export const zh =  {
         "ClickScan": "<span>点击 '</span><b class='guide_acivate_info_two_add'></b><span>' -> 点击 '</span><b class='guide_acivate_info_two_scan'></b><span></span>' 去扫码</span>",
         "EditInformation": "编辑你的设备信息",
     },
+    "DecAppHtml":{
+        "DecAppStore": "应用商店",
+        "DecAppList": "应用列表",
+        "Installed": "已安装",
+        "InstallFromUrl": "通过URL安装",
+        "DecAppDetail": "应用详情",
+        "TipIt": "打赏",
+        "Tip": "打赏",
+        "VersionList": "版本列表",
+        "Version": "版本",
+        "Summary": "摘要",
+        "ReleaseDate": "发布日期",
+        "ClientSoftware": "客户端软件",
+        "Update": "更新",
+        "VersionColon": "版本 :",
+        "SummaryColon": "摘要 :",
+        "AppInfo": "应用信息",
+        "Uninstall": "卸载",
+        "SelectUpdateVersion": "选择更新版本",
+        "InstalledTitle": "已安装应用",
+        "Setting": "设置",
+        "AutomaticUpdateAllApps": "自动更新所有app",
+        "WarningQuestion": "确定要卸载这个APP吗？",
+        "GetAppInfo": "获取应用信息",
+        "Amount": "金额:",
+        "ScanTip": "请使用“Cyber Chat”扫描上面的二维码",
+        "Overview": "简介",
+
+        
+        
+        
+
+
+
+        
+    }
 }

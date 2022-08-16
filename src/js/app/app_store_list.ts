@@ -2,7 +2,7 @@ import $ from 'jquery';
 import * as cyfs from '../../cyfs_sdk/cyfs'
 import { toast } from '../lib/toast.min'
 import { ObjectUtil, formatDate, LANGUAGESTYPE } from '../lib/util'
-import { isBind, AppUtil } from './app_util'
+import { isBind, AppUtil, AppDetailUtil } from './app_util'
 
 let g_isBind:boolean;
 
@@ -31,81 +31,11 @@ class AppStoreListClass {
         this.m_util_service = this.m_sharedStatck.util();
     }
 
-    async getObjectId(url) {
-        var myHeaders = new Headers();
-        var myRequest = new Request(url, {
-          method: 'GET',
-          headers: myHeaders,
-          mode: 'cors',
-          cache: 'default',
-        });
-        fetch(myRequest).then(function (response) {
-          if (response.status == 200) {
-            return response.blob();
-          } else {
-            toast({
-              message: LANGUAGESTYPE == 'zh'? '无效url': 'Invalid URL',
-              time: 1500,
-              type: 'warn'
-            });
-            return;
-          }
-        }).then(async function (myBlob) {
-          return myBlob.arrayBuffer();
-        }).then(async function (buffer) {
-          console.log('new Uint8Array(buffer)', url, new Uint8Array(buffer), new Uint8Array(buffer).toHex())
-          let result = new cyfs.DecAppDecoder().raw_decode(new Uint8Array(buffer));
-          if (result.err) {
-            toast({
-              message: LANGUAGESTYPE == 'zh'? '添加失败': 'Add failed',
-              time: 1500,
-              type: 'warn'
-            });
-          } else {
-            const [dec_app, rest] = result;
-            console.origin.log('dec_app', dec_app, dec_app.desc().calculate_id(), dec_app.desc().owner().unwrap())
-            AppStoreList.addToStore(dec_app.desc().calculate_id(), dec_app.desc().owner().unwrap());
-          }
-        });
-    };
 
-    async addToStore(id, ownerId) {
-        let result = await this.m_util_service.get_device({ common: { flags: 0 } });
-        if (!result.err) {
-          result = result.unwrap()
-        }
-        let current_device = result.device
-        let owner = current_device.desc().owner().unwrap();
-        const appCmdObj = cyfs.AppCmd.add(owner, id, ownerId);
-        console.origin.log('---appCmdObj', appCmdObj)
-        let putResult = await ObjectUtil.postObj(appCmdObj);
-        console.origin.log('---putResult', putResult)
-        if (putResult.err && putResult.val.code != cyfs.BuckyErrorCode.Ignored) {
-          if(putResult.val.code == cyfs.BuckyErrorCode.AlreadyExists){
-            toast({
-              message: LANGUAGESTYPE == 'zh'? 'app已经存在！': 'App already exists!',
-              time: 1500,
-              type: 'warn'
-            });
-          }else{
-            toast({
-              message: LANGUAGESTYPE == 'zh'? '添加失败': 'Add failed',
-              time: 1500,
-              type: 'warn'
-            });
-          }
-        } else {
-          AppStoreList.getAllAppList();
-          toast({
-            message: LANGUAGESTYPE == 'zh'? '添加成功': 'Added successfully',
-            time: 1500,
-            type: 'success'
-          });
-        }
-    }
+
 
     //app store list
-    async getAllAppList(name?: string) {
+    async getAllAppList() {
         let r = await AppUtil.getAllAppListFun();
         console.origin.log('-------------r', r)
         if (r.err) {
@@ -121,60 +51,70 @@ class AppStoreListClass {
                         console.log('--------------------element', i, storeList[i], storeList[i].object_id)
                         let app = await AppUtil.showApp(storeList[i].object_id, false);
                         g_appList.push(app);
-                        console.log('------------------------------app', app)
-                        let appBody = app.app.body().unwrap();
-                        let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
-                        if (appBody.content().desc.is_some()) {
-                            app_introduce = appBody.content().desc.unwrap().toString();
-                        }
-                        let tagsHtml = '';
-                        let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
-                        console.log('appExtId:', appExtId);
-                        let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
-                        console.log('appExt:', appExt);
-                        if (!appExt.err) {
-                          if (appExt[0]) {
-                            let info = JSON.parse(appExt[0].info());
-                            console.origin.log('appExt-info', app.app_name, info);
-                            if (info.default && info.default['cyfs-app-store']){
-                              if(info.default['cyfs-app-store'].tag){
-                                  let tags = info.default['cyfs-app-store'].tag;
-                                  tags.forEach(tag => {
-                                    tagsHtml += `<a href="javascript:"># ${tag}</a>`;
-                                  });
-                              }
-                            }
-                          }
-                        }
-                        if (app.app_name.indexOf(name) > -1 || !name) {
-                            storeHtml +=  `<li>
-                                            <div class="app_list_info">
-                                              <div class="app_list_info_l" data-id="${storeList[i].object_id}">
-                                                <img src="${app.app_icon || '../img/appmanager/app_default.svg'}" onerror="this.src='../img/appmanager/app_default.svg';this.οnerrοr=null" alt="">
-                                              </div>
-                                              <div class="app_list_info_r">
-                                                <p class="app_list_info_title" data-id="${storeList[i].object_id}">${app.app_name}</p>
-                                                <p class="app_list_info_subtitle">${app_introduce}</p>
-                                              </div>
-                                            </div>
-                                            <div class="app_list_extra_info">
-                                              <div class="app_list_extra_info_l">${tagsHtml}</div>
-                                              <div class="app_list_extra_info_r"></div>
-                                            </div>
-                                          </li>`;
-                        }
                     }
                 }
-                $('.app_list_box').html(storeHtml);
+                g_appList = await g_appList.sort(AppStoreList.sortNumber);
+                console.origin.log('sort-g_appList', g_appList);
+                $('.app_list_box').html('');
+                for (let i = 0; i < g_appList.length; i++) {
+                  let app = g_appList[i];
+                  console.origin.log('------------------------------app', app)
+                  let appBody = app.app.body().unwrap();
+                  let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
+                  if (appBody.content().desc.is_some()) {
+                      app_introduce = appBody.content().desc.unwrap().toString();
+                  }
+                  let tagsHtml = '';
+                  let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
+                  console.log('appExtId:', appExtId);
+                  let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
+                  console.log('appExt:', appExt);
+                  if (!appExt.err) {
+                    if (appExt[0]) {
+                      let info = JSON.parse(appExt[0].info());
+                      console.origin.log('appExt-info', app.app_name, info);
+                      if (info.default && info.default['cyfs-app-store']){
+                        if(info.default['cyfs-app-store'].tag){
+                            let tags = info.default['cyfs-app-store'].tag;
+                            tags.forEach(tag => {
+                              tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}" target="_blank"># ${tag}</a>`;
+                            });
+                        }
+                      }
+                    }
+                  }
+                  storeHtml =  `<li>
+                                  <div class="app_list_info">
+                                    <div class="app_list_info_l" data-id="${app.app_id}">
+                                      <img src="${app.app_icon || '../img/appmanager/app_default.svg'}" onerror="this.src='../img/appmanager/app_default.svg';this.οnerrοr=null" alt="">
+                                    </div>
+                                    <div class="app_list_info_r">
+                                      <p class="app_list_info_title" data-id="${app.app_id}">${ app.app_name}</p>
+                                      <p class="app_list_info_subtitle">${app_introduce}</p>
+                                    </div>
+                                  </div>
+                                  <div class="app_list_extra_info">
+                                    <div class="app_list_extra_info_l">${tagsHtml}</div>
+                                    <div class="app_list_extra_info_r"></div>
+                                  </div>
+                                </li>`;
+                  $('.app_list_box').append(storeHtml);
+                }
             } else {
                 $('.app_list_box').html(LANGUAGESTYPE == 'zh'? '无' : 'None');
             }
         }
     }
+
+    sortNumber(a,b){
+      return b.app.body().unwrap().update_time() - a.app.body().unwrap().update_time();
+    }
 }
 
 export const AppStoreList = new AppStoreListClass;
 AppStoreList.getAllAppList();
+
+
 
 // open app detail
 $('.app_list_box').on('click', '.app_list_info_l, .app_list_info_title', function () {
@@ -184,6 +124,7 @@ $('.app_list_box').on('click', '.app_list_info_l, .app_list_info_title', functio
 
 // open install app pop
 $('.open_install_app_btn').on('click', function () {
+    $('.app_cover_box .app_cover_input').val('');
     $('.app_cover_box').css('display', 'block');
 })
 
@@ -202,7 +143,7 @@ $('.app_cover_box').on('click', '.app_cover_input_btn', function () {
     console.log('coverInput.indexOf("cyfs://")', coverInput.indexOf("cyfs://"))
     if (coverInput.indexOf("cyfs://") == 0) {
       let txt = coverInput.replace('cyfs:/', 'http://127.0.0.1:38090');
-      AppStoreList.getObjectId(txt);
+      AppDetailUtil.getObjectId(txt);
       $('.app_cover_box').css('display', 'none');
       $('#cover_input').val("");
     } else {

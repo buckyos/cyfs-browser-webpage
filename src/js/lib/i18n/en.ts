@@ -189,5 +189,27 @@ export const en =  {
         "ScanTip": "Please use Cyber Chat to scan the QR code above",
         "Overview": "Overview",
 
+    },
+    "UploadDecAppHtml":{
+        "Overview": "Overview:",
+        "Tag": "Tag:",
+        "DecAppName": "Dec app name:",
+        "AppIcon": "App Icon:",
+        "IsClient": "Is client software required ?",
+        "Community": "Community:",
+        "Client": "Client:",
+        "AppInfo": "App info",
+        "Yes": "Yes",
+        "No": "No",
+        "Edit": "Edit",
+        "AddTag": "+ Add tag",
+        "Submit": "Submit",
+        "TipHtml": "like and tip list",
+        "Install": "Install",
+        "DecAppURL": "Dec app URL:",
+    },
+    "DecAppTagHtml":{
+        "UploadDecAPP": "Upload your Dec APP",
     }
+
 }

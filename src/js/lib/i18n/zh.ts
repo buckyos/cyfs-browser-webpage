@@ -196,13 +196,26 @@ export const zh =  {
         "Amount": "金额:",
         "ScanTip": "请使用“Cyber Chat”扫描上面的二维码",
         "Overview": "简介",
-
-        
-        
-        
-
-
-
-        
+    },
+    "UploadDecAppHtml":{
+        "Overview": "简介:",
+        "Tag": "标签:",
+        "DecAppName": "应用名称:",
+        "AppIcon": "应用图标:",
+        "IsClient": "是否需求客户端软件支持 ?",
+        "Community": "社区:",
+        "Client": "客户端:",
+        "AppInfo": "应用信息",
+        "Yes": "是",
+        "No": "否",
+        "Edit": "编辑",
+        "AddTag": "+ 添加标签",
+        "Submit": "提交",
+        "TipHtml": "打赏列表",
+        "Install": "安装",
+        "DecAppURL": "应用URL:",
+    },
+    "DecAppTagHtml":{
+        "UploadDecAPP": "上传你的 Dec APP",
     }
 }

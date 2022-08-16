@@ -44,7 +44,6 @@ class AppManager {
     // get app installed list
     async getAppList() {
         const list_ret = await AppUtil.getAllAppListFun();
-        $('.app_tag_list').html('');
         console.origin.log('app installed list result:', list_ret);
         if (list_ret.err || !list_ret.app_list().size) {
             $('.app_tag_list').html(LANGUAGESTYPE == 'zh'? '无' : 'None');
@@ -60,8 +59,9 @@ class AppManager {
                     app_installed_list.push(app);
                 }
             }
-            g_installedList = app_installed_list;
+            g_installedList = await app_installed_list.sort(appManager.sortNumber);
             let installHtml:string = '';
+            $('.app_tag_list').html('');
             for (const app of app_installed_list) {
                 console.origin.log('------------app-detail', app);
                 installHtml =   `<li>
@@ -83,6 +83,9 @@ class AppManager {
                 $('.app_tag_list').append(installHtml);
             }
         }
+    }
+    sortNumber(a,b){
+        return b.app.body().unwrap().update_time() - a.app.body().unwrap().update_time();
     }
 }
 

@@ -2,7 +2,7 @@ html, body {
     width: 100%;
     height: 100%;
 }
-html, body, div, span, p, h1, h2, h3, h4, h5, strong, h6, i, b, a, button, table, thead, tbody, th, tr, td, ul, li{
+html, body, div, span, p, h1, h2, h3, h4, h5, strong, h6, i, b, a, table, thead, tbody, th, tr, td, ul, li,input, button, select{
     padding: 0;
     margin: 0;
     font-family: 'PingFang SC', '微软雅黑';

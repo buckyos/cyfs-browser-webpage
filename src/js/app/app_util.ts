@@ -203,13 +203,17 @@ class AppUtilClass {
           console.log('getAllAppListFun-ret-err', ret);
           return ret;
         }
+        console.origin.log('22222222222222222222-ret', ret);
+
         const retDecoder = decoder.raw_decode(ret.unwrap().object.object_raw);
+        console.origin.log('11111111111111retDecoder-ret', retDecoder);
+
         if (retDecoder.err) {
           console.log('retDecoder-ret-err', ret);
           return retDecoder;
         }
+
         const [obj, _] = retDecoder.unwrap();
-        console.origin.log('retDecoder-ret', obj);
         return obj;
     }
 
@@ -256,7 +260,7 @@ class AppUtilClass {
     async appIdFormat(id:string | cyfs.DecAppId) {
         let app_id: cyfs.DecAppId;
         if (typeof (id) == 'string') {
-            let idRet = cyfs.ObjectId.from_base_58(id);
+            let idRet = cyfs.DecAppId.from_base_58(id);
             console.log('idRet', idRet)
             if (idRet.err) {
                 toast({
@@ -366,7 +370,7 @@ class AppDetailUtilClass {
         let app_id: cyfs.DecAppId | undefined = await AppUtil.appIdFormat(id);
         if(app_id){
             const appCmdObj = cyfs.AppCmd.install(owner, app_id, version, true);
-            console.origin.log('---appCmdObj', appCmdObj)
+            console.origin.log('--installApp-appCmdObj', appCmdObj)
             let postResult = await ObjectUtil.postObj(appCmdObj);
             if (postResult.err && postResult.val.code != cyfs.BuckyErrorCode.Ignored) {
                 toast({
@@ -379,12 +383,88 @@ class AppDetailUtilClass {
                 toast({
                     message: LANGUAGESTYPE == 'zh'? '安装成功' : 'Install succeeded',
                     time:1500,
-                    type: 'warn'
+                    type: 'success'
                 });
                 return true;
             }
         }else{
             return false;
+        }
+    }
+
+    async getObjectId(url) {
+        var myHeaders = new Headers();
+        var myRequest = new Request(url, {
+          method: 'GET',
+          headers: myHeaders,
+          mode: 'cors',
+          cache: 'default',
+        });
+        fetch(myRequest).then(function (response) {
+          if (response.status == 200) {
+            return response.blob();
+          } else {
+            toast({
+              message: LANGUAGESTYPE == 'zh'? '应用不存在': 'The Dec App does not exist.',
+              time: 1500,
+              type: 'warn'
+            });
+            return;
+          }
+        }).then(async function (myBlob) {
+          return myBlob?.arrayBuffer();
+        }).then(async function (buffer) {
+          console.log('new Uint8Array(buffer)', url, new Uint8Array(buffer!), new Uint8Array(buffer!).toHex())
+          let result = new cyfs.DecAppDecoder().raw_decode(new Uint8Array(buffer!));
+          if (result.err) {
+            toast({
+              message: LANGUAGESTYPE == 'zh'? '安装失败': 'Install Failed.',
+              time: 1500,
+              type: 'warn'
+            });
+          } else {
+            const [dec_app, rest] = result;
+            console.origin.log('dec_app', dec_app, dec_app.desc().calculate_id());
+            window.location.href = 'cyfs://static/DecAppStore/app_detail.html?id=' + dec_app.desc().calculate_id();
+          }
+        });
+    };
+
+    async addToStore(id, ownerId) {
+        let app_id: cyfs.DecAppId | undefined = await AppUtil.appIdFormat(id);
+        if(!app_id){
+            return;
+        }
+        let owner_id: cyfs.ObjectId | undefined = await ObjectUtil.objectIdFormat(ownerId);
+        if(!owner_id){
+            return;
+        }
+        console.log('---owner_id', owner_id, app_id)
+
+        const appCmdObj = cyfs.AppCmd.add(owner_id, app_id);
+        console.origin.log('--addToStore-appCmdObj', appCmdObj)
+        let putResult = await ObjectUtil.postObj(appCmdObj);
+        console.origin.log('---putResult', putResult)
+        if (putResult.err && putResult.val.code != cyfs.BuckyErrorCode.Ignored) {
+          if(putResult.val.code == cyfs.BuckyErrorCode.AlreadyExists){
+            // toast({
+            //   message: LANGUAGESTYPE == 'zh'? 'app已经存在！': 'App already exists!',
+            //   time: 1500,
+            //   type: 'warn'
+            // });
+          }else{
+            toast({
+              message: LANGUAGESTYPE == 'zh'? '添加失败': 'Install Failed.',
+              time: 1500,
+              type: 'warn'
+            });
+          }
+        } else {
+          toast({
+            message: LANGUAGESTYPE == 'zh'? '添加成功': 'Install successfully.',
+            time: 1500,
+            type: 'success'
+          });
         }
     }
 

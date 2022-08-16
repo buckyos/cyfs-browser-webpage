@@ -15,6 +15,7 @@ let g_isInstalled:boolean = false;
 let g_overviewStr:string = '';
 let g_owner: cyfs.ObjectId;
 let g_app: { app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp };
+let g_versionTimeList:string[];
 
 $(async function(){
     isBind();
@@ -156,20 +157,19 @@ class AppManager {
         let app = g_app;
         let appStatus = await AppUtil.getAppStatus(g_appId);
         console.origin.log('getAppStatus-ret-err', appStatus);
-        if (appStatus.err) {
-            return;
+        if(!appStatus.err){
+            g_versionInstalled = appStatus.version();
+            g_statusInstalled = appStatus.status();
         }
-        g_versionInstalled = appStatus.version();
-        g_statusInstalled = appStatus.status();
         let appVersionsHtml = '';
         if (app.fidArray.length > 0) {
             app.fidArray.forEach(element => {
+                // <td>2022-06-15</td>
                 appVersionsHtml +=  `<tr>
                                         <td>
                                             <a class="app_detail_version">${element.version}</a>
                                         </td>
                                         <td>${element.summary}</td>
-                                        <td>2022-06-15</td>
                                         <td>
                                             ${(g_versionInstalled != element.version || g_statusInstalled == cyfs.AppLocalStatusCode.Init || g_statusInstalled == cyfs.AppLocalStatusCode.InstallFailed || g_statusInstalled == cyfs.AppLocalStatusCode.Uninstalled)?`<button class="app_primary_btn app_detail_version_install" data-version="${element.version}">${LANGUAGESTYPE == 'zh'?'安装': 'install'}</button>`:`<button class="app_disable_btn app_detail_version_installed">${LANGUAGESTYPE == 'zh'?'已安装': 'installed'}</button>`}
                                         </td>
@@ -191,8 +191,6 @@ $('.app_detail_box').on('click', '.upload_app_info_id_copy', function () {
 
 $('.app_detail_title').on('click', '.app_detail_version_share', function () {
     let href = 'cyfs://static/DecAppStore/app_detail.html?id=' + g_appId;
-    // console.log('href', href)
-    // window.open(href);
     $('#copy_textarea').text(href).show();
     $('#copy_textarea').select();
     document.execCommand('copy', false, '');
@@ -242,10 +240,11 @@ $('.app_cover_tip_box').on('click', '.app_tip_next_btn', function () {
     });
 })
 
-$(".app_detail_version_tbody").on('click', '.app_detail_version_install', function () {
+$(".app_detail_version_tbody").on('click', '.app_detail_version_install', async function () {
+    await AppDetailUtil.addToStore(g_appId, g_owner);
     let version = $(this).attr('data-version');
     if(version){
-        AppDetailUtil.installApp(g_appId, g_owner, version);
+        await AppDetailUtil.installApp(g_appId, g_owner, version);
     }
     appManager.renderVersionList();
 })

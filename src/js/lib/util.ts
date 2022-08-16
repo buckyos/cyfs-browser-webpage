@@ -71,7 +71,7 @@ class NONObject {
     }
   }
 
-  async postObj(obj:cyfs.DecApp|cyfs.AppCmd) {
+  async postObj(obj:cyfs.DecApp|cyfs.AppCmd|cyfs.AppExtInfo) {
     const router = this.m_router;
     let buf_len = obj.raw_measure().unwrap();
     let buf = new Uint8Array(buf_len);
@@ -91,7 +91,27 @@ class NONObject {
     }
   }
 
-  async objectIdFormat(id:string | cyfs.DecAppId) {
+  async putObj(obj:cyfs.DecApp|cyfs.AppCmd|cyfs.AppExtInfo) {
+    const router = this.m_router;
+    let buf_len = obj.raw_measure().unwrap();
+    let buf = new Uint8Array(buf_len);
+    obj.raw_encode(buf);
+    let r = await router.put_object({
+      object: new cyfs.NONObjectInfo(obj.desc().calculate_id(), buf),
+      common: {
+        level: cyfs.NONAPILevel.Router,
+        flags: 0
+      }
+    });
+    console.origin.log('--------putObj-r', r)
+    if (r.err && r.val.code != cyfs.BuckyErrorCode.Ignored) {
+      return r;
+    } else {
+      return r;
+    }
+  }
+
+  async objectIdFormat(id:string | cyfs.ObjectId) {
     let obj_id: cyfs.ObjectId;
     if (typeof (id) == 'string') {
         let idRet = cyfs.ObjectId.from_base_58(id);
@@ -156,9 +176,7 @@ export async function getStatus(){
     success:function(result){
       console.log('getStatus-result', result);
       if(result.anonymous || !result.is_bind){
-
       }else{
-        
       }
     }
   });
@@ -279,3 +297,15 @@ export const TXTYPES:{'zh':string,'en':string}[] = [
     'en': 'Withdraw'
   },
 ]
+
+export function lenghtstr(str:string){
+  var realLength = 0, len = str.length, charCode = -1;
+  for (var i = 0; i < len; i++) {
+      charCode = str.charCodeAt(i);
+      if (charCode >= 0 && charCode <= 128)
+          realLength += 1;
+      else
+          realLength += 2;
+  }
+  return realLength;
+}

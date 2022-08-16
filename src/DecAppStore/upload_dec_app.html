@@ -10,85 +10,240 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 </head>
 <body style="background: #F7F7F7;">
-  <div class="app_box">
+  <div class="app_box upload_app_container">
     <div class="app_header_box">
       <h2 class="app_header_title">Dec App Store</h2>
       <div class="float_r app_header_right">
       </div>
     </div>
-    <div class="app_content_box">
+    <div class="app_content_box overflow_h">
       <div class="app_content_title_box">
         <div class="app_title_box">
           <h3 class="app_content_title">UpLoad Dec App</h3>
-          <a href="cyfs://static/DecAppStore/app_store_list.html" class="app_content_title_href">Dec App List</a>
+          <a href="cyfs://static/DecAppStore/app_store_list.html" set-lan="html:DecAppHtml.DecAppList"  class="app_content_title_href"></a>
+        </div>
+        <div class="app_subtitle_box">
+          <button class="float_r app_plain_btn open_tip_btn" set-lan="html:UploadDecAppHtml.TipHtml" ></button>
         </div>
       </div>
       <div class="upload_app_box">
         <div class="upload_get_app_info">
-            <p class="upload_get_app_info_p">Dec App URL:</p>
+            <p class="upload_get_app_info_p" set-lan="html:UploadDecAppHtml.DecAppURL"></p>
             <input class="get_app_input" type="text">
-            <button class="get_app_info_btn app_primary_btn">Install</button>
+            <button class="get_app_info_btn app_primary_btn" set-lan="html:UploadDecAppHtml.Install" ></button>
         </div>
       </div>
-      <h3 class="upload_app_info_title">App info</h3>
-      <div class="upload_app_info_box">
-        <ul>
-            <li class="overflow_h upload_app_info_li">
-                <div class="float_l upload_app_info_label">Dec-ID:</div>
-                <div class="float_l upload_app_info_input">
-                    <p class="upload_app_info_dec_id">5bnZVFgWfofSgaUpdPmo2VXkPRpcjiFiFHWgWFPfkcX5</p>
-                    <i class="upload_app_info_id_copy"></i>
-                </div>
-                <div class="float_l"></div>
-            </li>
-            <li class="overflow_h upload_app_info_li">
-                <div class="float_l upload_app_info_label">Dec app name:</div>
-                <div class="float_l upload_app_info_input">
-                    <input class="upload_app_info_name" type="text" name="" id="">
-                </div>
-                <div class="float_l">
+      <div class="upload_app_info_container">
+        <h3 class="upload_app_info_title" set-lan="html:UploadDecAppHtml.AppInfo" ></h3>
+        <div class="upload_app_info_box">
+          <ul class="upload_app_info_ul">
+              <li class="overflow_h upload_app_info_li">
+                  <div class="float_l upload_app_info_label">Dec-ID:</div>
+                  <div class="float_l upload_app_info_input">
+                      <p class="upload_app_info_dec_id"></p>
+                      <i class="upload_app_info_id_copy"></i>
+                  </div>
+                  <div class="float_l"></div>
+              </li>
+              <li class="overflow_h upload_app_info_li">
+                  <div class="float_l upload_app_info_label" set-lan="html:UploadDecAppHtml.DecAppName" ></div>
+                  <div class="float_l upload_app_info_input">
+                      <input class="upload_app_info_name" disabled type="text" name="" id="">
+                  </div>
+                  <div class="float_l">
+                      <i class="upload_app_info_asterisk"></i>
+                  </div>
+              </li>
+              <li class="overflow_h upload_app_info_li">
+                  <div class="float_l upload_app_info_label" set-lan="html:UploadDecAppHtml.Overview"></div>
+                  <div class="float_l upload_app_info_input">
+                    <textarea name="" class="upload_app_overview_txt" id="upload_app_overview_txt" cols="30" rows="10"></textarea>
+                  </div>
+                  <div class="float_l">
                     <i class="upload_app_info_asterisk"></i>
+                  </div>
+              </li>
+              <li class="overflow_h upload_app_info_li">
+                  <div class="float_l upload_app_info_label" set-lan="html:UploadDecAppHtml.AppIcon" ></div>
+                  <div class="float_l upload_app_info_input upload_app_icon_box">
+                    <div class="upload_app_icon_img_box">
+                      <img class="upload_app_icon_img" src="../img/app/app_default_icon.svg" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
+                    </div>
+                    <button class="app_plain_btn upload_app_edit_btn">Edit</button>
+                  </div>
+                  <div class="float_l"></div>
+              </li>
+              <li class="overflow_h upload_app_info_li">
+                  <div class="float_l upload_app_info_label" set-lan="html:UploadDecAppHtml.Tag"></div>
+                  <div class="float_l upload_app_info_input upload_app_tag_box">
+                    <ul class="upload_app_tag_ul">
+                      <!-- <li class="upload_app_tag_checked" data-check="checked">
+                        <input type="text" name="" id="" disabled value="11111">
+                      </li>
+                      <li class="upload_app_tag_uncheck" data-check="uncheck">
+                        <input type="text" name="" id="" disabled value="11111">
+                      </li> -->
+                    </ul>
+                  </div>
+                  <div class="float_l">
+                    <button class="upload_app_tag_btn app_primary_btn" set-lan="html:UploadDecAppHtml.AddTag">+ Add tag</button>
+                  </div>
+              </li>
+              <li class="overflow_h upload_app_info_li">
+                  <div class="float_l upload_app_info_label" set-lan="html:UploadDecAppHtml.IsClient"></div>
+                  <div class="float_l upload_app_info_input upload_app_radio_input">
+                    <label class="client_software_label"> <input name="client_software_require_radio" class="radio_type" type="radio"   value="0"/><span set-lan="html:UploadDecAppHtml.Yes">Yes</span></label>
+                    <label class="client_software_label"> <input class="radio_type" checked type="radio" name="client_software_require_radio" value="1" /><span set-lan="html:UploadDecAppHtml.No">NO</span></label>
+                  </div>
+                  <div class="float_l"></div>
+              </li>
+              <li class="overflow_h upload_app_info_li">
+                  <div class="float_l upload_app_info_label" set-lan="html:UploadDecAppHtml.Community"></div>
+                  <div class="float_l upload_app_info_input">
+                    <div class="upload_app_info_select">
+                      <select name="upload_app_community_select" id=""  value="Cyber Chat">
+                        <option value="Cyber Chat">Cyber Chat</option>
+                        <!-- <option value="Discord">Discord</option>
+                        <option value="Twitter">Twitter</option>
+                        <option value="GitHub">GitHub</option> -->
+                      </select>
+                      <i class="upload_app_info_select_i"></i>
+                    </div>
+                    <input class="upload_app_info_select_ipt community_select_cyber" type="text" name="" id="" placeholder="cyfs://……..">
+                  </div>
+                  <div class="float_l">
+                    <!-- <button class="upload_app_community_btn app_primary_btn">+ Add</button> -->
+                  </div>
+              </li>
+              <li class="overflow_h upload_app_info_li">
+                <div class="float_l upload_app_info_label"></div>
+                <div class="float_l upload_app_info_input">
+                  <div class="upload_app_info_select">
+                    <select name="upload_app_community_select" id="" value="Discord">
+                      <option value="Discord">Discord</option>
+                    </select>
+                    <i class="upload_app_info_select_i"></i>
+                  </div>
+                  <input class="upload_app_info_select_ipt community_select_discord" type="text" name="" id="" placeholder="cyfs://……..">
                 </div>
-            </li>
-            <li class="overflow_h upload_app_info_li">
-                <div class="float_l upload_app_info_label">Overview:</div>
-                <div class="float_l upload_app_info_input"></div>
                 <div class="float_l"></div>
             </li>
             <li class="overflow_h upload_app_info_li">
-                <div class="float_l upload_app_info_label">App Icon</div>
-                <div class="float_l upload_app_info_input"></div>
-                <div class="float_l"></div>
+              <div class="float_l upload_app_info_label"></div>
+              <div class="float_l upload_app_info_input">
+                <div class="upload_app_info_select">
+                  <select name="upload_app_community_select" id="" value="Twitter">
+                    <option value="Twitter">Twitter</option>
+                  </select>
+                  <i class="upload_app_info_select_i"></i>
+                </div>
+                <input class="upload_app_info_select_ipt community_select_twitter" type="text" name="" id="" placeholder="cyfs://……..">
+              </div>
+              <div class="float_l"></div>
             </li>
             <li class="overflow_h upload_app_info_li">
-                <div class="float_l upload_app_info_label">Tag:</div>
-                <div class="float_l upload_app_info_input"></div>
-                <div class="float_l"></div>
+              <div class="float_l upload_app_info_label"></div>
+              <div class="float_l upload_app_info_input">
+                <div class="upload_app_info_select">
+                  <select name="upload_app_community_select" id="" value="GitHub">
+                    <option value="GitHub">GitHub</option>
+                  </select>
+                  <i class="upload_app_info_select_i"></i>
+                </div>
+                <input class="upload_app_info_select_ipt community_select_gitbub" type="text" name="" id="" placeholder="cyfs://……..">
+              </div>
+              <div class="float_l"></div>
             </li>
-            <li class="overflow_h upload_app_info_li">
-                <div class="float_l upload_app_info_label">Is client software required ?</div>
-                <div class="float_l upload_app_info_input"></div>
-                <div class="float_l"></div>
-            </li>
-            <li class="overflow_h upload_app_info_li">
-                <div class="float_l upload_app_info_label">Community:</div>
-                <div class="float_l upload_app_info_input"></div>
-                <div class="float_l"></div>
-            </li>
-        </ul>
+          </ul>
+        </div>
+        <div class="upload_app_client_box">
+          <h3 class="upload_app_client_title" set-lan="html:DecAppHtml.ClientSoftware"></h3>
+          <div class="upload_client_box">
+            <div class="float_l upload_app_client_label" set-lan="html:DecAppHtml.Client"></div>
+            <div class="float_l upload_app_client_input">
+              <ul class="upload_app_client_ul">
+                <li>
+                  <div class="upload_app_info_select">
+                    <select name="client_software_select" id="" value="iOS">
+                      <option value="iOS">IOS</option>
+                      <!-- <option value="android">Android</option>
+                      <option value="windows">Windows</option>
+                      <option value="macOS">MacOS</option>
+                      <option value="linux">Linux</option>
+                      <option value="other">Other</option> -->
+                    </select>
+                    <i class="upload_app_info_select_i"></i>
+                  </div>
+                  <input class="client_software_ipt app_software_ios" type="text" name="" id="" placeholder="https://www.apple.com/app-store/,,,">
+                </li>
+                <li>
+                  <div class="upload_app_info_select">
+                    <select name="client_software_select" id="" value="android">
+                      <option value="android">Android</option>
+                    </select>
+                    <i class="upload_app_info_select_i"></i>
+                  </div>
+                  <input class="client_software_ipt app_software_android" type="text" name="" id="" placeholder="https://www.apple.com/app-store/,,,">
+                </li>
+                <li>
+                  <div class="upload_app_info_select">
+                    <select name="client_software_select" id="" value="windows">
+                      <option value="windows">Windows</option>
+                    </select>
+                    <i class="upload_app_info_select_i"></i>
+                  </div>
+                  <input class="client_software_ipt app_software_windows" type="text" name="" id="" placeholder="https://www.apple.com/app-store/,,,">
+                </li>
+                <li>
+                  <div class="upload_app_info_select">
+                    <select name="client_software_select" id="" value="macOS">
+                      <option value="macOS">MacOS</option>
+                    </select>
+                    <i class="upload_app_info_select_i"></i>
+                  </div>
+                  <input class="client_software_ipt app_software_macos" type="text" name="" id="" placeholder="https://www.apple.com/app-store/,,,">
+                </li>
+                <li>
+                  <div class="upload_app_info_select">
+                    <select name="client_software_select" id="" value="linux">
+                      <option value="linux">Linux</option>
+                    </select>
+                    <i class="upload_app_info_select_i"></i>
+                  </div>
+                  <input class="client_software_ipt app_software_linux" type="text" name="" id="" placeholder="https://www.apple.com/app-store/,,,">
+                </li>
+                <li>
+                  <div class="upload_app_info_select">
+                    <select name="client_software_select" id="" value="other">
+                      <option value="other">Other</option>
+                    </select>
+                    <i class="upload_app_info_select_i"></i>
+                  </div>
+                  <input class="client_software_ipt app_software_other" type="text" name="" id="" placeholder="https://www.apple.com/app-store/,,,">
+                </li>
+              </ul>
+              <!-- <input class="upload_app_info_name" type="text" name="" id=""> -->
+            </div>
+            <div class="float_l">
+              <!-- <button class="app_primary_btn app_client_install_btn">+ Add</button> -->
+            </div>
+          </div>
+        </div>
+          <button class="app_info_submit_btn app_primary_btn" set-lan="html:UploadDecAppHtml.Submit"></button>
+        </div>
       </div>
-    </div>
-    <div class="app_footer_box">
-      <div class="app_footer_content_box">
-        <div class="float_l app_footer_box_l">
-          <p><a href="javascript:">How Cyfs work ?</a></p>
-          <p><a href="javascript:">How to develop Dec App ?</a></p>
-        </div>
-        <div class="float_r app_footer_box_r">
-          <i class="app_footer_discard_i"></i>
-          <i class="app_footer_cyfs_i"></i>
-          <p class="float_r">Developer community</p>
-        </div>
+      <div class="app_footer_box" >
+        <!-- <div class="app_footer_content_box">
+          <div class="float_l app_footer_box_l">
+            <p><a href="javascript:">How Cyfs work ?</a></p>
+            <p><a href="javascript:">How to develop Dec App ?</a></p>
+          </div>
+          <div class="float_r app_footer_box_r">
+            <i class="app_footer_discard_i"></i>
+            <i class="app_footer_cyfs_i"></i>
+            <p class="float_r">Developer community</p>
+          </div>
+        </div> -->
       </div>
     </div>
     <div class="anonymous_box">
@@ -96,23 +251,22 @@
       <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
     </div>
   </div>
-  <div class="app_cover_box">
-    <div class="app_cover_content_box">
-      <i class="app_cover_close_i"></i>
-      <h3 class="app_cover_title">Install From URL</h3>
-      <p class="app_cover_input_p">Dec App URL</p>
-      <div class="overflow_h">
-        <input class="app_cover_input float_l" type="text">
-        <button class="app_primary_btn app_cover_input_btn float_r">Get App Info</button>
+  <div class="app_cover_box app_cover_scan_container">
+    <div class="app_cover_scan_box">
+      <i class="close_cover_i"></i>
+      <div class="app_tip_scan_box">
+        <canvas id="app_tip_scan_box"></canvas>
       </div>
+      <p class="app_tip_scan_p" set-lan="html:DecAppHtml.ScanTip"></p>
     </div>
   </div>
+  <textarea id="copy_textarea" style="display:none;"></textarea>
 </body>
 
 <style>
     .upload_app_box{
         width: 948px;
-        margin-top: 44px;
+        margin: 44px 0 24px 0;
     }
     .upload_get_app_info{
         height: 32px;
@@ -147,26 +301,49 @@
         line-height: 28px;
         padding: 16px 0 40px 0;
     }
-    .upload_app_info_box{
+    .upload_app_info_box, .upload_client_box{
         width: 100%;
         background: #FFFFFF;
         box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
         border-radius: 8px 8px 8px 8px;
+    }
+    .upload_client_box{
+      width: 928px;
+      padding: 12px 10px;
+      overflow: hidden;
     }
     .upload_app_info_li{
         padding: 11px 0;
     }
     .upload_app_info_label{
         width: 209px;
-        height: 19px;
+        height: 32px;
         font-weight: 400;
-        line-height: 28px;
-        padding: 6px 0 7px 0;
+        line-height: 32px;
         text-align: right;
+    }
+    .upload_app_client_label{
+      width: 60px;
+      height: 32px;
+      font-weight: 400;
+      line-height: 32px;
+      text-align: right;
+      margin-right: 22px;
     }
     .upload_app_info_input{
         width: 473px;
-        padding: 0 8px 0 24px;
+        margin: 0 8px 0 24px;
+    }
+    .upload_app_client_input{
+      width: 614px;
+    }
+    .upload_app_client_input input{
+      width: 461px;
+      height: 32px;
+      border-radius: 4px 4px 4px 4px;
+      border: 1px solid #DADCE0;
+      float: right;
+      padding-left: 18px;
     }
     .upload_app_info_dec_id{
         height: 19px;
@@ -180,6 +357,7 @@
         height: 32px;
         border-radius: 4px 4px 4px 4px;
         border: 1px solid #DADCE0;
+        padding-left: 16px;
     }
     .upload_app_info_asterisk{
         display: block;
@@ -188,6 +366,248 @@
         height: 16px;
         margin-top: 8px;
         background: url(../img/app/upload_app_info_asterisk.svg) no-repeat center center;
+    }
+    .upload_app_info_container{
+      width: 948px;
+      display: none;
+    }
+    .upload_app_overview_txt{
+      width: 473px;
+      min-height: 125px;
+      border-radius: 4px 4px 4px 4px;
+      border: 1px solid #DADCE0;
+      padding-left: 16px;
+    }
+    .upload_app_icon_box{
+      width: 473px;
+      height: 152px;
+      border-radius: 4px 4px 4px 4px;
+      border: 1px dashed #DADCE0;
+    }
+    .upload_app_tag_box{
+      width: 473px;
+      min-height: 125px;
+      background: #F9F9F9;
+      border-radius: 4px 4px 4px 4px;
+    }
+    .upload_app_tag_btn{
+      width: 118px;
+      height: 32px;
+    }
+    .upload_app_community_btn{
+        width: 118px;
+        height: 32px;
+    }
+    .upload_app_info_ul{
+      padding: 16px 0 70px 0;
+    }
+    .radio_type {
+        width:16px;
+        height: 16px;
+        appearance: none;
+        position: relative;
+        outline: none;
+        margin: 0;
+        margin-top: -10px;
+        margin-right: 5px;
+    }
+    .radio_type:before {
+        content: "";
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        border-radius: 50%;
+        vertical-align: bottom;
+        background: url(../img/app/radio_type_uncheck.svg) no-repeat center bottom;
+    }
+    .radio_type:checked:before {
+        content: "";
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        border-radius: 50%;
+        vertical-align: bottom;
+    }
+    .radio_type:checked:after {
+        content: "";
+        width: 16px;
+        height: 16px;
+        text-align: center;
+        border-radius: 50%;
+        display: block;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background: url(../img/app/radio_type_checked.svg) no-repeat center bottom;
+    }
+    .radio_type:checked + label {
+        color: #edd19d;
+    }
+    .upload_app_tag_ul{
+        overflow: hidden;
+        padding: 0 15px 10px 6px;
+    }
+    .upload_app_tag_ul li{
+        float: left;
+        min-width: 83px;
+        height: 32px;
+        background: #FFFFFF;
+        border-radius: 4px 4px 4px 4px;
+        line-height: 32px;
+        padding: 0 10px;
+        text-align: center;
+        font-size: 12px;
+        margin-left: 10px;
+        margin-top: 8px;
+    }
+    .upload_app_radio_input{
+        padding-top: 6px;
+    }
+    .client_software_label{
+        padding-right: 23px;
+    }
+    .upload_app_info_select{
+        width: 143px;
+        position: relative;
+        float: left;
+    }
+    .upload_app_info_select select{
+        width: 143px;
+        height: 32px;
+        padding-left: 18px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid #DADCE0;
+        color: #333333;
+        font-size: 12px;
+        appearance:none;
+        -moz-appearance:none;
+        -webkit-appearance:none;
+        -ms-appearance:none;
+    }
+    .upload_app_info_select_i {
+      display: block;
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: url(../img/app/upload_app_info_select_i.svg) no-repeat center center;
+    }
+    .upload_app_info_select_ipt{
+        width: 322px;
+        height: 32px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid #DADCE0;
+        float: right;
+        padding-left: 18px;
+    }
+    .upload_app_tag_ul li{
+      position: relative;
+    }
+    .upload_app_tag_uncheck:before{
+      content: '';
+      display: block;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: -4px;
+      right: -2px;
+      background: url(../img/app/radio_type_uncheck.svg) no-repeat center center;
+    }
+    .upload_app_tag_checked:before{
+      content: '';
+      display: block;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: -4px;
+      right: -2px;
+      background: url(../img/app/radio_type_checked.svg) no-repeat center center;
+    }
+    .upload_app_tag_ul li input{
+      width: 83px;
+      background: #fff;
+      text-align: center;
+      position: relative;
+      outline: none;
+      text-overflow: ellipsis;
+    }
+    .upload_app_icon_img_box{
+      width: 112px;
+      height: 112px;
+      margin: 20px 16px;
+      float: left;
+    }
+    .upload_app_icon_img_box img{
+      width: 100%;
+      height: 100%;
+    }
+    .upload_app_edit_btn{
+        width: 88px;
+        height: 24px;
+        margin: 108px 0 0 27px;
+    }
+    .app_client_install_btn{
+      width: 118px;
+      height: 32px;
+      margin-left: 14px;
+    }
+    .upload_app_client_title{
+      height: 29px;
+      font-size: 22px;
+      font-weight: 400;
+      color: #202124;
+      line-height: 28px;
+      margin: 40px 0 16px 0;
+    }
+    .upload_app_container{
+    }
+    .app_info_submit_btn{
+      width: 288px;
+      height: 40px;
+      margin: 110px 0 0 330px;
+      font-size: 18px;
+    }
+    .open_tip_btn{
+      width: 140px;
+      height: 24px;
+    }
+    .upload_app_client_ul li{
+      height: 32px;
+    }
+    .upload_app_client_ul li:not(:first-child){
+      margin-top: 10px;
+    }
+    .app_cover_scan_box{
+      width: 320px;
+      height: 224px;
+      background: #FFFFFF;
+      box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.0800);
+      border-radius: 16px 16px 16px 16px;
+      position: absolute;
+      top: 320px;
+      left: 50%;
+      margin-left: -160px;
+    }
+    .app_tip_scan_box{
+      width: 88px;
+      height: 88px;
+      margin: 0 auto;
+      margin-top: 59px;
+    }
+    .app_tip_scan_p{
+      text-align: center;
+      font-size: 12px;
+      height: 16px;
+      line-height: 24px;
+      padding-top: 37px;
+    }
+    .app_tip_scan_box img{
+        width: 100%;
+        height: 100%;
+    }
+    .upload_app_client_box, .app_subtitle_box, .upload_app_box{
+      display: none;
     }
 </style>
 

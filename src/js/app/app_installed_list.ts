@@ -71,7 +71,7 @@ class AppManager {
                                     <div class="float_l app_installed_info_box">
                                         ${app.fidArray[app.fidArray.length-1].version != app.version?`<i class="app_installed_update"  data-id="${app.app_id}"></i>`:''}
                                         <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span></p>
-                                        <p class="app_tag_info">${app.summary}</p>
+                                        <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
                                         <p class="app_tag_p">
                                             <label class="switch_label switch_animbg float_l">
                                                 <input class="app_status_switch" type="checkbox" checked="${app.status == cyfs.AppLocalStatusCode.Running?true:''}" name="${app.app_name}_${app.app_id}" data-id="${app.app_id}"><i class="switch_i"></i>
@@ -180,4 +180,8 @@ $(".app_tag_list").on('click', '.app_status_switch', async function (event) {
 $(".app_tag_list").on('click', '.app_installed_update', function (event) {
     let id = $(this).attr('data-id');
     window.location.href = 'cyfs://static/DecAppStore/app_detail.html?id=' + id;
+})
+
+$('.app_header_box').on('click', '.people_head_sculpture', function () {
+    window.location.href = 'cyfs://static/info.html';
 })

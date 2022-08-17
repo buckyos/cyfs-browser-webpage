@@ -96,3 +96,8 @@ $('.app_like_list_withdraw').on('click', function () {
         margin: 0
     });
 })
+
+$('.app_header_box').on('click', '.people_head_sculpture', function () {
+    window.location.href = 'cyfs://static/info.html';
+})
+

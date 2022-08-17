@@ -188,7 +188,6 @@ export const en =  {
         "Amount": "Amount:",
         "ScanTip": "Please use Cyber Chat to scan the QR code above",
         "Overview": "Overview",
-
     },
     "UploadDecAppHtml":{
         "Overview": "Overview:",
@@ -210,6 +209,10 @@ export const en =  {
     },
     "DecAppTagHtml":{
         "UploadDecAPP": "Upload your Dec APP",
+        "TippingRecords": "Tipping records",
+        "People": "People",
+        "Amount": "Amount",
+        "Time": "Time",
+        "WithDrawal": "WITHDRAWAL",
     }
-
 }

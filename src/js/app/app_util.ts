@@ -158,10 +158,9 @@ class AppUtilClass {
             let [app,] = ret;
             let get_app_status = await AppUtil.getAppStatus(id);
             console.origin.log('get_app_status', app.name(), get_app_status.version())
-            let summaryR = app.find_source_desc(get_app_status.version());
             let summary = '';
-            if(!summaryR.err){
-                summary = summaryR.unwrap();
+            if (app.body().unwrap() && app.body().unwrap().content().desc.is_some()) {
+                summary = app.body().unwrap().content().desc.unwrap().toString();
             }
             let appObj: { app_id: cyfs.ObjectId | string, app_name: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], version: string, status:number, app_icon: string, owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, webdir: cyfs.DirId |undefined, summary: string, auto_update: boolean, app_status: cyfs.AppLocalStatus } = {
                 app_id: id,

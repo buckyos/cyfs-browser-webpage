@@ -154,3 +154,9 @@ $('.app_cover_box').on('click', '.app_cover_input_btn', function () {
       });
     }
 })
+
+$('.app_header_box').on('click', '.people_head_sculpture', function () {
+  window.location.href = 'cyfs://static/info.html';
+})
+
+

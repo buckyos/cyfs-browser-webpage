@@ -17,19 +17,6 @@ let g_owner: cyfs.ObjectId;
 let g_app: { app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp };
 let g_versionTimeList:string[];
 
-$(async function(){
-    isBind();
-    if(LANGUAGESTYPE == 'zh'){
-      $('title').html('应用详情');
-    }else{
-      $('title').html('DEC App Detail');
-    }
-    g_isBind = await isBind();
-    if(!g_isBind){
-      window.location.href = 'cyfs://static/browser.html';
-    }
-});
-
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
     let arr = str.split('&');
@@ -49,6 +36,19 @@ if (window.location.search.split("?")[1]) {
 }
 console.log('---------g_appId, g_version, g_isInstalled:', g_appId, g_version, g_isInstalled);
 
+$(async function(){
+    isBind();
+    if(LANGUAGESTYPE == 'zh'){
+      $('title').html(g_isInstalled ? '已安装应用详情':'应用详情');
+    }else{
+      $('title').html(g_isInstalled ? 'Installed DEC App Detail':'DEC App Detail');
+    }
+    g_isBind = await isBind();
+    if(!g_isBind){
+      window.location.href = 'cyfs://static/browser.html';
+    }
+});
+
 class AppManager {
     m_sharedStatck: cyfs.SharedCyfsStack;
     m_util_service: cyfs.UtilRequestor;
@@ -62,7 +62,7 @@ class AppManager {
     async getOwner () {
         let result = await this.m_util_service.get_device({ common: { flags: 0 } });
         if (!result.err) {
-          result = result.unwrap()
+          result = result.unwrap();
         }
         let current_device = result.device
         g_owner = current_device.desc().owner().unwrap();
@@ -74,14 +74,19 @@ class AppManager {
         console.origin.log('---------app-data:', app);
         $('.app_detail_icon').attr('src', app.app_icon || '');
         let owner = null;
+        let peopleName = null;
         if (app.app.desc().owner) {
             owner = g_appOwner = app.app.desc().owner().unwrap();
+            const peopleR = (await ObjectUtil.getObject({ id: owner!, isReturnResult: true, flags: 1 })).object;
+            console.origin.log('peopleR:', peopleR);
+            peopleName = peopleR.object.name() || '';
         }
-        $('.app_detail_developer_p').html(`<span class="app_detail_developer">${LANGUAGESTYPE == 'zh'?'开发者：': 'Developer：'}CYFS  (${owner})</span><i class="upload_app_info_id_copy" data-id="${owner}"></i>`)
-        if(app.app.desc().dec_id().is_some()){
-            let decid = app.app.desc().dec_id().unwrap();
-            $('.app_detail_dec_id_p').html(`<span class="app_detail_dec_id">Dec-ID：${decid}</span><i class="upload_app_info_id_copy" data-id="${decid}"></i>`)
-        }
+        $('.app_detail_dec_id_p').html(`<span class="app_detail_dec_id">Dec-ID：${g_appId}</span><i class="upload_app_info_id_copy" data-id="${g_appId}"></i>`)
+        $('.app_detail_developer_p').html(`<span class="app_detail_developer">${LANGUAGESTYPE == 'zh'?'开发者：': 'Developer：'}${peopleName}  (${owner})</span><i class="upload_app_info_id_copy" data-id="${owner}"></i>`)
+        // if(app.app.desc().dec_id().is_some()){
+        //     let decid = app.app.desc().dec_id().unwrap();
+        //     $('.app_detail_dec_id_p').html(`<span class="app_detail_dec_id">Dec-ID：${decid}</span><i class="upload_app_info_id_copy" data-id="${decid}"></i>`)
+        // }
         let appBody = app.app.body().unwrap();
         let introduce:string = '';
         if (appBody.content().desc.is_some()) {
@@ -93,6 +98,7 @@ class AppManager {
         if(g_isInstalled){
             // app installed detail
             $('.app_detail_info_container, .app_subtitle_installed_box').css('display', 'block');
+
             appManager.renderAppInfo(id);
         }else{
             // app detail
@@ -121,22 +127,22 @@ class AppManager {
                 if(info.default['cyfs-app-store'].client){
                     let clients = info.default['cyfs-app-store'].client;
                     if(clients.android){
-                        $('.app_software_android').attr('data-url', clients.android);
+                        $('.app_software_android').css('display', 'block').attr('data-url', clients.android);
                     }
                     if(clients.iOS){
-                        $('.app_software_ios').attr('data-url', clients.iOS);
+                        $('.app_software_ios').css('display', 'block').attr('data-url', clients.iOS);
                     }
                     if(clients.windows){
-                        $('.app_software_windows').attr('data-url', clients.windows);
+                        $('.app_software_windows').css('display', 'block').attr('data-url', clients.windows);
                     }
                     if(clients.macOS){
-                        $('.app_software_macos').attr('data-url', clients.macOS);
+                        $('.app_software_macos').css('display', 'block').attr('data-url', clients.macOS);
                     }
                     if(clients.linux){
-                        $('.app_software_linux').attr('data-url', clients.linux);
+                        $('.app_software_linux').css('display', 'block').attr('data-url', clients.linux);
                     }
                     if(clients.other){
-                        $('.app_software_other').attr('data-url', clients.other);
+                        $('.app_software_other').css('display', 'block').attr('data-url', clients.other);
                     }
                 }
             }
@@ -146,6 +152,9 @@ class AppManager {
 
     async renderAppInfo (id) {
         let app = await AppUtil.handleAppDetail(id);
+        if(app.version != app.fidArray[app.fidArray.length - 1].version){
+            $('.update_installed_btn').css('display', 'block');
+        }
         $('.app_detail_title').html(`${app.app_name}<span class="app_detail_subtitle">${app.version}</span><i class="app_detail_version_share"></i>`);
         console.origin.log('---------------app-info', app);
         $('.app_installed_version').html(app.version);
@@ -165,7 +174,7 @@ class AppManager {
         if (app.fidArray.length > 0) {
             app.fidArray.forEach(element => {
                 // <td>2022-06-15</td>
-                appVersionsHtml +=  `<tr>
+                appVersionsHtml =  `<tr>
                                         <td>
                                             <a class="app_detail_version">${element.version}</a>
                                         </td>
@@ -173,7 +182,7 @@ class AppManager {
                                         <td>
                                             ${(g_versionInstalled != element.version || g_statusInstalled == cyfs.AppLocalStatusCode.Init || g_statusInstalled == cyfs.AppLocalStatusCode.InstallFailed || g_statusInstalled == cyfs.AppLocalStatusCode.Uninstalled)?`<button class="app_primary_btn app_detail_version_install" data-version="${element.version}">${LANGUAGESTYPE == 'zh'?'安装': 'install'}</button>`:`<button class="app_disable_btn app_detail_version_installed">${LANGUAGESTYPE == 'zh'?'已安装': 'installed'}</button>`}
                                         </td>
-                                    </tr>`;
+                                    </tr>` + appVersionsHtml;
             });
             $('.app_detail_version_tbody').html(appVersionsHtml);
         };
@@ -272,5 +281,9 @@ $(".app_subtitle_installed_box").on('click', '.uninstall_installed_btn', async f
     if(operateAppRet){
         window.location.href = 'cyfs://static/DecAppStore/app_detail.html?id=' + g_appId;
     }
+})
+
+$('.app_header_box').on('click', '.people_head_sculpture', function () {
+    window.location.href = 'cyfs://static/info.html';
 })
 

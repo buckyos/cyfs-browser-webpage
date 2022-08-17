@@ -217,5 +217,10 @@ export const zh =  {
     },
     "DecAppTagHtml":{
         "UploadDecAPP": "上传你的 Dec APP",
+        "TippingRecords": "打赏记录",
+        "People": "用户",
+        "Amount": "金额",
+        "Time": "打赏时间",
+        "WithDrawal": "提现",
     }
 }

@@ -423,7 +423,7 @@ $(".app_info_submit_btn").on("click", async function(){
         });
         return;
     }
-    $('.app_tip_scan_box').html('');
+    $('#app_tip_scan_box').html('');
     $('.app_cover_box').css('display', 'block');
     let data = { "flag": "cyfs", "type": "updateMeta", "data": { "id": [g_appId, g_appExtId] } }
     QRCode.toCanvas(document.getElementById('app_tip_scan_box'), JSON.stringify(data), {
@@ -442,4 +442,8 @@ $('.upload_app_info_input').on('click', '.upload_app_info_id_copy', function () 
     let id = $(this).attr('data-id') || '';
     console.log('id', id)
     copyData(id);
+})
+
+$('.app_header_box').on('click', '.people_head_sculpture', function () {
+    window.location.href = 'cyfs://static/info.html';
 })

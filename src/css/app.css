@@ -316,3 +316,9 @@ a{
     -webkit-transition:border-color 0.4s,background-color ease 0.4s;
     transition:border-color 0.4s,background-color ease 0.4s;
 }
+.switch_label.switch_animbg input:disabled + .switch_i{
+    border: 1px solid #BAC7CD;
+}
+.switch_label input:disabled + .switch_i:before {
+    background-color: #BAC7CD;
+}

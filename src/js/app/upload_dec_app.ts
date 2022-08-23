@@ -159,9 +159,9 @@ class UploadAppClass {
                 g_appExtInfo = appExt[0];
                 let info = JSON.parse(appExt[0].info());
                 console.origin.log('appExt-info', info);
-                if (info.default && info.default['cyfs-app-store']){
-                    if(info.default['cyfs-app-store'].tag){
-                        let tags = info.default['cyfs-app-store'].tag;
+                if (info && info['cyfs-app-store']){
+                    if(info['cyfs-app-store'].tag){
+                        let tags = info['cyfs-app-store'].tag;
                         let html = '';
                         tags.forEach(tag => {
                             html += `<li class="upload_app_tag_checked" data-check="checked">
@@ -169,8 +169,8 @@ class UploadAppClass {
                                     </li>`;
                         });
                         $('.upload_app_tag_ul').html(html);
-                        if(info.default['cyfs-app-store'].client){
-                            let clients = info.default['cyfs-app-store'].client;
+                        if(info['cyfs-app-store'].client){
+                            let clients = info['cyfs-app-store'].client;
                             if(clients.android){
                                 $('.app_software_android').val(clients.android);
                             }
@@ -190,13 +190,13 @@ class UploadAppClass {
                                 $('.app_software_other').val(clients.other);
                             }
                         }
-                        if(info.default['cyfs-app-store'].community){
-                            let communitys = info.default['cyfs-app-store'].community;
+                        if(info['cyfs-app-store'].community){
+                            let communitys = info['cyfs-app-store'].community;
                             communitys
                             for (let index = 0; index < communitys.length; index++) {
                                 const community = communitys[index];
                                 for (const key in community) {
-                                    if(key == 'Cyber Chat'){
+                                    if(key == 'CyberChat'){
                                         $('.community_select_cyber').val(community[key]);
                                     }else if(key == 'Discord'){
                                         $('.community_select_discord').val(community[key]);

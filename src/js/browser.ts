@@ -40,7 +40,7 @@ function handlerGuidingProcess (isBind?:boolean) {
     console.origin.log('getShortcutSession', getShortcutSession);
     let decapp = { url:'https://www.cyfs.com/download_en.html', name: 'Cyfs Software', icon: './img/dec_app_index_i.svg', index: 0, isBuildin: true };
         let gitHub = { url:'https://github.com/buckyos/CYFS', name: 'github', icon: './img/git_hub_index_i.svg', index: 1, isBuildin: true };
-        let appmanagement = { url:'cyfs://static/appmanager.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 2, isBuildin: true };
+        let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 2, isBuildin: true };
     let shortcutsList = BUILDIN_SHORTCUT_LIST = [decapp, gitHub, appmanagement];
     if(getShortcutSession){
         shortcutsList = shortcutsList.concat(JSON.parse(getShortcutSession));

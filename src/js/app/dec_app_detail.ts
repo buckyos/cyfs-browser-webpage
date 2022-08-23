@@ -2,7 +2,7 @@ import $ from 'jquery';
 import * as cyfs from '../../cyfs_sdk/cyfs'
 import { toast } from '../lib/toast.min'
 let QRCode = require('qrcode')
-import { ObjectUtil, formatDate, LANGUAGESTYPE, copyData } from '../lib/util'
+import { ObjectUtil, formatDate, LANGUAGESTYPE, copyData, castToLocalUnit } from '../lib/util'
 import { isBind, AppUtil, AppDetailUtil } from './app_util'
 
 let g_appId:string = '';
@@ -16,6 +16,7 @@ let g_overviewStr:string = '';
 let g_owner: cyfs.ObjectId;
 let g_app: { app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp };
 let g_versionTimeList:string[];
+let g_releasedate:{[key: string]: string}
 
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
@@ -97,14 +98,12 @@ class AppManager {
         $('.app_detail_overview').html(`<span  class="app_detail_overview_extra">${LANGUAGESTYPE == 'zh'?'简介': 'Overview'}：${introduce}</span>${introduce?`<span class="app_detail_overview_more">more</span>`:''}`);
         if(g_isInstalled){
             // app installed detail
-            $('.app_detail_info_container, .app_subtitle_installed_box').css('display', 'block');
-
+            $('.app_detail_info_container, .app_subtitle_installed_box, .installed_status_checkbox').css('display', 'block');
             appManager.renderAppInfo(id);
         }else{
             // app detail
             $('.app_detail_title').html(`${app.app_name}<i class="app_detail_version_share"></i>`);
             $('.app_detail_software_box, .app_detail_version_box, .app_subtitle_detail_box').css('display', 'block');
-            appManager.renderVersionList();
         }
         let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
         console.log('appExtId:', appExtId);
@@ -115,17 +114,20 @@ class AppManager {
         if (appExt[0]) {
             let info = JSON.parse(appExt[0].info());
             console.origin.log('appExt-info', info);
-            if (info.default && info.default['cyfs-app-store']){
-                if(info.default['cyfs-app-store'].tag){
-                    let tags = info.default['cyfs-app-store'].tag;
+            if (info && info['cyfs-app-store']){
+                if(info['cyfs-app-store'].releasedate){
+                    g_releasedate = info['cyfs-app-store'].releasedate;
+                }
+                if(info['cyfs-app-store'].tag){
+                    let tags = info['cyfs-app-store'].tag;
                     let html = '';
                     tags.forEach(tag => {
                         html += `<span>#${tag}</span>`;
                     });
                     $('.app_detail_tag_box').html(html);
                 }
-                if(info.default['cyfs-app-store'].client){
-                    let clients = info.default['cyfs-app-store'].client;
+                if(info['cyfs-app-store'].client){
+                    let clients = info['cyfs-app-store'].client;
                     if(clients.android){
                         $('.app_software_android').css('display', 'block').attr('data-url', clients.android);
                     }
@@ -148,15 +150,21 @@ class AppManager {
             }
         }
         }
+        if(!g_isInstalled){
+            appManager.renderVersionList();
+        }
     }
 
     async renderAppInfo (id) {
         let app = await AppUtil.handleAppDetail(id);
+        console.origin.log('---------------app-info', app);
+        if(app.status == cyfs.AppLocalStatusCode.Running){
+            $('.app_status_switch').prop({"checked":true});
+        }
         if(app.version != app.fidArray[app.fidArray.length - 1].version){
             $('.update_installed_btn').css('display', 'block');
         }
         $('.app_detail_title').html(`${app.app_name}<span class="app_detail_subtitle">${app.version}</span><i class="app_detail_version_share"></i>`);
-        console.origin.log('---------------app-info', app);
         $('.app_installed_version').html(app.version);
         $('.app_installed_summary').html(app.summary);
         // $('.app_installed_time').html(app.version);
@@ -173,12 +181,12 @@ class AppManager {
         let appVersionsHtml = '';
         if (app.fidArray.length > 0) {
             app.fidArray.forEach(element => {
-                // <td>2022-06-15</td>
                 appVersionsHtml =  `<tr>
                                         <td>
                                             <a class="app_detail_version">${element.version}</a>
                                         </td>
                                         <td>${element.summary}</td>
+                                        <td>${g_releasedate&&g_releasedate[element.version]?g_releasedate[element.version]:''}</td>
                                         <td>
                                             ${(g_versionInstalled != element.version || g_statusInstalled == cyfs.AppLocalStatusCode.Init || g_statusInstalled == cyfs.AppLocalStatusCode.InstallFailed || g_statusInstalled == cyfs.AppLocalStatusCode.Uninstalled)?`<button class="app_primary_btn app_detail_version_install" data-version="${element.version}">${LANGUAGESTYPE == 'zh'?'安装': 'install'}</button>`:`<button class="app_disable_btn app_detail_version_installed">${LANGUAGESTYPE == 'zh'?'已安装': 'installed'}</button>`}
                                         </td>
@@ -248,6 +256,16 @@ $('.app_cover_tip_box').on('click', '.app_tip_next_btn', function () {
         margin: 0
     });
 })
+
+$('.app_cover_tip_box .app_tip_amount_input').on('keyup', function () {
+    let amount = $('.app_tip_amount_input').val();
+    if(!amount){
+        return;
+    }
+    let payment = Number(amount) + 100 * Math.pow(10, -8);
+    $('.app_tip_payment').text(payment);
+})
+
 
 $(".app_detail_version_tbody").on('click', '.app_detail_version_install', async function () {
     await AppDetailUtil.addToStore(g_appId, g_owner);

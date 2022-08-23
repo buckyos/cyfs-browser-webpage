@@ -73,9 +73,9 @@ class AppStoreListClass {
                     if (appExt[0]) {
                       let info = JSON.parse(appExt[0].info());
                       console.origin.log('appExt-info', app.app_name, info);
-                      if (info.default && info.default['cyfs-app-store']){
-                        if(info.default['cyfs-app-store'].tag){
-                            let tags = info.default['cyfs-app-store'].tag;
+                      if (info && info['cyfs-app-store']){
+                        if(info['cyfs-app-store'].tag){
+                            let tags = info['cyfs-app-store'].tag;
                             tags.forEach(tag => {
                               tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}" target="_blank"># ${tag}</a>`;
                             });
@@ -148,7 +148,7 @@ $('.app_cover_box').on('click', '.app_cover_input_btn', function () {
       $('#cover_input').val("");
     } else {
       toast({
-        message: LANGUAGESTYPE == 'zh'? '请输入正确的URL': 'Please enter the correct URL',
+        message: LANGUAGESTYPE == 'zh'? '应用不存在': 'The Dec App does not exist.',
         time: 1500,
         type: 'warn'
       });

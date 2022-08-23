@@ -8,6 +8,7 @@ let g_isBind:boolean;
 let g_installedList:{ app_id: cyfs.ObjectId | string, app_name: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], version: string, status:number, app_icon: string, owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, webdir: cyfs.DirId |undefined, summary: string, auto_update: boolean, app_status: cyfs.AppLocalStatus }[];
 let g_owner: cyfs.ObjectId;
 let g_uninstallId: string;
+let g_firstOpenSetting: boolean = true;
 
 $(async function(){
     if(LANGUAGESTYPE == 'zh'){
@@ -74,9 +75,10 @@ class AppManager {
                                         <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
                                         <p class="app_tag_p">
                                             <label class="switch_label switch_animbg float_l">
-                                                <input class="app_status_switch" type="checkbox" checked="${app.status == cyfs.AppLocalStatusCode.Running?true:''}" name="${app.app_name}_${app.app_id}" data-id="${app.app_id}"><i class="switch_i"></i>
+                                                <input class="app_status_switch" type="checkbox" ${app.status == cyfs.AppLocalStatusCode.Running?'checked':''} name="${app.app_name}_${app.app_id}" data-id="${app.app_id}"><i class="switch_i"></i>
                                             </label>
                                             <button class="app_primary_btn app_uninstall_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'卸载': 'Uninstall'}</button>
+                                            <button class="app_primary_btn app_detail_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'详情': 'Detail'}</button>
                                         </p>
                                     </div>
                                 </li>`;
@@ -93,7 +95,7 @@ const appManager = new AppManager();
 appManager.getOwner();
 appManager.getAppList();
 
-$('.app_tag_list').on("click", '.app_tag_img_box, .app_tag_title', function () {
+$('.app_tag_list').on("click", '.app_tag_img_box, .app_tag_title, .app_detail_btn', function () {
     let id = $(this).attr("data-id");
     console.log('------id', id);
     window.open('cyfs://static/DecAppStore/app_detail.html?type=installed&id=' + id);
@@ -117,27 +119,35 @@ $(".app_tag_list").on('click', '.app_uninstall_btn', async function (event) {
 
 $('.app_installed_setting_i').on('click', function () {
     $('.app_installed_setting_container').css('display', 'block');
-    let liHtml:string = '';
-    let i = 0;
-    for (const app of g_installedList) {
-        if(app.auto_update){
-            i++;
+    if(g_firstOpenSetting){
+        g_firstOpenSetting = false;
+        let liHtml:string = '';
+        let allUpdate:boolean = false;
+        let i = 0;
+        for (const app of g_installedList) {
+            if(app.auto_update){
+                i++;
+            }
         }
-        liHtml  +=  `<li>
-                        <span>${app.app_name}</span>
-                        <label class="switch_label switch_animbg float_r">
-                            <input class="automatic_update_switch" type="checkbox" checked="${app.auto_update?true:''}" name="${app.app_id}" data-id="${app.app_id}"><i class="switch_i"></i>
-                        </label>
-                    </li>`
+        if(i == g_installedList.length){
+            allUpdate = true;
+            $('.automatic_update_all').prop("checked", true);
+        }
+        for (const app of g_installedList) {
+            liHtml  +=  `<li>
+                            <span>${app.app_name}</span>
+                            <label class="switch_label switch_animbg float_r">
+                                <input class="automatic_update_switch" type="checkbox" ${app.auto_update?'checked':''} name="${app.app_id}" data-id="${app.app_id}" ${allUpdate?'disabled':''}><i class="switch_i"></i>
+                            </label>
+                        </li>`
+        }
+        
+        $('.app_installed_setting_ul').html(liHtml);
     }
-    if(i == g_installedList.length){
-        $('.automatic_update_all').prop("checked", true);
-    }
-    $('.app_installed_setting_ul').html(liHtml);
 })
 
 
-$(".app_cover_installed_setting_box").on('click', '.automatic_update_switch', function (event) {
+$(".app_cover_installed_setting_box").on('click', '.automatic_update_switch', async function (event) {
     // get switch val
     event.stopImmediatePropagation();
     let name = $(event.target).attr('name');
@@ -148,12 +158,13 @@ $(".app_cover_installed_setting_box").on('click', '.automatic_update_switch', fu
     console.log('switch:', name, isOpen);
     if(name == 'automaticUpdateAll'){
         for (const app of g_installedList) {
-            $('.app_installed_setting_ul .automatic_update_switch').prop("checked",isOpen);
+            $('.app_installed_setting_ul .automatic_update_switch').prop({"checked":isOpen, 'disabled':isOpen});
             AppDetailUtil.setAppAutoUpdate(app.app_id.toString(), g_owner, isOpen);
         }
     }else{
-        AppDetailUtil.setAppAutoUpdate(name, g_owner, isOpen);
+        await AppDetailUtil.setAppAutoUpdate(name, g_owner, isOpen);
     }
+    appManager.getAppList();
 })
 
 $(".app_tag_list").on('click', '.app_status_switch', async function (event) {

@@ -9,6 +9,7 @@ let g_installedList:{ app_id: cyfs.ObjectId | string, app_name: string, fidArray
 let g_owner: cyfs.ObjectId;
 let g_uninstallId: string;
 let g_firstOpenSetting: boolean = true;
+let g_getListInterval: NodeJS.Timeout | null = null;
 
 $(async function(){
     if(LANGUAGESTYPE == 'zh'){
@@ -19,6 +20,10 @@ $(async function(){
     let g_isBind = await isBind();
     if(!g_isBind){
         window.location.href = 'cyfs://static/browser.html';
+    }else{
+        g_getListInterval = setInterval(async () => {
+            appManager.getAppList();
+        }, 10 * 1000);
     }
 });
 
@@ -61,10 +66,50 @@ class AppManager {
                 }
             }
             g_installedList = await app_installed_list.sort(appManager.sortNumber);
+            $('.app_installed_setting_i').css('display', 'block');
             let installHtml:string = '';
             $('.app_tag_list').html('');
             for (const app of app_installed_list) {
                 console.origin.log('------------app-detail', app);
+                let app_status = app.status;
+                let appStr = "";
+                if (app_status == cyfs.AppLocalStatusCode.Init) {
+                    appStr = LANGUAGESTYPE == 'zh'? '初始化' : 'Init';
+                }else if(app_status == cyfs.AppLocalStatusCode.Installing){
+                    appStr = LANGUAGESTYPE == 'zh'? '安装中' : 'Installing';
+                }else if(app_status == cyfs.AppLocalStatusCode.InstallFailed){
+                    appStr = LANGUAGESTYPE == 'zh'? '安装失败' : 'InstallFailed';
+                }else if(app_status == cyfs.AppLocalStatusCode.NoService){
+                    appStr = LANGUAGESTYPE == 'zh'? '无DEC服务' : 'NoService';
+                    if (app.webdir) {
+                        console.log('get_app_status.webdir().to_base_58()', app.webdir.to_base_58())
+                        open_dir = `<a class="webdir_open_i" href="cyfs://o/${app.webdir.to_base_58()}/index.html" target="_blank"></a>`;
+                    }
+                }else if(app_status == cyfs.AppLocalStatusCode.Stopping){
+                    appStr = LANGUAGESTYPE == 'zh'? '停止中' : 'Stopping';
+                }else if(app_status == cyfs.AppLocalStatusCode.Stop){
+                    appStr = LANGUAGESTYPE == 'zh'? '已停止' : 'Stop';
+                }else if(app_status == cyfs.AppLocalStatusCode.StopFailed){
+                    appStr = LANGUAGESTYPE == 'zh'? '停止失败' : 'StopFailed';
+                }else if(app_status == cyfs.AppLocalStatusCode.Starting){
+                    appStr = LANGUAGESTYPE == 'zh'? '启动中' : 'Starting';
+                }else if(app_status == cyfs.AppLocalStatusCode.Running){
+                    appStr = LANGUAGESTYPE == 'zh'? '运行中' : 'Running';
+                if (app.webdir) {
+                    console.log('get_app_status.webdir().to_base_58()', app.webdir.to_base_58())
+                    open_dir = `<a class="webdir_open_i" href="cyfs://o/${app.webdir.to_base_58()}/index.html" target="_blank" ></a>`;
+                }
+                }else if(app_status == cyfs.AppLocalStatusCode.StartFailed){
+                appStr = LANGUAGESTYPE == 'zh'? '启动失败' : 'StartFailed';
+                }else if(app_status == cyfs.AppLocalStatusCode.Uninstalling){
+                    appStr = LANGUAGESTYPE == 'zh'? '卸载中' : 'Uninstalling';
+                }else if(app_status == cyfs.AppLocalStatusCode.UninstallFailed){
+                    appStr = LANGUAGESTYPE == 'zh'? '卸载失败' : 'UninstallFailed';
+                }else if(app_status == cyfs.AppLocalStatusCode.Uninstalled){
+                    appStr = LANGUAGESTYPE == 'zh'? '卸载成功' : 'Uninstalled';
+                }else if(app_status == cyfs.AppLocalStatusCode.RunException){
+                    appStr = LANGUAGESTYPE == 'zh'? '运行异常' : 'RunException';
+                }
                 installHtml =   `<li>
                                     <div class="app_tag_img_box float_l" data-id="${app.app_id}">
                                         <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
@@ -77,6 +122,8 @@ class AppManager {
                                             <label class="switch_label switch_animbg float_l">
                                                 <input class="app_status_switch" type="checkbox" ${app.status == cyfs.AppLocalStatusCode.Running?'checked':''} name="${app.app_name}_${app.app_id}" data-id="${app.app_id}"><i class="switch_i"></i>
                                             </label>
+                                            <i class="float_l app_installed_status_i"></i>
+                                            <span class="float_l app_installed_status">${appStr}</span>
                                             <button class="app_primary_btn app_uninstall_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'卸载': 'Uninstall'}</button>
                                             <button class="app_primary_btn app_detail_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'详情': 'Detail'}</button>
                                         </p>

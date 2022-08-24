@@ -91,11 +91,16 @@ class AppManager {
         let appBody = app.app.body().unwrap();
         let introduce:string = '';
         if (appBody.content().desc.is_some()) {
-            g_overviewStr = introduce = appBody.content().desc.unwrap().toString();
+            g_overviewStr = appBody.content().desc.unwrap().toString();
+            introduce = g_overviewStr;
         }else{
             introduce = LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet';
         }
-        $('.app_detail_overview').html(`<span  class="app_detail_overview_extra">${LANGUAGESTYPE == 'zh'?'简介': 'Overview'}：${introduce}</span>${introduce?`<span class="app_detail_overview_more">more</span>`:''}`);
+        $('.app_detail_overview').html(`<span  class="app_detail_overview_extra">${LANGUAGESTYPE == 'zh'?'简介': 'Overview'}：${introduce}</span><span class="app_detail_overview_more"></span>`);
+        let moreWidth = $('.app_detail_overview_extra').css('width');
+        if(moreWidth=='477px'){
+            $('.app_detail_overview_more').html('more');
+        }
         if(g_isInstalled){
             // app installed detail
             $('.app_detail_info_container, .app_subtitle_installed_box, .installed_status_checkbox').css('display', 'block');
@@ -147,6 +152,23 @@ class AppManager {
                         $('.app_software_other').css('display', 'block').attr('data-url', clients.other);
                     }
                 }
+                if(info['cyfs-app-store'].community){
+                    let community = info['cyfs-app-store'].community;
+                    community.forEach(element => {
+                        if(element['CyberChat'] && element['CyberChat'][0]){
+                            $('.app_detail_share_cyfs').css('display', 'block').attr('data-url', element['CyberChat'][0]);
+                        }
+                        if(element['Discord'] && element['Discord'][0]){
+                            $('.app_detail_share_discard').css('display', 'block').attr('data-url', element['Discord'][0]);
+                        }
+                        if(element['Twitter'] && element['Twitter'][0]){
+                            $('.app_detail_share_twitter').css('display', 'block').attr('data-url', element['Twitter'][0]);
+                        }
+                        if(element['GitHub'] && element['GitHub'][0]){
+                            $('.app_detail_share_github').css('display', 'block').attr('data-url', element['GitHub'][0]);
+                        }
+                    });
+                }
             }
         }
         }
@@ -166,8 +188,14 @@ class AppManager {
         }
         $('.app_detail_title').html(`${app.app_name}<span class="app_detail_subtitle">${app.version}</span><i class="app_detail_version_share"></i>`);
         $('.app_installed_version').html(app.version);
-        $('.app_installed_summary').html(app.summary);
-        // $('.app_installed_time').html(app.version);
+        let summary:string = '';
+        app.fidArray.forEach(element => {
+            if(element.version == app.version){
+                summary = element.summary;
+            }
+        });
+        $('.app_installed_summary').html(summary);
+        $('.app_installed_time').html(app.version);
     }
 
     async renderVersionList(){
@@ -276,7 +304,7 @@ $(".app_detail_version_tbody").on('click', '.app_detail_version_install', async 
     appManager.renderVersionList();
 })
 
-$(".app_detail_software_list li").on('click', function () {
+$(".app_detail_software_list li, .app_detail_share_box i").on('click', function () {
     let url = $(this).attr('data-url');
     if(url){
         window.open(url);
@@ -297,11 +325,13 @@ $(".app_subtitle_installed_box").on('click', '.update_installed_btn', async func
 $(".app_subtitle_installed_box").on('click', '.uninstall_installed_btn', async function () {
     let operateAppRet:boolean = await AppDetailUtil.operateApp(g_appId, g_owner, 'uninstall');
     if(operateAppRet){
-        window.location.href = 'cyfs://static/DecAppStore/app_detail.html?id=' + g_appId;
+        window.location.href = 'cyfs://static/DecAppStore/app_installed_list.html';
     }
 })
 
 $('.app_header_box').on('click', '.people_head_sculpture', function () {
     window.location.href = 'cyfs://static/info.html';
 })
+
+
 

@@ -51,12 +51,12 @@
           </p>
           <ul class="app_detail_ul">
             <li class="app_detail_tag_box"></li>
-            <!-- <li class="app_detail_share_box">
+            <li class="app_detail_share_box">
               <i class="app_detail_share_cyfs"></i>
               <i class="app_detail_share_discard"></i>
               <i class="app_detail_share_twitter"></i>
               <i class="app_detail_share_github"></i>
-            </li> -->
+            </li>
           </ul>
         </div>
       </div>
@@ -149,7 +149,7 @@
       <i class="close_cover_i"></i>
       <div class="app_tip_box">
         <p class="app_tip_amount_p" set-lan="html:DecAppHtml.Amount"></p>
-        <input type="text" class="app_tip_amount_input" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,19})?).*$/g, '$1')">
+        <input type="text" class="app_tip_amount_input" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,18})?).*$/g, '$1')">
         <p class="app_tip_gasfee_p">*Gas fee: 100 Qiu</p>
         <p class="app_tip_payment_p">Payment: <span class="app_tip_payment">0</span> ECC</p>
         <button class="app_tip_next_btn app_primary_btn" set-lan="html:Next"></button>
@@ -260,6 +260,7 @@
   margin-top: -6px;
   margin-right: 4px;
   cursor: pointer;
+  display: none;
 }
 .app_detail_share_cyfs{
   background: url(../img/app/app_detail_share_cyfs.svg) no-repeat center center;
@@ -282,6 +283,9 @@
   background: #FFFFFF;
   box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
   border-radius: 8px;  
+}
+.app_detail_version_table tbody td:nth-child(2){
+  width: 600px;
 }
 .app_detail_version_table tbody td:last-child{
   width: 128px;
@@ -362,14 +366,15 @@
   background: #fff;
 }
 .app_detail_info_box li{
-  height: 19px;
+  overflow: hidden;
   padding: 7px 0;
 }
 .app_detail_info_box li p{
-  height: 19px;
+  min-height: 19px;
   line-height: 24px;
   float: left;
   text-align: left;
+  width: 930px;
 }
 .app_detail_info_box li p:nth-child(1){
   width: 168px;

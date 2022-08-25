@@ -183,7 +183,7 @@ class AppManager {
         if(app.status == cyfs.AppLocalStatusCode.Running){
             $('.app_status_switch').prop({"checked":true});
         }
-        if(app.version != app.fidArray[app.fidArray.length - 1].version){
+        if(app.auto_update && app.version != app.fidArray[app.fidArray.length - 1].version){
             $('.update_installed_btn').css('display', 'block');
         }
         $('.app_detail_title').html(`${app.app_name}<span class="app_detail_subtitle">${app.version}</span><i class="app_detail_version_share"></i>`);

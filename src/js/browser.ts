@@ -4,6 +4,8 @@ import JSBI from 'jsbi';
 let QRCode = require('qrcode')
 import { toast } from './lib/toast.min'
 import { ObjectUtil, getSubStr, hasPC, LANGUAGESTYPE, castToLocalUnit } from './lib/util'
+import { AppUtil, AppDetailUtil } from './app/app_util'
+
 
 if (window.location.search == '?success') {
     let isToIndex = localStorage.getItem('is-restart-browser-to-index');
@@ -35,7 +37,7 @@ let SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBui
 let BUILDIN_SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[];
 let SEARCH_HISTORY_LIST:{name: string, type: number}[] = [];
 
-function handlerGuidingProcess (isBind?:boolean) {
+async function handlerGuidingProcess (isBind?:boolean) {
     let getShortcutSession = localStorage.getItem('browser-shortcuts-list');
     console.origin.log('getShortcutSession', getShortcutSession);
     let decapp = { url:'https://www.cyfs.com/download_en.html', name: 'Cyfs Software', icon: './img/dec_app_index_i.svg', index: 0, isBuildin: true };
@@ -43,8 +45,9 @@ function handlerGuidingProcess (isBind?:boolean) {
         let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 2, isBuildin: true };
     let shortcutsList = BUILDIN_SHORTCUT_LIST = [decapp, gitHub, appmanagement];
     if(getShortcutSession){
-        shortcutsList = shortcutsList.concat(JSON.parse(getShortcutSession));
+        shortcutsList = BUILDIN_SHORTCUT_LIST = shortcutsList.concat(JSON.parse(getShortcutSession));
     }
+    await util.getAppList();
     renderingShortcut(shortcutsList);
 }
 
@@ -257,6 +260,24 @@ class Util {
             return false;
         } else {
             return true;
+        }
+    }
+
+    async getAppList() {
+        const list_ret = await AppUtil.getAllAppListFun();
+        console.origin.log('app installed list result:', list_ret);
+        if (list_ret.err || !list_ret.app_list().size) {
+        } else {
+            for (const appid of list_ret.app_list().array()) {
+                console.log('appid.object_id:', appid.object_id)
+                let app = await AppUtil.handleAppDetail(appid.object_id);
+                console.origin.log('------------showApp-app', app);
+                let app_status = app.status;
+                if((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir){
+                    console.log('get_app_status.webdir().to_base_58()', app.app_name, app.webdir.to_base_58())
+                    BUILDIN_SHORTCUT_LIST.push({ url:`cyfs://o/${app.webdir.to_base_58()}/index.html`, name: app.app_name, icon: app.app_icon, index: BUILDIN_SHORTCUT_LIST.length - 1, isBuildin: true })
+                }
+            }
         }
     }
 }

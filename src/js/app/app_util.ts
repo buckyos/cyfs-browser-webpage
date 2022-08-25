@@ -194,24 +194,19 @@ class AppUtilClass {
             return appObj;
         }
     }
-
-    async getObjectFromRootState(path, owner, decId, decoder) {
+    // yfs.APP_LOCAL_LIST_PATH, owner, sysDecAppObjId, new cyfs.AppLocalListDecoder()
+    async getObjectFromRootState(path, owner:cyfs.ObjectId, decId:cyfs.ObjectId, decoder: cyfs.AppLocalListDecoder | cyfs.AppStatusDecoder) {
         let m_root_state = this.m_sharedStatck.root_state_access_stub(owner, decId);
         const ret = await m_root_state.get_object_by_path(path);
         if (ret.err) {
           console.log('getAllAppListFun-ret-err', ret);
           return ret;
         }
-        console.origin.log('22222222222222222222-ret', ret);
-
         const retDecoder = decoder.raw_decode(ret.unwrap().object.object_raw);
-        console.origin.log('11111111111111retDecoder-ret', retDecoder);
-
         if (retDecoder.err) {
           console.log('retDecoder-ret-err', ret);
           return retDecoder;
         }
-
         const [obj, _] = retDecoder.unwrap();
         return obj;
     }

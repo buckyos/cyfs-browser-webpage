@@ -81,10 +81,6 @@ class AppManager {
                     appStr = LANGUAGESTYPE == 'zh'? '安装失败' : 'InstallFailed';
                 }else if(app_status == cyfs.AppLocalStatusCode.NoService){
                     appStr = LANGUAGESTYPE == 'zh'? '无DEC服务' : 'NoService';
-                    if (app.webdir) {
-                        console.log('get_app_status.webdir().to_base_58()', app.webdir.to_base_58())
-                        open_dir = `<a class="webdir_open_i" href="cyfs://o/${app.webdir.to_base_58()}/index.html" target="_blank"></a>`;
-                    }
                 }else if(app_status == cyfs.AppLocalStatusCode.Stopping){
                     appStr = LANGUAGESTYPE == 'zh'? '停止中' : 'Stopping';
                 }else if(app_status == cyfs.AppLocalStatusCode.Stop){
@@ -95,10 +91,6 @@ class AppManager {
                     appStr = LANGUAGESTYPE == 'zh'? '启动中' : 'Starting';
                 }else if(app_status == cyfs.AppLocalStatusCode.Running){
                     appStr = LANGUAGESTYPE == 'zh'? '运行中' : 'Running';
-                if (app.webdir) {
-                    console.log('get_app_status.webdir().to_base_58()', app.webdir.to_base_58())
-                    open_dir = `<a class="webdir_open_i" href="cyfs://o/${app.webdir.to_base_58()}/index.html" target="_blank" ></a>`;
-                }
                 }else if(app_status == cyfs.AppLocalStatusCode.StartFailed){
                 appStr = LANGUAGESTYPE == 'zh'? '启动失败' : 'StartFailed';
                 }else if(app_status == cyfs.AppLocalStatusCode.Uninstalling){

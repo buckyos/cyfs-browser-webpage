@@ -188,6 +188,8 @@ export const en =  {
         "Amount": "Amount:",
         "ScanTip": "Please use Cyber Chat to scan the QR code above",
         "Overview": "Overview",
+        "GasFee": "*Gas fee: 100 Qiu",
+        "Payment": "Payment:",
     },
     "UploadDecAppHtml":{
         "Overview": "Overview:",

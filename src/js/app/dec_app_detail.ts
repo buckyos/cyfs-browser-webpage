@@ -156,15 +156,19 @@ class AppManager {
                     let community = info['cyfs-app-store'].community;
                     community.forEach(element => {
                         if(element['CyberChat'] && element['CyberChat'][0]){
+                            $('.app_detail_share_box').css('display', 'block');
                             $('.app_detail_share_cyfs').css('display', 'block').attr('data-url', element['CyberChat'][0]);
                         }
                         if(element['Discord'] && element['Discord'][0]){
+                            $('.app_detail_share_box').css('display', 'block');
                             $('.app_detail_share_discard').css('display', 'block').attr('data-url', element['Discord'][0]);
                         }
                         if(element['Twitter'] && element['Twitter'][0]){
+                            $('.app_detail_share_box').css('display', 'block');
                             $('.app_detail_share_twitter').css('display', 'block').attr('data-url', element['Twitter'][0]);
                         }
                         if(element['GitHub'] && element['GitHub'][0]){
+                            $('.app_detail_share_box').css('display', 'block');
                             $('.app_detail_share_github').css('display', 'block').attr('data-url', element['GitHub'][0]);
                         }
                     });
@@ -183,7 +187,7 @@ class AppManager {
         if(app.status == cyfs.AppLocalStatusCode.Running){
             $('.app_status_switch').prop({"checked":true});
         }
-        if(app.auto_update && app.version != app.fidArray[app.fidArray.length - 1].version){
+        if(!app.auto_update && app.version != app.fidArray[app.fidArray.length - 1].version){
             $('.update_installed_btn').css('display', 'block');
         }
         $('.app_detail_title').html(`${app.app_name}<span class="app_detail_subtitle">${app.version}</span><i class="app_detail_version_share"></i>`);

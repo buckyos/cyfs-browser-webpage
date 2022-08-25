@@ -150,8 +150,8 @@
       <div class="app_tip_box">
         <p class="app_tip_amount_p" set-lan="html:DecAppHtml.Amount"></p>
         <input type="text" class="app_tip_amount_input" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,18})?).*$/g, '$1')">
-        <p class="app_tip_gasfee_p">*Gas fee: 100 Qiu</p>
-        <p class="app_tip_payment_p">Payment: <span class="app_tip_payment">0</span> ECC</p>
+        <p class="app_tip_gasfee_p" set-lan="html:DecAppHtml.GasFee"></p>
+        <p class="app_tip_payment_p"><span class="app_tip_payment_span" set-lan="html:DecAppHtml.Payment"></span> <span class="app_tip_payment">0</span> ECC</p>
         <button class="app_tip_next_btn app_primary_btn" set-lan="html:Next"></button>
       </div>
     </div>
@@ -251,6 +251,9 @@
 .app_detail_ul li:nth-child(1){
   padding-left: 0;
   border: none;
+}
+.app_detail_share_box{
+  display: none;
 }
 .app_detail_share_box i{
   display: block;

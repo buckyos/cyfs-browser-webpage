@@ -332,7 +332,7 @@ class Util {
         OWNER_ID = current_device_static_info.owner_id?.toString() || '';
         ZONE_ID = current_device_static_info.zone_id.object_id.toString();
         $('#zone_id').html(`( ID:${getSubStr(ZONE_ID)}  <i class="info_main_copy_svg info_main_copy_zone_svg">&nbsp;</i>)`);
-        $('#owner_id').html(`${getSubStr(OWNER_ID)}`);
+        $('#owner_id').html(`DID: ${getSubStr(OWNER_ID)}`);
         const peopleR = (await ObjectUtil.getObject({ id: OWNER_ID, isReturnResult: true, flags: 1 })).object;
         this.handlerOodList(peopleR.object.body().unwrap().content().ood_list);
         console.origin.log('peopleR:', peopleR, peopleR.object.body().unwrap().content().ood_list, peopleR.object.icon() );

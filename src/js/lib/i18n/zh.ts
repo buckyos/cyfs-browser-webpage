@@ -196,6 +196,8 @@ export const zh =  {
         "Amount": "金额:",
         "ScanTip": "请使用“Cyber Chat”扫描上面的二维码",
         "Overview": "简介",
+        "GasFee": "*交易费: 100 Qiu",
+        "Payment": "支付:",
     },
     "UploadDecAppHtml":{
         "Overview": "简介:",

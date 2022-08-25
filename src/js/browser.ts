@@ -40,10 +40,12 @@ let SEARCH_HISTORY_LIST:{name: string, type: number}[] = [];
 async function handlerGuidingProcess (isBind?:boolean) {
     let getShortcutSession = localStorage.getItem('browser-shortcuts-list');
     console.origin.log('getShortcutSession', getShortcutSession);
-    let decapp = { url:'https://www.cyfs.com/download_en.html', name: 'Cyfs Software', icon: './img/dec_app_index_i.svg', index: 0, isBuildin: true };
-        let gitHub = { url:'https://github.com/buckyos/CYFS', name: 'github', icon: './img/git_hub_index_i.svg', index: 1, isBuildin: true };
-        let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 2, isBuildin: true };
-    let shortcutsList = BUILDIN_SHORTCUT_LIST = [decapp, gitHub, appmanagement];
+    // let decapp = { url:'https://www.cyfs.com/download_en.html', name: 'Cyfs Software', icon: './img/dec_app_index_i.svg', index: 0, isBuildin: true };
+        let gitHub = { url:'https://github.com/buckyos/CYFS', name: 'github', icon: './img/git_hub_index_i.svg', index: 0, isBuildin: true };
+        let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 1, isBuildin: true };
+    // let shortcutsList = BUILDIN_SHORTCUT_LIST = [decapp, gitHub, appmanagement];
+    let shortcutsList = BUILDIN_SHORTCUT_LIST = [gitHub, appmanagement];
+
     if(getShortcutSession){
         shortcutsList = BUILDIN_SHORTCUT_LIST = shortcutsList.concat(JSON.parse(getShortcutSession));
     }

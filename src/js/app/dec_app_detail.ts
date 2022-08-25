@@ -320,6 +320,7 @@ $(".app_subtitle_installed_box").on('click', '.select_update_installed_btn', fun
 })
 
 $(".app_subtitle_installed_box").on('click', '.update_installed_btn', async function () {
+    $('.app_subtitle_installed_box .update_installed_btn').prop("disabled", true);
     let operateAppRet:boolean = await AppDetailUtil.installApp(g_appId, g_owner, g_app.fidArray[g_app.fidArray.length-1].version);
     if(operateAppRet){
         window.location.reload();
@@ -337,5 +338,17 @@ $('.app_header_box').on('click', '.people_head_sculpture', function () {
     window.location.href = 'cyfs://static/info.html';
 })
 
-
-
+$('.installed_status_checkbox').on('click', '.app_status_switch', async function (event) {
+    event.stopImmediatePropagation();
+    var isRun = $(".installed_status_checkbox .app_status_switch:checked").length > 0 ? true : false;
+    console.log('switch-name:', isRun);
+    let operateAppRet:boolean;
+    if(isRun){
+        operateAppRet = await AppDetailUtil.operateApp(g_appId, g_owner, 'start');
+    }else{
+        operateAppRet = await AppDetailUtil.operateApp(g_appId, g_owner, 'stop');
+    }
+    if(!operateAppRet){
+        $(".installed_status_checkbox .app_status_switch").prop("checked", !isRun);
+    }
+})

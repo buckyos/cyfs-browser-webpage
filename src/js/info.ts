@@ -328,7 +328,6 @@ class Util {
             current_device_static_info = current_device_static_info_result.unwrap().info;
         }
         console.origin.log('current_device_static_info', current_device_static_info)
-        console.origin.log('current_device_static_info:', current_device_static_info, current_device_static_info.device.name());
         OWNER_ID = current_device_static_info.owner_id?.toString() || '';
         ZONE_ID = current_device_static_info.zone_id.object_id.toString();
         $('#zone_id').html(`( ID:${getSubStr(ZONE_ID)}  <i class="info_main_copy_svg info_main_copy_zone_svg">&nbsp;</i>)`);

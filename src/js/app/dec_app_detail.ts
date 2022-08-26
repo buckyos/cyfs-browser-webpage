@@ -283,8 +283,8 @@ $('.app_cover_tip_box').on('click', '.app_tip_next_btn', function () {
     };
     QRCode.toCanvas(document.getElementById('app_tip_scan_box'), JSON.stringify(content), {
         errorCorrectionLevel: 'L',
-        width: 88,
-        height: 88,
+        width: 112,
+        height: 112,
         margin: 0
     });
 })

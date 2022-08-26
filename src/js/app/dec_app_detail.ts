@@ -322,9 +322,9 @@ $(".app_subtitle_installed_box").on('click', '.select_update_installed_btn', fun
 $(".app_subtitle_installed_box").on('click', '.update_installed_btn', async function () {
     $('.app_subtitle_installed_box .update_installed_btn').prop("disabled", true);
     let operateAppRet:boolean = await AppDetailUtil.installApp(g_appId, g_owner, g_app.fidArray[g_app.fidArray.length-1].version);
-    if(operateAppRet){
-        window.location.reload();
-    }
+    // if(operateAppRet){
+    //     window.location.reload();
+    // }
 })
 
 $(".app_subtitle_installed_box").on('click', '.uninstall_installed_btn', async function () {

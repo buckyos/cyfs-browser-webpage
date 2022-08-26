@@ -315,19 +315,19 @@ class AppDetailUtilClass {
             if (postResult.err && postResult.val.code != cyfs.BuckyErrorCode.Ignored) {
                 if(operation == 'start'){
                     toast({
-                        message: LANGUAGESTYPE == 'zh'? '运行失败！': 'Run failed',
+                        message: LANGUAGESTYPE == 'zh'? '操作失败！': 'Operation failed',
                         time:1500,
                         type: 'warn'
                       });
                 }else if(operation == 'stop'){
                     toast({
-                        message: LANGUAGESTYPE == 'zh'? '停止失败！': 'Stop failed',
+                        message: LANGUAGESTYPE == 'zh'? '操作失败！': 'Operation failed',
                         time:1500,
                         type: 'warn'
                     });
                 }else if(operation == 'uninstall'){
                     toast({
-                        message: LANGUAGESTYPE == 'zh'? '卸载失败': 'Uninstall Failed',
+                        message: LANGUAGESTYPE == 'zh'? '操作失败！': 'Operation failed',
                         time: 1500,
                         type: 'warn'
                       });
@@ -336,19 +336,19 @@ class AppDetailUtilClass {
             }else{
                 if(operation == 'start'){
                     toast({
-                        message: LANGUAGESTYPE == 'zh'? '运行成功！': 'Run successfully',
+                        message: LANGUAGESTYPE == 'zh'? '操作成功': 'Operation succeeded',
                         time:1500,
                         type: 'success'
                     });
                 }else if(operation == 'stop'){
                     toast({
-                        message: LANGUAGESTYPE == 'zh'? '停止成功！': 'Stop successfully',
+                        message: LANGUAGESTYPE == 'zh'? '操作成功': 'Operation succeeded',
                         time:1500,
                         type: 'success'
                     });
                 }else if(operation == 'uninstall'){
                     toast({
-                        message:LANGUAGESTYPE == 'zh'? '卸载成功': 'Uninstall succeeded',
+                        message:LANGUAGESTYPE == 'zh'? '操作成功': 'Operation succeeded',
                         time:1500,
                         type: 'success'
                     });
@@ -368,14 +368,14 @@ class AppDetailUtilClass {
             let postResult = await ObjectUtil.postObj(appCmdObj);
             if (postResult.err && postResult.val.code != cyfs.BuckyErrorCode.Ignored) {
                 toast({
-                    message: LANGUAGESTYPE == 'zh'? '安装失败' : 'Install Failed',
+                    message: LANGUAGESTYPE == 'zh'? '操作失败！': 'Operation failed',
                     time:1500,
                     type: 'warn'
                 });
                 return false;
             }else{
                 toast({
-                    message: LANGUAGESTYPE == 'zh'? '安装成功' : 'Install succeeded',
+                    message: LANGUAGESTYPE == 'zh'? '操作成功': 'Operation succeeded',
                     time:1500,
                     type: 'success'
                 });
@@ -412,7 +412,7 @@ class AppDetailUtilClass {
           let result = new cyfs.DecAppDecoder().raw_decode(new Uint8Array(buffer!));
           if (result.err) {
             toast({
-              message: LANGUAGESTYPE == 'zh'? '安装失败': 'Install Failed.',
+              message: LANGUAGESTYPE == 'zh'? '操作失败！': 'Operation failed',
               time: 1500,
               type: 'warn'
             });
@@ -448,14 +448,14 @@ class AppDetailUtilClass {
             // });
           }else{
             toast({
-              message: LANGUAGESTYPE == 'zh'? '添加失败': 'Install Failed.',
+              message: LANGUAGESTYPE == 'zh'? '操作失败！': 'Operation failed',
               time: 1500,
               type: 'warn'
             });
           }
         } else {
           toast({
-            message: LANGUAGESTYPE == 'zh'? '添加成功': 'Install successfully.',
+            message: LANGUAGESTYPE == 'zh'? '操作成功': 'Operation succeeded',
             time: 1500,
             type: 'success'
           });

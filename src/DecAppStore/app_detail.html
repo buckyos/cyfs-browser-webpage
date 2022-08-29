@@ -23,6 +23,7 @@
           <a href="cyfs://static/DecAppStore/app_store_list.html" class="app_content_title_href" set-lan="html:DecAppHtml.DecAppList" target="_blank"></a>
         </div>
         <div class="app_subtitle_box app_subtitle_detail_box">
+          <i class="float_r to_tip_list"></i>
           <button class="float_r app_plain_btn app_tip_btn" set-lan="html:DecAppHtml.TipIt"></button>
         </div>
         <div class="app_subtitle_box app_subtitle_installed_box">
@@ -428,6 +429,15 @@
 .app_tip_btn{
   width: 88px;
   height: 24px;
+}
+.to_tip_list{
+  display: block;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-left: 14px;
+  background: url(../img/app/to_tip_list.svg) no-repeat center center;
+  display: none;
 }
 .app_subtitle_box{
   display: none;

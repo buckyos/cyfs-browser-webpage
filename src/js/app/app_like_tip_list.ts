@@ -50,11 +50,34 @@ class AppListClass {
         this.m_util_service = this.m_sharedStatck.util();
         this.meta_client = cyfs.create_meta_client();
     }
+    
+    async getOwner () {
+        let result = await this.m_util_service.get_device({ common: { flags: 0 } });
+        if (!result.err) {
+          result = result.unwrap();
+        }
+        let current_device = result.device
+        g_owner = current_device.desc().owner().unwrap();
+    }
 
     async getBalanceInfo() {
         let balance = castToLocalUnit(Number((await this.meta_client.getBalance(0, g_appId))?.result || 0));
         console.log('---------------balance', balance);
         $('.app_total_amount_p').html(LANGUAGESTYPE == 'zh'? `总金额: ${balance} ECC` : `Total amount: ${balance} ECC`);
+    }
+
+    async getAppInfo () {
+        await AppList.getOwner();
+        let app = await AppUtil.showApp(g_appId, false);
+        console.origin.log('---------app-data:', app);
+        if (app.app.desc().owner) {
+            let appOwner = app.app.desc().owner().unwrap();
+            if(g_owner.toString() == appOwner.toString()){
+                $('.app_like_list_withdraw').css('display', 'block');
+            }else{
+                $('.app_like_list_tip').css('display', 'block');
+            }
+        }
     }
 
     async getTransList() {
@@ -64,13 +87,16 @@ class AppListClass {
             let tx: cyfs.SPVTx;
             for (let i = 0; i < txLists.length; i++) {
                 tx = txLists[i];
+                const peopleR = (await ObjectUtil.getObject({ id: tx.from, isReturnResult: true, flags: 1 })).object;
+                console.origin.log('peopleR:', peopleR);
+                let peopleName = peopleR.object.name() || '';
                 txHtml += `<tr>
                                 <td>
                                     <i class="app_records_people_i">&nbsp;</i>
-                                    ${tx.from}
+                                    ${peopleName}
                                 </td>
                                 <td>${castToLocalUnit(Number(tx.value))} ECC</td>
-                                <td>${formatDate(Number(tx.create_time))}/td>
+                                <td>${formatDate(Number(tx.create_time))}</td>
                             </tr>`;
             };
             $('.app_tx_list').html(txHtml);
@@ -79,6 +105,7 @@ class AppListClass {
 }
 
 export const AppList = new AppListClass;
+AppList.getAppInfo();
 AppList.getTransList();
 AppList.getBalanceInfo();
 
@@ -86,13 +113,13 @@ $('.app_cover_box').on('click', '.close_cover_i', function () {
     $('.app_cover_box').css('display', 'none');
 })
 
-$('.app_like_list_withdraw').on('click', function () {
+$('.app_like_list_withdraw, .app_like_list_tip').on('click', function () {
     $('.app_cover_box').css('display', 'block');
     document.getElementById('app_tip_scan_box')!.innerHTML = '';
     QRCode.toCanvas(document.getElementById('app_tip_scan_box'), g_appId, {
         errorCorrectionLevel: 'L',
-        width: 84,
-        height: 84,
+        width: 112,
+        height: 112,
         margin: 0
     });
 })

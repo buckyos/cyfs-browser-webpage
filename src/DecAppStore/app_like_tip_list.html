@@ -23,6 +23,7 @@
         </div>
         <div class="app_subtitle_box">
             <button class="float_r app_plain_btn app_like_list_withdraw" set-lan="html:DecAppTagHtml.WithDrawal"></button>
+            <button class="float_r app_plain_btn app_like_list_tip" set-lan="html:DecAppHtml.TipIt"></button>
             <p class="app_total_amount_p"></p>
         </div>
       </div>
@@ -70,9 +71,10 @@
 </body>
 
 <style>
-.app_like_list_withdraw{
+.app_like_list_withdraw, .app_like_list_tip{
   width: 111px;
   height: 24px;
+  display: none;
 }
 .app_total_amount_p{
     height: 19px;
@@ -109,17 +111,17 @@
   margin-left: -160px;
 }
 .app_tip_scan_box{
-  width: 88px;
-  height: 88px;
+  width: 112px;
+  height: 112px;
   margin: 0 auto;
-  margin-top: 59px;
+  margin-top: 48px;
 }
 .app_tip_scan_p{
   text-align: center;
   font-size: 12px;
   height: 16px;
   line-height: 24px;
-  padding-top: 37px;
+  padding-top: 24px;
 }
 .app_tip_scan_box img{
     width: 100%;

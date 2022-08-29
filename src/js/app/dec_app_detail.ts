@@ -108,7 +108,7 @@ class AppManager {
         }else{
             // app detail
             $('.app_detail_title').html(`${app.app_name}<i class="app_detail_version_share"></i>`);
-            $('.app_detail_software_box, .app_detail_version_box, .app_subtitle_detail_box').css('display', 'block');
+            $('.app_detail_software_box, .app_detail_version_box, .app_subtitle_detail_box, .to_tip_list').css('display', 'block');
         }
         let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
         console.log('appExtId:', appExtId);
@@ -336,6 +336,10 @@ $(".app_subtitle_installed_box").on('click', '.uninstall_installed_btn', async f
 
 $('.app_header_box').on('click', '.people_head_sculpture', function () {
     window.location.href = 'cyfs://static/info.html';
+})
+
+$('.app_subtitle_detail_box').on('click', '.to_tip_list', function () {
+    window.location.href = 'cyfs://static/DecAppStore/app_like_tip_list.html?id=' + g_appId;
 })
 
 $('.installed_status_checkbox').on('click', '.app_status_switch', async function (event) {

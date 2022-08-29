@@ -31,89 +31,99 @@ class AppStoreListClass {
         this.m_util_service = this.m_sharedStatck.util();
     }
 
-
-
-
     //app store list
     async getAllAppList() {
-        let r = await AppUtil.getAllAppListFun();
-        console.origin.log('-------------r', r)
-        if (r.err) {
-            $('.app_list_box').html(LANGUAGESTYPE == 'zh'? '无' : 'None');
-        } else {
-            let storeList = r.app_list().array();
-            console.origin.log('storeList', storeList)
-            if (storeList && storeList.length) {
-                console.log('--------------------------rstore_list', storeList)
-                let storeHtml = "";
-                for (let i = 0; i < storeList.length; i++) {
-                    if (storeList[i]) {
-                        console.log('--------------------element', i, storeList[i], storeList[i].object_id)
-                        let app = await AppUtil.showApp(storeList[i].object_id, false);
-                        g_appList.push(app);
-                    }
-                }
-                g_appList = await g_appList.sort(AppStoreList.sortNumber);
-                console.origin.log('sort-g_appList', g_appList);
-                $('.app_list_box').html('');
-                for (let i = 0; i < g_appList.length; i++) {
-                  let app = g_appList[i];
-                  console.origin.log('------------------------------app', app)
-                  let appBody = app.app.body().unwrap();
-                  let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
-                  if (appBody.content().desc.is_some()) {
-                      app_introduce = appBody.content().desc.unwrap().toString();
-                  }
-                  let tagsHtml = '';
-                  let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
-                  console.log('appExtId:', appExtId);
-                  let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
-                  console.log('appExt:', appExt);
-                  if (!appExt.err) {
-                    if (appExt[0]) {
-                      let info = JSON.parse(appExt[0].info());
-                      console.origin.log('appExt-info', app.app_name, info);
-                      if (info && info['cyfs-app-store']){
-                        if(info['cyfs-app-store'].tag){
-                            let tags = info['cyfs-app-store'].tag;
-                            tags.forEach(tag => {
-                              tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}" target="_blank"># ${tag}</a>`;
-                            });
+      let r = await AppUtil.getAllAppListFun();
+      console.origin.log('-------------r', r)
+      if (r.err) {
+          $('.app_list_box').html(LANGUAGESTYPE == 'zh'? '无' : 'None');
+      } else {
+          let storeList = r.app_list().array();
+          console.origin.log('storeList', storeList)
+          if (storeList && storeList.length) {
+              console.log('--------------------------rstore_list', storeList)
+              let storeHtml = "";
+              let timeArr:number[] = [];
+              for (let i = 0; i < storeList.length; i++) {
+                  if (storeList[i]) {
+                      console.log('--------------------element', i, storeList[i], storeList[i].object_id)
+                      let app = await AppUtil.showApp(storeList[i].object_id, false);
+                      console.origin.log('------------------------------app', app)
+                      let sortIndex = 0;
+                      let isfirstSort = true;
+                      timeArr.forEach((time, index)=>{
+                        if(isfirstSort && time > app.app.body().unwrap().update_time()){
+                          isfirstSort = false;
+                          sortIndex = index - 1;
+                        }
+                        if((index == timeArr.length - 1) && isfirstSort){
+                          isfirstSort = false;
+                          sortIndex = index + 1;
+                        }
+                      })
+                      if(sortIndex < 0){
+                        sortIndex = 0;
+                      }
+                      timeArr.splice(sortIndex, 0, app.app.body().unwrap().update_time());
+                      g_appList.splice(sortIndex, 0, app);
+                      console.origin.log('------------------------------timeArr', timeArr)
+                      console.origin.log('------------------------------app_name', app.app_name, app.app.body().unwrap().update_time().toString(), sortIndex)
+                      let appBody = app.app.body().unwrap();
+                      let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
+                      if (appBody.content().desc.is_some()) {
+                          app_introduce = appBody.content().desc.unwrap().toString();
+                      }
+                      let tagsHtml = '';
+                      let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
+                      console.log('appExtId:', appExtId);
+                      let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
+                      console.log('appExt:', appExt);
+                      if (!appExt.err) {
+                        if (appExt[0]) {
+                          let info = JSON.parse(appExt[0].info());
+                          console.origin.log('appExt-info', app.app_name, info);
+                          if (info && info['cyfs-app-store']){
+                            if(info['cyfs-app-store'].tag){
+                                let tags = info['cyfs-app-store'].tag;
+                                tags.forEach(tag => {
+                                  tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}" target="_blank"># ${tag}</a>`;
+                                });
+                            }
+                          }
                         }
                       }
-                    }
+                      storeHtml =  `<li>
+                                      <div class="app_list_info">
+                                        <div class="app_list_info_l" data-id="${app.app_id}">
+                                          <img src="${app.app_icon || '../img/appmanager/app_default.svg'}" onerror="this.src='../img/appmanager/app_default.svg';this.οnerrοr=null" alt="">
+                                        </div>
+                                        <div class="app_list_info_r">
+                                          <p class="app_list_info_title" data-id="${app.app_id}">${ app.app_name}</p>
+                                          <p class="app_list_info_subtitle">${app_introduce}</p>
+                                        </div>
+                                      </div>
+                                      <div class="app_list_extra_info">
+                                        <div class="app_list_extra_info_l">${tagsHtml}</div>
+                                        <div class="app_list_extra_info_r"></div>
+                                      </div>
+                                    </li>`;
+                      if(sortIndex == 0){
+                        $('.app_list_box').prepend(storeHtml);
+                      }else{
+                        $('.app_list_box li').eq(sortIndex-1).after(storeHtml);
+                      }
                   }
-                  storeHtml =  `<li>
-                                  <div class="app_list_info">
-                                    <div class="app_list_info_l" data-id="${app.app_id}">
-                                      <img src="${app.app_icon || '../img/appmanager/app_default.svg'}" onerror="this.src='../img/appmanager/app_default.svg';this.οnerrοr=null" alt="">
-                                    </div>
-                                    <div class="app_list_info_r">
-                                      <p class="app_list_info_title" data-id="${app.app_id}">${ app.app_name}</p>
-                                      <p class="app_list_info_subtitle">${app_introduce}</p>
-                                    </div>
-                                  </div>
-                                  <div class="app_list_extra_info">
-                                    <div class="app_list_extra_info_l">${tagsHtml}</div>
-                                    <div class="app_list_extra_info_r"></div>
-                                  </div>
-                                </li>`;
-                  $('.app_list_box').append(storeHtml);
-                }
-            } else {
-                $('.app_list_box').html(LANGUAGESTYPE == 'zh'? '无' : 'None');
-            }
-        }
+              }
+
+          }
+      }
+      console.origin.log('------------------------------g_appList', g_appList)
     }
 
-    sortNumber(a,b){
-      return b.app.body().unwrap().update_time() - a.app.body().unwrap().update_time();
-    }
 }
 
 export const AppStoreList = new AppStoreListClass;
 AppStoreList.getAllAppList();
-
 
 
 // open app detail

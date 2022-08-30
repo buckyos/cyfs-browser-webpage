@@ -110,7 +110,6 @@ class AppListClass {
                                         $('.app_tag_list li').eq(sortIndex-1).after(liHtml);
                                     }
                                 }
-                                
                             }
                           }
                         }

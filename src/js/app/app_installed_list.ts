@@ -11,6 +11,7 @@ let g_uninstallId: string;
 let g_firstOpenSetting: boolean = true;
 let g_getListInterval: NodeJS.Timeout | null = null;
 let g_isGettingList:boolean = false;
+let g_isFirstGettingList:boolean = true;
 
 $(async function(){
     if(LANGUAGESTYPE == 'zh'){
@@ -60,9 +61,12 @@ class AppManager {
         } else {
             console.origin.log('app installed list:', list_ret.app_list().array());
             g_isGettingList = true;
-            $('.app_tag_list').html('');
+            // $('.app_tag_list').html('');
             let timeArr:number[] = [];
             let installHtml:string = '';
+            g_installedList = [];
+            let htmlArr:string[] = [];
+            let index = 0;
             for (const appid of list_ret.app_list().array()) {
                 console.log('appid.object_id:', appid.object_id)
                 let app = await AppUtil.handleAppDetail(appid.object_id);
@@ -72,14 +76,14 @@ class AppManager {
                     let sortIndex = 0;
                     let isfirstSort = true;
                     timeArr.forEach((time, index)=>{
-                    if(isfirstSort && time < app.app.body().unwrap().update_time()){
-                        isfirstSort = false;
-                        sortIndex = index - 1;
-                    }
-                    if((index == timeArr.length - 1) && isfirstSort){
-                        isfirstSort = false;
-                        sortIndex = index + 1;
-                    }
+                        if(isfirstSort && time < app.app.body().unwrap().update_time()){
+                            isfirstSort = false;
+                            sortIndex = index - 1;
+                        }
+                        if((index == timeArr.length - 1) && isfirstSort){
+                            isfirstSort = false;
+                            sortIndex = index + 1;
+                        }
                     })
                     if(sortIndex < 0){
                         sortIndex = 0;
@@ -135,12 +139,26 @@ class AppManager {
                                             </p>
                                         </div>
                                     </li>`;
-                    if(sortIndex == 0){
-                        $('.app_tag_list').prepend(installHtml);
+                    if(g_isFirstGettingList){
+                        g_installedList.splice(sortIndex, 0, app);
+                        if(sortIndex == 0){
+                            $('.app_tag_list').prepend(installHtml);
+                        }else{
+                            $('.app_tag_list li').eq(sortIndex-1).after(installHtml);
+                        }
                     }else{
-                        $('.app_tag_list li').eq(sortIndex-1).after(installHtml);
+                        htmlArr.splice(sortIndex, 0, installHtml);
                     }
                 }
+            }
+            if(g_isFirstGettingList){
+                g_isFirstGettingList = false;
+            }else{
+                let listStr:string = '';
+                htmlArr.forEach(htmlStr => {
+                    listStr = listStr+htmlStr;
+                });
+                $('.app_tag_list').html(listStr);
             }
         }
         g_isGettingList = false;

@@ -5,7 +5,7 @@ import { ObjectUtil, formatDate, LANGUAGESTYPE } from '../lib/util'
 import { isBind, AppUtil, AppDetailUtil } from './app_util'
 
 let g_isBind:boolean;
-let g_installedList:{ app_id: cyfs.ObjectId | string, app_name: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], version: string, status:number, app_icon: string, owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, webdir: cyfs.DirId |undefined, summary: string, auto_update: boolean, app_status: cyfs.AppLocalStatus }[];
+let g_installedList:{ app_id: cyfs.ObjectId | string, app_name: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], version: string, status:number, app_icon: string, owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, webdir: cyfs.DirId |undefined, summary: string, auto_update: boolean, app_status: cyfs.AppLocalStatus }[] = [];
 let g_owner: cyfs.ObjectId;
 let g_uninstallId: string;
 let g_firstOpenSetting: boolean = true;
@@ -64,7 +64,6 @@ class AppManager {
             // $('.app_tag_list').html('');
             let timeArr:number[] = [];
             let installHtml:string = '';
-            g_installedList = [];
             let htmlArr:string[] = [];
             let index = 0;
             for (const appid of list_ret.app_list().array()) {
@@ -161,6 +160,8 @@ class AppManager {
                 $('.app_tag_list').html(listStr);
             }
         }
+        console.origin.log('------------g_installedList', g_installedList);
+        $('.app_installed_setting_i').css('display', 'block');
         g_isGettingList = false;
     }
 

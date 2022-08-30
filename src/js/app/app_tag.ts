@@ -50,6 +50,7 @@ class AppListClass {
             $('.app_tag_list').html(LANGUAGESTYPE == 'zh'? '无' : 'None');
         } else {
             let storeList = r.app_list().array();
+            let timeArr:number[] = [];
             if (storeList && storeList.length) {
                 for (let i = 0; i < storeList.length; i++) {
                     let app = await AppUtil.showApp(storeList[i].object_id, false);
@@ -66,6 +67,48 @@ class AppListClass {
                                 let tags = info['cyfs-app-store'].tag;
                                 if(tags.indexOf(g_tag) > -1){
                                     g_appList.push({ app:app, tags: tags });
+                                    let sortIndex = 0;
+                                    let isfirstSort = true;
+                                    timeArr.forEach((time, index)=>{
+                                        if(isfirstSort && time < app.app.body().unwrap().update_time()){
+                                        isfirstSort = false;
+                                        sortIndex = index - 1;
+                                        }
+                                        if((index == timeArr.length - 1) && isfirstSort){
+                                        isfirstSort = false;
+                                        sortIndex = index + 1;
+                                        }
+                                    })
+                                    if(sortIndex < 0){
+                                        sortIndex = 0;
+                                    }
+                                    timeArr.splice(sortIndex, 0, app.app.body().unwrap().update_time());
+                                    let liHtml:string = '';
+                                    let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
+                                    if (app.app.body().unwrap().content().desc.is_some()) {
+                                        app_introduce = app.app.body().unwrap().content().desc.unwrap().toString();
+                                    }
+                                    let tagsHtml:string = '';
+                                    tags?.forEach(tag => {
+                                        tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}"># ${tag}</a>`;
+                                    });
+                                    liHtml = `<li>
+                                                <div class="app_tag_img_box float_l">
+                                                    <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                                                </div>
+                                                <div class="float_l">
+                                                    <p class="app_tag_title">${app.app_name}</p>
+                                                    <p class="app_tag_info">${app_introduce}</p>
+                                                    <p class="app_tag_p">
+                                                        ${tagsHtml}
+                                                    </p>
+                                                </div>
+                                            </li>`;
+                                    if(sortIndex == 0){
+                                        $('.app_tag_list').prepend(liHtml);
+                                    }else{
+                                        $('.app_tag_list li').eq(sortIndex-1).after(liHtml);
+                                    }
                                 }
                                 
                             }
@@ -73,40 +116,8 @@ class AppListClass {
                         }
                     }
                 }
-                g_appList = await g_appList.sort(AppList.sortNumber);
-            }
-            console.origin.log('------g_appList', g_appList);
-            $('.app_tag_list').html('');
-            let liHtml:string = '';
-            for (let i = 0; i < g_appList.length; i++) {
-                let app = g_appList[i].app;
-                let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
-                if (app.app.body().unwrap().content().desc.is_some()) {
-                    app_introduce = app.app.body().unwrap().content().desc.unwrap().toString();
-                }
-                let tagsHtml:string = '';
-                g_appList[i].tags?.forEach(tag => {
-                    tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}"># ${tag}</a>`;
-                });
-                liHtml = `<li>
-                            <div class="app_tag_img_box float_l">
-                                <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
-                            </div>
-                            <div class="float_l">
-                                <p class="app_tag_title">${app.app_name}</p>
-                                <p class="app_tag_info">${app_introduce}</p>
-                                <p class="app_tag_p">
-                                    ${tagsHtml}
-                                </p>
-                            </div>
-                        </li>`;
-                $('.app_tag_list').append(liHtml);
             }
         }
-    }
-
-    sortNumber(a,b){
-        return b.app.app.body().unwrap().update_time() - a.app.app.body().unwrap().update_time();
     }
 
 }

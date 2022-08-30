@@ -10,6 +10,7 @@ let g_owner: cyfs.ObjectId;
 let g_uninstallId: string;
 let g_firstOpenSetting: boolean = true;
 let g_getListInterval: NodeJS.Timeout | null = null;
+let g_isGettingList:boolean = false;
 
 $(async function(){
     if(LANGUAGESTYPE == 'zh'){
@@ -23,7 +24,7 @@ $(async function(){
     }else{
         g_getListInterval = setInterval(async () => {
             appManager.getAppList();
-        }, 10 * 1000);
+        }, 30 * 1000);
     }
 });
 
@@ -49,85 +50,102 @@ class AppManager {
 
     // get app installed list
     async getAppList() {
+        if(g_isGettingList){
+            return;
+        }
         const list_ret = await AppUtil.getAllAppListFun();
         console.origin.log('app installed list result:', list_ret);
         if (list_ret.err || !list_ret.app_list().size) {
             $('.app_tag_list').html(LANGUAGESTYPE == 'zh'? '无' : 'None');
         } else {
             console.origin.log('app installed list:', list_ret.app_list().array());
-            let app_installed_list:{ app_id: cyfs.ObjectId | string, app_name: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], version: string, status:number, app_icon: string, owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, webdir: cyfs.DirId |undefined, summary: string, auto_update: boolean, app_status: cyfs.AppLocalStatus } []= [];
+            g_isGettingList = true;
+            $('.app_tag_list').html('');
+            let timeArr:number[] = [];
+            let installHtml:string = '';
             for (const appid of list_ret.app_list().array()) {
                 console.log('appid.object_id:', appid.object_id)
                 let app = await AppUtil.handleAppDetail(appid.object_id);
                 console.origin.log('------------showApp-app', app);
                 let app_status = app.status;
                 if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
-                    app_installed_list.push(app);
+                    let sortIndex = 0;
+                    let isfirstSort = true;
+                    timeArr.forEach((time, index)=>{
+                    if(isfirstSort && time < app.app.body().unwrap().update_time()){
+                        isfirstSort = false;
+                        sortIndex = index - 1;
+                    }
+                    if((index == timeArr.length - 1) && isfirstSort){
+                        isfirstSort = false;
+                        sortIndex = index + 1;
+                    }
+                    })
+                    if(sortIndex < 0){
+                        sortIndex = 0;
+                    }
+                    timeArr.splice(sortIndex, 0, app.app.body().unwrap().update_time());
+                    console.origin.log('------------app-detail', app);
+                    let appStr = "";
+                    if (app_status == cyfs.AppLocalStatusCode.Init) {
+                        appStr = LANGUAGESTYPE == 'zh'? '初始化' : 'Init';
+                    }else if(app_status == cyfs.AppLocalStatusCode.Installing){
+                        appStr = LANGUAGESTYPE == 'zh'? '安装中' : 'Installing';
+                    }else if(app_status == cyfs.AppLocalStatusCode.InstallFailed){
+                        appStr = LANGUAGESTYPE == 'zh'? '安装失败' : 'InstallFailed';
+                    }else if(app_status == cyfs.AppLocalStatusCode.NoService){
+                        appStr = LANGUAGESTYPE == 'zh'? '无DEC服务' : 'NoService';
+                    }else if(app_status == cyfs.AppLocalStatusCode.Stopping){
+                        appStr = LANGUAGESTYPE == 'zh'? '停止中' : 'Stopping';
+                    }else if(app_status == cyfs.AppLocalStatusCode.Stop){
+                        appStr = LANGUAGESTYPE == 'zh'? '已停止' : 'Stop';
+                    }else if(app_status == cyfs.AppLocalStatusCode.StopFailed){
+                        appStr = LANGUAGESTYPE == 'zh'? '停止失败' : 'StopFailed';
+                    }else if(app_status == cyfs.AppLocalStatusCode.Starting){
+                        appStr = LANGUAGESTYPE == 'zh'? '启动中' : 'Starting';
+                    }else if(app_status == cyfs.AppLocalStatusCode.Running){
+                        appStr = LANGUAGESTYPE == 'zh'? '运行中' : 'Running';
+                    }else if(app_status == cyfs.AppLocalStatusCode.StartFailed){
+                    appStr = LANGUAGESTYPE == 'zh'? '启动失败' : 'StartFailed';
+                    }else if(app_status == cyfs.AppLocalStatusCode.Uninstalling){
+                        appStr = LANGUAGESTYPE == 'zh'? '卸载中' : 'Uninstalling';
+                    }else if(app_status == cyfs.AppLocalStatusCode.UninstallFailed){
+                        appStr = LANGUAGESTYPE == 'zh'? '卸载失败' : 'UninstallFailed';
+                    }else if(app_status == cyfs.AppLocalStatusCode.Uninstalled){
+                        appStr = LANGUAGESTYPE == 'zh'? '卸载成功' : 'Uninstalled';
+                    }else if(app_status == cyfs.AppLocalStatusCode.RunException){
+                        appStr = LANGUAGESTYPE == 'zh'? '运行异常' : 'RunException';
+                    }
+                    installHtml =   `<li>
+                                        <div class="app_tag_img_box float_l" data-id="${app.app_id}">
+                                            <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                                        </div>
+                                        <div class="float_l app_installed_info_box">
+                                            ${app.fidArray[app.fidArray.length-1].version != app.version?`<i class="app_installed_update"  data-id="${app.app_id}"></i>`:''}
+                                            <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span></p>
+                                            <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
+                                            <p class="app_tag_p">
+                                                <label class="switch_label switch_animbg float_l">
+                                                    <input class="app_status_switch" type="checkbox" ${app.status == cyfs.AppLocalStatusCode.Running?'checked':''} name="${app.app_name}_${app.app_id}" data-id="${app.app_id}"><i class="switch_i"></i>
+                                                </label>
+                                                <i class="float_l app_installed_status_i"></i>
+                                                <span class="float_l app_installed_status">${appStr}</span>
+                                                <button class="app_primary_btn app_uninstall_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'卸载': 'Uninstall'}</button>
+                                                <button class="app_primary_btn app_detail_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'详情': 'Detail'}</button>
+                                            </p>
+                                        </div>
+                                    </li>`;
+                    if(sortIndex == 0){
+                        $('.app_tag_list').prepend(installHtml);
+                    }else{
+                        $('.app_tag_list li').eq(sortIndex-1).after(installHtml);
+                    }
                 }
-            }
-            g_installedList = await app_installed_list.sort(appManager.sortNumber);
-            $('.app_installed_setting_i').css('display', 'block');
-            let installHtml:string = '';
-            $('.app_tag_list').html('');
-            for (const app of app_installed_list) {
-                console.origin.log('------------app-detail', app);
-                let app_status = app.status;
-                let appStr = "";
-                if (app_status == cyfs.AppLocalStatusCode.Init) {
-                    appStr = LANGUAGESTYPE == 'zh'? '初始化' : 'Init';
-                }else if(app_status == cyfs.AppLocalStatusCode.Installing){
-                    appStr = LANGUAGESTYPE == 'zh'? '安装中' : 'Installing';
-                }else if(app_status == cyfs.AppLocalStatusCode.InstallFailed){
-                    appStr = LANGUAGESTYPE == 'zh'? '安装失败' : 'InstallFailed';
-                }else if(app_status == cyfs.AppLocalStatusCode.NoService){
-                    appStr = LANGUAGESTYPE == 'zh'? '无DEC服务' : 'NoService';
-                }else if(app_status == cyfs.AppLocalStatusCode.Stopping){
-                    appStr = LANGUAGESTYPE == 'zh'? '停止中' : 'Stopping';
-                }else if(app_status == cyfs.AppLocalStatusCode.Stop){
-                    appStr = LANGUAGESTYPE == 'zh'? '已停止' : 'Stop';
-                }else if(app_status == cyfs.AppLocalStatusCode.StopFailed){
-                    appStr = LANGUAGESTYPE == 'zh'? '停止失败' : 'StopFailed';
-                }else if(app_status == cyfs.AppLocalStatusCode.Starting){
-                    appStr = LANGUAGESTYPE == 'zh'? '启动中' : 'Starting';
-                }else if(app_status == cyfs.AppLocalStatusCode.Running){
-                    appStr = LANGUAGESTYPE == 'zh'? '运行中' : 'Running';
-                }else if(app_status == cyfs.AppLocalStatusCode.StartFailed){
-                appStr = LANGUAGESTYPE == 'zh'? '启动失败' : 'StartFailed';
-                }else if(app_status == cyfs.AppLocalStatusCode.Uninstalling){
-                    appStr = LANGUAGESTYPE == 'zh'? '卸载中' : 'Uninstalling';
-                }else if(app_status == cyfs.AppLocalStatusCode.UninstallFailed){
-                    appStr = LANGUAGESTYPE == 'zh'? '卸载失败' : 'UninstallFailed';
-                }else if(app_status == cyfs.AppLocalStatusCode.Uninstalled){
-                    appStr = LANGUAGESTYPE == 'zh'? '卸载成功' : 'Uninstalled';
-                }else if(app_status == cyfs.AppLocalStatusCode.RunException){
-                    appStr = LANGUAGESTYPE == 'zh'? '运行异常' : 'RunException';
-                }
-                installHtml =   `<li>
-                                    <div class="app_tag_img_box float_l" data-id="${app.app_id}">
-                                        <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
-                                    </div>
-                                    <div class="float_l app_installed_info_box">
-                                        ${app.fidArray[app.fidArray.length-1].version != app.version?`<i class="app_installed_update"  data-id="${app.app_id}"></i>`:''}
-                                        <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span></p>
-                                        <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
-                                        <p class="app_tag_p">
-                                            <label class="switch_label switch_animbg float_l">
-                                                <input class="app_status_switch" type="checkbox" ${app.status == cyfs.AppLocalStatusCode.Running?'checked':''} name="${app.app_name}_${app.app_id}" data-id="${app.app_id}"><i class="switch_i"></i>
-                                            </label>
-                                            <i class="float_l app_installed_status_i"></i>
-                                            <span class="float_l app_installed_status">${appStr}</span>
-                                            <button class="app_primary_btn app_uninstall_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'卸载': 'Uninstall'}</button>
-                                            <button class="app_primary_btn app_detail_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'详情': 'Detail'}</button>
-                                        </p>
-                                    </div>
-                                </li>`;
-                $('.app_tag_list').append(installHtml);
             }
         }
+        g_isGettingList = false;
     }
-    sortNumber(a,b){
-        return b.app.body().unwrap().update_time() - a.app.body().unwrap().update_time();
-    }
+
 }
 
 const appManager = new AppManager();

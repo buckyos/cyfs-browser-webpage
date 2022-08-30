@@ -52,7 +52,7 @@ class AppStoreListClass {
                       let sortIndex = 0;
                       let isfirstSort = true;
                       timeArr.forEach((time, index)=>{
-                        if(isfirstSort && time > app.app.body().unwrap().update_time()){
+                        if(isfirstSort && time < app.app.body().unwrap().update_time()){
                           isfirstSort = false;
                           sortIndex = index - 1;
                         }

@@ -37,7 +37,7 @@ let SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBui
 let BUILDIN_SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[];
 let SEARCH_HISTORY_LIST:{name: string, type: number}[] = [];
 
-async function handlerGuidingProcess (isBind?:boolean) {
+async function handlerGuidingProcess () {
     let getShortcutSession = localStorage.getItem('browser-shortcuts-list');
     console.origin.log('getShortcutSession', getShortcutSession);
     // let decapp = { url:'https://www.cyfs.com/download_en.html', name: 'Cyfs Software', icon: './img/dec_app_index_i.svg', index: 0, isBuildin: true };
@@ -106,10 +106,6 @@ function isUnbind() {
         success:function(result){
             console.log('getStatus-result', result);
             ANONYMOUS_STATUS = result.anonymous;
-            if(IS_FIRST_IN){
-                handlerGuidingProcess(result.is_bind);
-                IS_FIRST_IN = false;
-            }
             if (result.is_bind) {
                 // 已绑定
                 if (isBindInterval) {
@@ -140,6 +136,10 @@ function isUnbind() {
                 IS_FIRST_BIND = true;
             }else{
                 if (result.is_bind) {
+                    if(IS_FIRST_IN){
+                        handlerGuidingProcess();
+                        IS_FIRST_IN = false;
+                    }
                     $('.anonymous_box').css('display', 'none');
                     $('.review_anonymous_box').css('display', 'none');
                 }

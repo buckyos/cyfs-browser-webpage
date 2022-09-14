@@ -21,6 +21,7 @@ module.exports = (env, argv) => {
 
     return {
         entry: {
+            'build_did': './src/js/build_did.ts',
             'objects': './src/js/objects.ts',
             'm_objects': './src/js/mobile/objects.ts',
             'info': './src/js/info.ts',
@@ -96,6 +97,11 @@ module.exports = (env, argv) => {
                 template: './src/object_browser/objects.html',
                 filename: '../object_browser/objects.html',
                 chunks: ['objects']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/build_did.html',
+                filename: '../build_did.html',
+                chunks: ['build_did']
             }),
             new HtmlWebpackPlugin({
                 template: './src/info.html',

@@ -9,8 +9,6 @@ let g_installedList:{ app_id: cyfs.ObjectId | string, app_name: string, fidArray
 let g_owner: cyfs.ObjectId;
 let g_uninstallId: string;
 let g_firstOpenSetting: boolean = true;
-let g_getListInterval: NodeJS.Timeout | null = null;
-let g_isGettingList:boolean = false;
 let g_isFirstGettingList:boolean = true;
 
 $(async function(){
@@ -22,10 +20,6 @@ $(async function(){
     let g_isBind = await isBind();
     if(!g_isBind){
         window.location.href = 'cyfs://static/browser.html';
-    }else{
-        g_getListInterval = setInterval(async () => {
-            appManager.getAppList();
-        }, 30 * 1000);
     }
 });
 
@@ -51,21 +45,15 @@ class AppManager {
 
     // get app installed list
     async getAppList() {
-        if(g_isGettingList){
-            return;
-        }
         const list_ret = await AppUtil.getAllAppListFun();
         console.origin.log('app installed list result:', list_ret);
         if (list_ret.err || !list_ret.app_list().size) {
             $('.app_tag_list').html(LANGUAGESTYPE == 'zh'? '无' : 'None');
         } else {
             console.origin.log('app installed list:', list_ret.app_list().array());
-            g_isGettingList = true;
-            // $('.app_tag_list').html('');
             let timeArr:number[] = [];
             let installHtml:string = '';
             let htmlArr:string[] = [];
-            let index = 0;
             for (const appid of list_ret.app_list().array()) {
                 console.log('appid.object_id:', appid.object_id)
                 let app = await AppUtil.handleAppDetail(appid.object_id);
@@ -162,7 +150,9 @@ class AppManager {
         }
         console.origin.log('------------g_installedList', g_installedList);
         $('.app_installed_setting_i').css('display', 'block');
-        g_isGettingList = false;
+        setTimeout(() => {
+            appManager.getAppList();
+        }, 30 * 1000);
     }
 
 }

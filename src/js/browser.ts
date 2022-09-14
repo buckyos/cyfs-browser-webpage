@@ -36,6 +36,7 @@ let BIND_STATUS:boolean;
 let SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[];
 let BUILDIN_SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[];
 let SEARCH_HISTORY_LIST:{name: string, type: number}[] = [];
+let g_appList: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[];
 
 async function handlerGuidingProcess () {
     let getShortcutSession = localStorage.getItem('browser-shortcuts-list');
@@ -49,11 +50,11 @@ async function handlerGuidingProcess () {
     if(getShortcutSession){
         shortcutsList = BUILDIN_SHORTCUT_LIST = shortcutsList.concat(JSON.parse(getShortcutSession));
     }
-    await util.getAppList();
-    renderingShortcut(shortcutsList);
+    await renderingShortcut(shortcutsList);
+    util.getAppList();
 }
 
-function renderingShortcut (list: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[]) {
+async function renderingShortcut (list: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[]) {
     let html = '';
     let shortcutList: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[] = [];
     list.forEach((element, index)=>{

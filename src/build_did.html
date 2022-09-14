@@ -1,0 +1,484 @@
+<html>
+<head>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="./css/main.css" rel="stylesheet" />
+    <title></title>
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+
+</head>
+<body style="background-color: #F2F3F5;">
+    <div>
+        <div class="util_header_box">
+            <div class="util_header_right"></div>
+        </div>
+        <div class="create_did_container">
+            <h2 class="did_title">Create Your DID</h2>
+            <div class="create_did_box">
+                <div class="did_progress_box">
+                    <div class="did_progress_container">
+                        <div class="did_progress">
+                            <div>1</div>
+                        </div>
+                        <p class="did_progress_p">Buy VOOD</p>
+                    </div>
+                    <div class="did_progress_border"></div>
+                    <div class="did_progress_container">
+                        <div class="did_progress did_progress_active">
+                            <div>2</div>
+                        </div>
+                        <p class="did_progress_p did_progress_p_two">Create DID</p>
+                    </div>
+                    <div class="did_progress_border"></div>
+                    <div class="did_progress_container">
+                        <div class="did_progress ">
+                            <div>3</div>
+                        </div>
+                        <p class="did_progress_p did_progress_p_three">Activate VOOD</p>
+                    </div>
+                </div>
+                <div class="create_did_content_box">
+                    <div class="create_did_step_two_box create_did_step_two">
+                        <div class="did_info_box">
+                            <div class="did_info_box_l">DID Info</div>
+                            <div class="did_info_box_r">
+                                <div>
+                                    <p class="did_info_box_r_title">Nick name</p>
+                                    <input type="text" placeholder="Nickname should not exceed 16 characters.">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="did_info_box">
+                            <div class="did_info_box_l">OOD Info</div>
+                            <div class="did_info_box_r">
+                                <div>
+                                    <p class="did_info_box_r_title">OOD name</p>
+                                    <input type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="did_info_box">
+                            <div class="did_info_box_l">OOD position</div>
+                            <div class="did_info_box_r">
+                                <div>
+                                    <p class="did_info_box_r_title">Country</p>
+                                    <input type="text">
+                                </div>
+                                <div>
+                                    <p class="did_info_box_r_title">Province or state</p>
+                                    <input type="text">
+                                </div>
+                                <div>
+                                    <p class="did_info_box_r_title">City</p>
+                                    <input type="text">
+                                </div>
+                                <button class="did_next_btn">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="did_mnemonic_create_box did_mnemonic_create">
+                        <div class="did_mnemonic_create_title">Backup recovery phrase</div>
+                        <p class="did_mnemonic_create_info">The recovery phrase is used to restore the digital identity or reset the digital identity password. Please transcribe it in order accurately on paper and keep it in a safe place that only known by you.</p>
+                        <div class="did_create_mnemonic_box">
+                            <span>hint</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                        </div>
+                        <div class="did_mnemonic_tips_box">
+                            <h3 class="did_mnemonic_tips_title"><i class="did_mnemonic_tips_title_i"></i>Tips:</h3>
+                            <div class="did_mnemonic_tips">
+                                • Do not reveal the mnemonic to anyone
+                                • Once the mnemonic is lost, the asset cannot be recovered
+                                • Do not backup and save by means of screenshots or network transmissions
+                                • In any case, please do not uninstall the app easily
+                            </div>
+                        </div>
+                        <button class="did_mnemonic_tips_next did_next_btn">Next</button>
+                    </div>
+                    <div class="did_mnemonic_choose_box did_mnemonic_choose">
+                        <div class="did_mnemonic_create_title did_mnemonic_choose_title">Verify recovery phrase</div>
+                        <div class="did_create_mnemonic_box did_choose_mnemonic_box">
+                            <span>hint</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                        </div>
+                        <p class="did_mnemonic_choose_p">Please click the following words in order</p>
+                        <div class="did_choose_mnemonic_container">
+                            <span>hint</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                            <span>hingfet</span>
+                        </div>
+                        <button class="did_next_btn did_verify_btn">Verify</button>
+                    </div>
+                    <div class="did_mnemonic_choose_box did_mnemonic_choose">
+                        
+                        <button class="did_next_btn did_verify_btn">Verify</button>
+                    </div>
+                </div>
+            </div>
+            <p class="text_c what_did_click_p create_did_step_two">
+                <a class="what_did_click">what is  D.I.D ?</a>
+            </p>
+            <p class="text_c what_did_click_p did_mnemonic_create">
+                <a class="what_did_click">What is a recovery phrase?</a>
+            </p>
+        </div>
+    </div>
+    <div class="cover_box">
+        <div class="cover_container_box did_cover_box">
+            <div class="close_cover_i"></div>
+            <img class="did_warn_icon" src="./img/did/did_warn_icon.svg" alt="">
+            <p class="did_warn_title">Warning</p>
+            <p class="did_warn_subtitle">Is the recovery phrase backed up?</p>
+            <div class="did_warn_container_box">
+                <div class="did_mnemonic_tips_title_i"></div>
+                <div class="did_warn_info">Once the recovery phrase are leaked, the assets can be controlled by others.</div>
+            </div>
+            <button class="browser_plain_btn did_warn_btn did_warn_btn_no">No</button>
+            <button class="browser_primary_btn did_warn_btn did_warn_btn_yes">Yes</button>
+        </div>
+    </div>
+</body>
+<style>
+.util_header_box{
+    width: 100%;
+    height: 56px;
+    background: #FFFFFF;
+}
+.util_header_right{
+    float: right;
+    margin-right: 72px;
+}
+.create_did_container{
+    width: 773px;
+    height: 670px;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+    border-radius: 8px 8px 8px 8px;
+    margin: 0 auto;
+    margin-top: 110px;
+    background: #FFFFFF url(./img/did/did_box_bg.svg) no-repeat 20px 30px;
+}
+.did_title{
+    height: 40px;
+    line-height: 40px;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    padding: 46px 0 17px 0 ;
+}
+.create_did_box{
+    width: 528px;
+    height: 520px;
+    background: #FFFFFF;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+    border-radius: 8px 8px 8px 8px;
+    border: 1px solid #DAE4F3;
+    margin: 0 auto;
+}
+.did_progress_box{
+    height: 100px;
+    padding: 19px 0 0 30px;
+}
+.create_did_content_box{
+    width: 526px;
+    height: 399px;
+    background: #FAFAFA;
+    border-radius: 0px 0px 7px 7px;
+    border: 1px solid #DAE4F3;
+    margin: 0 auto;
+}
+.create_did_step_two_box{
+    padding-top: 20px;
+}
+.did_mnemonic_create_box{
+    padding: 18px 33px 0 33px;
+}
+.what_did_click_p{
+    padding-top: 13px;
+}
+.what_did_click{
+    text-align: center;
+    height: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2873F7;
+    line-height: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+.did_progress_container{
+    float: left;
+}
+.did_progress{
+    width: 56px;
+    height: 56px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.did_progress div{
+    width: 48px;
+    height: 48px;
+    background: #DAE4F3;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #FFFFFF;
+    line-height: 48px;
+    border-radius: 50%;
+}
+.did_progress_box .did_progress_active div{
+    background: #07D4B3;
+}
+.did_progress_p{
+    height: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    padding-top: 12px;
+}
+.did_progress_border{
+    width: 121px;
+    height: 4px;
+    background: #DADADA;
+    border-radius: 2px 2px 2px 2px;
+    margin: 26px 10px 0 10px ;
+    float: left;
+}
+.did_progress_p_three{
+    margin-left: -15px;
+}
+.did_progress_p_two{
+    margin-left: -3px;
+}
+.did_info_box{
+    overflow: hidden;
+}
+.did_info_box_l{
+    float: left;
+    width: 96px;
+    padding: 0 0 0 35px;
+    line-height: 18px;
+    font-weight: 400;
+    font-size: 12px;
+}
+.did_info_box_r{
+    float: left;
+}
+.did_info_box_r div{
+    padding-bottom: 12px;
+}
+.did_info_box_r_title{
+    height: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #1C201E;
+    line-height: 18px;
+    padding-bottom: 6px;
+}
+.did_info_box_r input{
+    width: 322px;
+    height: 32px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #D8D8D8;
+    padding-left: 12px;
+}
+.did_next_btn{
+    display: block;
+    width: 288px;
+    height: 28px;
+    margin: 0 auto;
+    background: #0AD7B6;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 28px;
+    border: none;
+    margin-top: 5px;
+}
+.did_mnemonic_create_title{
+    height: 19px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1C201E;
+    line-height: 22px;
+    padding-bottom: 6px;
+}
+.did_mnemonic_create_info{
+    width: 458px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #E23F53;
+    line-height: 18px;
+}
+.did_create_mnemonic_box{
+    width: 426px;
+    overflow: hidden;
+    overflow-y: auto ;
+    background: #E2E3E9;
+    border-radius: 8px;
+    border: 1px solid #DAE4F3;
+    padding: 16px 17px 4px 17px;
+    margin-top: 16px;
+}
+.did_create_mnemonic_box span, .did_choose_mnemonic_container span{
+    display: block;
+    float: left;
+    height: 28px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2A2E31;
+    line-height: 28px;
+    padding: 0 18px;
+    margin: 0 8px 8px 0;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #07D4B3;
+    cursor: pointer;
+}
+.did_mnemonic_tips_box{
+    width: 460px;
+}
+.did_mnemonic_tips_title{
+    height: 24px;
+    line-height: 24px;
+    color: #2A2E31;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 10px 0 8px 0;
+}
+.did_mnemonic_tips_title_i{
+    display: block;
+    width: 24px;
+    height: 24px;
+    float: left;
+    margin-right: 4px;
+    background: url(./img/did/did_mnemonic_tips_title.svg) no-repeat center center;
+}
+.did_mnemonic_tips{
+    height: 87px;
+    overflow-y: auto;
+    font-size: 12px;
+    font-weight: 400;
+    color: #999999;
+    line-height: 18px;
+}
+.did_mnemonic_tips_next{
+    margin: 2px 0 0 85px;
+}
+.create_did_step_two, .did_mnemonic_create{
+    display: none;
+}
+.did_cover_box{
+    width: 320px;
+    height: 332px;
+    top: 320px;
+    left: 50%;
+    margin-left: -160px;
+}
+.close_cover_i{
+    width: 16px;
+    height: 16px;
+    float: right;
+    margin: 10px 17px 0 0;
+    background: url(./img/did/did_close_cover_i.svg) no-repeat center center;
+    cursor: pointer;
+}
+.did_warn_icon{
+    width: 56px;
+    height: 56px;
+    padding: 35px 0 0 131px;
+    display: block;
+}
+.did_warn_title{
+    text-align: center;
+    height: 21px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+    line-height: 21px;
+    padding: 25px 0 12px 0;
+}
+.did_warn_subtitle{
+    text-align: center;
+    height: 19px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 19px;
+}
+.did_warn_container_box{
+    width: 289px;
+    height: 56px;
+    background: #FAFAFA;
+    border-radius: 8px;
+    border: 1px solid #DAE4F3;
+    margin: 12px 15px 40px 16px;
+}
+.did_warn_container_box div{
+    float: left;
+}
+.did_mnemonic_tips_title_i{
+    margin: 12px 6px 20px 10px;
+}
+.did_warn_info{
+    padding: 12px 9px 8px 0;
+    width: 240px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #999999;
+    line-height: 18px;
+}
+.did_warn_btn{
+    width: 80px;
+    height: 28px;
+    float: left;
+}
+.did_warn_btn_no{
+    margin: 0 53px;
+}
+.did_mnemonic_choose_box{
+    padding:0 33px;
+}
+.did_mnemonic_choose_title{
+    padding: 18px 0 17px 0;
+}
+.did_choose_mnemonic_box{
+    width: 431px;
+    margin: 0;
+}
+.did_mnemonic_choose_p{
+    width: 239px;
+    height: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2A2E31;
+    line-height: 16px;
+    padding: 20px 0 18px 0;
+}
+.did_choose_mnemonic_container{
+    width: 460px;
+    height: 148px;
+    overflow: hidden ;
+}
+.did_verify_btn{
+    margin-top: 0;
+}
+</style>
+</html>

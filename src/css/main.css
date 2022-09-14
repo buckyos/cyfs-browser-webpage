@@ -1739,3 +1739,12 @@ button{
     line-height: 1;
     text-align: center;
 }
+.util_header_box{
+    width: 100%;
+    height: 56px;
+    background: #FFFFFF;
+}
+.util_header_right{
+    float: right;
+    margin-right: 72px;
+}

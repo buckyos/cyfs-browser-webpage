@@ -6,9 +6,9 @@ import { ObjectUtil, formatDate, LANGUAGESTYPE, castToLocalUnit } from './lib/ut
 
 $(async function(){
     if(LANGUAGESTYPE == 'zh'){
-        $('title').html('创建DID');
+        $('title').html('重置DID');
     }else{
-        $('title').html('Build DID');
+        $('title').html('Reset DID');
     }
 });
 
@@ -17,8 +17,4 @@ ObjectUtil.renderHeaderInfo();
 
 $('.app_header_box').on('click', '.people_head_sculpture', function () {
     window.location.href = 'cyfs://static/info.html';
-})
-
-$('.cover_box').on('click', '.close_cover_i', function () {
-    $('.cover_box').css('display', 'none');
 })

@@ -1,0 +1,233 @@
+<html>
+<head>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="./css/main.css" rel="stylesheet" />
+    <title></title>
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+
+</head>
+<body style="background-color: #F2F3F5;">
+    <div>
+        <div class="util_header_box">
+            <div class="util_header_right"></div>
+        </div>
+        <div class="create_did_container">
+            <div class="reset_did_step_one_box" >
+                <h2 class="did_title"></h2>
+                <div class="recovery_phrase_box">
+                    <h3 class="recovery_phrase_title"><i></i> Enter your recovery phrase</h3>
+                    <textarea placeholder="Restoring your account using  DID recovery phrase." class="recovery_phrase_textarea" name="" id="" ></textarea>
+                    <button class="did_next_btn">Verify</button>
+                </div>
+            </div>
+            <div class="reset_did_step_two_box">
+                <h2 class="did_title"></h2>
+                <div class="recovery_phrase_box recovery_phrase_choose_box">
+                    <div class="create_did_success_box">
+                        <div class="did_success_icon">
+                            <img src="./img/did/did_success_icon.svg" alt="">
+                        </div>
+                        <p  class="did_success_info">Perfect ! Verification of recovery phrase is complete and your DID has been successfully created.</p>
+                    </div>
+                    <button class="browser_primary_btn choose_ood_btn">Buy  or activate  VOOD</button>
+                    <button class="browser_plain_btn reset_ood_btn">Reset VOOD</button>
+                    <div class="recovery_phrase_choose_info">VOOD is one of the OOD types, OOD (Owner Online Device)  is a personal server device based on the CYFS protocol. You could use the OOD for decentralized, secure data storage and install DEC (Data Exchange Contract) App. The data is encrypted and stored in the OOD to guarantee your data privacy and security.</div>
+                </div>
+            </div>
+            <div class="reset_did_activate_ood">
+                <h2 class="did_title"></h2>
+                <div class="reset_did_activate_ood_container" >
+                    <div class="reset_did_activate_ood_box">
+                        <div class="reset_did_activate_ood_icon">
+                            <img src="./img/did/did_warn_icon.svg" alt="">
+                        </div>
+                        <p class="reset_did_activate_ood_title">Activate your OOD.</p>
+                    </div>
+                    <button class="activate_vood_btn browser_primary_btn">Activate VOOD</button>
+                </div>
+            </div>
+            <div class="reset_did_ood_bind">
+                <h2 class="did_title"></h2>
+                <div class="reset_did_activate_ood_container" >
+                    <div class="reset_did_activate_ood_box">
+                        <div class="reset_did_ood_bind_icon">
+                            <img src="./img/did/did_bind_success_icon.svg" alt="">
+                        </div>
+                        <p class="reset_did_activate_ood_title">VOOD binding successfully</p>
+                        <p class="reset_did_activate_ood_subtitle">The page automatically jumps after <i class="">3</i> seconds.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+.reset_did_step_two_box, .reset_did_miss_container, .reset_did_activate_ood, .reset_did_ood_bind{
+    display: none;
+}
+.create_did_container{
+    width: 773px;
+    height: 670px;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+    border-radius: 8px 8px 8px 8px;
+    margin: 0 auto;
+    margin-top: 110px;
+    background: #FFFFFF url(./img/did/did_box_bg.svg) no-repeat 20px 30px;
+}
+.did_title{
+    height: 40px;
+    line-height: 40px;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    padding: 46px 0 17px 0 ;
+}
+.create_did_box{
+    width: 528px;
+    height: 520px;
+    background: #FFFFFF;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+    border-radius: 8px 8px 8px 8px;
+    border: 1px solid #DAE4F3;
+    margin: 0 auto;
+}
+.did_next_btn{
+    display: block;
+    width: 288px;
+    height: 28px;
+    margin: 0 auto;
+    background: #0AD7B6;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 28px;
+    border: none;
+}
+.recovery_phrase_box{
+    width: 468px;
+    height: 363px;
+    background: #FFFFFF;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+    border-radius: 8px 8px 8px 8px;
+    border: 1px solid #DAE4F3;
+    margin: 0 auto;
+    padding: 0 34px;
+}
+.recovery_phrase_title{
+    height: 17px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1C201E;
+    line-height: 17px;
+    padding: 49px 0 16px 0;
+}
+.recovery_phrase_textarea{
+    width: 460px;
+    height: 100px;
+    background: #E2E3E9;
+    border-radius: 8px;
+    border: 1px solid #DAE4F3;
+    margin-bottom: 36px;
+}
+.recovery_phrase_choose_box{
+    height: 517px;
+    background: #FAFAFA;
+}
+.create_did_success_box{
+    width: 320px;
+    height: 226px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #DAE4F3;
+    margin: 0 auto;
+    margin-top: 49px;
+}
+.did_success_icon, .did_bind_success_icon, .reset_did_activate_ood_icon, .reset_did_ood_bind_icon{
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    padding: 34px 0 25px 0;
+}
+.did_success_icon img, .did_bind_success_icon img, .reset_did_miss_icon img, .reset_did_activate_ood_icon img, .reset_did_ood_bind_icon img{
+    width: 100%;
+    height: 100%;
+}
+.did_success_info{
+    width: 286px;
+    padding: 0 17px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 24px;
+}
+.choose_ood_btn, .reset_ood_btn{
+    width: 288px;
+    height: 28px;
+    display: block;
+    margin: 0 auto;
+}
+.choose_ood_btn{
+    margin-top: 27px;
+    margin-bottom: 15px;
+}
+.reset_ood_btn{
+    margin-bottom:27px;
+}
+.recovery_phrase_choose_info{
+    width: 467px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #5F6368;
+    line-height: 22px;
+    margin-left: -3px;
+}
+.reset_did_activate_ood_container{
+    width: 528px;
+    height: 363px;
+    background: #FAFAFA;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+    border-radius: 8px;
+    border: 1px solid #DAE4F3;
+    margin: 0 auto;
+}
+.reset_did_activate_ood_box{
+    width: 320px;
+    height: 226px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #DAE4F3;
+    margin: 49px 105px 27px 103px;
+}
+.reset_did_activate_ood_icon{
+    padding: 62px 0 25px 0;
+}
+.reset_did_activate_ood_title{
+    height: 21px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+    line-height: 21px;
+    text-align: center;
+}
+.activate_vood_btn{
+    width: 288px;
+    height: 28px;
+    display: block;
+    margin: 0 auto;
+}
+.reset_did_activate_ood_subtitle{
+    text-align: center;
+    height: 14px;
+    font-size: 10px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 14px;
+    padding-top: 36px;
+}
+.reset_did_activate_ood_subtitle i{
+    color: #0AD7B6;
+}
+</style>
+</html>

@@ -20,7 +20,7 @@
                 <i class="browser-people-icon header-right-box-i" id="user_switch"></i>
                 <!-- <img class="browser-people-icon header-right-box-i" id="user_switch" src="" alt=""> -->
                 <i class="ood_status_icon header-right-box-i" id="ood_status_icon"></i>
-                <div class="device-content content-position-box show-box" id="scan_content">
+                <!-- <div class="device-content content-position-box show-box" id="scan_content">
                     <div class="scan_box">
                         <canvas id="scan_box"></canvas>
                     </div>
@@ -28,8 +28,63 @@
                     <p class="browser_qr_ptwo">
                         <a href="https://www.cyfs.com/ood_en.html" set-lan="html:HowToGetStart"></a>
                     </p>
+                </div> -->
+                <div class="choose_did_container">
+                    <div class="classa_list_container">
+                        <div class="create_did_box choose_btn_box">
+                            <div class="create_did_img_box choose_btn_img_box">
+                                <img src="./img/did/create_did_img_box.svg" alt="">
+                            </div>
+                            <button class="create_did_btn">Create Your DID</button>
+                        </div>
+                        <button class="choose_btn create_did_choose_btn" data-operation="create">Create Your DID</button>
+                        <div class="activate_box choose_btn_box">
+                            <div class="create_did_img_box choose_btn_img_box">
+                                <img src="./img/did/activate_img_box.svg" alt="">
+                            </div>
+                            <button class="activate_btn">Activate your browser</button>
+                        </div>
+                        <button class="choose_btn " data-operation="activate">Activate your browser</button>
+                        <div class="reset_did_box choose_btn_box">
+                            <div class="create_did_img_box choose_btn_img_box">
+                                <img src="./img/did/reset_did_img_box.svg" alt="">
+                            </div>
+                            <button class="reset_did_btn">Reset DID</button>
+                        </div>
+                        <button class="choose_btn " data-operation="reset">Reset DID</button>
+                    </div>
+                    <div class="classb_activate_container">
+                        <div class="reset_back_icon">
+                            <img src="./img/did/reset_back_icon.svg" alt="">
+                        </div>
+                        <div class="activate_scan_container">
+                            <div class="activate_scan_box">
+                                <div class="scan_box">
+                                    <canvas id="scan_box"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="activate_scan_intro" set-lan="html:ScanCodeActivate"></p>
+                        <a class="activate_scan_click" href="https://www.cyfs.com/ood_en.html" set-lan="html:HowToGetStart"></a>
+                    </div>
+                    <div class="classb_reset_container">
+                        <div class="reset_back_icon">
+                            <img src="./img/did/reset_back_icon.svg" alt="">
+                        </div>
+                        <h3 class="reset_did_title">Reset an existing DID</h3>
+                        <div class="reset_did_second_box choose_classb_btn_box" >
+                            <div class="create_did_img_box choose_btn_img_box">
+                                <img src="./img/did/reset_did_img_box.svg" alt="">
+                            </div>
+                            <button class="reset_did_click_btn">Use Recovery Phrase</button>
+                        </div>
+                    </div>
                 </div>
                 <textarea id="copy_textarea" style="display:none;"></textarea>
+                <div class="device-content content-position-box show-box" id="activate_success_content">
+                    <div class="activate_success_icon"></div>
+                    <p class="activate_success_content_p" set-lan="html:ActivatedSuccessfully"></p>
+                </div>
                 <div class="device-content content-position-box show-box" id="activate_success_content">
                     <div class="activate_success_icon"></div>
                     <p class="activate_success_content_p" set-lan="html:ActivatedSuccessfully"></p>
@@ -330,6 +385,20 @@ ul,li {
     white-space: normal;
     word-break: break-all;
 }
+.choose_did_container{
+    width: 191px;
+    height: 252px;
+    padding: 0 13px;
+    box-shadow: 0px 2px 3px 1px rgba(0,0,0,0.16);
+    border-radius: 4px;
+    background: #fff;
+    position: absolute;
+    top: 64px;
+    z-index: 9999;
+    word-wrap: break-word;
+    white-space: normal;
+    word-break: break-all;
+}
 #people_content{
     display: none;
 }
@@ -370,10 +439,9 @@ ul,li {
     padding-left: 14px;
 }
 .scan_box{
-    width: 120px;
-    height: 120px;
-    margin: 0 auto;
-    padding: 24px 0 16px 0;
+    width: 98px;
+    height: 98px;
+    margin: 15px;
 }
 .scan_box img, .scan_box_canvas_box img{
     width: 100%;
@@ -1358,6 +1426,108 @@ ul,li {
 .add_url_btn_save{
     background: linear-gradient(135deg, #00BFA8 0%, #12DBBB 100%);
     color: #fff;
+}
+.choose_did_container{
+    padding-top: 3px;
+}
+.choose_btn_box, .choose_classb_btn_box{
+    width: 191px;
+    height: 138px;
+    background: #FAFAFA;
+    border-radius: 4px;
+    border: 1px solid #DAE4F3;
+    margin-top: 15px;
+}
+.choose_did_container button{
+    width: 171px;
+    height: 24px;
+    background: #FFFFFF;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #0AD7B6;
+    font-size: 12px;
+    font-weight: 400;
+    color: #0AD7B6;
+    line-height: 24px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 15px;
+    cursor: pointer;
+}
+.choose_did_container .choose_btn_box button,  .choose_did_container .choose_classb_btn_box button{
+    width: 171px;
+    height: 24px;
+    background: #0AD7B6;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.16);
+    border-radius: 4px 4px 4px 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 24px;
+    margin-top: 7px;
+}
+.choose_btn_img_box{
+    width: 191px;
+    height: 99px;
+}
+.choose_btn_img_box img, .reset_back_icon img{
+    width: 100%;
+    height: 100%;
+}
+.choose_did_container .create_did_choose_btn, .activate_box, .reset_did_box, .classb_reset_container, .choose_did_container, .classb_activate_container{
+    display: none;
+}
+.choose_did_container .create_did_choose_btn{
+    margin-top: 18px;
+    margin-bottom: 15px;
+}
+.reset_did_title{
+    height: 19px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1C201E;
+    line-height: 19px;
+    text-align: center;
+}
+.reset_back_icon{
+    width: 16px;
+    height: 16px;
+    margin: 7px 0 3px 0;
+    cursor: pointer;
+}
+.activate_scan_container{
+    width: 153px;
+    height: 153px;
+    background: #FAFAFA;
+    border-radius: 4px;
+    border: 1px solid #DAE4F3;
+    margin: 0 auto;
+}
+.activate_scan_box{
+    width: 128px;
+    height: 128px;
+    background: #fff;
+    border-radius: 4px;
+    border: 3px solid #DAE4F3;
+    margin: 0 auto;
+    margin-top: 11px;
+}
+.activate_scan_intro{
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-top: 7px;
+    font-size: 10px;
+    font-weight: 400;
+    color: #666666;
+    line-height: 16px;
+}
+.activate_scan_click{
+    display: block;
+    margin: 0 auto;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2873F7;
+    line-height: 18px;
+    text-align: center;
 }
 </style>
 </html>

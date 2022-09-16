@@ -317,8 +317,8 @@ function showThisScan(name:string) {
             }
             QRCode.toCanvas(document.getElementById('scan_box'), JSON.stringify(content), {
                 errorCorrectionLevel: 'L',
-                width: 120,
-                height: 120,
+                width: 98,
+                height: 98,
                 margin: 0
             });
             if(!BIND_STATUS){
@@ -336,14 +336,15 @@ $('#user_switch').on('click', function () {
     if(isBind){
         window.location.href = 'cyfs://static/info.html';
     }else{
-        if($('#scan_content').css('display') == 'block'){
+        if($('.choose_did_container').css('display') == 'block'){
             if(isBindInterval){
                 clearInterval(isBindInterval);
             }
-            $('#scan_content').css('display', 'none');
+            $('.choose_did_container').css('display', 'none');
         }else{
-            $('#scan_content').css('display', 'block');
-            showThisScan('#scan_box');
+            $('.choose_did_container, .classa_list_container').css('display', 'block');
+            $('.classb_reset_container, .classb_activate_container').css('display', 'none');
+            // showThisScan('#scan_box');
         }
     }
 })
@@ -667,4 +668,48 @@ $('.guide_acivate_success_cancel_btn').on('click', function () {
 $('.guide_acivate_success_confirm_btn').on('click', function () {
     localStorage.setItem('is-restart-browser-to-index', 'true');
     chrome.runtime.restart();
+})
+
+$('.choose_did_container').on('click', '.create_did_btn', async function () {
+    window.location.href = 'cyfs://static/build_did.html';
+})
+
+$('.choose_did_container').on('click', '.reset_did_click_btn', async function () {
+    window.location.href = 'cyfs://static/reset_did.html';
+})
+
+$('.choose_did_container').on('click', '.activate_btn', async function () {
+    $('.classa_list_container').css('display', 'none');
+    $('.classb_activate_container').css('display', 'block');
+    if(isBindInterval){
+        clearInterval(isBindInterval);
+    }
+    showThisScan('#scan_box');
+})
+
+$('.choose_did_container').on('click', '.reset_did_btn', async function () {
+    $('.classa_list_container').css('display', 'none');
+    $('.classb_reset_container').css('display', 'block');
+})
+
+$('.choose_did_container').on('click', '.choose_btn', async function () {
+    let operation: string = $(this).attr('data-operation') || '';
+    $('.choose_btn_box').css('display', 'none');
+    $('.choose_btn').css('display', 'block');
+    $(this).css('display', 'none');
+    if(operation == 'create'){
+        $('.create_did_box').css('display', 'block');
+    }else if(operation == 'activate'){
+        $('.activate_box').css('display', 'block');
+    }else{
+        $('.reset_did_box').css('display', 'block');
+    }
+})
+
+$('.choose_did_container').on('click', '.reset_back_icon', async function () {
+    if(isBindInterval){
+        clearInterval(isBindInterval);
+    }
+    $('.classb_reset_container, .classb_activate_container').css('display', 'none');
+    $('.classa_list_container').css('display', 'block');
 })

@@ -44,17 +44,11 @@ async function handlerGuidingProcess () {
         let gitHub = { url:'https://github.com/buckyos/CYFS', name: 'github', icon: './img/git_hub_index_i.svg', index: 0, isBuildin: true };
         let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 1, isBuildin: true };
     // let shortcutsList = BUILDIN_SHORTCUT_LIST = [decapp, gitHub, appmanagement];
-    let aaa = {icon: "cyfs://static/favicon.ico",
-    index: 0,
-    isBuildin: false,
-    name: "01111",
-    url: "cyfs://static/browser.html"}
-    let shortcutsList = BUILDIN_SHORTCUT_LIST = [gitHub, appmanagement,aaa];
-
+    let shortcutsList = BUILDIN_SHORTCUT_LIST = [gitHub, appmanagement];
     if(getShortcutSession){
         shortcutsList = BUILDIN_SHORTCUT_LIST = shortcutsList.concat(JSON.parse(getShortcutSession));
     }
-    // await util.getAppList();
+    await util.getAppList();
     renderingShortcut(shortcutsList);
 }
 

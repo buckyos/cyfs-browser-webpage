@@ -44,12 +44,17 @@ async function handlerGuidingProcess () {
         let gitHub = { url:'https://github.com/buckyos/CYFS', name: 'github', icon: './img/git_hub_index_i.svg', index: 0, isBuildin: true };
         let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 1, isBuildin: true };
     // let shortcutsList = BUILDIN_SHORTCUT_LIST = [decapp, gitHub, appmanagement];
-    let shortcutsList = BUILDIN_SHORTCUT_LIST = [gitHub, appmanagement];
+    let aaa = {icon: "cyfs://static/favicon.ico",
+    index: 0,
+    isBuildin: false,
+    name: "01111",
+    url: "cyfs://static/browser.html"}
+    let shortcutsList = BUILDIN_SHORTCUT_LIST = [gitHub, appmanagement,aaa];
 
     if(getShortcutSession){
         shortcutsList = BUILDIN_SHORTCUT_LIST = shortcutsList.concat(JSON.parse(getShortcutSession));
     }
-    await util.getAppList();
+    // await util.getAppList();
     renderingShortcut(shortcutsList);
 }
 
@@ -57,11 +62,27 @@ function renderingShortcut (list: {url:string, name: string, icon: string, index
     let html = '';
     let shortcutList: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[] = [];
     list.forEach((element, index)=>{
-        let item = {url: element.url, name: element.name, icon: element.icon, index: index, isBuildin: element.isBuildin};
+        let isRender = false;
+        let item = {url: element.url, name: element.name, icon: element.icon, index: shortcutList.length, isBuildin: element.isBuildin};
         if(!element.isBuildin){
-            shortcutList.push(item);
+            let filterData = list.filter((aaa)=> aaa.url=== element.url);
+            console.log('filterData', filterData)
+            if(filterData.length < 2){
+                isRender = true;
+                shortcutList.push(item);
+            }else{
+                let filterListData = shortcutList.filter((shortcut)=> shortcut.url=== element.url);
+                console.log('filterListData', filterListData)
+                if(filterListData.length == 0){
+                    isRender = true;
+                    shortcutList.push(item);
+                }
+            }
+        }else{
+            isRender = true;
         }
-        html += `<li>
+        if(isRender){
+            html += `<li>
                     ${element.isBuildin?'':`
                         <i class="app_edit_btn"></i>
                         <div class="app_edit_box">
@@ -74,6 +95,7 @@ function renderingShortcut (list: {url:string, name: string, icon: string, index
                     </div>
                     <p class="app-name click_href_to" data-url="${element.url}">${element.name}</p>
                 </li>`;
+        }
     });
     SHORTCUT_LIST = BUILDIN_SHORTCUT_LIST.concat(shortcutList);
     if(SHORTCUT_LIST.length < 10){

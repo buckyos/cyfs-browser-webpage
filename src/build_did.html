@@ -41,12 +41,13 @@
                     <div class="did_buy_ood_container">
                         <div class="did_buy_ood_box">
                             <p class="did_buy_ood_title">You need to buy  VOOD to store your assets and data.</p>
-                            <button class="did_next_btn did_buy_ood_btn">Buy  VOOD </button>
+                            <button class="did_next_btn did_buy_ood_btn" data-next=".create_did_step_two_box" data-last=".create_did_step_one_box">Buy  VOOD </button>
                             <p class="did_buy_ood_info">VOOD is one of the OOD types, OOD (Owner Online Device)  is a personal server device based on the CYFS protocol. You could use the OOD for decentralized, secure data storage and install DEC (Data Exchange Contract) App. The data is encrypted and stored in the OOD to guarantee your data privacy and security.</p>
                         </div>
                     </div>
                 </div>
-            <div class="create_did_step_two_box" style="display:none">
+            </div>
+            <div class="create_did_step_two_box">
                 <h2 class="did_title">Create Your DID</h2>
                 <div class="create_did_box">
                     <div class="did_progress_box">
@@ -78,7 +79,7 @@
                                 <div class="did_info_box_r">
                                     <div>
                                         <p class="did_info_box_r_title">Nick name</p>
-                                        <input type="text" placeholder="Nickname should not exceed 16 characters.">
+                                        <input type="text" class="did_info_name" placeholder="Nickname should not exceed 16 characters.">
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +88,7 @@
                                 <div class="did_info_box_r">
                                     <div>
                                         <p class="did_info_box_r_title">OOD name</p>
-                                        <input type="text">
+                                        <input type="text" class="did_info_ood_name">
                                     </div>
                                 </div>
                             </div>
@@ -96,32 +97,24 @@
                                 <div class="did_info_box_r">
                                     <div>
                                         <p class="did_info_box_r_title">Country</p>
-                                        <input type="text">
+                                        <select name="" id="country_select"></select>
                                     </div>
                                     <div>
                                         <p class="did_info_box_r_title">Province or state</p>
-                                        <input type="text">
+                                        <select name="" id="state_select"></select>
                                     </div>
                                     <div>
                                         <p class="did_info_box_r_title">City</p>
-                                        <input type="text">
+                                        <select name="" id="city_select"></select>
                                     </div>
-                                    <button class="did_next_btn">Next</button>
+                                    <button class="did_next_btn create_mnemonic_btn" data-next=".did_mnemonic_create" data-last=".create_did_step_two">Next</button>
                                 </div>
                             </div>
                         </div>
                         <div class="did_mnemonic_create_box did_mnemonic_create">
                             <div class="did_mnemonic_create_title">Backup recovery phrase</div>
                             <p class="did_mnemonic_create_info">The recovery phrase is used to restore the digital identity or reset the digital identity password. Please transcribe it in order accurately on paper and keep it in a safe place that only known by you.</p>
-                            <div class="did_create_mnemonic_box">
-                                <span>hint</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                            </div>
+                            <div class="did_create_mnemonic_box did_create_mnemonic_box_show"></div>
                             <div class="did_mnemonic_tips_box">
                                 <h3 class="did_mnemonic_tips_title"><i class="did_mnemonic_tips_title_i"></i>Tips:</h3>
                                 <div class="did_mnemonic_tips">
@@ -131,29 +124,13 @@
                                     • In any case, please do not uninstall the app easily
                                 </div>
                             </div>
-                            <button class="did_mnemonic_tips_next did_next_btn">Next</button>
+                            <button class="did_mnemonic_tips_next did_next_btn" data-next=".cover_box" data-last="">Next</button>
                         </div>
                         <div class="did_mnemonic_choose_box did_mnemonic_choose">
                             <div class="did_mnemonic_create_title did_mnemonic_choose_title">Verify recovery phrase</div>
-                            <div class="did_create_mnemonic_box did_choose_mnemonic_box">
-                                <span>hint</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                            </div>
+                            <div class="did_create_mnemonic_box did_choose_mnemonic_box"></div>
                             <p class="did_mnemonic_choose_p">Please click the following words in order</p>
-                            <div class="did_choose_mnemonic_container">
-                                <span>hint</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                                <span>hingfet</span>
-                            </div>
+                            <div class="did_choose_mnemonic_container"></div>
                             <button class="did_next_btn did_verify_btn">Verify</button>
                         </div>
                         <div class="did_create_success_box did_create_success">
@@ -174,7 +151,7 @@
                     <a class="what_did_click">What is a recovery phrase?</a>
                 </p>
             </div>
-            <div class="create_did_step_three_box" style="display:none">
+            <div class="create_did_step_three_box">
                 <h2 class="did_title">Create Your DID</h2>
                 <div class="create_did_box">
                     <div class="did_progress_box">
@@ -243,7 +220,7 @@
     font-size: 30px;
     font-weight: bold;
     text-align: center;
-    padding: 46px 0 17px 0 ;
+    padding: 26px 0 17px 0 ;
 }
 .create_did_box{
     width: 528px;
@@ -357,7 +334,7 @@
     line-height: 18px;
     padding-bottom: 6px;
 }
-.did_info_box_r input{
+.did_info_box_r input, .did_info_box_r select{
     width: 322px;
     height: 32px;
     background: #FFFFFF;
@@ -403,6 +380,7 @@
     border: 1px solid #DAE4F3;
     padding: 16px 17px 4px 17px;
     margin-top: 16px;
+    height: 80px;
 }
 .did_create_mnemonic_box span, .did_choose_mnemonic_container span{
     display: block;
@@ -449,7 +427,7 @@
 .did_mnemonic_tips_next{
     margin: 2px 0 0 85px;
 }
-.create_did_step_two, .did_mnemonic_create, .did_mnemonic_choose{
+.create_did_step_two, .did_mnemonic_create, .did_mnemonic_choose, .create_did_step_two_box, .create_did_step_three_box, .did_create_success{
     display: none;
 }
 .did_cover_box{

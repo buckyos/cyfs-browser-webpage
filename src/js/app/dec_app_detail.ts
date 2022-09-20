@@ -36,7 +36,6 @@ if (window.location.search.split("?")[1]) {
     }
 }
 console.log('---------g_appId, g_version, g_isInstalled:', g_appId, g_version, g_isInstalled);
-
 $(async function(){
     isBind();
     if(LANGUAGESTYPE == 'zh'){

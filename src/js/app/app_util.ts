@@ -3,6 +3,8 @@ import $ from 'jquery';
 import { toast } from '../lib/toast.min'
 import { ObjectUtil, LANGUAGESTYPE } from '../lib/util'
 
+export type appDetailUtilType = { app_id: cyfs.ObjectId | string, app_name: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], version: string, status:number, app_icon: string, owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, webdir: cyfs.DirId |undefined, summary: string, auto_update: boolean, app_status: cyfs.AppLocalStatus };
+
 class AppOthersClass {
     m_sharedStatck: cyfs.SharedCyfsStack;
     m_util_service: cyfs.UtilRequestor;
@@ -162,7 +164,7 @@ class AppUtilClass {
             if (app.body().unwrap() && app.body().unwrap().content().desc.is_some()) {
                 summary = app.body().unwrap().content().desc.unwrap().toString();
             }
-            let appObj: { app_id: cyfs.ObjectId | string, app_name: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], version: string, status:number, app_icon: string, owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, webdir: cyfs.DirId |undefined, summary: string, auto_update: boolean, app_status: cyfs.AppLocalStatus } = {
+            let appObj: appDetailUtilType = {
                 app_id: id,
                 app_name: '',
                 app_icon: '',

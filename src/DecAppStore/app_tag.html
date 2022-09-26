@@ -18,12 +18,10 @@
     </div>
     <div class="app_content_box">
       <div class="app_content_title_box">
-        <div class="app_title_box">
-          <h3 class="app_content_title"></h3>
-          <a href="cyfs://static/DecAppStore/app_installed_list.html" class="app_content_title_href"  set-lan="html:DecAppHtml.Installed"></a>
-        </div>
+        <h3 class="app_title_box app_content_title"></h3>
         <div class="app_subtitle_box">
           <button class="float_r app_plain_btn open_install_app_btn" set-lan="html:DecAppHtml.InstallFromUrl"></button>
+          <!-- <button class="float_r app_plain_btn open_install_app_btn">Installed</button> -->
         </div>
       </div>
       <div class="app_tag_list_box">
@@ -33,17 +31,18 @@
       <!-- <button class="app_primary_btn app_upload_btn" set-lan="html:DecAppTagHtml.UploadDecAPP"></button> -->
     </div>
     <div class="app_footer_box">
-      <!-- <div class="app_footer_content_box">
+      <div class="app_footer_content_box">
         <div class="float_l app_footer_box_l">
-          <p><a href="javascript:">How Cyfs work ?</a></p>
-          <p><a href="javascript:">How to develop Dec App ?</a></p>
+          <div class="app_footer_cyfs_icon"></div>
+          <p>Copyright © 2022 CYFS Core Dev Team. All rights reserved</p>
         </div>
         <div class="float_r app_footer_box_r">
-          <i class="app_footer_discard_i"></i>
-          <i class="app_footer_cyfs_i"></i>
-          <p class="float_r">Developer community</p>
+          <a class="app_footer_i app_footer_github_i" href="https://github.com/buckyos/CYFS"></a>
+          <a class="app_footer_i app_footer_discard_i" href="https://discord.com/invite/cyfs"></a>
+          <a class="app_footer_i app_footer_tittwer_i" href="https://twitter.com/CYFSTech"></a>
+          <a class="float_r" href="https://www.cyfs.com/na.html">Join us to build Web3 together</a>
         </div>
-      </div> -->
+      </div>
     </div>
     <div class="anonymous_box">
       <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
@@ -106,6 +105,15 @@
     .app_tag_p a{
         color: #2873F7;
         margin-right: 20px;
+        padding: 3px 13px;
+        padding: 3px 13px;
+        height: 24px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #2873F7;
+        line-height: 24px;
+        background: rgba(10, 215, 182, 0.1);
+        border-radius: 12px;
     }
     .app_upload_btn{
         width: 288px;

@@ -4,6 +4,7 @@ import { toast } from '../lib/toast.min'
 import { ObjectUtil, LANGUAGESTYPE } from '../lib/util'
 
 export type appDetailUtilType = { app_id: cyfs.ObjectId | string, app_name: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], version: string, status:number, app_icon: string, owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, webdir: cyfs.DirId |undefined, summary: string, auto_update: boolean, app_status: cyfs.AppLocalStatus };
+export type storageAppUtilType = { id:cyfs.ObjectId|string, icon:string, name: string, tags: string[], introduce:string };
 
 class AppOthersClass {
     m_sharedStatck: cyfs.SharedCyfsStack;

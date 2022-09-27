@@ -2,11 +2,12 @@ import $ from 'jquery';
 import * as cyfs from '../../cyfs_sdk/cyfs'
 import { toast } from '../lib/toast.min'
 import { ObjectUtil, formatDate, LANGUAGESTYPE } from '../lib/util'
-import { isBind, AppUtil, AppDetailUtil } from './app_util'
+import { isBind, AppUtil, AppDetailUtil, storageAppUtilType } from './app_util'
 
 let g_isBind:boolean;
 let g_tag:string = '';
 let g_appList:{ app:{ app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp }, tags?:  string[] }[] = [];
+let g_hasStorageList:boolean = false;
 
 $(async function(){
     if(LANGUAGESTYPE == 'zh'){
@@ -44,6 +45,7 @@ class AppListClass {
     }
 
     async getAllAppList() {
+        let allAppHtml:string[] = [];
         let r = await AppUtil.getAllAppListFun();
         console.origin.log('-------------r', r)
         if (r.err) {
@@ -104,10 +106,13 @@ class AppListClass {
                                                     </p>
                                                 </div>
                                             </li>`;
-                                    if(sortIndex == 0){
-                                        $('.app_tag_list').prepend(liHtml);
-                                    }else{
-                                        $('.app_tag_list li').eq(sortIndex-1).after(liHtml);
+                                    allAppHtml.splice(sortIndex, 0, liHtml);
+                                    if(!g_hasStorageList){
+                                        if(sortIndex == 0){
+                                            $('.app_tag_list').prepend(liHtml);
+                                        }else{
+                                            $('.app_tag_list li').eq(sortIndex-1).after(liHtml);
+                                        }
                                     }
                                 }
                             }
@@ -116,12 +121,50 @@ class AppListClass {
                     }
                 }
             }
+            if(g_hasStorageList){
+                let listHtml:string = '';
+                allAppHtml.forEach(html => {
+                  listHtml += html;
+                });
+                $('.app_tag_list').html(listHtml);
+            }
         }
+    }
+
+    async getStorgeAppList () {
+    let list:string|null = localStorage.getItem('browser-app-store-list');
+      if(list){
+        g_hasStorageList = true;
+        let appList: storageAppUtilType[] = JSON.parse(list);
+        let liHtml:string = '';
+        appList.forEach(app => {
+            if(app.tags.indexOf(g_tag) > -1){
+                let tagsHtml:string = '';
+                app.tags?.forEach(tag => {
+                    tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}"># ${tag}</a>`;
+                });
+                liHtml += `<li>
+                            <div class="app_tag_img_box float_l">
+                                <img src="${app.icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                            </div>
+                            <div class="float_l">
+                                <p class="app_tag_title">${app.name}</p>
+                                <p class="app_tag_info">${app.introduce}</p>
+                                <p class="app_tag_p">
+                                    ${tagsHtml}
+                                </p>
+                            </div>
+                        </li>`;
+            }
+        });
+        $('.app_tag_list').html(liHtml);
+      }
     }
 
 }
 
 export const AppList = new AppListClass;
+AppList.getStorgeAppList();
 AppList.getAllAppList();
 
 // open install app pop

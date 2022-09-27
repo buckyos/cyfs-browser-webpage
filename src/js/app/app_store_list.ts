@@ -2,7 +2,7 @@ import $ from 'jquery';
 import * as cyfs from '../../cyfs_sdk/cyfs'
 import { toast } from '../lib/toast.min'
 import { ObjectUtil, formatDate, LANGUAGESTYPE } from '../lib/util'
-import { isBind, AppUtil, AppDetailUtil, appDetailUtilType } from './app_util'
+import { isBind, AppUtil, AppDetailUtil, appDetailUtilType, storageAppUtilType } from './app_util'
 
 let g_isBind:boolean;
 
@@ -25,6 +25,7 @@ let g_owner: cyfs.ObjectId;
 let g_isInstalled:boolean = false;
 let g_uninstallId: string;
 let g_firstOpenSetting: boolean = true;
+let g_hasStorageList:boolean = false;
 
 class AppStoreListClass {
     m_sharedStatck: cyfs.SharedCyfsStack;
@@ -48,6 +49,7 @@ class AppStoreListClass {
 
     //app store list
     async getAllAppList() {
+      let appStorageList: storageAppUtilType[] = [];
       let r = await AppUtil.getAllAppListFun();
       console.origin.log('-------------r', r)
       if (r.err) {
@@ -57,7 +59,8 @@ class AppStoreListClass {
           console.origin.log('storeList', storeList)
           if (storeList && storeList.length) {
               console.log('--------------------------rstore_list', storeList)
-              let storeHtml = "";
+              let storeHtml:string = "";
+              let allAppHtml:string[] = [];
               let timeArr:number[] = [];
               for (let i = 0; i < storeList.length; i++) {
                   if (storeList[i]) {
@@ -93,13 +96,14 @@ class AppStoreListClass {
                       console.log('appExtId:', appExtId);
                       let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
                       console.log('appExt:', appExt);
+                      let tags:string[] = [];
                       if (!appExt.err) {
                         if (appExt[0]) {
                           let info = JSON.parse(appExt[0].info());
                           console.origin.log('appExt-info', app.app_name, info);
                           if (info && info['cyfs-app-store']){
                             if(info['cyfs-app-store'].tag){
-                                let tags = info['cyfs-app-store'].tag;
+                                tags = info['cyfs-app-store'].tag;
                                 tags.forEach(tag => {
                                   tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}" target="_blank"># ${tag}</a>`;
                                 });
@@ -107,10 +111,18 @@ class AppStoreListClass {
                           }
                         }
                       }
+                      let storageApp:storageAppUtilType = {
+                        id: app.app_id,
+                        icon: app.app_icon || `../img/app/app_default_icon.svg`,
+                        name: app.app_name,
+                        tags: tags,
+                        introduce: app_introduce
+                      }
+                      appStorageList.splice(sortIndex, 0, storageApp);
                       storeHtml =  `<li>
                                       <div class="app_list_info">
                                         <div class="app_list_info_l" data-id="${app.app_id}">
-                                          <img src="${app.app_icon || '../img/appmanager/app_default.svg'}" onerror="this.src='../img/appmanager/app_default.svg';this.οnerrοr=null" alt="">
+                                          <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null" alt="">
                                         </div>
                                         <div class="app_list_info_r">
                                           <p class="app_list_info_title" data-id="${app.app_id}">${ app.app_name}</p>
@@ -122,53 +134,109 @@ class AppStoreListClass {
                                         <div class="app_list_extra_info_r"></div>
                                       </div>
                                     </li>`;
-                      if(sortIndex == 0){
-                        $('.app_list_box').prepend(storeHtml);
-                      }else{
-                        $('.app_list_box li').eq(sortIndex-1).after(storeHtml);
+                      allAppHtml.splice(sortIndex, 0, storeHtml);
+                      if(!g_hasStorageList){
+                        if(sortIndex == 0){
+                          $('.app_list_box').prepend(storeHtml);
+                        }else{
+                          $('.app_list_box li').eq(sortIndex-1).after(storeHtml);
+                        }
                       }
                   }
               }
+              console.log('------------------------------g_hasStorageList', g_hasStorageList)
+              if(g_hasStorageList){
+                let listHtml:string = '';
+                allAppHtml.forEach(html => {
+                  listHtml += html;
+                });
+                $('.app_list_box').html(listHtml);
+              }
+              localStorage.setItem('browser-app-store-list', JSON.stringify(appStorageList));
               AppStoreList.getInstalledAppList();
           }
       }
       console.origin.log('------------------------------g_appList', g_appList)
     }
     
-    async getInstalledAppList (list?:cyfs.AppLocalList) {
+    async getStorageAppList () {
+      let list:string|null = localStorage.getItem('browser-app-store-list');
+      if(list){
+        g_hasStorageList = true;
+        let appList: storageAppUtilType[] = JSON.parse(list);
+        AppStoreList.getInstalledAppList(appList, true);
+        for (let index = 0; index < appList.length; index++) {
+          const app = appList[index];
+          let tagsHtml:string = '';
+          if(app.tags){
+            app.tags.forEach(tag => {
+              tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}" target="_blank"># ${tag}</a>`;
+            });
+          }
+          let appHtml = `<li>
+                          <div class="app_list_info">
+                            <div class="app_list_info_l" data-id="${app.id}">
+                              <img src="${app.icon || '../img/app/app_default_icon.svg'}" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null" alt="">
+                            </div>
+                            <div class="app_list_info_r">
+                              <p class="app_list_info_title" data-id="${app.id}">${ app.name}</p>
+                              <p class="app_list_info_subtitle">${app.introduce}</p>
+                            </div>
+                          </div>
+                          <div class="app_list_extra_info">
+                            <div class="app_list_extra_info_l">${tagsHtml}</div>
+                            <div class="app_list_extra_info_r"></div>
+                          </div>
+                        </li>`;
+          $('.app_list_box').append(appHtml);
+        }
+      }
+    }
+    
+    async getInstalledAppList (list?:cyfs.AppLocalList | storageAppUtilType[], isStorageList?: boolean) {
       if(g_isGettingList){
         return;
       }
       g_isGettingList = true;
+      let appList:appDetailUtilType[] = [];
+      console.log('------------list, isStorageList', list, isStorageList);
       if(list){
         let timeArr:number[] = [];
-        let appList:appDetailUtilType[] = [];
-        for (const appid of list.app_list().array()) {
-          console.log('appid.object_id:', appid.object_id)
-          let app = await AppUtil.handleAppDetail(appid.object_id);
-          let app_status = app.status;
-                if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
-                    let sortIndex = 0;
-                    let isfirstSort = true;
-                    timeArr.forEach((time, index)=>{
-                        if(isfirstSort && time < app.app.body().unwrap().update_time()){
-                            isfirstSort = false;
-                            sortIndex = index - 1;
-                        }
-                        if((index == timeArr.length - 1) && isfirstSort){
-                            isfirstSort = false;
-                            sortIndex = index + 1;
-                        }
-                    })
-                    if(sortIndex < 0){
-                        sortIndex = 0;
+        if(isStorageList){
+          for (let index = 0; index < (list as storageAppUtilType[]).length; index++) {
+            const element = list[index];
+            let app = await AppUtil.handleAppDetail(element.id);
+            let app_status = app.status;
+            if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
+                appList.push(app);
+            }
+          }
+        }else{
+          for (const appid of (list as cyfs.AppLocalList).app_list().array()) {
+            console.log('appid.object_id:', appid.object_id)
+            let app = await AppUtil.handleAppDetail(appid.object_id);
+            let app_status = app.status;
+            if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
+                let sortIndex = 0;
+                let isfirstSort = true;
+                timeArr.forEach((time, index)=>{
+                    if(isfirstSort && time < app.app.body().unwrap().update_time()){
+                        isfirstSort = false;
+                        sortIndex = index - 1;
                     }
-                    timeArr.splice(sortIndex, 0, app.app.body().unwrap().update_time());
-                    appList.splice(sortIndex, 0, app);
+                    if((index == timeArr.length - 1) && isfirstSort){
+                        isfirstSort = false;
+                        sortIndex = index + 1;
+                    }
+                })
+                if(sortIndex < 0){
+                    sortIndex = 0;
                 }
+                timeArr.splice(sortIndex, 0, app.app.body().unwrap().update_time());
+                appList.splice(sortIndex, 0, app);
+            }
+          }
         }
-        g_installedAppList = appList;
-        
       }else{
         for (const appid of g_appList) {
           console.log('appid.object_id:', appid.app_id)
@@ -177,10 +245,11 @@ class AppStoreListClass {
           let app_status = app.status;
           if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
               console.origin.log('------------app-detail', app);
-              g_installedAppList.push(app);
+              appList.push(app);
           }
         }
       }
+      g_installedAppList = appList;
       g_isGettingList = false;
       console.origin.log('------------------------------g_installedAppList', g_installedAppList)
       if(g_isInstalled){
@@ -250,10 +319,10 @@ class AppStoreListClass {
                               </div>
                               <div class="float_l app_installed_info_box">
                                   ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir"  href="cyfs://o/${app.webdir.to_base_58()}/index.html"></a>`:''}
-                                  <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}"></button>`:''}</p>
+                                  <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}">update</button>`:''}</p>
                                   <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
                                   <p class="app_tag_p">
-                                      ${app.status == cyfs.AppLocalStatusCode.NoService?'':`${app.status == cyfs.AppLocalStatusCode.Running?`<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="start">start</button>`:`<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="stop">stop</button>`}`}
+                                      ${app.status == cyfs.AppLocalStatusCode.NoService?'':`${app.status == cyfs.AppLocalStatusCode.Running?`<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="stop">stop</button>`:`<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="start">start</button>`}`}
                                       <img class="app_status_loading float_l" src="../img/app/app_status_loading.gif" />
                                       <span class="float_l app_installed_status">${appStr}</span>
                                       <button class=" app_plain_btn app_uninstall_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'卸载': 'Uninstall'}</button>
@@ -272,8 +341,17 @@ class AppStoreListClass {
       console.origin.log('-------------r', r)
       if (r.err) {
       } else {
-        AppStoreList.getInstalledAppList(r);
+        AppStoreList.getInstalledAppList(r, false);
       }
+      setTimeout(() => {
+        AppStoreList.setTimeGetList();
+      }, 30000);
+    }
+
+    async initPage () {
+      await AppStoreList.getStorageAppList();
+      AppStoreList.getAllAppList();
+      AppStoreList.getOwner();
       setTimeout(() => {
         AppStoreList.setTimeGetList();
       }, 30000);
@@ -282,11 +360,7 @@ class AppStoreListClass {
 }
 
 export const AppStoreList = new AppStoreListClass;
-AppStoreList.getAllAppList();
-AppStoreList.getOwner();
-setTimeout(() => {
-  AppStoreList.setTimeGetList();
-}, 30000);
+AppStoreList.initPage();
 
 // open app detail
 $('.app_list_box').on('click', '.app_list_info_l, .app_list_info_title', function () {
@@ -297,7 +371,7 @@ $('.app_list_box').on('click', '.app_list_info_l, .app_list_info_title', functio
 // open install app pop
 $('.open_install_app_btn').on('click', function () {
     $('.app_cover_box .app_cover_input').val('');
-    $('.app_cover_box').css('display', 'block');
+    $('.add_url_cover').css('display', 'block');
 })
 
 // close install app pop
@@ -335,8 +409,8 @@ $('.tab_all_btn').on('click', function () {
   g_isInstalled = false;
   $('.tab_install_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
   $('.tab_all_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
-  $('.app_tag_list_box').css('display', 'none');
-  $('.app_list_box').css('display', 'block');
+  $('.app_tag_list_box, .app_installed_setting_i').css('display', 'none');
+  $('.app_list_box, .open_install_app_btn').css('display', 'block');
 })
 
 $('.tab_install_btn').on('click', function () {
@@ -369,13 +443,22 @@ $(".app_tag_list").on('click', '.operate_btn', async function (event) {
   }
 })
 
-$('.app_tag_list').on("click", '.app_tag_img_box, .app_tag_title, .app_detail_btn, .app_reinstall_btn', function () {
+$('.app_tag_list').on("click", '.app_tag_img_box, .app_tag_title, .app_detail_btn', function () {
   let id = $(this).attr('data-id');
   console.log('------id', id);
   if(!id){
     return;
   }
   window.location.href = 'cyfs://static/DecAppStore/app_detail.html?type=installed&id=' + id;
+})
+
+$('.app_tag_list').on("click", '.app_reinstall_btn', function () {
+  let id = $(this).attr('data-id');
+  console.log('------id', id);
+  if(!id){
+    return;
+  }
+  window.location.href = 'cyfs://static/DecAppStore/app_detail.html?id=' + id;
 })
 
 $('.app_cover_box').on('click', '.app_installed_yes_btn', async function () {

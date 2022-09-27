@@ -40,6 +40,7 @@
           </div>
           <div class="installed_status_checkbox">
             <button class="operate_btn app_primary_btn" data-operation="stop"></button>
+            <img class="app_status_loading" src="../img/app/app_status_loading.gif" />
             <p class="app_detail_p"></p>
           </div>
         </div>
@@ -483,6 +484,7 @@
   width: 82px;
   height: 24px;
   border-radius: 12px;
+  display: none;
 }
 .app_tip_amount_input{
   width: 100%;
@@ -552,6 +554,13 @@
 .app_detail_developer_color{
   color: #8600E6;
   font-style: normal;
+}
+.app_status_loading{
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+  display: none;
 }
 </style>
 

@@ -40,7 +40,7 @@ async function handlerGuidingProcess () {
     let getShortcutSession = localStorage.getItem('browser-shortcuts-list');
     console.origin.log('getShortcutSession', getShortcutSession);
     let gitHub = { url:'https://github.com/buckyos/CYFS', name: 'github', icon: './img/git_hub_index_i.svg', index: 0, isBuildin: true };
-    let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 1, isBuildin: true };
+    let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Store', icon: './img/last-child-li.svg', index: 1, isBuildin: true };
     let shortcutsList = SHORTCUT_LIST = [gitHub, appmanagement];
     if(getShortcutSession){
         SHORTCUT_LIST = shortcutsList = shortcutsList.concat(JSON.parse(getShortcutSession));

@@ -26,6 +26,7 @@ let g_isInstalled:boolean = false;
 let g_uninstallId: string;
 let g_firstOpenSetting: boolean = true;
 let g_hasStorageList:boolean = false;
+let g_isInstalledPage: boolean = false;
 
 class AppStoreListClass {
     m_sharedStatck: cyfs.SharedCyfsStack;
@@ -362,6 +363,24 @@ class AppStoreListClass {
 export const AppStoreList = new AppStoreListClass;
 AppStoreList.initPage();
 
+$('.tab_install_btn').on('click', function () {
+  g_isInstalled = true;
+  $('.tab_all_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
+  $('.tab_install_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
+  $('.app_list_box, .open_install_app_btn').css('display', 'none');
+  $('.app_tag_list_box, .app_installed_setting_i').css('display', 'block');
+  AppStoreList.renderInstalledAppList();
+})
+
+if (window.location.search.split("?")[1]) {
+  let str = window.location.search.split("?")[1];
+  if (str == 'installed') {
+    g_isInstalledPage = true;
+    $('.tab_install_btn').click();
+  }
+}
+console.log('----g_isInstalledPage', g_isInstalledPage);
+
 // open app detail
 $('.app_list_box').on('click', '.app_list_info_l, .app_list_info_title', function () {
   let id = $(this).attr('data-id');
@@ -411,15 +430,6 @@ $('.tab_all_btn').on('click', function () {
   $('.tab_all_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
   $('.app_tag_list_box, .app_installed_setting_i').css('display', 'none');
   $('.app_list_box, .open_install_app_btn').css('display', 'block');
-})
-
-$('.tab_install_btn').on('click', function () {
-  g_isInstalled = true;
-  $('.tab_all_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
-  $('.tab_install_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
-  $('.app_list_box, .open_install_app_btn').css('display', 'none');
-  $('.app_tag_list_box, .app_installed_setting_i').css('display', 'block');
-  AppStoreList.renderInstalledAppList();
 })
 
 $(".app_tag_list").on('click', '.operate_btn', async function (event) {

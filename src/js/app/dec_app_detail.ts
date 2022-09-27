@@ -105,6 +105,9 @@ class AppManager {
             // app installed detail
             $('.app_detail_info_container, .app_subtitle_installed_box, .installed_status_checkbox').css('display', 'block');
             appManager.renderAppInfo(id);
+            setTimeout(() => {
+                appManager.initData(g_appId);
+            }, 10000);
         }else{
             // app detail
             $('.app_detail_title').html(`${app.app_name}<i class="app_detail_version_share"></i>`);
@@ -184,12 +187,16 @@ class AppManager {
     async renderAppInfo (id) {
         let app = await AppUtil.handleAppDetail(id);
         console.origin.log('---------------app-info', app);
-        if(app.status == cyfs.AppLocalStatusCode.Running){
-            g_isStart = false;
-            $('.operate_btn').html('stop');
-        }else{
-            g_isStart = true;
-            $('.operate_btn').html('start');
+        if(app.status != cyfs.AppLocalStatusCode.NoService && app.status != cyfs.AppLocalStatusCode.InstallFailed && app.status != cyfs.AppLocalStatusCode.UninstallFailed){
+            $('.operate_btn').css('display', 'block');
+            $('.app_status_loading').css('display', 'none');
+            if(app.status == cyfs.AppLocalStatusCode.Running){
+                g_isStart = false;
+                $('.operate_btn').html('stop');
+            }else{
+                g_isStart = true;
+                $('.operate_btn').html('start');
+            }
         }
         let app_status = app.status;
         let appStr = "";
@@ -366,7 +373,7 @@ $(".app_subtitle_installed_box").on('click', '.update_installed_btn', async func
 $(".app_subtitle_installed_box").on('click', '.uninstall_installed_btn', async function () {
     let operateAppRet:boolean = await AppDetailUtil.operateApp(g_appId, g_owner, 'uninstall');
     if(operateAppRet){
-        window.location.href = 'cyfs://static/DecAppStore/app_installed_list.html';
+        window.location.href = 'cyfs://static/DecAppStore/app_store_list.html?installed';
     }
 })
 
@@ -379,6 +386,8 @@ $('.app_subtitle_detail_box').on('click', '.to_tip_list', function () {
 })
 
 $('.installed_status_checkbox').on('click', '.operate_btn', async function (event) {
+    $('.operate_btn').css('display', 'none');
+    $('.app_status_loading').css('display', 'block');
     event.stopImmediatePropagation();
     let operateAppRet:boolean;
     if(g_isStart){

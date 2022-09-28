@@ -386,6 +386,7 @@ $('.tab_install_btn').on('click', function () {
   $('.tab_install_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
   $('.app_list_box, .open_install_app_btn').css('display', 'none');
   $('.app_tag_list_box').css('display', 'block');
+  $('.app_title_box').html(LANGUAGESTYPE == 'zh'? '已安装列表' : 'Installed list');
   if(g_isShowSetting){
     $('.app_installed_setting_i').css('display', 'block');
   }
@@ -446,6 +447,7 @@ $('.app_header_box').on('click', '.people_head_sculpture', function () {
 
 $('.tab_all_btn').on('click', function () {
   g_isInstalled = false;
+  $('.app_title_box').html(LANGUAGESTYPE == 'zh'? '应用列表' : 'Dec App List');
   $('.tab_install_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
   $('.tab_all_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
   $('.app_tag_list_box, .app_installed_setting_i').css('display', 'none');

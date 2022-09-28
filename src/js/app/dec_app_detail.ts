@@ -73,14 +73,14 @@ class AppManager {
         appManager.getOwner();
         let app = g_app = await AppUtil.showApp(id, false);
         console.origin.log('---------app-data:', app);
-        $('.app_detail_icon').attr('src', app.app_icon || '');
+        $('.app_detail_icon').attr('src', app.app_icon || '../img/app/app_default_icon.svg');
         let owner = null;
-        let peopleName = null;
+        let peopleName = 'cyfs';
         if (app.app.desc().owner) {
             owner = g_appOwner = app.app.desc().owner().unwrap();
             const peopleR = (await ObjectUtil.getObject({ id: owner!, isReturnResult: true, flags: 1 })).object;
             console.origin.log('peopleR:', peopleR);
-            peopleName = peopleR.object.name() || '';
+            peopleName = peopleR.object.name() || 'cyfs';
         }
         $('.app_detail_dec_id_p').html(`<span class="app_detail_dec_id">Dec-ID：${g_appId}</span><i class="upload_app_info_id_copy" data-id="${g_appId}"></i>`)
         $('.app_detail_developer_p').html(`<span class="app_detail_developer">${LANGUAGESTYPE == 'zh'?'开发者：': 'Developer：'}${peopleName}  (<i class="app_detail_developer_color">${owner}</i>)</span><i class="upload_app_info_id_copy" data-id="${owner}"></i>`)

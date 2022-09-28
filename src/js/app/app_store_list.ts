@@ -27,6 +27,8 @@ let g_uninstallId: string;
 let g_firstOpenSetting: boolean = true;
 let g_hasStorageList:boolean = false;
 let g_isInstalledPage: boolean = false;
+let g_isShowSetting: boolean = false;
+
 
 class AppStoreListClass {
     m_sharedStatck: cyfs.SharedCyfsStack;
@@ -314,6 +316,17 @@ class AppStoreListClass {
                                     </div>
                                   </li>`;
         }else{
+          let btnHtml:string = '';
+          if(app_status == cyfs.AppLocalStatusCode.Installing || app_status == cyfs.AppLocalStatusCode.Stopping || app_status == cyfs.AppLocalStatusCode. Uninstalling){
+            btnHtml = `<img class="app_status_loading float_l" style="display:block" src="../img/app/app_status_loading.gif" />`;
+          }else if(app.status == cyfs.AppLocalStatusCode.Running || app.status == cyfs.AppLocalStatusCode.StopFailed){
+            btnHtml = `<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="stop">stop</button>`;
+          }else if(app.status == cyfs.AppLocalStatusCode.NoService){
+            btnHtml = ``;
+          }else{
+            btnHtml = `<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="start">start</button>`;
+          }
+          console.log('----webdirwebdir',app.app_name, (app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir,  app.webdir)
           installedHtml += `<li>
                               <div class="app_tag_img_box float_l" data-id="${app.app_id}">
                                   <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
@@ -323,7 +336,7 @@ class AppStoreListClass {
                                   <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}">update</button>`:''}</p>
                                   <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
                                   <p class="app_tag_p">
-                                      ${app.status == cyfs.AppLocalStatusCode.NoService?'':`${app.status == cyfs.AppLocalStatusCode.Running?`<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="stop">stop</button>`:`<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="start">start</button>`}`}
+                                      ${btnHtml}
                                       <img class="app_status_loading float_l" src="../img/app/app_status_loading.gif" />
                                       <span class="float_l app_installed_status">${appStr}</span>
                                       <button class=" app_plain_btn app_uninstall_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'卸载': 'Uninstall'}</button>
@@ -335,6 +348,10 @@ class AppStoreListClass {
       }
       $('.app_installed_list').html(installedHtml);
       $('.app_installed_failed_list').html(installedFailedHtml);
+      g_isShowSetting = true;
+      if(($('.app_tag_list_box').css('display') == 'block') && g_isShowSetting){
+        $('.app_installed_setting_i').css('display', 'block');
+      }
     }
 
     async setTimeGetList () {
@@ -368,7 +385,10 @@ $('.tab_install_btn').on('click', function () {
   $('.tab_all_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
   $('.tab_install_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
   $('.app_list_box, .open_install_app_btn').css('display', 'none');
-  $('.app_tag_list_box, .app_installed_setting_i').css('display', 'block');
+  $('.app_tag_list_box').css('display', 'block');
+  if(g_isShowSetting){
+    $('.app_installed_setting_i').css('display', 'block');
+  }
   AppStoreList.renderInstalledAppList();
 })
 

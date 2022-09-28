@@ -137,22 +137,22 @@ class AppManager {
                 if(info['cyfs-app-store'].client){
                     let clients = info['cyfs-app-store'].client;
                     if(clients.android){
-                        $('.app_software_android').css('display', 'block').attr('data-url', clients.android);
+                        $('.app_software_android, .app_detail_client_box').css('display', 'block').attr('data-url', clients.android);
                     }
                     if(clients.iOS){
-                        $('.app_software_ios').css('display', 'block').attr('data-url', clients.iOS);
+                        $('.app_software_ios, .app_detail_client_box').css('display', 'block').attr('data-url', clients.iOS);
                     }
                     if(clients.windows){
-                        $('.app_software_windows').css('display', 'block').attr('data-url', clients.windows);
+                        $('.app_software_windows, .app_detail_client_box').css('display', 'block').attr('data-url', clients.windows);
                     }
                     if(clients.macOS){
-                        $('.app_software_macos').css('display', 'block').attr('data-url', clients.macOS);
+                        $('.app_software_macos, .app_detail_client_box').css('display', 'block').attr('data-url', clients.macOS);
                     }
                     if(clients.linux){
-                        $('.app_software_linux').css('display', 'block').attr('data-url', clients.linux);
+                        $('.app_software_linux, .app_detail_client_box').css('display', 'block').attr('data-url', clients.linux);
                     }
                     if(clients.other){
-                        $('.app_software_other').css('display', 'block').attr('data-url', clients.other);
+                        $('.app_software_other, .app_detail_client_box').css('display', 'block').attr('data-url', clients.other);
                     }
                 }
                 if(info['cyfs-app-store'].community){
@@ -188,12 +188,17 @@ class AppManager {
         let app = await AppUtil.handleAppDetail(id);
         console.origin.log('---------------app-info', app);
         if(app.status != cyfs.AppLocalStatusCode.NoService && app.status != cyfs.AppLocalStatusCode.InstallFailed && app.status != cyfs.AppLocalStatusCode.UninstallFailed){
-            $('.operate_btn').css('display', 'block');
-            $('.app_status_loading').css('display', 'none');
-            if(app.status == cyfs.AppLocalStatusCode.Running){
+            if(app.status == cyfs.AppLocalStatusCode.Running || app.status == cyfs.AppLocalStatusCode.StopFailed){
+                $('.operate_btn').css('display', 'block');
+                $('.app_status_loading').css('display', 'none');
                 g_isStart = false;
                 $('.operate_btn').html('stop');
+            }else if(app.status == cyfs.AppLocalStatusCode.Installing || app.status == cyfs.AppLocalStatusCode.Stopping || app.status == cyfs.AppLocalStatusCode. Uninstalling){
+                $('.operate_btn').css('display', 'none');
+                $('.app_status_loading').css('display', 'block');
             }else{
+                $('.operate_btn').css('display', 'block');
+                $('.app_status_loading').css('display', 'none');
                 g_isStart = true;
                 $('.operate_btn').html('start');
             }

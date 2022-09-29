@@ -352,6 +352,7 @@ class AppStoreListClass {
       $('.app_installed_failed_list').html(installedFailedHtml);
       g_isShowSetting = true;
       if(($('.app_installed_list_box').css('display') == 'block') && g_isShowSetting){
+        $('.app_installed_loading_box').css('display', 'none');
         $('.app_installed_setting_i').css('display', 'block');
       }
     }
@@ -391,6 +392,8 @@ $('.tab_install_btn').on('click', function () {
   $('.app_title_box').html(LANGUAGESTYPE == 'zh'? '已安装列表' : 'Installed list');
   if(g_isShowSetting){
     $('.app_installed_setting_i').css('display', 'block');
+  }else{
+    $('.app_installed_loading_box').css('display', 'block');
   }
   AppStoreList.renderInstalledAppList();
 })

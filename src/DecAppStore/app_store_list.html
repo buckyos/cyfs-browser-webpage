@@ -95,6 +95,12 @@
       <button class="app_primary_btn app_installed_no_btn" set-lan="html:No"></button>
     </div>
   </div>
+  <div class="app_cover_box app_installed_loading_box">
+    <div class="installed_loading_box">
+      <img src="../img/app/app_status_loading.gif" alt="">
+      <p>Loading...</p>
+    </div>
+  </div>
 </body>
 
 <style>
@@ -589,6 +595,31 @@
     .app_cover_installed_setting_box .installed_close_cover_i{
       width: 24px;
       height: 24px;
+    }
+    .installed_loading_box{
+      width: 320px;
+      height: 224px;
+      position: absolute;
+      background: #FFFFFF;
+      top: 320px;
+      left: 50%;
+      margin-left: -160px;
+      box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+      border-radius: 16px;
+    }
+    .installed_loading_box img{
+      display: block;
+      width: 56px;
+      height: 56px;
+      padding-top: 59px;
+      margin: 0 auto;
+    }
+    .installed_loading_box p{
+      padding-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      height: 16px;
+      line-height: 16px;
     }
 </style>
 

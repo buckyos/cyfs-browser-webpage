@@ -22,18 +22,23 @@
           <!-- <a href="cyfs://static/DecAppStore/app_installed_list.html" class="app_content_title_href" target="_blank" set-lan="html:DecAppHtml.Installed"></a> -->
         <!-- </div> -->
         <div class="app_subtitle_box">
-          <button class="float_l app_primary_btn tab_all_btn">All</button>
-          <button class="float_l app_plain_btn tab_install_btn">Installed</button>
+          <button class="float_l app_primary_btn tab_all_btn" set-lan="html:DecAppHtml.All">All</button>
+          <button class="float_l app_plain_btn tab_install_btn" set-lan="html:DecAppHtml.Installed"></button>
+          <button class="float_l app_plain_btn tab_tag_btn"></button>
           <button class="float_r app_plain_btn open_install_app_btn" set-lan="html:DecAppHtml.InstallFromUrl"></button>
           <i class="app_installed_setting_i"></i>
         </div>
       </div>
       <ul class="app_list_box">
       </ul>
-      <div class="app_tag_list_box">
+      <div class="app_tag_list_box app_installed_list_box">
         <ul class="app_tag_list app_installed_list">
         </ul>
         <ul class="app_tag_list app_installed_failed_list">
+        </ul>
+      </div>
+      <div class="app_tag_list_box app_tags_list_box">
+        <ul class="app_tag_list app_tags_list">
         </ul>
       </div>
       <!-- <button class="app_primary_btn app_upload_btn" set-lan="html:DecAppTagHtml.UploadDecAPP"></button> -->
@@ -70,7 +75,7 @@
   </div>
   <div class="app_cover_box app_installed_setting_container" >
     <div class="app_cover_installed_setting_box">
-      <i class="close_cover_i"></i>
+      <i class="close_cover_i installed_close_cover_i"></i>
       <h3 class="app_installed_setting_title" set-lan="html:DecAppHtml.Setting"></h3>
       <h3 class="automatic_update_all_box">
         <span class="float_l" set-lan="html:DecAppHtml.AutomaticUpdateAllApps"></span>
@@ -123,6 +128,7 @@
   .app_list_info_l img{
     width: 100%;
     height: 100%;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
   }
   .app_list_info_r{
     float: right;
@@ -165,7 +171,7 @@
     text-overflow: ellipsis;
     color: #2873F7;
   }
-  .app_list_extra_info_l a{
+  .app_list_extra_info_l span{
     padding: 3px 13px;
     margin:0 6px 13px 6px;
     border-radius: 12px;
@@ -175,6 +181,7 @@
     color: #2873F7;
     line-height: 24px;
     background: rgba(10, 215, 182, 0.1);
+    cursor: pointer;
   }
   .app_upload_btn{
     width: 288px;
@@ -229,10 +236,14 @@
     background: url(../img/app/app_cover_close_i.svg) no-repeat center center;
     cursor: pointer;
   }
-  .tab_install_btn, .tab_all_btn{
+  .tab_install_btn, .tab_all_btn, .tab_tag_btn{
     height: 24px;
     padding: 0 17px;
     border-radius: 12px;
+  }
+  .tab_tag_btn{
+    margin-left: 12px;
+    display: none;
   }
   .tab_all_btn{
     margin: 0 12px 0 24px ;
@@ -258,6 +269,7 @@
       overflow: hidden;
       margin-right: 30px;
       cursor: pointer;
+      box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
   }
   .app_tag_img_box img{
       width: 100%;
@@ -282,7 +294,16 @@
       text-overflow: ellipsis;
   }
   .app_tag_p span{
-      color: #2873F7;
+    padding: 3px 13px;
+    margin:0 6px 13px 6px;
+    border-radius: 12px;
+    height: 24px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #2873F7;
+    line-height: 24px;
+    background: rgba(10, 215, 182, 0.1);
+    cursor: pointer;
   }
   .app_tag_p .switch_label{
     padding-top: 4px;
@@ -294,14 +315,20 @@
   .app_installed_update{
     width: 43px;
     height: 16px;
-    background: #009E05;
     border-radius: 12px;
     cursor: pointer;
-    font-size: 8px;
     font-weight: 400;
-    color: #FFFFFF;
     line-height: 16px;
     margin-left: 10px;
+    background: #009E05;
+  }
+  .app_installed_update span{
+    font-size: 12px;
+    color: #FFFFFF;
+    display: block;
+    padding: 0 12px;
+    -webkit-transform-origin-x: 0;
+    -webkit-transform: scale(0.67);
   }
   .app_installed_webdir{
     display: block;
@@ -549,6 +576,19 @@
     .app_installed_setting_ul li label{
       float: right;
       padding-top: 8px;
+    }
+    .app_tag_p{
+      width: 100%;
+      white-space: nowrap;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #2873F7;
+    }
+    .app_cover_installed_setting_box .installed_close_cover_i{
+      width: 24px;
+      height: 24px;
     }
 </style>
 

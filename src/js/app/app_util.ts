@@ -134,7 +134,7 @@ class AppUtilClass {
                 app: r
                 };
                 appObj.app_name = app.name() || '';
-                appObj.app_icon = app.icon() || '';
+                appObj.app_icon = app.icon() || '../img/app/app_default_icon.svg';
                 // ergodic app version list
                 for (const [ver, fid] of app.source().to((k: cyfs.BuckyString) => k, (v: cyfs.ObjectId) => v)) {
                     let summaryR = app.find_source_desc(ver.value());
@@ -180,7 +180,7 @@ class AppUtilClass {
                 summary: summary
             };
             appObj.app_name = app.name();
-            appObj.app_icon = app.icon() || '';
+            appObj.app_icon = app.icon() || '../img/app/app_default_icon.svg';
             for (const [ver, fid] of app.source().to((k: cyfs.BuckyString) => k, (v: cyfs.ObjectId) => v)) {
                 let summaryR = app.find_source_desc(ver.value());
                 let summary = '';

@@ -192,6 +192,7 @@ export const en =  {
         "Overview": "Overview",
         "GasFee": "*Gas fee: 100 Qiu",
         "Payment": "Payment:",
+        "All": "All",
     },
     "UploadDecAppHtml":{
         "Overview": "Overview:",

@@ -40,9 +40,9 @@ console.log('---------g_appId, g_version, g_isInstalled:', g_appId, g_version, g
 $(async function(){
     isBind();
     if(LANGUAGESTYPE == 'zh'){
-      $('title').html(g_isInstalled ? '已安装应用详情':'应用详情');
+      $('title, .app_title_box').html(g_isInstalled ? '已安装应用详情':'应用详情');
     }else{
-      $('title').html(g_isInstalled ? 'Installed DEC App Detail':'DEC App Detail');
+      $('title, .app_title_box').html(g_isInstalled ? 'Installed DEC App Detail':'DEC App Detail');
     }
     g_isBind = await isBind();
     if(!g_isBind){
@@ -187,13 +187,13 @@ class AppManager {
     async renderAppInfo (id) {
         let app = await AppUtil.handleAppDetail(id);
         console.origin.log('---------------app-info', app);
-        if(app.status != cyfs.AppLocalStatusCode.NoService && app.status != cyfs.AppLocalStatusCode.InstallFailed && app.status != cyfs.AppLocalStatusCode.UninstallFailed){
+        if(app.status != cyfs.AppLocalStatusCode.NoService && app.status != cyfs.AppLocalStatusCode.Uninstalled && app.status != cyfs.AppLocalStatusCode.InstallFailed && app.status != cyfs.AppLocalStatusCode.UninstallFailed){
             if(app.status == cyfs.AppLocalStatusCode.Running || app.status == cyfs.AppLocalStatusCode.StopFailed){
                 $('.operate_btn').css('display', 'block');
                 $('.app_status_loading').css('display', 'none');
                 g_isStart = false;
                 $('.operate_btn').html('stop');
-            }else if(app.status == cyfs.AppLocalStatusCode.Installing || app.status == cyfs.AppLocalStatusCode.Stopping || app.status == cyfs.AppLocalStatusCode. Uninstalling){
+            }else if(app.status == cyfs.AppLocalStatusCode.Installing || app.status == cyfs.AppLocalStatusCode.Starting || app.status == cyfs.AppLocalStatusCode.Stopping || app.status == cyfs.AppLocalStatusCode. Uninstalling){
                 $('.operate_btn').css('display', 'none');
                 $('.app_status_loading').css('display', 'block');
             }else{

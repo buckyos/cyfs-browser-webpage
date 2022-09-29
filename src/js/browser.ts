@@ -593,7 +593,7 @@ $('.add_url_btn_save').on('click', async function () {
         if(elA.host == 'r' || elA.host == 'a' || elA.host == 'o'){
             icon = await getIcon(elA.origin, elA.pathname);
         }else{
-            icon = elA.origin + '/favicon.ico';
+            icon = './img/browser_favicon_icon.svg';
         }
         console.log('elA.origin', elA.origin, elA.hostname, elA.pathname, icon);
     }

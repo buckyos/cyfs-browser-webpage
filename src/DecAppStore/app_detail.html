@@ -18,13 +18,13 @@
     </div>
     <div class="app_content_box">
       <div class="app_content_title_box">
-        <h3 class="app_title_box" set-lan="html:DecAppHtml.DecAppDetail"></h3>
+        <h3 class="app_title_box" ></h3>
         <!-- <div class="app_title_box">
           <h3 class="app_content_title" set-lan="html:DecAppHtml.DecAppDetail"></h3>
           <a href="cyfs://static/DecAppStore/app_store_list.html" class="app_content_title_href" set-lan="html:DecAppHtml.DecAppList" target="_blank"></a>
         </div> -->
         <div class="app_subtitle_box app_subtitle_detail_box">
-          <button class="float_r app_plain_btn to_tip_list"> tip list</button>
+          <button class="float_r app_plain_btn to_tip_list"  set-lan="html:DecAppHtml.TipList"></button>
           <button class="float_r app_plain_btn app_tip_btn" set-lan="html:DecAppHtml.TipIt"></button>
         </div>
         <div class="app_subtitle_box app_subtitle_installed_box">
@@ -305,6 +305,7 @@
   height: 24px;
   margin-right: 64px;
   float: left;
+  border-radius: 12px;
 }
 .app_detail_version_share{
   display: inline-block;

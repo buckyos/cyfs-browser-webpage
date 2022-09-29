@@ -45,8 +45,6 @@ module.exports = (env, argv) => {
             'dec_app_detail': './src/js/app/dec_app_detail.ts',
             'upload_dec_app': './src/js/app/upload_dec_app.ts',
             'app_like_tip_list': './src/js/app/app_like_tip_list.ts',
-            'app_tag': './src/js/app/app_tag.ts',
-            'app_installed_list': './src/js/app/app_installed_list.ts',
         },
         mode: env.production ? 'production' : 'development',
         // mode: 'development',
@@ -108,11 +106,6 @@ module.exports = (env, argv) => {
                 chunks: ['index']
             }),
             new HtmlWebpackPlugin({
-                template: './src/appmanager.html',
-                filename: '../appmanager.html',
-                chunks: [ 'app_index' ]
-            }),
-            new HtmlWebpackPlugin({
                 template: './src/activate.html',
                 filename: '../activate.html',
                 chunks: ['activate']
@@ -163,16 +156,6 @@ module.exports = (env, argv) => {
                 chunks: ['m_browser']
             }),
             new HtmlWebpackPlugin({
-                template: './src/app/app_detail.html',
-                filename: '../app/app_detail.html',
-                chunks: ['app_detail']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/app/app_installed.html',
-                filename: '../app/app_installed.html',
-                chunks: ['app_installed']
-            }),
-            new HtmlWebpackPlugin({
                 template: './src/localstate.html',
                 filename: '../localstate.html',
                 chunks: ['localstate']
@@ -197,16 +180,6 @@ module.exports = (env, argv) => {
                 template: './src/DecAppStore/app_like_tip_list.html',
                 filename: '../DecAppStore/app_like_tip_list.html',
                 chunks: ['app_like_tip_list', 'app_util']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/DecAppStore/app_tag.html',
-                filename: '../DecAppStore/app_tag.html',
-                chunks: ['app_tag', 'app_util']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/DecAppStore/app_installed_list.html',
-                filename: '../DecAppStore/app_installed_list.html',
-                chunks: ['app_installed_list', 'app_util']
             }),
         ],
         externals: [

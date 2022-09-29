@@ -265,6 +265,7 @@ a{
     right: 20px;
     background: url(../img/app/app_cover_close_i.svg) no-repeat center center;
     cursor: pointer;
+    background-size: 100%;
 }
 /* switch css */
 .switch_label .switch_i {

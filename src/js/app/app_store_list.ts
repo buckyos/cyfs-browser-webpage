@@ -24,10 +24,10 @@ let g_isGettingList:boolean = false;
 let g_owner: cyfs.ObjectId;
 let g_isInstalled:boolean = false;
 let g_uninstallId: string;
-let g_firstOpenSetting: boolean = true;
 let g_hasStorageList:boolean = false;
 let g_isInstalledPage: boolean = false;
 let g_isShowSetting: boolean = false;
+let g_appStorgeList: storageAppUtilType[] = [];
 
 
 class AppStoreListClass {
@@ -108,7 +108,7 @@ class AppStoreListClass {
                             if(info['cyfs-app-store'].tag){
                                 tags = info['cyfs-app-store'].tag;
                                 tags.forEach(tag => {
-                                  tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}" target="_blank"># ${tag}</a>`;
+                                  tagsHtml += `<span data-tag="${tag}"># ${tag}</span>`;
                                 });
                             }
                           }
@@ -147,6 +147,7 @@ class AppStoreListClass {
                       }
                   }
               }
+              g_appStorgeList = appStorageList;
               console.log('------------------------------g_hasStorageList', g_hasStorageList)
               if(g_hasStorageList){
                 let listHtml:string = '';
@@ -167,13 +168,14 @@ class AppStoreListClass {
       if(list){
         g_hasStorageList = true;
         let appList: storageAppUtilType[] = JSON.parse(list);
+        g_appStorgeList = appList;
         AppStoreList.getInstalledAppList(appList, true);
         for (let index = 0; index < appList.length; index++) {
           const app = appList[index];
           let tagsHtml:string = '';
           if(app.tags){
             app.tags.forEach(tag => {
-              tagsHtml += `<a href="cyfs://static/DecAppStore/app_tag.html?tag=${tag}" target="_blank"># ${tag}</a>`;
+              tagsHtml += `<span data-tag="${tag}"># ${tag}</span>`;
             });
           }
           let appHtml = `<li>
@@ -308,7 +310,7 @@ class AppStoreListClass {
                                     <div class="float_l app_installed_info_box">
                                         <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span></p>
                                         <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
-                                        <p class="app_tag_p">
+                                        <p >
                                             <span class="float_l app_installed_status">${appStr}</span>
                                             <button class="app_plain_btn app_uninstall_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'卸载': 'Uninstall'}</button>
                                             <button class="app_primary_btn app_reinstall_btn float_r"  data-id="${app.app_id}">${LANGUAGESTYPE == 'zh'?'重装': 'Reinstall'}</button>
@@ -317,11 +319,11 @@ class AppStoreListClass {
                                   </li>`;
         }else{
           let btnHtml:string = '';
-          if(app_status == cyfs.AppLocalStatusCode.Installing || app_status == cyfs.AppLocalStatusCode.Stopping || app_status == cyfs.AppLocalStatusCode. Uninstalling){
+          if(app_status == cyfs.AppLocalStatusCode.Installing || app_status == cyfs.AppLocalStatusCode.Starting ||app_status == cyfs.AppLocalStatusCode.Stopping || app_status == cyfs.AppLocalStatusCode. Uninstalling){
             btnHtml = `<img class="app_status_loading float_l" style="display:block" src="../img/app/app_status_loading.gif" />`;
           }else if(app.status == cyfs.AppLocalStatusCode.Running || app.status == cyfs.AppLocalStatusCode.StopFailed){
             btnHtml = `<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="stop">stop</button>`;
-          }else if(app.status == cyfs.AppLocalStatusCode.NoService){
+          }else if(app.status == cyfs.AppLocalStatusCode.NoService || app.status == cyfs.AppLocalStatusCode.Uninstalled){
             btnHtml = ``;
           }else{
             btnHtml = `<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="start">start</button>`;
@@ -333,9 +335,9 @@ class AppStoreListClass {
                               </div>
                               <div class="float_l app_installed_info_box">
                                   ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir"  href="cyfs://o/${app.webdir.to_base_58()}/index.html"></a>`:''}
-                                  <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}">update</button>`:''}</p>
+                                  <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}"><span>update</span></button>`:''}</p>
                                   <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
-                                  <p class="app_tag_p">
+                                  <p>
                                       ${btnHtml}
                                       <img class="app_status_loading float_l" src="../img/app/app_status_loading.gif" />
                                       <span class="float_l app_installed_status">${appStr}</span>
@@ -349,7 +351,7 @@ class AppStoreListClass {
       $('.app_installed_list').html(installedHtml);
       $('.app_installed_failed_list').html(installedFailedHtml);
       g_isShowSetting = true;
-      if(($('.app_tag_list_box').css('display') == 'block') && g_isShowSetting){
+      if(($('.app_installed_list_box').css('display') == 'block') && g_isShowSetting){
         $('.app_installed_setting_i').css('display', 'block');
       }
     }
@@ -382,10 +384,10 @@ AppStoreList.initPage();
 
 $('.tab_install_btn').on('click', function () {
   g_isInstalled = true;
-  $('.tab_all_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
+  $('.tab_all_btn, .tab_tag_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
   $('.tab_install_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
-  $('.app_list_box, .open_install_app_btn').css('display', 'none');
-  $('.app_tag_list_box').css('display', 'block');
+  $('.app_list_box, .open_install_app_btn, .tab_tag_btn, .app_tags_list_box').css('display', 'none');
+  $('.app_installed_list_box').css('display', 'block');
   $('.app_title_box').html(LANGUAGESTYPE == 'zh'? '已安装列表' : 'Installed list');
   if(g_isShowSetting){
     $('.app_installed_setting_i').css('display', 'block');
@@ -448,9 +450,9 @@ $('.app_header_box').on('click', '.people_head_sculpture', function () {
 $('.tab_all_btn').on('click', function () {
   g_isInstalled = false;
   $('.app_title_box').html(LANGUAGESTYPE == 'zh'? '应用列表' : 'Dec App List');
-  $('.tab_install_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
+  $('.tab_install_btn, .tab_tag_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
   $('.tab_all_btn').addClass('app_primary_btn').removeClass('app_plain_btn');
-  $('.app_tag_list_box, .app_installed_setting_i').css('display', 'none');
+  $('.app_installed_list_box, .app_installed_setting_i, .tab_tag_btn, .app_tags_list_box').css('display', 'none');
   $('.app_list_box, .open_install_app_btn').css('display', 'block');
 })
 
@@ -506,31 +508,28 @@ $(".app_tag_list").on('click', '.app_uninstall_btn', async function (event) {
 
 $('.app_installed_setting_i').on('click', function () {
   $('.app_installed_setting_container').css('display', 'block');
-  if(g_firstOpenSetting){
-      g_firstOpenSetting = false;
-      let liHtml:string = '';
-      let allUpdate:boolean = false;
-      let i = 0;
-      for (const app of g_installedAppList) {
-          if(app.auto_update){
-              i++;
-          }
+  let liHtml:string = '';
+  let allUpdate:boolean = false;
+  let i = 0;
+  for (const app of g_installedAppList) {
+      if(app.auto_update){
+          i++;
       }
-      if(i == g_installedAppList.length){
-          allUpdate = true;
-          $('.automatic_update_all').prop("checked", true);
-      }
-      for (const app of g_installedAppList) {
-          liHtml  +=  `<li>
-                          <span>${app.app_name}</span>
-                          <label class="switch_label switch_animbg float_r">
-                              <input class="automatic_update_switch" type="checkbox" ${app.auto_update?'checked':''} name="${app.app_id}" data-id="${app.app_id}" ${allUpdate?'disabled':''}><i class="switch_i"></i>
-                          </label>
-                      </li>`
-      }
-      
-      $('.app_installed_setting_ul').html(liHtml);
   }
+  if(i == g_installedAppList.length){
+      allUpdate = true;
+      $('.automatic_update_all').prop("checked", true);
+  }
+  for (const app of g_installedAppList) {
+      liHtml  +=  `<li>
+                      <span>${app.app_name}</span>
+                      <label class="switch_label switch_animbg float_r">
+                          <input class="automatic_update_switch" type="checkbox" ${app.auto_update?'checked':''} name="${app.app_id}" data-id="${app.app_id}" ${allUpdate?'disabled':''}><i class="switch_i"></i>
+                      </label>
+                  </li>`
+  }
+  
+  $('.app_installed_setting_ul').html(liHtml);
 })
 
 $('.app_cover_box').on('click', '.close_cover_i, .app_installed_no_btn', function () {
@@ -556,3 +555,37 @@ $(".app_cover_installed_setting_box").on('click', '.automatic_update_switch', as
   }
 })
 
+$('.app_list_box').on('click', '.app_list_extra_info_l span', function () {
+  let tag = $(this).attr('data-tag');
+  if(tag){
+    $('.app_title_box').html(LANGUAGESTYPE == 'zh' ? `应用列表 - 标签(#${tag})` : `Dec App List - Tag(#${tag})`);;
+    $('.tab_tag_btn').html('#'+tag).css('display', 'block').addClass('app_primary_btn').removeClass('app_plain_btn');
+    $('.app_list_box, .app_installed_list_box').css('display', 'none');
+    $('.tab_all_btn, .tab_install_btn').addClass('app_plain_btn').removeClass('app_primary_btn');
+    $('.app_tags_list_box').css('display', 'block');
+    let liHtml:string = '';
+    for (let index = 0; index < g_appStorgeList.length; index++) {
+      const element = g_appStorgeList[index];
+      if(element.tags.indexOf(tag) > -1){
+        let tagsHtml:string = '';
+        element.tags?.forEach(tag => {
+          tagsHtml += `<span data-tag="${tag}"># ${tag}</span>`;
+        });
+        liHtml  += `<li>
+                      <div class="app_tag_img_box float_l">
+                          <img src="${element.icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                      </div>
+                      <div class="float_l app_installed_info_box">
+                          <p class="app_tag_title">${element.name}</p>
+                          <p class="app_tag_info">${element.introduce}</p>
+                          <p class="app_tag_p">
+                              ${tagsHtml}
+                          </p>
+                      </div>
+                  </li>`;
+      }
+    }
+    $('.app_tags_list').html(liHtml);
+  }
+  
+})

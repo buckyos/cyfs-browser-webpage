@@ -142,7 +142,7 @@ function isUnbind() {
                     window.location.href = 'cyfs://static/browser.html?success';
                     IS_FIRST_BIND = false;
                 }
-                util.getDeviceInfo();
+                util.renderHeaderInfo();
             }
             if (result.anonymous) {
                 // 匿名模式
@@ -235,58 +235,13 @@ class Util {
         
     }
 
-    async getDeviceInfo() {
-        // Device静态信息
-        let current_device_static_info = await this.m_util_service.get_device_static_info({ common: { flags: 0 } });
-        if (!current_device_static_info.err) {
-            current_device_static_info = current_device_static_info.unwrap().info;
-        }
-        console.info('current_device_static_info:', current_device_static_info);
-        if (current_device_static_info.owner_id) {
-            const peopleR = (await ObjectUtil.getObject({ id: current_device_static_info.owner_id, isReturnResult: true, flags: 1 })).object;
-            console.origin.log('peopleR:', peopleR);
-            let oodList = peopleR.object.body().unwrap().content().ood_list;
-            if (oodList[0]) {
-                let mainStatus: boolean = await this.getOodStatus();
-                console.log('--mainStatus', mainStatus)
-                if(oodList.length == 1){
-                    if(mainStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_main_ood_online.svg) no-repeat center center');
-                    }else{
-                        $('#ood_status_icon').css('background', 'url(./img/browser_main_ood_offline.svg) no-repeat center center');
-                    }
-                }else{
-                    let minerStatus: boolean = true;
-                    let currentStatus: boolean = true;
-                    for (let index = 0; index < oodList.length; index++) {
-                        const ood = oodList[index];
-                        if(currentStatus && index > 0){
-                            currentStatus = await this.getOodStatus(ood.object_id);
-                            if(!currentStatus){
-                                console.log('--oodList[index].object_id-minerStatus', index, ood.object_id)
-                                minerStatus = false;
-                            }
-                        }
-                    }
-                    console.log('--minerStatus', mainStatus);
-                    if(mainStatus && minerStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_ood_online_online.svg) no-repeat center center');
-                    }else if(mainStatus && !minerStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_ood_online_offline.svg) no-repeat center center');
-                    }else if(!mainStatus && !minerStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_ood_offline_offline.svg) no-repeat center center');
-                    }
-                }
-            }
-            $('#people_name2').html(peopleR.object.name() ? peopleR.object.name() : (LANGUAGESTYPE == 'zh'? '未设置名称':'name not set'));
-            if(peopleR.object.icon()){
-                $('#user_switch').css({'background':'url(cyfs://o/'+peopleR.object.icon().object_id +') no-repeat center center','background-size': '100% 100%'});
-            }else{
-                $('#user_switch').css({'background':'url(./img/browser_people_icon.svg) no-repeat center center','background-size': '100%'});
-            }
-        }
+    async renderHeaderInfo() {
+        let headerInfo = await ObjectUtil.getHeaderInfo();
+        $('#ood_status_icon').css('background', `url(${headerInfo.oodStatusIcon}) no-repeat center center`);
+        $('#people_name2').html(headerInfo.peopleName);
+        $('#user_switch').css({'background': 'url(' + headerInfo.peoplePicture + ') no-repeat center center','background-size': '100% 100%'});
     }
-
+    
     async txtToId (id: string) {
         let idResult = cyfs.ObjectId.from_base_58(id);
         if (idResult.err) {

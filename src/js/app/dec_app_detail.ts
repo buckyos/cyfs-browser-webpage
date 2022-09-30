@@ -130,29 +130,29 @@ class AppManager {
                     let tags = info['cyfs-app-store'].tag;
                     let html = '';
                     tags.forEach(tag => {
-                        html += `<span>#${tag}</span>`;
+                        html += `<span class="app_detail_tag">#${tag}</span>`;
                     });
-                    $('.app_detail_tag_box').html(html);
+                    $('.app_detail_ul').prepend(html);
                 }
                 if(info['cyfs-app-store'].client){
                     let clients = info['cyfs-app-store'].client;
                     if(clients.android){
-                        $('.app_software_android, .app_detail_client_box').css('display', 'block').attr('data-url', clients.android);
+                        $('.app_software_android, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.android);
                     }
                     if(clients.iOS){
-                        $('.app_software_ios, .app_detail_client_box').css('display', 'block').attr('data-url', clients.iOS);
+                        $('.app_software_ios, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.iOS);
                     }
                     if(clients.windows){
-                        $('.app_software_windows, .app_detail_client_box').css('display', 'block').attr('data-url', clients.windows);
+                        $('.app_software_windows, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.windows);
                     }
                     if(clients.macOS){
-                        $('.app_software_macos, .app_detail_client_box').css('display', 'block').attr('data-url', clients.macOS);
+                        $('.app_software_macos, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.macOS);
                     }
                     if(clients.linux){
-                        $('.app_software_linux, .app_detail_client_box').css('display', 'block').attr('data-url', clients.linux);
+                        $('.app_software_linux, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.linux);
                     }
                     if(clients.other){
-                        $('.app_software_other, .app_detail_client_box').css('display', 'block').attr('data-url', clients.other);
+                        $('.app_software_other, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.other);
                     }
                 }
                 if(info['cyfs-app-store'].community){

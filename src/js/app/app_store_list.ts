@@ -305,7 +305,7 @@ class AppStoreListClass {
         if(app_status == cyfs.AppLocalStatusCode.InstallFailed || app_status == cyfs.AppLocalStatusCode.UninstallFailed){
           installedFailedHtml += `<li>
                                     <div class="app_tag_img_box float_l" data-id="${app.app_id}">
-                                        <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                                        <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
                                     </div>
                                     <div class="float_l app_installed_info_box">
                                         <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span></p>
@@ -331,7 +331,7 @@ class AppStoreListClass {
           console.log('----webdirwebdir',app.app_name, (app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir,  app.webdir)
           installedHtml += `<li>
                               <div class="app_tag_img_box float_l" data-id="${app.app_id}">
-                                  <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                                  <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
                               </div>
                               <div class="float_l app_installed_info_box">
                                   ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir"  href="cyfs://o/${app.webdir.to_base_58()}/index.html"></a>`:''}
@@ -576,7 +576,7 @@ $('.app_content_box').on('click', '.app_list_extra_info_l span, .app_tag_p span'
         });
         liHtml  += `<li>
                       <div class="app_tag_img_box float_l">
-                          <img src="${element.icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                          <img src="${element.icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
                       </div>
                       <div class="float_l app_installed_info_box">
                           <p class="app_tag_title">${element.name}</p>

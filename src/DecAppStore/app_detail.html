@@ -49,16 +49,13 @@
           <p class="app_detail_overview"></p>
           <p class="app_detail_dec_id_p"></p>
           <p class="app_detail_developer_p"></p>
-          <ul class="app_detail_ul">
-            <li class="app_detail_tag_box"></li>
-            <li class="app_detail_client_box" set-lan="html:DecAppHtml.ClientSoftwareRequired"></li>
-            <li class="app_detail_share_box">
-              <i class="app_detail_share_cyfs"></i>
-              <i class="app_detail_share_discard"></i>
-              <i class="app_detail_share_twitter"></i>
-              <i class="app_detail_share_github"></i>
-            </li>
-          </ul>
+          <div class="app_detail_ul">
+            <span class="app_detail_client_box" set-lan="html:DecAppHtml.ClientSoftwareRequired"></span>
+            <i class="app_detail_share_cyfs app_detail_share_box"></i>
+            <i class="app_detail_share_discard app_detail_share_box"></i>
+            <i class="app_detail_share_twitter app_detail_share_box"></i>
+            <i class="app_detail_share_github app_detail_share_box"></i>
+          </div>
         </div>
       </div>
       <div class="app_detail_version_box">
@@ -180,7 +177,7 @@
 <style>
 .app_detail_box{
   border-bottom: 1px solid #E3E3E3;
-  padding: 44px 0 33px 0;
+  padding: 44px 0 10px 0;
   overflow: hidden;
 }
 .app_detail_left_box{
@@ -248,29 +245,17 @@
   margin-right: 19px;
 }
 .app_detail_ul{
-  height: 32px;
-}
-.app_detail_ul li{
-  float: left;
-  padding: 0 24px;
-  height: 19px;
-  margin: 3px 0 5px 0;
-  border-left: 1px solid #000000;
-}
-.app_detail_ul li:nth-child(1){
-  padding-left: 0;
-  border: none;
+  width: 720px;
 }
 .app_detail_share_box{
   display: none;
-}
-.app_detail_share_box i{
   display: block;
   width: 32px;
   height: 32px;
   float: left;
   margin-top: -6px;
   margin-right: 4px;
+  margin-bottom: 24px;
   cursor: pointer;
   display: none;
 }
@@ -548,16 +533,20 @@
     width: 100%;
     height: 100%;
 }
-.app_detail_tag_box span{
+.app_detail_tag{
   padding: 3px 13px;
   margin-right: 12px;
   border-radius: 12px;
-  height: 19px;
+  height: 24px;
   font-size: 14px;
   font-weight: 400;
   color: #202124;
   line-height: 24px;
+  white-space: nowrap;
   background: rgba(10, 215, 182, 0.1);
+  float: left;
+  margin-top: -3px;
+  margin-bottom: 24px;
 }
 .app_detail_developer_color{
   color: #8600E6;
@@ -574,6 +563,13 @@
   color: #5F6368;
   font-size: 14px;
   display: none;
+  height: 19px;
+  padding: 0 24px;
+  border: 1px solid #000000;
+  border-top: none;
+  border-bottom: none;
+  float: left;
+  margin: 0 24px 24px 12px;
 }
 </style>
 

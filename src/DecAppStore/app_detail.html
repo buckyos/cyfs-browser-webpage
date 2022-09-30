@@ -44,14 +44,14 @@
             <p class="app_detail_p"></p>
           </div>
         </div>
-        <div class="float_l" >
+        <div class="float_l app_detail_right_box" >
           <h3 class="app_detail_title"></h3>
           <p class="app_detail_overview"></p>
           <p class="app_detail_dec_id_p"></p>
           <p class="app_detail_developer_p"></p>
           <ul class="app_detail_ul">
             <li class="app_detail_tag_box"></li>
-            <li class="app_detail_client_box">Client software required</li>
+            <li class="app_detail_client_box" set-lan="html:DecAppHtml.ClientSoftwareRequired"></li>
             <li class="app_detail_share_box">
               <i class="app_detail_share_cyfs"></i>
               <i class="app_detail_share_discard"></i>
@@ -189,9 +189,14 @@
   overflow: hidden;
   margin-right: 12px;
 }
+.app_detail_right_box{
+  padding-left: 12px;
+  width: 1080px;
+}
 .app_detail_icon_box{
   width: 88px;
   height: 88px;
+  border-radius: 8px;
 }
 .app_detail_icon_box img{
   width: 100%;
@@ -249,6 +254,7 @@
   float: left;
   padding: 0 24px;
   height: 19px;
+  margin: 3px 0 5px 0;
   border-left: 1px solid #000000;
 }
 .app_detail_ul li:nth-child(1){

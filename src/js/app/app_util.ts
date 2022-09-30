@@ -126,7 +126,7 @@ class AppUtilClass {
             let appObj: appDetailUtilType = {
                 app_id: id,
                 app_name: '',
-                app_icon: '',
+                app_icon: '../img/app/app_default_icon.svg',
                 owner: app.desc().owner()?.unwrap(),
                 app: app,
                 fidArray: [],

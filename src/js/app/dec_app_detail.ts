@@ -192,7 +192,7 @@ class AppManager {
                 $('.operate_btn').css('display', 'block');
                 $('.app_status_loading').css('display', 'none');
                 g_isStart = false;
-                $('.operate_btn').html('stop');
+                $('.operate_btn').html(LANGUAGESTYPE == 'zh'?'停止': 'stop');
             }else if(app.status == cyfs.AppLocalStatusCode.Installing || app.status == cyfs.AppLocalStatusCode.Starting || app.status == cyfs.AppLocalStatusCode.Stopping || app.status == cyfs.AppLocalStatusCode. Uninstalling){
                 $('.operate_btn').css('display', 'none');
                 $('.app_status_loading').css('display', 'block');
@@ -200,8 +200,10 @@ class AppManager {
                 $('.operate_btn').css('display', 'block');
                 $('.app_status_loading').css('display', 'none');
                 g_isStart = true;
-                $('.operate_btn').html('start');
+                $('.operate_btn').html(LANGUAGESTYPE == 'zh'?'启动': 'start');
             }
+        }else{
+            $('.app_status_loading, .operate_btn').css('display', 'none');
         }
         let app_status = app.status;
         let appStr = "";
@@ -400,4 +402,8 @@ $('.installed_status_checkbox').on('click', '.operate_btn', async function (even
     }else{
         operateAppRet = await AppDetailUtil.operateApp(g_appId, g_owner, 'stop');
     }
+})
+
+$('.app_header_title').on('click', function () {
+    window.location.href = 'cyfs://static/DecAppStore/app_store_list.html';
 })

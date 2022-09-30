@@ -71,7 +71,7 @@ class Util {
     meta_client: cyfs.MetaClient;
 
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_util_service = this.m_sharedStatck.util();
         // 空参数或'test'为测试链，传'dev'为正式链
         this.meta_client = cyfs.create_meta_client();

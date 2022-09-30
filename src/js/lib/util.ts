@@ -9,7 +9,7 @@ class NONObject {
   m_router: cyfs.NONRequestor;
 
   constructor() {
-    this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+    this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
     this.m_router = this.m_sharedStatck.non_service();
   }
 
@@ -71,7 +71,7 @@ class NONObject {
     }
   }
 
-  async postObj(obj:cyfs.DecApp|cyfs.AppCmd|cyfs.AppExtInfo) {
+  async postObj(obj:cyfs.DecApp|cyfs.AppCmd|cyfs.AppExtInfo, req_path?: string) {
     const router = this.m_router;
     let buf_len = obj.raw_measure().unwrap();
     let buf = new Uint8Array(buf_len);
@@ -79,6 +79,7 @@ class NONObject {
     let r = await router.post_object({
       object: new cyfs.NONObjectInfo(obj.desc().calculate_id(), buf),
       common: {
+        req_path: req_path || undefined,
         level: cyfs.NONAPILevel.Router,
         flags: 0
       }

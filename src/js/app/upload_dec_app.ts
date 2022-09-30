@@ -51,7 +51,7 @@ class UploadAppClass {
     meta_client: cyfs.MetaClient;
 
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_router = this.m_sharedStatck.non_service();
         this.m_util_service = this.m_sharedStatck.util();
         this.meta_client = cyfs.create_meta_client();

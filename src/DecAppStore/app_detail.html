@@ -51,6 +51,7 @@
           <p class="app_detail_developer_p"></p>
           <div class="app_detail_ul">
             <span class="app_detail_client_box" set-lan="html:DecAppHtml.ClientSoftwareRequired"></span>
+            <i class="app_detail_share_box_border"></i>
             <i class="app_detail_share_cyfs app_detail_share_box"></i>
             <i class="app_detail_share_discard app_detail_share_box"></i>
             <i class="app_detail_share_twitter app_detail_share_box"></i>
@@ -258,6 +259,14 @@
   margin-bottom: 24px;
   cursor: pointer;
   display: none;
+}
+.app_detail_share_box_border{
+ height: 19px;
+ display: inline-block;
+ float: left;
+ border-right: 1px solid #000000; 
+ margin: 0 24px;
+ display: none;
 }
 .app_detail_share_cyfs{
   background: url(../img/app/app_detail_share_cyfs.svg) no-repeat center center;
@@ -564,12 +573,10 @@
   font-size: 14px;
   display: none;
   height: 19px;
-  padding: 0 24px;
-  border: 1px solid #000000;
-  border-top: none;
-  border-bottom: none;
+  padding-left: 24px;
+  border-left: 1px solid #000000;
   float: left;
-  margin: 0 24px 24px 12px;
+  margin: 0 0 24px 12px;
 }
 </style>
 

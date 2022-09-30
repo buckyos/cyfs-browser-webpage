@@ -132,7 +132,13 @@ class AppManager {
                     tags.forEach(tag => {
                         html += `<span class="app_detail_tag">#${tag}</span>`;
                     });
-                    $('.app_detail_ul').prepend(html);
+                    html +=`<span class="app_detail_client_box" set-lan="html:DecAppHtml.ClientSoftwareRequired">${LANGUAGESTYPE == 'zh'?'客户端软件支持': 'Client software required'}</span>
+                            <i class="app_detail_share_box_border "></i>
+                            <i class="app_detail_share_cyfs app_detail_share_box"></i>
+                            <i class="app_detail_share_discard app_detail_share_box"></i>
+                            <i class="app_detail_share_twitter app_detail_share_box"></i>
+                            <i class="app_detail_share_github app_detail_share_box"></i>`;
+                    $('.app_detail_ul').html(html);
                 }
                 if(info['cyfs-app-store'].client){
                     let clients = info['cyfs-app-store'].client;
@@ -159,19 +165,19 @@ class AppManager {
                     let community = info['cyfs-app-store'].community;
                     community.forEach(element => {
                         if(element['CyberChat'] && element['CyberChat'][0]){
-                            $('.app_detail_share_box').css('display', 'block');
+                            $('.app_detail_share_box, .app_detail_share_box_border').css('display', 'block');
                             $('.app_detail_share_cyfs').css('display', 'block').attr('data-url', element['CyberChat'][0]);
                         }
                         if(element['Discord'] && element['Discord'][0]){
-                            $('.app_detail_share_box').css('display', 'block');
+                            $('.app_detail_share_box, .app_detail_share_box_border').css('display', 'block');
                             $('.app_detail_share_discard').css('display', 'block').attr('data-url', element['Discord'][0]);
                         }
                         if(element['Twitter'] && element['Twitter'][0]){
-                            $('.app_detail_share_box').css('display', 'block');
+                            $('.app_detail_share_box, .app_detail_share_box_border').css('display', 'block');
                             $('.app_detail_share_twitter').css('display', 'block').attr('data-url', element['Twitter'][0]);
                         }
                         if(element['GitHub'] && element['GitHub'][0]){
-                            $('.app_detail_share_box').css('display', 'block');
+                            $('.app_detail_share_box, .app_detail_share_box_border').css('display', 'block');
                             $('.app_detail_share_github').css('display', 'block').attr('data-url', element['GitHub'][0]);
                         }
                     });

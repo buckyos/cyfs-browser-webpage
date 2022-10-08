@@ -504,7 +504,7 @@ class MetaClient {
             tx_list = txLists;
             txLists.forEach((element, index) => {
                 if (index < 5) {
-                    liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}ECC  ${formatDate(Number(element.create_time))}</li>`
+                    liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}DMC ${formatDate(Number(element.create_time))}</li>`
                 }
             });
             $('.file_reward_record_list').html(liHtml)
@@ -561,7 +561,7 @@ $('.file_reward_record_container').on('click', ".open_file_reward_record", funct
         $('.open_file_reward_record').addClass('close_file_reward_record').removeClass('open_file_reward_record');
         let liHtml = '';
         tx_list.forEach(element => {
-            liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}ECC  ${formatDate(Number(element.create_time))}</li>`
+            liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}DMC ${formatDate(Number(element.create_time))}</li>`
         });
         $('.file_reward_record_list').html(liHtml)
     }
@@ -573,7 +573,7 @@ $('.file_reward_record_container').on('click', ".close_file_reward_record", func
         let liHtml = '';
         tx_list.forEach((element, index) => {
             if (index < 5) {
-                liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}ECC  ${formatDate(Number(element.create_time))}</li>`
+                liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}DMC ${formatDate(Number(element.create_time))}</li>`
             }
         });
         $('.file_reward_record_list').html(liHtml)

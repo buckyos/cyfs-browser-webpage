@@ -52,7 +52,7 @@ export const en =  {
     "Tx":{
         "Overview": "Overview",
         "TotalIncome": "Total income: <span id='balance_dom'></span> ECC",
-        "Balance": "Balance:  <span id='balance_dom2'></span> ECC <button class='with_drawal'>Withdraw</button>",
+        "Balance": "Balance:  <span id='balance_dom2'></span> DMC<button class='with_drawal'>Withdraw</button>",
         "Transactions": "Transactions",
         "Hash": "Hash",
         "Time": "Time",

@@ -51,8 +51,8 @@ export const zh =  {
     "OODName": "—— OOD名称：<span id='friendly_name'></span> ——",
     "Tx":{
         "Overview": "设备余额管理",
-        "TotalIncome": "总收入： <span id='balance_dom'></span> ECC ",
-        "Balance": "设备余额： <span id='balance_dom2'></span> ECC <button class='with_drawal'>提现</button>",
+        "TotalIncome": "总收入： <span id='balance_dom'></span> DMC",
+        "Balance": "设备余额： <span id='balance_dom2'></span> DMC<button class='with_drawal'>提现</button>",
         "Transactions": "交易列表",
         "Hash": "交易hash",
         "Time": "转账时间",

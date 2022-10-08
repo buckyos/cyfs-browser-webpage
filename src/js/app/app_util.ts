@@ -162,8 +162,8 @@ class AppUtilClass {
             let get_app_status = await AppUtil.getAppStatus(id);
             console.origin.log('get_app_status', app.name(), get_app_status.version())
             let summary = '';
-            if (app.body().unwrap() && app.body().unwrap().content().desc.is_some()) {
-                summary = app.body().unwrap().content().desc.unwrap().toString();
+            if (app.body().unwrap() && app.body().unwrap().content().desc) {
+                summary = app.body().unwrap().content().desc;
             }
             let appObj: appDetailUtilType = {
                 app_id: id,

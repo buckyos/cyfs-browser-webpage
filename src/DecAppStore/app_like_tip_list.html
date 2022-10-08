@@ -18,9 +18,7 @@
     </div>
     <div class="app_content_box">
       <div class="app_content_title_box">
-        <div class="app_title_box">
-          <h3 class="app_content_title" set-lan="html:DecAppHtml.DecAppList"></h3>
-        </div>
+        <h3 class="app_title_box" set-lan="html:DecAppHtml.TipList"></h3>
         <div class="app_subtitle_box">
             <button class="float_r app_plain_btn app_like_list_withdraw" set-lan="html:DecAppTagHtml.WithDrawal"></button>
             <button class="float_r app_plain_btn app_like_list_tip" set-lan="html:DecAppHtml.TipIt"></button>
@@ -40,19 +38,20 @@
           </table>
         </div>
       </div>
-    </div>
-    <div class="app_footer_box">
-      <!-- <div class="app_footer_content_box">
-        <div class="float_l app_footer_box_l">
-          <p><a href="javascript:">How Cyfs work ?</a></p>
-          <p><a href="javascript:">How to develop Dec App ?</a></p>
+      <div class="app_footer_box">
+        <div class="app_footer_content_box">
+          <div class="float_l app_footer_box_l">
+            <div class="app_footer_cyfs_icon"></div>
+            <p>Copyright © 2022 CYFS Core Dev Team. All rights reserved</p>
+          </div>
+          <div class="float_r app_footer_box_r">
+            <a class="app_footer_i app_footer_github_i" href="https://github.com/buckyos/CYFS"></a>
+            <a class="app_footer_i app_footer_discard_i" href="https://discord.com/invite/cyfs"></a>
+            <a class="app_footer_i app_footer_tittwer_i" href="https://twitter.com/CYFSTech"></a>
+            <a class="float_r" href="https://www.cyfs.com/na.html">Join us to build Web3 together</a>
+          </div>
         </div>
-        <div class="float_r app_footer_box_r">
-          <i class="app_footer_discard_i"></i>
-          <i class="app_footer_cyfs_i"></i>
-          <p class="float_r">Developer community</p>
-        </div>
-      </div> -->
+      </div>
     </div>
     <div class="anonymous_box">
       <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
@@ -75,6 +74,8 @@
   width: 111px;
   height: 24px;
   display: none;
+  border-radius: 12px;
+  margin-right: 24px;
 }
 .app_total_amount_p{
     height: 19px;
@@ -87,7 +88,7 @@
     margin-top: 2px;
 }
 .app_tipping_records_list{
-    padding: 24px;
+    padding: 16px;
     background: #FFFFFF;
     box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
     border-radius: 8px;  

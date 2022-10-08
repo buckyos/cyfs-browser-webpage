@@ -18,12 +18,13 @@
     </div>
     <div class="app_content_box">
       <div class="app_content_title_box">
-        <div class="app_title_box">
+        <h3 class="app_title_box" ></h3>
+        <!-- <div class="app_title_box">
           <h3 class="app_content_title" set-lan="html:DecAppHtml.DecAppDetail"></h3>
           <a href="cyfs://static/DecAppStore/app_store_list.html" class="app_content_title_href" set-lan="html:DecAppHtml.DecAppList" target="_blank"></a>
-        </div>
+        </div> -->
         <div class="app_subtitle_box app_subtitle_detail_box">
-          <i class="float_r to_tip_list"></i>
+          <button class="float_r app_plain_btn to_tip_list"  set-lan="html:DecAppHtml.TipList"></button>
           <button class="float_r app_plain_btn app_tip_btn" set-lan="html:DecAppHtml.TipIt"></button>
         </div>
         <div class="app_subtitle_box app_subtitle_installed_box">
@@ -38,27 +39,24 @@
             <img class="app_detail_icon" src="../img/app/app_default_icon.svg" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
           </div>
           <div class="installed_status_checkbox">
-            <label class="switch_label switch_animbg">
-              <input class="app_status_switch" type="checkbox"><i class="switch_i"></i>
-            </label>
+            <button class="operate_btn app_primary_btn" data-operation="stop"></button>
+            <img class="app_status_loading" src="../img/app/app_status_loading.gif" />
+            <p class="app_detail_p"></p>
           </div>
         </div>
-        <div class="float_l" >
+        <div class="float_l app_detail_right_box" >
           <h3 class="app_detail_title"></h3>
-          <p class="app_detail_overview"><span  class="app_detail_overview_extra">Overview：</span><span class="app_detail_overview_more">more</span></p>
-          <p class="app_detail_dec_id_p"><span class="app_detail_dec_id">Dec-ID：</span></p>
-          <p class="app_detail_developer_p">
-            <span class="app_detail_developer">Developer：</span>
-          </p>
-          <ul class="app_detail_ul">
-            <li class="app_detail_tag_box"></li>
-            <li class="app_detail_share_box">
-              <i class="app_detail_share_cyfs"></i>
-              <i class="app_detail_share_discard"></i>
-              <i class="app_detail_share_twitter"></i>
-              <i class="app_detail_share_github"></i>
-            </li>
-          </ul>
+          <p class="app_detail_overview"></p>
+          <p class="app_detail_dec_id_p"></p>
+          <p class="app_detail_developer_p"></p>
+          <div class="app_detail_ul">
+            <span class="app_detail_client_box" set-lan="html:DecAppHtml.ClientSoftwareRequired"></span>
+            <i class="app_detail_share_box_border"></i>
+            <i class="app_detail_share_cyfs app_detail_share_box"></i>
+            <i class="app_detail_share_discard app_detail_share_box"></i>
+            <i class="app_detail_share_twitter app_detail_share_box"></i>
+            <i class="app_detail_share_github app_detail_share_box"></i>
+          </div>
         </div>
       </div>
       <div class="app_detail_version_box">
@@ -127,17 +125,18 @@
       </div>
     </div>
     <div class="app_footer_box">
-      <!-- <div class="app_footer_content_box">
+      <div class="app_footer_content_box">
         <div class="float_l app_footer_box_l">
-          <p><a href="javascript:">How Cyfs work ?</a></p>
-          <p><a href="javascript:">How to develop Dec App ?</a></p>
+          <div class="app_footer_cyfs_icon"></div>
+          <p>Copyright © 2022 CYFS Core Dev Team. All rights reserved</p>
         </div>
         <div class="float_r app_footer_box_r">
-          <i class="app_footer_discard_i"></i>
-          <i class="app_footer_cyfs_i"></i>
-          <p class="float_r">Developer community</p>
+          <a class="app_footer_i app_footer_github_i" href="https://github.com/buckyos/CYFS"></a>
+          <a class="app_footer_i app_footer_discard_i" href="https://discord.com/invite/cyfs"></a>
+          <a class="app_footer_i app_footer_tittwer_i" href="https://twitter.com/CYFSTech"></a>
+          <a class="float_r" href="https://www.cyfs.com/na.html">Join us to build Web3 together</a>
         </div>
-      </div> -->
+      </div>
     </div>
     <div class="anonymous_box">
       <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
@@ -179,25 +178,30 @@
 <style>
 .app_detail_box{
   border-bottom: 1px solid #E3E3E3;
-  padding: 44px 0 33px 0;
+  padding: 44px 0 10px 0;
   overflow: hidden;
 }
 .app_detail_left_box{
-  width: 112px;
+  width: 88px;
   float: left;
   overflow: hidden;
   margin-right: 12px;
 }
+.app_detail_right_box{
+  padding-left: 12px;
+  width: 1080px;
+}
 .app_detail_icon_box{
-  width: 112px;
-  height: 112px;
+  width: 88px;
+  height: 88px;
+  border-radius: 8px;
 }
 .app_detail_icon_box img{
   width: 100%;
   height: 100%;
 }
 .installed_status_checkbox{
-  padding: 4px 0 0 40px;
+  padding: 20px 3px 0 3px;
   display: none;
 }
 .app_detail_title{
@@ -239,32 +243,30 @@
 }
 .app_detail_developer{
   padding-bottom: 17px;
+  margin-right: 19px;
 }
 .app_detail_ul{
-  height: 32px;
-}
-.app_detail_ul li{
-  float: left;
-  padding: 0 24px;
-  height: 19px;
-  border-left: 1px solid #000000;
-}
-.app_detail_ul li:nth-child(1){
-  padding-left: 0;
-  border: none;
+  width: 720px;
 }
 .app_detail_share_box{
   display: none;
-}
-.app_detail_share_box i{
   display: block;
   width: 32px;
   height: 32px;
   float: left;
   margin-top: -6px;
   margin-right: 4px;
+  margin-bottom: 24px;
   cursor: pointer;
   display: none;
+}
+.app_detail_share_box_border{
+ height: 19px;
+ display: inline-block;
+ float: left;
+ border-right: 1px solid #000000; 
+ margin: 0 24px;
+ display: none;
 }
 .app_detail_share_cyfs{
   background: url(../img/app/app_detail_share_cyfs.svg) no-repeat center center;
@@ -303,6 +305,7 @@
   height: 24px;
   margin-right: 64px;
   float: left;
+  border-radius: 12px;
 }
 .app_detail_version_share{
   display: inline-block;
@@ -391,6 +394,13 @@
   height: 24px;
   margin-left: 10px;
   float: right;
+  border-radius: 12px;
+}
+.update_installed_btn{
+  border-radius: 12px;
+}
+.uninstall_installed_btn{
+  margin-right: 24px;
 }
 .update_installed_btn{
   display: none;
@@ -404,6 +414,7 @@
   height: 24px;
   margin-left: 10px;
   float: right;
+  border-radius: 12px;
 }
 .app_cover_overview_box{
   width: 513px;
@@ -429,15 +440,15 @@
 .app_tip_btn{
   width: 88px;
   height: 24px;
+  border-radius: 12px 12px 12px 12px;
+  margin-right: 12px;
 }
 .to_tip_list{
-  display: block;
-  width: 24px;
+  width: 73px;
   height: 24px;
-  cursor: pointer;
-  margin-left: 14px;
-  background: url(../img/app/to_tip_list.svg) no-repeat center center;
   display: none;
+  border-radius: 12px 12px 12px 12px;
+  margin-right: 24px;
 }
 .app_subtitle_box{
   display: none;
@@ -453,6 +464,15 @@
   box-shadow: 0px 1px 2px rgba(0,0,0,0.0800);
   border-radius: 16px;
 }
+.app_detail_p{
+  text-align: center;
+  height: 14px;
+  font-size: 10px;
+  font-weight: 400;
+  color: #BBC8CD;
+  line-height: 14px;
+  padding-top: 6px;
+}
 .app_tip_box{
   width: 473px;
   padding: 0 20px;
@@ -461,6 +481,12 @@
   height: 19px;
   line-height: 28px;
   padding: 0 0 12px 0;
+}
+.operate_btn{
+  width: 82px;
+  height: 24px;
+  border-radius: 12px;
+  display: none;
 }
 .app_tip_amount_input{
   width: 100%;
@@ -516,13 +542,41 @@
     width: 100%;
     height: 100%;
 }
-.app_detail_tag_box span{
-  display: block;
-  float: left;
-  margin-right: 18px;
-  height: 19px;
+.app_detail_tag{
+  padding: 3px 13px;
+  margin-right: 12px;
+  border-radius: 12px;
+  height: 24px;
+  font-size: 14px;
+  font-weight: 400;
   color: #202124;
   line-height: 24px;
+  white-space: nowrap;
+  background: rgba(10, 215, 182, 0.1);
+  float: left;
+  margin-top: -3px;
+  margin-bottom: 24px;
+}
+.app_detail_developer_color{
+  color: #8600E6;
+  font-style: normal;
+}
+.app_status_loading{
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+  display: none;
+}
+.app_detail_client_box{
+  color: #5F6368;
+  font-size: 14px;
+  display: none;
+  height: 19px;
+  padding-left: 24px;
+  border-left: 1px solid #000000;
+  float: left;
+  margin: 0 0 24px 12px;
 }
 </style>
 

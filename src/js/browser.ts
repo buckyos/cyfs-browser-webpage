@@ -33,21 +33,18 @@ let IS_FIRST_IN:boolean = true;
 let SKIP_COUNT:number = 0;
 let ANONYMOUS_STATUS:boolean;
 let BIND_STATUS:boolean;
-let SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[];
-let BUILDIN_SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[];
+let SHORTCUT_LIST: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[] = [];
 let SEARCH_HISTORY_LIST:{name: string, type: number}[] = [];
 let g_appList: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[];
 
 async function handlerGuidingProcess () {
     let getShortcutSession = localStorage.getItem('browser-shortcuts-list');
     console.origin.log('getShortcutSession', getShortcutSession);
-    // let decapp = { url:'https://www.cyfs.com/download_en.html', name: 'Cyfs Software', icon: './img/dec_app_index_i.svg', index: 0, isBuildin: true };
-        let gitHub = { url:'https://github.com/buckyos/CYFS', name: 'github', icon: './img/git_hub_index_i.svg', index: 0, isBuildin: true };
-        let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Management', icon: './img/last-child-li.svg', index: 1, isBuildin: true };
-    // let shortcutsList = BUILDIN_SHORTCUT_LIST = [decapp, gitHub, appmanagement];
-    let shortcutsList = BUILDIN_SHORTCUT_LIST = [gitHub, appmanagement];
+    let gitHub = { url:'https://github.com/buckyos/CYFS', name: 'github', icon: './img/git_hub_index_i.svg', index: 0, isBuildin: true };
+    let appmanagement = { url:'cyfs://static/DecAppStore/app_store_list.html', name: 'Dec App Store', icon: './img/last-child-li.svg', index: 1, isBuildin: true };
+    let shortcutsList = SHORTCUT_LIST = [gitHub, appmanagement];
     if(getShortcutSession){
-        shortcutsList = BUILDIN_SHORTCUT_LIST = shortcutsList.concat(JSON.parse(getShortcutSession));
+        SHORTCUT_LIST = shortcutsList = shortcutsList.concat(JSON.parse(getShortcutSession));
     }
     await renderingShortcut(shortcutsList);
     util.getAppList();
@@ -56,43 +53,52 @@ async function handlerGuidingProcess () {
 async function renderingShortcut (list: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[]) {
     let html = '';
     let shortcutList: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[] = [];
-    list.forEach((element, index)=>{
-        let isRender = false;
-        let item = {url: element.url, name: element.name, icon: element.icon, index: shortcutList.length, isBuildin: element.isBuildin};
-        if(!element.isBuildin){
-            let filterData = list.filter((aaa)=> aaa.url=== element.url);
-            console.log('filterData', filterData)
-            if(filterData.length < 2){
-                isRender = true;
+    let allShortcutList: {url:string, name: string, icon: string, index: number, isBuildin: boolean}[] = [];
+    for (let index = 0; index < list.length; index++) {
+        let isRender:boolean = true;
+        const element = list[index];
+        let item = {url: element.url, name: element.name, icon: element.icon, index: allShortcutList.length, isBuildin: element.isBuildin};
+        let filterData = list.filter((aaa)=> aaa.url=== element.url);
+        console.log('filterData', filterData)
+        if(filterData.length < 2){
+            if(!element.isBuildin){
                 shortcutList.push(item);
-            }else{
-                let filterListData = shortcutList.filter((shortcut)=> shortcut.url=== element.url);
-                console.log('filterListData', filterListData)
-                if(filterListData.length == 0){
-                    isRender = true;
-                    shortcutList.push(item);
-                }
             }
         }else{
-            isRender = true;
+            let filterListData = shortcutList.filter((shortcut)=> shortcut.url=== element.url);
+            if(filterListData.length == 0){
+                if(!element.isBuildin){
+                    shortcutList.push(item);
+                }
+            }else{
+                isRender = false;
+            }
+        }
+        let isRepeatList = allShortcutList.filter((shortcut)=> shortcut.url === element.url);
+        console.log('isRepeatList',isRepeatList.length, isRepeatList)
+        if(isRepeatList.length <= 1){
+            if(isRepeatList.length < 1){
+                allShortcutList.push(item);
+            }
         }
         if(isRender){
             html += `<li>
-                    ${element.isBuildin?'':`
-                        <i class="app_edit_btn"></i>
-                        <div class="app_edit_box">
-                            <p class="app_edit_p" data-edit="${index}">${LANGUAGESTYPE == 'zh'? '编辑':'Edit'}</p>
-                            <p class="app_delete_p" data-edit="${index}">${LANGUAGESTYPE == 'zh'? '删除':'Delete'}</p>
+                        ${element.isBuildin?'':`
+                            <i class="app_edit_btn"></i>
+                            <div class="app_edit_box">
+                                <p class="app_edit_p" data-edit="${item.index}">${LANGUAGESTYPE == 'zh'? '编辑':'Edit'}</p>
+                                <p class="app_delete_p" data-edit="${item.index}">${LANGUAGESTYPE == 'zh'? '删除':'Delete'}</p>
+                            </div>
+                        `}
+                        <div class="app-content manager_app click_href_to" id="manager_app" data-url="${element.url}" >
+                            <img src='${element.icon}' alt=""  onerror="this.src='./img/app_default_i.svg';this.οnerrοr=null">
                         </div>
-                    `}
-                    <div class="app-content manager_app click_href_to" id="manager_app" data-url="${element.url}" >
-                        <img src='${element.icon}' alt=""  onerror="this.src='./img/app_default_i.svg';this.οnerrοr=null">
-                    </div>
-                    <p class="app-name click_href_to" data-url="${element.url}">${element.name}</p>
-                </li>`;
+                        <p class="app-name click_href_to" data-url="${element.url}">${element.name}</p>
+                    </li>`;
         }
-    });
-    SHORTCUT_LIST = BUILDIN_SHORTCUT_LIST.concat(shortcutList);
+    };
+    SHORTCUT_LIST = allShortcutList;
+    console.origin.log('shortcutList, SHORTCUT_LIST', shortcutList, SHORTCUT_LIST)
     if(SHORTCUT_LIST.length < 10){
         html += `<li class="last-child-li">
                     <div class="app-content manager_app" id="manager_app">
@@ -137,7 +143,7 @@ function isUnbind() {
                     window.location.href = 'cyfs://static/browser.html?success';
                     IS_FIRST_BIND = false;
                 }
-                util.getDeviceInfo();
+                util.renderHeaderInfo();
             }
             if (result.anonymous) {
                 // 匿名模式
@@ -230,49 +236,13 @@ class Util {
         
     }
 
-    async getDeviceInfo() {
-        // Device静态信息
-        let current_device_static_info = await this.m_util_service.get_device_static_info({ common: { flags: 0 } });
-        if (!current_device_static_info.err) {
-            current_device_static_info = current_device_static_info.unwrap().info;
-        }
-        console.info('current_device_static_info:', current_device_static_info);
-        if (current_device_static_info.owner_id) {
-            const peopleR = (await ObjectUtil.getObject({ id: current_device_static_info.owner_id, isReturnResult: true, flags: 1 })).object;
-            console.origin.log('peopleR:', peopleR);
-            let oodList = peopleR.object.body().unwrap().content().ood_list;
-            if (oodList[0]) {
-                let mainStatus: boolean = await this.getOodStatus();
-                console.log('--mainStatus', mainStatus)
-                if(oodList.length == 1){
-                    if(mainStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_main_ood_online.svg) no-repeat center center');
-                    }else{
-                        $('#ood_status_icon').css('background', 'url(./img/browser_main_ood_offline.svg) no-repeat center center');
-                    }
-                }else if(oodList.length == 2){
-                    let minerStatus: boolean = await this.getOodStatus(oodList[1].object_id);
-                    console.log('--minerStatus', mainStatus)
-                    if(mainStatus && minerStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_ood_online_online.svg) no-repeat center center');
-                    }else if(mainStatus && !minerStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_ood_online_offline.svg) no-repeat center center');
-                    }else if(!mainStatus && minerStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_ood_offline_online.svg) no-repeat center center');
-                    }else if(!mainStatus && !minerStatus){
-                        $('#ood_status_icon').css('background', 'url(./img/browser_ood_offline_offline.svg) no-repeat center center');
-                    }
-                }
-            }
-            $('#people_name2').html(peopleR.object.name() ? peopleR.object.name() : (LANGUAGESTYPE == 'zh'? '未设置名称':'name not set'));
-            if(peopleR.object.icon()){
-                $('#user_switch').css({'background':'url(cyfs://o/'+peopleR.object.icon().object_id +') no-repeat center center','background-size': '100% 100%'});
-            }else{
-                $('#user_switch').css({'background':'url(./img/browser_people_icon.svg) no-repeat center center','background-size': '100%'});
-            }
-        }
+    async renderHeaderInfo() {
+        let headerInfo = await ObjectUtil.getHeaderInfo();
+        $('#ood_status_icon').css('background', `url(${headerInfo.oodStatusIcon}) no-repeat center center`);
+        $('#people_name2').html(headerInfo.peopleName);
+        $('#user_switch').css({'background': 'url(' + headerInfo.peoplePicture + ') no-repeat center center','background-size': '100% 100%'});
     }
-
+    
     async txtToId (id: string) {
         let idResult = cyfs.ObjectId.from_base_58(id);
         if (idResult.err) {
@@ -294,10 +264,11 @@ class Util {
                 let app_status = app.status;
                 if((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir){
                     console.log('get_app_status.webdir().to_base_58()', app.app_name, app.webdir.to_base_58())
-                    BUILDIN_SHORTCUT_LIST.push({ url:`cyfs://o/${app.webdir.to_base_58()}/index.html`, name: app.app_name, icon: app.app_icon, index: BUILDIN_SHORTCUT_LIST.length - 1, isBuildin: true })
+                    SHORTCUT_LIST.push({ url:`cyfs://o/${app.webdir.to_base_58()}/index.html`, name: app.app_name, icon: app.app_icon, index: SHORTCUT_LIST.length, isBuildin: true })
                 }
             }
         }
+        // renderingShortcut(SHORTCUT_LIST);
     }
 }
 const util = new Util();
@@ -579,7 +550,7 @@ $('.add_url_btn_save').on('click', async function () {
         if(elA.host == 'r' || elA.host == 'a' || elA.host == 'o'){
             icon = await getIcon(elA.origin, elA.pathname);
         }else{
-            icon = elA.origin + '/favicon.ico';
+            icon = './img/browser_favicon_icon.svg';
         }
         console.log('elA.origin', elA.origin, elA.hostname, elA.pathname, icon);
     }
@@ -655,8 +626,11 @@ $('#signin_ul').on('click', '.app_edit_p', async function () {
 //删除快捷方式
 $('#signin_ul').on('click', '.app_delete_p', async function () {
     let index = $(this).attr('data-edit');
+    console.origin.log('122223333333', index, SHORTCUT_LIST)
     $(this).parent('.app_edit_box').css('display', 'none');
     SHORTCUT_LIST.splice(Number(index), 1);
+    console.origin.log('122223333333', SHORTCUT_LIST)
+
     renderingShortcut(SHORTCUT_LIST);
 })
 

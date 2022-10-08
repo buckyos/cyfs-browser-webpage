@@ -176,16 +176,25 @@ class NONObject {
                 }else{
                     oodStatusIcon = '../img/browser_main_ood_offline.svg';
                 }
-            }else if(oodList.length == 2){
-                let minerStatus: boolean = await this.getOodStatus(oodList[1].object_id);
+            }else{
+                let minerStatus: boolean = true;
+                let currentStatus: boolean = true;
+                for (let index = 0; index < oodList.length; index++) {
+                    const ood = oodList[index];
+                    if(currentStatus && index > 0){
+                        currentStatus = await this.getOodStatus(ood.object_id);
+                        if(!currentStatus){
+                            console.log('--oodList[index].object_id-minerStatus', index, ood.object_id)
+                            minerStatus = false;
+                        }
+                    }
+                }
                 console.log('--minerStatus', mainStatus)
                 if(mainStatus && minerStatus){
                     oodStatusIcon = '../img/browser_ood_online_online.svg';
                 }else if(mainStatus && !minerStatus){
                     oodStatusIcon = '../img/browser_ood_online_offline.svg';
-                }else if(!mainStatus && minerStatus){
-                    oodStatusIcon = '../img/browser_ood_offline_online.svg';
-                }else if(!mainStatus && !minerStatus){
+                }else if(!mainStatus){
                     oodStatusIcon = '../img/browser_ood_offline_offline.svg';
                 }
             }

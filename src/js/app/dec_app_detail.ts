@@ -17,6 +17,7 @@ let g_owner: cyfs.ObjectId;
 let g_app: { app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp };
 let g_versionTimeList:string[];
 let g_releasedate:{[key: string]: string}
+let g_isStart:boolean;
 
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
@@ -36,13 +37,12 @@ if (window.location.search.split("?")[1]) {
     }
 }
 console.log('---------g_appId, g_version, g_isInstalled:', g_appId, g_version, g_isInstalled);
-
 $(async function(){
     isBind();
     if(LANGUAGESTYPE == 'zh'){
-      $('title').html(g_isInstalled ? '已安装应用详情':'应用详情');
+      $('title, .app_title_box').html(g_isInstalled ? '已安装应用详情':'应用详情');
     }else{
-      $('title').html(g_isInstalled ? 'Installed DEC App Detail':'DEC App Detail');
+      $('title, .app_title_box').html(g_isInstalled ? 'Installed DEC App Detail':'DEC App Detail');
     }
     g_isBind = await isBind();
     if(!g_isBind){
@@ -73,17 +73,17 @@ class AppManager {
         appManager.getOwner();
         let app = g_app = await AppUtil.showApp(id, false);
         console.origin.log('---------app-data:', app);
-        $('.app_detail_icon').attr('src', app.app_icon || '');
+        $('.app_detail_icon').attr('src', app.app_icon || '../img/app/app_default_icon.svg');
         let owner = null;
-        let peopleName = null;
+        let peopleName = 'cyfs';
         if (app.app.desc().owner) {
             owner = g_appOwner = app.app.desc().owner().unwrap();
             const peopleR = (await ObjectUtil.getObject({ id: owner!, isReturnResult: true, flags: 1 })).object;
             console.origin.log('peopleR:', peopleR);
-            peopleName = peopleR.object.name() || '';
+            peopleName = peopleR.object.name() || 'cyfs';
         }
         $('.app_detail_dec_id_p').html(`<span class="app_detail_dec_id">Dec-ID：${g_appId}</span><i class="upload_app_info_id_copy" data-id="${g_appId}"></i>`)
-        $('.app_detail_developer_p').html(`<span class="app_detail_developer">${LANGUAGESTYPE == 'zh'?'开发者：': 'Developer：'}${peopleName}  (${owner})</span><i class="upload_app_info_id_copy" data-id="${owner}"></i>`)
+        $('.app_detail_developer_p').html(`<span class="app_detail_developer">${LANGUAGESTYPE == 'zh'?'开发者：': 'Developer：'}${peopleName}  (<i class="app_detail_developer_color">${owner}</i>)</span><i class="upload_app_info_id_copy" data-id="${owner}"></i>`)
         // if(app.app.desc().dec_id().is_some()){
         //     let decid = app.app.desc().dec_id().unwrap();
         //     $('.app_detail_dec_id_p').html(`<span class="app_detail_dec_id">Dec-ID：${decid}</span><i class="upload_app_info_id_copy" data-id="${decid}"></i>`)
@@ -105,6 +105,9 @@ class AppManager {
             // app installed detail
             $('.app_detail_info_container, .app_subtitle_installed_box, .installed_status_checkbox').css('display', 'block');
             appManager.renderAppInfo(id);
+            setTimeout(() => {
+                appManager.initData(g_appId);
+            }, 10000);
         }else{
             // app detail
             $('.app_detail_title').html(`${app.app_name}<i class="app_detail_version_share"></i>`);
@@ -127,48 +130,54 @@ class AppManager {
                     let tags = info['cyfs-app-store'].tag;
                     let html = '';
                     tags.forEach(tag => {
-                        html += `<span>#${tag}</span>`;
+                        html += `<span class="app_detail_tag">#${tag}</span>`;
                     });
-                    $('.app_detail_tag_box').html(html);
+                    html +=`<span class="app_detail_client_box" set-lan="html:DecAppHtml.ClientSoftwareRequired">${LANGUAGESTYPE == 'zh'?'客户端软件支持': 'Client software required'}</span>
+                            <i class="app_detail_share_box_border "></i>
+                            <i class="app_detail_share_cyfs app_detail_share_box"></i>
+                            <i class="app_detail_share_discard app_detail_share_box"></i>
+                            <i class="app_detail_share_twitter app_detail_share_box"></i>
+                            <i class="app_detail_share_github app_detail_share_box"></i>`;
+                    $('.app_detail_ul').html(html);
                 }
                 if(info['cyfs-app-store'].client){
                     let clients = info['cyfs-app-store'].client;
                     if(clients.android){
-                        $('.app_software_android').css('display', 'block').attr('data-url', clients.android);
+                        $('.app_software_android, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.android);
                     }
                     if(clients.iOS){
-                        $('.app_software_ios').css('display', 'block').attr('data-url', clients.iOS);
+                        $('.app_software_ios, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.iOS);
                     }
                     if(clients.windows){
-                        $('.app_software_windows').css('display', 'block').attr('data-url', clients.windows);
+                        $('.app_software_windows, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.windows);
                     }
                     if(clients.macOS){
-                        $('.app_software_macos').css('display', 'block').attr('data-url', clients.macOS);
+                        $('.app_software_macos, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.macOS);
                     }
                     if(clients.linux){
-                        $('.app_software_linux').css('display', 'block').attr('data-url', clients.linux);
+                        $('.app_software_linux, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.linux);
                     }
                     if(clients.other){
-                        $('.app_software_other').css('display', 'block').attr('data-url', clients.other);
+                        $('.app_software_other, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.other);
                     }
                 }
                 if(info['cyfs-app-store'].community){
                     let community = info['cyfs-app-store'].community;
                     community.forEach(element => {
                         if(element['CyberChat'] && element['CyberChat'][0]){
-                            $('.app_detail_share_box').css('display', 'block');
+                            $('.app_detail_share_box, .app_detail_share_box_border').css('display', 'block');
                             $('.app_detail_share_cyfs').css('display', 'block').attr('data-url', element['CyberChat'][0]);
                         }
                         if(element['Discord'] && element['Discord'][0]){
-                            $('.app_detail_share_box').css('display', 'block');
+                            $('.app_detail_share_box, .app_detail_share_box_border').css('display', 'block');
                             $('.app_detail_share_discard').css('display', 'block').attr('data-url', element['Discord'][0]);
                         }
                         if(element['Twitter'] && element['Twitter'][0]){
-                            $('.app_detail_share_box').css('display', 'block');
+                            $('.app_detail_share_box, .app_detail_share_box_border').css('display', 'block');
                             $('.app_detail_share_twitter').css('display', 'block').attr('data-url', element['Twitter'][0]);
                         }
                         if(element['GitHub'] && element['GitHub'][0]){
-                            $('.app_detail_share_box').css('display', 'block');
+                            $('.app_detail_share_box, .app_detail_share_box_border').css('display', 'block');
                             $('.app_detail_share_github').css('display', 'block').attr('data-url', element['GitHub'][0]);
                         }
                     });
@@ -184,9 +193,56 @@ class AppManager {
     async renderAppInfo (id) {
         let app = await AppUtil.handleAppDetail(id);
         console.origin.log('---------------app-info', app);
-        if(app.status == cyfs.AppLocalStatusCode.Running){
-            $('.app_status_switch').prop({"checked":true});
+        if(app.status != cyfs.AppLocalStatusCode.NoService && app.status != cyfs.AppLocalStatusCode.Uninstalled && app.status != cyfs.AppLocalStatusCode.InstallFailed && app.status != cyfs.AppLocalStatusCode.UninstallFailed){
+            if(app.status == cyfs.AppLocalStatusCode.Running || app.status == cyfs.AppLocalStatusCode.StopFailed){
+                $('.operate_btn').css('display', 'block');
+                $('.app_status_loading').css('display', 'none');
+                g_isStart = false;
+                $('.operate_btn').html(LANGUAGESTYPE == 'zh'?'停止': 'stop');
+            }else if(app.status == cyfs.AppLocalStatusCode.Installing || app.status == cyfs.AppLocalStatusCode.Starting || app.status == cyfs.AppLocalStatusCode.Stopping || app.status == cyfs.AppLocalStatusCode. Uninstalling){
+                $('.operate_btn').css('display', 'none');
+                $('.app_status_loading').css('display', 'block');
+            }else{
+                $('.operate_btn').css('display', 'block');
+                $('.app_status_loading').css('display', 'none');
+                g_isStart = true;
+                $('.operate_btn').html(LANGUAGESTYPE == 'zh'?'启动': 'start');
+            }
+        }else{
+            $('.app_status_loading, .operate_btn').css('display', 'none');
         }
+        let app_status = app.status;
+        let appStr = "";
+        if (app_status == cyfs.AppLocalStatusCode.Init) {
+          appStr = LANGUAGESTYPE == 'zh'? '初始化' : 'Init';
+        }else if(app_status == cyfs.AppLocalStatusCode.Installing){
+            appStr = LANGUAGESTYPE == 'zh'? '安装中' : 'Installing';
+        }else if(app_status == cyfs.AppLocalStatusCode.InstallFailed){
+            appStr = LANGUAGESTYPE == 'zh'? '安装失败' : 'InstallFailed';
+        }else if(app_status == cyfs.AppLocalStatusCode.NoService){
+            appStr = LANGUAGESTYPE == 'zh'? '无DEC服务' : 'NoService';
+        }else if(app_status == cyfs.AppLocalStatusCode.Stopping){
+            appStr = LANGUAGESTYPE == 'zh'? '停止中' : 'Stopping';
+        }else if(app_status == cyfs.AppLocalStatusCode.Stop){
+            appStr = LANGUAGESTYPE == 'zh'? '已停止' : 'Stop';
+        }else if(app_status == cyfs.AppLocalStatusCode.StopFailed){
+            appStr = LANGUAGESTYPE == 'zh'? '停止失败' : 'StopFailed';
+        }else if(app_status == cyfs.AppLocalStatusCode.Starting){
+            appStr = LANGUAGESTYPE == 'zh'? '启动中' : 'Starting';
+        }else if(app_status == cyfs.AppLocalStatusCode.Running){
+            appStr = LANGUAGESTYPE == 'zh'? '运行中' : 'Running';
+        }else if(app_status == cyfs.AppLocalStatusCode.StartFailed){
+        appStr = LANGUAGESTYPE == 'zh'? '启动失败' : 'StartFailed';
+        }else if(app_status == cyfs.AppLocalStatusCode.Uninstalling){
+            appStr = LANGUAGESTYPE == 'zh'? '卸载中' : 'Uninstalling';
+        }else if(app_status == cyfs.AppLocalStatusCode.UninstallFailed){
+            appStr = LANGUAGESTYPE == 'zh'? '卸载失败' : 'UninstallFailed';
+        }else if(app_status == cyfs.AppLocalStatusCode.Uninstalled){
+            appStr = LANGUAGESTYPE == 'zh'? '卸载成功' : 'Uninstalled';
+        }else if(app_status == cyfs.AppLocalStatusCode.RunException){
+            appStr = LANGUAGESTYPE == 'zh'? '运行异常' : 'RunException';
+        }
+        $('.app_detail_p').html(appStr);
         if(!app.auto_update && app.version != app.fidArray[app.fidArray.length - 1].version){
             $('.update_installed_btn').css('display', 'block');
         }
@@ -330,7 +386,7 @@ $(".app_subtitle_installed_box").on('click', '.update_installed_btn', async func
 $(".app_subtitle_installed_box").on('click', '.uninstall_installed_btn', async function () {
     let operateAppRet:boolean = await AppDetailUtil.operateApp(g_appId, g_owner, 'uninstall');
     if(operateAppRet){
-        window.location.href = 'cyfs://static/DecAppStore/app_installed_list.html';
+        window.location.href = 'cyfs://static/DecAppStore/app_store_list.html?installed';
     }
 })
 
@@ -342,17 +398,18 @@ $('.app_subtitle_detail_box').on('click', '.to_tip_list', function () {
     window.location.href = 'cyfs://static/DecAppStore/app_like_tip_list.html?id=' + g_appId;
 })
 
-$('.installed_status_checkbox').on('click', '.app_status_switch', async function (event) {
+$('.installed_status_checkbox').on('click', '.operate_btn', async function (event) {
+    $('.operate_btn').css('display', 'none');
+    $('.app_status_loading').css('display', 'block');
     event.stopImmediatePropagation();
-    var isRun = $(".installed_status_checkbox .app_status_switch:checked").length > 0 ? true : false;
-    console.log('switch-name:', isRun);
     let operateAppRet:boolean;
-    if(isRun){
+    if(g_isStart){
         operateAppRet = await AppDetailUtil.operateApp(g_appId, g_owner, 'start');
     }else{
         operateAppRet = await AppDetailUtil.operateApp(g_appId, g_owner, 'stop');
     }
-    if(!operateAppRet){
-        $(".installed_status_checkbox .app_status_switch").prop("checked", !isRun);
-    }
+})
+
+$('.app_header_title').on('click', function () {
+    window.location.href = 'cyfs://static/DecAppStore/app_store_list.html';
 })

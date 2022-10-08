@@ -18,37 +18,51 @@
     </div>
     <div class="app_content_box">
       <div class="app_content_title_box">
-        <div class="app_title_box">
-          <h3 class="app_content_title" set-lan="html:DecAppHtml.DecAppList"></h3>
-          <a href="cyfs://static/DecAppStore/app_installed_list.html" class="app_content_title_href" target="_blank" set-lan="html:DecAppHtml.Installed"></a>
-        </div>
+          <h3 class="app_title_box" set-lan="html:DecAppHtml.DecAppList"></h3>
+          <!-- <a href="cyfs://static/DecAppStore/app_installed_list.html" class="app_content_title_href" target="_blank" set-lan="html:DecAppHtml.Installed"></a> -->
+        <!-- </div> -->
         <div class="app_subtitle_box">
+          <button class="float_l app_primary_btn tab_all_btn" set-lan="html:DecAppHtml.All">All</button>
+          <button class="float_l app_plain_btn tab_install_btn" set-lan="html:DecAppHtml.Installed"></button>
+          <button class="float_l app_plain_btn tab_tag_btn"></button>
           <button class="float_r app_plain_btn open_install_app_btn" set-lan="html:DecAppHtml.InstallFromUrl"></button>
+          <i class="app_installed_setting_i"></i>
         </div>
       </div>
       <ul class="app_list_box">
       </ul>
+      <div class="app_tag_list_box app_installed_list_box">
+        <ul class="app_tag_list app_installed_list">
+        </ul>
+        <ul class="app_tag_list app_installed_failed_list">
+        </ul>
+      </div>
+      <div class="app_tag_list_box app_tags_list_box">
+        <ul class="app_tag_list app_tags_list">
+        </ul>
+      </div>
       <!-- <button class="app_primary_btn app_upload_btn" set-lan="html:DecAppTagHtml.UploadDecAPP"></button> -->
     </div>
     <div class="app_footer_box">
-      <!-- <div class="app_footer_content_box">
+      <div class="app_footer_content_box">
         <div class="float_l app_footer_box_l">
-          <p><a href="javascript:">How Cyfs work ?</a></p>
-          <p><a href="javascript:">How to develop Dec App ?</a></p>
+          <div class="app_footer_cyfs_icon"></div>
+          <p>Copyright © 2022 CYFS Core Dev Team. All rights reserved</p>
         </div>
         <div class="float_r app_footer_box_r">
-          <i class="app_footer_discard_i"></i>
-          <i class="app_footer_cyfs_i"></i>
-          <p class="float_r">Developer community</p>
+          <a class="app_footer_i app_footer_github_i" href="https://github.com/buckyos/CYFS"></a>
+          <a class="app_footer_i app_footer_discard_i" href="https://discord.com/invite/cyfs"></a>
+          <a class="app_footer_i app_footer_tittwer_i" href="https://twitter.com/CYFSTech"></a>
+          <a class="float_r" href="https://www.cyfs.com/na.html">Join us to build Web3 together</a>
         </div>
-      </div> -->
+      </div>
     </div>
     <div class="anonymous_box">
       <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
       <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
     </div>
   </div>
-  <div class="app_cover_box">
+  <div class="app_cover_box add_url_cover">
     <div class="app_cover_content_box">
       <i class="app_cover_close_i"></i>
       <h3 class="app_cover_title" set-lan="html:DecAppHtml.InstallFromUrl"></h3>
@@ -59,12 +73,39 @@
       </div>
     </div>
   </div>
+  <div class="app_cover_box app_installed_setting_container" >
+    <div class="app_cover_installed_setting_box">
+      <i class="close_cover_i installed_close_cover_i"></i>
+      <h3 class="app_installed_setting_title" set-lan="html:DecAppHtml.Setting"></h3>
+      <h3 class="automatic_update_all_box">
+        <span class="float_l" set-lan="html:DecAppHtml.AutomaticUpdateAllApps"></span>
+        <label class="switch_label switch_animbg float_r">
+          <input class="automatic_update_all automatic_update_switch" type="checkbox" name="automaticUpdateAll"><i class="switch_i"></i>
+        </label>
+      </h3>
+      <ul class="app_installed_setting_ul">
+      </ul>
+    </div>
+  </div>
+  <div class="app_cover_box app_installed_confirm_container">
+    <div class="app_installed_confirm_box">
+      <i class="close_cover_i"></i>
+      <p class="app_installed_confirm_p" set-lan="html:AppHtml.WarningQuestion"></p>
+      <button class="app_plain_btn app_installed_yes_btn" set-lan="html:Yes"></button>
+      <button class="app_primary_btn app_installed_no_btn" set-lan="html:No"></button>
+    </div>
+  </div>
+  <div class="app_cover_box app_installed_loading_box">
+    <div class="installed_loading_box">
+      <img src="../img/app/app_status_loading.gif" alt="">
+      <p>Loading...</p>
+    </div>
+  </div>
 </body>
 
 <style>
   .app_list_box{
     overflow: hidden;
-    margin: 24px 0 102px 0;
   }
   .app_list_box li{
     width: 392px;
@@ -72,7 +113,7 @@
     background: #FFFFFF;
     box-shadow: 0px 1px 2px rgba(0,0,0,0.08);
     border-radius: 8px 8px 8px 8px;
-    margin: 8px 12px 8px 0;
+    margin: 0 12px 16px 0;
     float: left;
   }
   .app_list_box li:nth-child(3n){
@@ -86,9 +127,11 @@
     float: left;
     width: 80px;
     height: 80px;
-    padding: 38px 12px 31px 24px;
+    margin: 38px 12px 31px 24px;
     overflow: hidden;
     cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
   }
   .app_list_info_l img{
     width: 100%;
@@ -122,23 +165,30 @@
   }
   .app_list_extra_info{
     overflow: hidden;
+    height: 49px;
   }
   .app_list_extra_info_l{
     float: left;
-    padding: 14px 10px 0 14px;
+    margin: 12px 10px 13px 18px;
     width: 360px;
     white-space: nowrap;
+    background: #fff;
+    border-radius: 12px;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #2873F7;
   }
-  .app_list_extra_info_l a{
-    padding: 0 10px;
-    width: 52px;
-    height: 19px;
+  .app_list_extra_info_l span{
+    padding: 3px 13px;
+    margin:0 6px 13px 6px;
+    border-radius: 12px;
+    height: 24px;
     font-size: 14px;
     font-weight: 400;
     color: #2873F7;
     line-height: 24px;
+    background: rgba(10, 215, 182, 0.1);
+    cursor: pointer;
   }
   .app_upload_btn{
     width: 288px;
@@ -193,6 +243,394 @@
     background: url(../img/app/app_cover_close_i.svg) no-repeat center center;
     cursor: pointer;
   }
+  .tab_install_btn, .tab_all_btn, .tab_tag_btn{
+    height: 24px;
+    padding: 0 17px;
+    border-radius: 12px;
+  }
+  .tab_tag_btn{
+    margin-left: 12px;
+    display: none;
+  }
+  .tab_all_btn{
+    margin: 0 12px 0 24px ;
+  }
+  .app_tag_list_box{
+      width: 812px;
+      padding: 0 10px 58px 10px;
+      margin: 0 auto;
+      display: none;
+  }
+  .app_tag_list li{
+      width: 770px;
+      height: 88px;
+      background: #FFFFFF;
+      box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+      border-radius: 8px;
+      padding: 21px;
+      margin-bottom: 6px;
+  }
+  .app_tag_img_box{
+      width: 88px;
+      height: 88px;
+      overflow: hidden;
+      margin-right: 30px;
+      cursor: pointer;
+      border-radius: 8px;
+      box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+  }
+  .app_tag_img_box img{
+      width: 100%;
+      height: 100%;
+  }
+  .app_tag_title{
+      height: 21px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 28px;
+      padding: 5px 0 15px 0;
+      cursor: pointer;
+  }
+  .app_tag_info{
+      width: 100%;
+      font-size: 12px;
+      line-height: 22px;
+      padding-bottom: 12px;
+      height: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  .app_tag_p span{
+    padding: 3px 13px;
+    margin:0 6px 13px 6px;
+    border-radius: 12px;
+    height: 24px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #2873F7;
+    line-height: 24px;
+    background: rgba(10, 215, 182, 0.1);
+    cursor: pointer;
+  }
+  .app_tag_p .switch_label{
+    padding-top: 4px;
+  }
+  .app_installed_info_box{
+    width: 640px;
+    position: relative;
+  }
+  .app_installed_update{
+    width: 43px;
+    height: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 400;
+    line-height: 16px;
+    margin-left: 10px;
+    background: #009E05;
+  }
+  .app_installed_update span{
+    font-size: 12px;
+    color: #FFFFFF;
+    display: block;
+    width: 64px;
+    text-align: center;
+    -webkit-transform-origin-x: 0;
+    -webkit-transform: scale(0.67);
+  }
+  .app_installed_webdir{
+    display: block;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 8px;
+    right: 3px;
+    background: url(../img/app/app_installed_webdir.svg) no-repeat center center;
+    cursor: pointer;
+  }
+  .app_uninstall_btn, .app_detail_btn, .app_reinstall_btn{
+    width: 82px;
+    height: 24px;
+    border-radius: 12px;
+  }
+  .app_detail_btn, .app_reinstall_btn{
+    margin-right: 12px;
+  }
+  .appp_installed_version{
+    padding-left: 8px;
+    color: #606060;
+  }
+  .app_installed_setting_i{
+    display: block;
+    width: 24px;
+    height: 24px;
+    float: right;
+    background: url(../img/app/app_installed_setting_i.svg) no-repeat center center;
+    cursor: pointer;
+    display: none;
+  }
+  .app_cover_installed_setting_box{
+    width: 513px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px rgba(0,0,0,0.0800);
+    border-radius: 16px;
+    position: absolute;
+    top: 320px;
+    left: 50%;
+    margin-left: -256px;
+  }
+  .app_installed_confirm_box{
+    width: 320px;
+    height: 224px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px rgba(0,0,0,0.0800);
+    border-radius: 16px;
+    position: absolute;
+    top: 320px;
+    left: 50%;
+    margin-left: -160px;
+  }
+  .app_installed_setting_title{
+    height: 21px;
+    font-weight: bold;
+    line-height: 28px;
+    padding: 24px 0 22px 20px;
+  }
+  .app_installed_setting_ul{
+    overflow: hidden;
+    padding: 0 20px 93px 20px;
+  }
+  .app_installed_setting_ul li, .automatic_update_all_box{
+    height: 32px;
+    padding-bottom: 6px ;
+  }
+  .automatic_update_all_box{
+    border-bottom: 1px solid #DADCE0;
+    margin: 0 20px;
+    margin-bottom: 11px;
+  }
+  .automatic_update_all_box label{
+    padding-top: 8px;
+  }
+  .app_installed_setting_ul li span:nth-child(1), .automatic_update_all_box span:nth-child(1){
+    display: block;
+    height: 19px;
+    line-height: 28px;
+    color: #606060;
+    float: left;
+    padding: 6px 0 7px 0;
+  }
+  .automatic_update_all_box span:nth-child(1){
+    color: #333333;
+  }
+  .app_installed_setting_ul li label{
+    float: right;
+    padding-top: 8px;
+  }
+  .app_installed_confirm_p{
+    font-size: 12px;
+    text-align: center;
+    height: 16px;
+    line-height: 24px;
+    padding: 104px 0 55px 0 ; 
+  }
+  .app_installed_no_btn{
+    width: 72px;
+    height: 32px;
+    border-radius: 4px;
+    float: right;
+    margin-right: 68px;
+  }
+  .app_installed_yes_btn{
+    width: 72px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid #D5D5D5;
+    float: left;
+    margin-left: 68px;
+  }
+  .app_installed_status_i{
+    display: block;
+    width: 16px;
+    height: 16px;
+    padding-top: 4px;
+    margin-left: 16px;
+    background: url(../img/app/app_installed_status_i.svg) no-repeat center bottom;
+  }
+  .app_tag_p .app_installed_status{
+    display: block;
+    padding-top: 5px;
+    height: 14px;
+    font-size: 10px;
+    font-weight: 400;
+    color: #BBC8CD;
+  }
+  .app_installed_list{
+    padding-bottom: 16px;
+  }
+  .app_installed_failed_list{
+    border-top: 1px solid #DADCE0;
+    padding-top: 24px;
+  }
+  .app_installed_failed_list li{
+    background: #E9E9E9;
+    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08)
+  }
+  .app_installed_failed_list .app_tag_p .app_installed_status{
+    color: #E13737;
+    margin-left: 0;
+  }
+  .operate_btn{
+    width: 59px;
+    height: 24px;
+    border-radius: 12px;
+    margin-right: 16px;
+  }
+  .app_status_loading{
+    width: 24px;
+    height: 24px;
+    margin: 0 33px 0 18px;
+    display: none;
+  }
+  .app_installed_confirm_box{
+    width: 320px;
+    height: 224px;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 10px rgba(0,0,0,0.0800);
+    border-radius: 16px;
+    position: absolute;
+    top: 320px;
+    left: 50%;
+    margin-left: -160px;
+  }
+  .app_installed_setting_title{
+    height: 21px;
+    font-weight: bold;
+    line-height: 28px;
+    padding: 24px 0 22px 20px;
+  }
+  .app_installed_setting_ul{
+    overflow: hidden;
+    padding: 0 20px 93px 20px;
+  }
+  .app_installed_setting_ul li, .automatic_update_all_box{
+    height: 32px;
+    padding-bottom: 6px ;
+  }
+  .app_installed_setting_i{
+    display: block;
+    width: 24px;
+    height: 24px;
+    float: right;
+    background: url(../img/app/app_installed_setting_i.svg) no-repeat center center;
+    cursor: pointer;
+    display: none;
+    margin-right: 24px;
+  }
+  .app_cover_installed_setting_box{
+      width: 513px;
+      background: #FFFFFF;
+      box-shadow: 0px 8px 10px rgba(0,0,0,0.0800);
+      border-radius: 16px;
+      position: absolute;
+      top: 320px;
+      left: 50%;
+      margin-left: -256px;
+    }
+    .app_installed_confirm_box{
+      width: 320px;
+      height: 224px;
+      background: #FFFFFF;
+      box-shadow: 0px 8px 10px rgba(0,0,0,0.0800);
+      border-radius: 16px;
+      position: absolute;
+      top: 320px;
+      left: 50%;
+      margin-left: -160px;
+    }
+    .app_installed_setting_title{
+      height: 21px;
+      font-weight: bold;
+      line-height: 28px;
+      padding: 24px 0 22px 20px;
+    }
+    .app_installed_setting_ul{
+      overflow: hidden;
+      padding: 0 20px 93px 20px;
+    }
+    .app_installed_setting_ul li, .automatic_update_all_box{
+      height: 32px;
+      padding-bottom: 6px ;
+    }
+    .automatic_update_all_box{
+      border-bottom: 1px solid #DADCE0;
+      margin: 0 20px;
+      margin-bottom: 11px;
+    }
+    .automatic_update_all_box label{
+      padding-top: 8px;
+    }
+    .app_installed_setting_ul li span:nth-child(1), .automatic_update_all_box span:nth-child(1){
+      display: block;
+      height: 19px;
+      line-height: 28px;
+      color: #606060;
+      float: left;
+      padding: 6px 0 7px 0;
+    }
+    .automatic_update_all_box span:nth-child(1){
+      color: #333333;
+    }
+    .app_installed_setting_ul li label{
+      float: right;
+      padding-top: 8px;
+    }
+    .app_tag_p{
+      width: 100%;
+      white-space: nowrap;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #2873F7;
+    }
+    .app_cover_installed_setting_box .installed_close_cover_i{
+      width: 24px;
+      height: 24px;
+      background: url(../img/app/installed_close_cover_i.svg) no-repeat center center;
+      cursor: pointer;
+      background-size: 100%;
+    }
+    .installed_loading_box{
+      width: 320px;
+      height: 224px;
+      position: absolute;
+      background: #FFFFFF;
+      top: 320px;
+      left: 50%;
+      margin-left: -160px;
+      box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+      border-radius: 16px;
+    }
+    .installed_loading_box img{
+      display: block;
+      width: 56px;
+      height: 56px;
+      padding-top: 59px;
+      margin: 0 auto;
+    }
+    .installed_loading_box p{
+      padding-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      height: 16px;
+      line-height: 16px;
+    }
+    .app_installed_status{
+      height: 24px;
+      line-height: 24px;
+    }
 </style>
 
 </html>

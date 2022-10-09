@@ -152,6 +152,9 @@ $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_yes', function () {
 $('.create_did_container').on('click', '.did_next_btn', function () {
     let last = $(this).attr('data-last');
     let next = $(this).attr('data-next');
+    if(!last && !next){
+        window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
+    }
     if(last){
         $(''+last).css('display', 'none');
     }
@@ -161,7 +164,7 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 })
 
 $('.did_buy_ood_btn').on('click', async function () {
-    buildDid.RenderArea();
+    // buildDid.RenderArea();
 })
 
 $('.create_did_container').on('click', '.create_mnemonic_btn', async function () {

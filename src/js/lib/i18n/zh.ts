@@ -184,6 +184,7 @@ export const zh =  {
         "Summary": "摘要",
         "ReleaseDate": "发布日期",
         "ClientSoftware": "客户端软件",
+        "ClientSoftwareRequired": "客户端软件支持",
         "Update": "更新",
         "VersionColon": "版本 :",
         "SummaryColon": "摘要 :",

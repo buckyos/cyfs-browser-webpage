@@ -76,6 +76,7 @@ a{
     font-size: 22px;
     font-weight: bold;
     color: #1DBFA2;
+    cursor: pointer;
 }
 .app_header_right{
     margin-right: 72px;

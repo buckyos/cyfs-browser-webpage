@@ -176,6 +176,7 @@ export const en =  {
         "Summary": "Summary",
         "ReleaseDate": "Release date",
         "ClientSoftware": "Client Software",
+        "ClientSoftwareRequired": "Client software required",
         "Update": "Update",
         "VersionColon": "Version :",
         "SummaryColon": "Summary :",

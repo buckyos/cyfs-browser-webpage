@@ -305,7 +305,7 @@ class AppStoreListClass {
         if(app_status == cyfs.AppLocalStatusCode.InstallFailed || app_status == cyfs.AppLocalStatusCode.UninstallFailed){
           installedFailedHtml += `<li>
                                     <div class="app_tag_img_box float_l" data-id="${app.app_id}">
-                                        <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                                        <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
                                     </div>
                                     <div class="float_l app_installed_info_box">
                                         <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span></p>
@@ -322,20 +322,20 @@ class AppStoreListClass {
           if(app_status == cyfs.AppLocalStatusCode.Installing || app_status == cyfs.AppLocalStatusCode.Starting ||app_status == cyfs.AppLocalStatusCode.Stopping || app_status == cyfs.AppLocalStatusCode. Uninstalling){
             btnHtml = `<img class="app_status_loading float_l" style="display:block" src="../img/app/app_status_loading.gif" />`;
           }else if(app.status == cyfs.AppLocalStatusCode.Running || app.status == cyfs.AppLocalStatusCode.StopFailed){
-            btnHtml = `<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="stop">stop</button>`;
+            btnHtml = `<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="stop">${LANGUAGESTYPE == 'zh'?'停止': 'stop'}</button>`;
           }else if(app.status == cyfs.AppLocalStatusCode.NoService || app.status == cyfs.AppLocalStatusCode.Uninstalled){
             btnHtml = ``;
           }else{
-            btnHtml = `<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="start">start</button>`;
+            btnHtml = `<button class="operate_btn float_l app_primary_btn" data-id="${app.app_id}" data-operation="start">${LANGUAGESTYPE == 'zh'?'启动': 'start'}</button>`;
           }
           console.log('----webdirwebdir',app.app_name, (app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir,  app.webdir)
           installedHtml += `<li>
                               <div class="app_tag_img_box float_l" data-id="${app.app_id}">
-                                  <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                                  <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
                               </div>
                               <div class="float_l app_installed_info_box">
-                                  ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir"  href="cyfs://o/${app.webdir.to_base_58()}/index.html"></a>`:''}
-                                  <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}"><span>update</span></button>`:''}</p>
+                                  ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir" target="_blank"  href="cyfs://o/${app.webdir.to_base_58()}/index.html"></a>`:''}
+                                  <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}"><span>${LANGUAGESTYPE == 'zh'?'更新': 'update'}</span></button>`:''}</p>
                                   <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
                                   <p>
                                       ${btnHtml}
@@ -352,6 +352,7 @@ class AppStoreListClass {
       $('.app_installed_failed_list').html(installedFailedHtml);
       g_isShowSetting = true;
       if(($('.app_installed_list_box').css('display') == 'block') && g_isShowSetting){
+        $('.app_installed_loading_box').css('display', 'none');
         $('.app_installed_setting_i').css('display', 'block');
       }
     }
@@ -391,6 +392,8 @@ $('.tab_install_btn').on('click', function () {
   $('.app_title_box').html(LANGUAGESTYPE == 'zh'? '已安装列表' : 'Installed list');
   if(g_isShowSetting){
     $('.app_installed_setting_i').css('display', 'block');
+  }else{
+    $('.app_installed_loading_box').css('display', 'block');
   }
   AppStoreList.renderInstalledAppList();
 })
@@ -483,7 +486,7 @@ $('.app_tag_list').on("click", '.app_tag_img_box, .app_tag_title, .app_detail_bt
   if(!id){
     return;
   }
-  window.location.href = 'cyfs://static/DecAppStore/app_detail.html?type=installed&id=' + id;
+  window.open('cyfs://static/DecAppStore/app_detail.html?type=installed&id=' + id);
 })
 
 $('.app_tag_list').on("click", '.app_reinstall_btn', function () {
@@ -492,7 +495,7 @@ $('.app_tag_list').on("click", '.app_reinstall_btn', function () {
   if(!id){
     return;
   }
-  window.location.href = 'cyfs://static/DecAppStore/app_detail.html?id=' + id;
+  window.open('cyfs://static/DecAppStore/app_detail.html?id=' + id);
 })
 
 $('.app_cover_box').on('click', '.app_installed_yes_btn', async function () {
@@ -555,7 +558,7 @@ $(".app_cover_installed_setting_box").on('click', '.automatic_update_switch', as
   }
 })
 
-$('.app_list_box').on('click', '.app_list_extra_info_l span', function () {
+$('.app_content_box').on('click', '.app_list_extra_info_l span, .app_tag_p span', function () {
   let tag = $(this).attr('data-tag');
   if(tag){
     $('.app_title_box').html(LANGUAGESTYPE == 'zh' ? `应用列表 - 标签(#${tag})` : `Dec App List - Tag(#${tag})`);;
@@ -573,7 +576,7 @@ $('.app_list_box').on('click', '.app_list_extra_info_l span', function () {
         });
         liHtml  += `<li>
                       <div class="app_tag_img_box float_l">
-                          <img src="${element.icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='./img/app/app_default_icon.svg';this.οnerrοr=null">
+                          <img src="${element.icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
                       </div>
                       <div class="float_l app_installed_info_box">
                           <p class="app_tag_title">${element.name}</p>
@@ -588,4 +591,8 @@ $('.app_list_box').on('click', '.app_list_extra_info_l span', function () {
     $('.app_tags_list').html(liHtml);
   }
   
+})
+
+$('.app_header_title').on('click', function () {
+  window.location.href = 'cyfs://static/DecAppStore/app_store_list.html';
 })

@@ -35,50 +35,8 @@ class AppOthersClass {
     }
 
     async getHeaderInfo() {
-        // Device static info
-        let current_device_static_info = await this.m_util_service.get_device_static_info({ common: { flags: 0 } });
-        if (!current_device_static_info.err) {
-            current_device_static_info = current_device_static_info.unwrap().info;
-        }
-        console.info('current_device_static_info:', current_device_static_info);
-        let oodStatusIcon:string = '../img/browser_main_ood_offline.svg';
-        let peopleName:string = '';
-        let peoplePicture:string = '';
-        if (current_device_static_info.owner_id) {
-            const peopleR = (await ObjectUtil.getObject({ id: current_device_static_info.owner_id, isReturnResult: true, flags: 1 })).object;
-            console.origin.log('peopleR:', peopleR);
-            let oodList = peopleR.object.body().unwrap().content().ood_list;
-            if (oodList[0]) {
-                let mainStatus: boolean = await this.getOodStatus();
-                console.log('--mainStatus', mainStatus)
-                if(oodList.length == 1){
-                    if(mainStatus){
-                        oodStatusIcon = '../img/browser_main_ood_online.svg';
-                    }else{
-                        oodStatusIcon = '../img/browser_main_ood_offline.svg';
-                    }
-                }else if(oodList.length == 2){
-                    let minerStatus: boolean = await this.getOodStatus(oodList[1].object_id);
-                    console.log('--minerStatus', mainStatus)
-                    if(mainStatus && minerStatus){
-                        oodStatusIcon = '../img/browser_ood_online_online.svg';
-                    }else if(mainStatus && !minerStatus){
-                        oodStatusIcon = '../img/browser_ood_online_offline.svg';
-                    }else if(!mainStatus && minerStatus){
-                        oodStatusIcon = '../img/browser_ood_offline_online.svg';
-                    }else if(!mainStatus && !minerStatus){
-                        oodStatusIcon = '../img/browser_ood_offline_offline.svg';
-                    }
-                }
-            }
-            peopleName = peopleR.object.name() ? peopleR.object.name() : (LANGUAGESTYPE == 'zh'? '未设置名称':'name not set');
-            if(peopleR.object.icon()){
-                peoplePicture = 'cyfs://o/'+peopleR.object.icon().object_id;
-            }else{
-                peoplePicture = '../img/browser_people_icon.svg';
-            }
-        }
-        $('.app_header_right').html(`<img class="ood_status" src="${oodStatusIcon}" alt=""><img class="people_head_sculpture" src="${peoplePicture}" alt="" onerror="this.src='../img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${peopleName}</span>`);
+        let headerInfo = await ObjectUtil.getHeaderInfo();
+        $('.app_header_right').html(`<img class="ood_status" src="${headerInfo.oodStatusIcon}" alt=""><img class="people_head_sculpture" src=".${headerInfo.peoplePicture}" alt="" onerror="this.src='../img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${headerInfo.peopleName}</span>`);
     }
 
 }
@@ -168,7 +126,7 @@ class AppUtilClass {
             let appObj: appDetailUtilType = {
                 app_id: id,
                 app_name: '',
-                app_icon: '',
+                app_icon: '../img/app/app_default_icon.svg',
                 owner: app.desc().owner()?.unwrap(),
                 app: app,
                 fidArray: [],

@@ -128,3 +128,7 @@ $('.app_header_box').on('click', '.people_head_sculpture', function () {
     window.location.href = 'cyfs://static/info.html';
 })
 
+$('.app_header_title').on('click', function () {
+    window.location.href = 'cyfs://static/DecAppStore/app_store_list.html';
+})
+

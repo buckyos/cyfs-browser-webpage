@@ -90,7 +90,7 @@ class AppManager {
         // }
         let appBody = app.app.body().unwrap();
         let introduce:string = '';
-        if (appBody.content().desc.is_some()) {
+        if (appBody.content().desc) {
             g_overviewStr = appBody.content().desc.unwrap().toString();
             introduce = g_overviewStr;
         }else{

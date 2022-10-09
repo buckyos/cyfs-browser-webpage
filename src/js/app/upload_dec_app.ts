@@ -144,7 +144,7 @@ class UploadAppClass {
         $('.upload_app_info_dec_id').html(g_appId);
         $('.upload_app_info_id_copy').attr('data-id', g_appId);
         $('.upload_app_info_name').val(app.app_name);
-        if (app.app.body().unwrap().content().desc.is_some()) {
+        if (app.app.body().unwrap().content().desc) {
             $('.upload_app_overview_txt').val(app.app.body().unwrap().content().desc.unwrap().toString());
         }
         if (app.app_icon) {

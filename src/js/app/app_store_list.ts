@@ -36,7 +36,7 @@ class AppStoreListClass {
     m_router: cyfs.NONRequestor;
 
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
         this.m_router = this.m_sharedStatck.non_service();
         this.m_util_service = this.m_sharedStatck.util();
     }
@@ -91,7 +91,7 @@ class AppStoreListClass {
                       console.origin.log('------------------------------app_name', app.app_name, app.app.body().unwrap().update_time().toString(), sortIndex)
                       let appBody = app.app.body().unwrap();
                       let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
-                      if (appBody.content().desc.is_some()) {
+                      if (appBody.content().desc) {
                           app_introduce = appBody.content().desc.unwrap().toString();
                       }
                       let tagsHtml = '';

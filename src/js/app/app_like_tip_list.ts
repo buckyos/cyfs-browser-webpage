@@ -63,7 +63,7 @@ class AppListClass {
     async getBalanceInfo() {
         let balance = castToLocalUnit(Number((await this.meta_client.getBalance(0, g_appId))?.result || 0));
         console.log('---------------balance', balance);
-        $('.app_total_amount_p').html(LANGUAGESTYPE == 'zh'? `总金额: ${balance} ECC` : `Total amount: ${balance} ECC`);
+        $('.app_total_amount_p').html(LANGUAGESTYPE == 'zh'? `总金额: ${balance} DMC` : `Total amount: ${balance} DMC`);
     }
 
     async getAppInfo () {
@@ -95,7 +95,7 @@ class AppListClass {
                                     <i class="app_records_people_i">&nbsp;</i>
                                     ${peopleName}
                                 </td>
-                                <td>${castToLocalUnit(Number(tx.value))} ECC</td>
+                                <td>${castToLocalUnit(Number(tx.value))} DMC</td>
                                 <td>${formatDate(Number(tx.create_time))}</td>
                             </tr>`;
             };

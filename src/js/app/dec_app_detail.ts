@@ -70,7 +70,7 @@ class AppManager {
     }
 
     async initData(id:string) {
-        appManager.getOwner();
+        await appManager.getOwner();
         let app = g_app = await AppUtil.showApp(id, false);
         console.origin.log('---------app-data:', app);
         $('.app_detail_icon').attr('src', app.app_icon || '../img/app/app_default_icon.svg');
@@ -91,7 +91,7 @@ class AppManager {
         let appBody = app.app.body().unwrap();
         let introduce:string = '';
         if (appBody.content().desc) {
-            g_overviewStr = appBody.content().desc.unwrap().toString();
+            g_overviewStr = appBody.content().desc;
             introduce = g_overviewStr;
         }else{
             introduce = LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet';
@@ -111,7 +111,10 @@ class AppManager {
         }else{
             // app detail
             $('.app_detail_title').html(`${app.app_name}<i class="app_detail_version_share"></i>`);
-            $('.app_detail_software_box, .app_detail_version_box, .app_subtitle_detail_box, .to_tip_list').css('display', 'block');
+            $('.app_detail_version_box, .app_subtitle_detail_box').css('display', 'block');
+            if(owner == g_owner){
+                $('.to_tip_list').css('display', 'block');
+            }
         }
         let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
         console.log('appExtId:', appExtId);
@@ -143,21 +146,27 @@ class AppManager {
                 if(info['cyfs-app-store'].client){
                     let clients = info['cyfs-app-store'].client;
                     if(clients.android){
+                        $('.app_detail_software_box').css('display', 'block');
                         $('.app_software_android, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.android);
                     }
                     if(clients.iOS){
+                        $('.app_detail_software_box').css('display', 'block');
                         $('.app_software_ios, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.iOS);
                     }
                     if(clients.windows){
+                        $('.app_detail_software_box').css('display', 'block');
                         $('.app_software_windows, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.windows);
                     }
                     if(clients.macOS){
+                        $('.app_detail_software_box').css('display', 'block');
                         $('.app_software_macos, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.macOS);
                     }
                     if(clients.linux){
+                        $('.app_detail_software_box').css('display', 'block');
                         $('.app_software_linux, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.linux);
                     }
                     if(clients.other){
+                        $('.app_detail_software_box').css('display', 'block');
                         $('.app_software_other, .app_detail_client_box').css('display', 'inline-block').attr('data-url', clients.other);
                     }
                 }
@@ -332,7 +341,7 @@ $('.app_cover_tip_box').on('click', '.app_tip_next_btn', function () {
         "type": "pay", 
         "data": {
             "chain": "cyfs", 
-            "coin": "ecc", 
+            "coin": "dmc", 
             "value": amount, 
             "address": g_appId
         }

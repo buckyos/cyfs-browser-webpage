@@ -296,7 +296,7 @@ export function copyData (data:string) {
   });
 }
 
-//ecc转换
+//DMC转换
 export function castToLocalUnit(value: number | null | undefined) {
   if (value) {
     let tmp = BigInt(BigInt(value) / BigInt(1000));

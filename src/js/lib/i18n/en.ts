@@ -51,7 +51,7 @@ export const en =  {
     "OODName": "—— OOD Name:<span id='friendly_name'></span> ——",
     "Tx":{
         "Overview": "Overview",
-        "TotalIncome": "Total income: <span id='balance_dom'></span> ECC",
+        "TotalIncome": "Total income: <span id='balance_dom'></span> DMC",
         "Balance": "Balance:  <span id='balance_dom2'></span> DMC<button class='with_drawal'>Withdraw</button>",
         "Transactions": "Transactions",
         "Hash": "Hash",

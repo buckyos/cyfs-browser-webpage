@@ -92,7 +92,7 @@ class AppStoreListClass {
                       let appBody = app.app.body().unwrap();
                       let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
                       if (appBody.content().desc) {
-                          app_introduce = appBody.content().desc.unwrap().toString();
+                          app_introduce = appBody.content().desc;
                       }
                       let tagsHtml = '';
                       let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
@@ -168,10 +168,21 @@ class AppStoreListClass {
       if(list){
         g_hasStorageList = true;
         let appList: storageAppUtilType[] = JSON.parse(list);
-        g_appStorgeList = appList;
-        AppStoreList.getInstalledAppList(appList, true);
-        for (let index = 0; index < appList.length; index++) {
-          const app = appList[index];
+        let appStorageList: storageAppUtilType[] = [];
+        let r = await AppUtil.getAllAppListFun();
+        console.origin.log('-------------r', r)
+        if (!r.err) {
+          let storeList = r.app_list().array();
+          console.origin.log('storeList', storeList)
+          appList.forEach(app => {
+            if(storeList.indexOf(app.id) > -1){
+              g_appStorgeList.push(app);
+            }
+          });
+        }
+        AppStoreList.getInstalledAppList(g_appStorgeList, true);
+        for (let index = 0; index < g_appStorgeList.length; index++) {
+          const app = g_appStorgeList[index];
           let tagsHtml:string = '';
           if(app.tags){
             app.tags.forEach(tag => {

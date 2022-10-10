@@ -354,7 +354,7 @@ class FileInfo {
                                 <td>${element.desc == '转账'?TXTYPES[0][LANGUAGESTYPE]:TXTYPES[1][LANGUAGESTYPE]}</td>
                                 <td><a class="color_475" href="cyfs://static/object_browser/objects.html?id=${element.from}" target="_blank">${getSubStr(element.from)}</a></td>
                                 <td>100 Qiu</td>
-                                <td>${castToLocalUnit(Number(element.value))} ECC</td>
+                                <td>${castToLocalUnit(Number(element.value))} DMC</td>
                                 <td>${element.result<=1 ? STATUSTYPE[element.result][LANGUAGESTYPE] : STATUSTYPE[1][LANGUAGESTYPE]}</td>
                             </tr>`;
             });
@@ -370,7 +370,7 @@ class FileInfo {
 
     async getBalance() {
         let balance = castToLocalUnit(Number((await this.meta_client.getBalance(0, objectId))?.result));
-        $('.balance_content').html(balance + 'ECC');
+        $('.balance_content').html(balance + 'DMC');
     }
     
 }

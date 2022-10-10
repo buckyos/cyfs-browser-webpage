@@ -77,7 +77,7 @@ class MetaClient {
                                 <td>${getSubStr(element.from)}</td>
                                 <td>${getSubStr(element.hash)}</td>
                                 <td class="color_999">${formatDate(Number(element.create_time))}</td>
-                                <td class="color_999">${castToLocalUnit(Number(element.value))}ECC</td>
+                                <td class="color_999">${castToLocalUnit(Number(element.value))}DMC</td>
                             </tr>`
             });
 

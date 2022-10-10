@@ -491,7 +491,7 @@ class MetaClient {
     }
     // 获取余额
     async getBalanceInfo() {
-        document.getElementById('balance_dom2')!.innerHTML = castToLocalUnit((await this.meta_client.getFileRewardAmount(tx_id.toString())).result) + ' ECC';
+        document.getElementById('balance_dom2')!.innerHTML = castToLocalUnit((await this.meta_client.getFileRewardAmount(tx_id.toString())).result) + ' DMC';
     }
     // 获取转账列表
     async getCollectTxList() {

@@ -176,6 +176,8 @@ async function searchTxt(value?:string) {
         let val = value ? value: String($('#unsignin_input')!.val()!).trim();
         if(val){
             let isObject = await util.txtToId(val);
+            console.origin.log('1111111111111111111', isObject)
+            return;
             let getHistorySession = localStorage.getItem('browser-search-history-list');
             let historyList:{name: string, type: number}[] = [];
             console.origin.log('getHistorySession', getHistorySession);
@@ -198,7 +200,7 @@ async function searchTxt(value?:string) {
                 chrome.search.query({text: val, disposition: 'NEW_TAB'});
             }
         }else{
-            window.open("cyfs://static/object_browser/objects.html");
+            // window.open("cyfs://static/object_browser/objects.html");
         }
     }
 }
@@ -244,6 +246,7 @@ class Util {
     
     async txtToId (id: string) {
         let idResult = cyfs.ObjectId.from_base_58(id);
+        console.origin.log('1111111111111111111', idResult)
         if (idResult.err) {
             return false;
         } else {

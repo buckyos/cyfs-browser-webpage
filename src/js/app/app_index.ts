@@ -253,7 +253,7 @@ class ObjectManager {
         toast({
           message: LANGUAGESTYPE == 'zh'? '添加失败': 'Add failed',
           time: 1500,
-          type: 'warn'
+          type: 'warn' 
         });
       }
     } else {

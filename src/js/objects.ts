@@ -631,7 +631,7 @@ $('body').on('input propertychange', '#start_Time, #end_Time', function (event) 
 
 $('.browser_back_index').on('click', function () {
     if(!ANONYMOUS_STATUS){
-        window.location.href = './objects.html';
+        // window.location.href = './objects.html';
     }
 })
 

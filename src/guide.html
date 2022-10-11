@@ -66,7 +66,7 @@
                 <i class="browser_guide_success_icon"></i>
                 <h3 class="browser_guide_success_title browser_guide_title" set-lan="html:Guide.WhatToDoNext"></h3>
                 <button class="guide_success_confirm_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_acivate_box" set-lan="html:Guide.GoToActivateBtn"></button>
-                <button class="guide_success_confirm_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button>
+                <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button>
                 <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button>
             </div>
             <div class="browser_guide_loading_box" style="display: none;">
@@ -381,9 +381,8 @@ input, button, select{
 .guide_success_cancel_btn{
     width: 365px;
     height: 40px;
-    background: #fff;
-    border: 1px solid #D5D5D5;
-    border-radius: 4px 4px 4px 4px;
+    background: #E8EEF3;
+    border-radius: 4px;
     text-align: center;
     font-size: 18px;
     font-weight: 400;
@@ -391,6 +390,7 @@ input, button, select{
     line-height: 40px;
     display: block;
     margin: 0 auto;
+    margin-bottom: 20px;
 }
 .browser_guide_success_title{
     padding: 4px 0 50px 0;

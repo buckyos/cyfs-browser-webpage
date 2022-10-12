@@ -176,8 +176,6 @@ async function searchTxt(value?:string) {
         let val = value ? value: String($('#unsignin_input')!.val()!).trim();
         if(val){
             let isObject = await util.txtToId(val);
-            console.origin.log('1111111111111111111', isObject)
-            return;
             let getHistorySession = localStorage.getItem('browser-search-history-list');
             let historyList:{name: string, type: number}[] = [];
             console.origin.log('getHistorySession', getHistorySession);
@@ -246,7 +244,7 @@ class Util {
     
     async txtToId (id: string) {
         let idResult = cyfs.ObjectId.from_base_58(id);
-        console.origin.log('1111111111111111111', idResult)
+        console.origin.log('idResult', idResult)
         if (idResult.err) {
             return false;
         } else {

@@ -409,7 +409,7 @@ $(".useing_box, .swiper-container, #store_list").on("click", ".click_app", async
       });
     } else {
       if (status.webdir()) {
-        window.open(`cyfs://o/${status.webdir().toString()}/index.html`);
+        window.open(`cyfs://a/${id}/index.html`);
       } else {
         toast({
           message: LANGUAGESTYPE == 'zh'? '应用正在初始化....': 'App initializing',

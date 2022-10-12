@@ -12,6 +12,7 @@ let g_appOwner:cyfs.ObjectId;
 let g_versionInstalled:string;
 let g_statusInstalled:number;
 let g_isInstalled:boolean = false;
+let g_error:string = '';
 let g_overviewStr:string = '';
 let g_owner: cyfs.ObjectId;
 let g_app: { app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp };
@@ -32,6 +33,9 @@ if (window.location.search.split("?")[1]) {
             }
             if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'type') {
                 g_isInstalled = true;
+            }
+            if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'error') {
+                g_error = arr[i].split('=')[1];
             }
         }
     }

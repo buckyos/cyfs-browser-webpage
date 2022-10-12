@@ -340,9 +340,18 @@ class FileInfo {
         }else if(operation == 'reduce'){
             TRANS_PAGE_INDEX -- ;
         }
-        // let txLists = (await this.meta_client.getCollectTxList([objectId], TRANS_PAGE_INDEX*10, 10, null, null, ["0", "1"]))?.result;
-        let txLists = (await this.meta_client.getCollectTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result;
-        txLists = txLists?.concat((await this.meta_client.getPaymentTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result||[]);
+        let txLists:cyfs.SPVTx[] = [];
+        let paymentList = (await this.meta_client.getCollectTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result || [];
+        paymentList = paymentList?.concat((await this.meta_client.getPaymentTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result||[]);
+        console.origin.log('----------paymentList', paymentList)
+        // txLists = txLists?.concat((await this.meta_client.getPaymentTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result||[]);
+        let hashArr:string[] = [];
+        paymentList.forEach((payment:cyfs.SPVTx) => {
+            if(hashArr.indexOf(payment.hash) == -1){
+                txLists.push(payment);
+                hashArr.push(payment.hash);
+            }
+        });
         console.origin.log('----------txLists', txLists)
         let txHtml = '';
         if (txLists && txLists.length ) {

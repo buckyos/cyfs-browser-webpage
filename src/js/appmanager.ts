@@ -147,7 +147,7 @@ class ObjectManager {
                         run_disabled = 'disabled';
                         if (get_app_status.webdir()) {
                             console.log('get_app_status.webdir().to_base_58()', get_app_status.webdir().to_base_58())
-                            open_dir = `<a class="webdir_open_i" href="cyfs://o/${get_app_status.webdir().to_base_58()}/index.html" ${otherHtml} ></a>`;
+                            open_dir = `<a class="webdir_open_i" href="cyfs://a/${appid.object_id}/index.html" ${otherHtml} ></a>`;
                         }
                     } else if (app_status == 4) {
                         appStr = '安装失败';
@@ -165,7 +165,7 @@ class ObjectManager {
                         stop_disabled = 'disabled';
                         if (get_app_status.webdir()) {
                             console.log('get_app_status.webdir().to_base_58()', get_app_status.webdir().to_base_58())
-                            open_dir = `<a class="webdir_open_i" href="cyfs://o/${get_app_status.webdir().to_base_58()}/index.html" ${otherHtml}></a>`;
+                            open_dir = `<a class="webdir_open_i" href="cyfs://a/${appid.object_id}/index.html" ${otherHtml}></a>`;
                         }
                     }
                     let vesionHtml = '';

@@ -57,6 +57,7 @@ class AppUtilClass {
     async showApp(id: cyfs.ObjectId | string, isinstalled?: boolean) {
         if (typeof (id) == 'string') {
             let idResult = cyfs.ObjectId.from_base_58(id);
+            console.origin.log('---------idResult',idResult)
             if (idResult.err) {
               toast({
                 message: "Id格式不对",

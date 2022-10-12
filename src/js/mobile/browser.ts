@@ -486,9 +486,9 @@ $('#signin_ul').on('click', ' .click-app-content', async function () {
             let status = appStatus.unwrap();
             if (status.webdir()) {
                 if (ISPC) {
-                    window.open(`cyfs://o/${status.webdir().to_base_58()}/index.html`);
+                    window.open(`cyfs://a/${id}/index.html`);
                 } else {
-                    window.location.href = `cyfs://o/${status.webdir().to_base_58()}/index.html`;
+                    window.location.href = `cyfs://a/${id}/index.html`;
                 }
             } else {
                 alert('应用正在初始化....');

@@ -194,6 +194,7 @@ export const en =  {
         "GasFee": "*Gas fee: 100 Qiu",
         "Payment": "Payment:",
         "All": "All",
+        "InstallVersion": "Do you want to install the this version?",
     },
     "UploadDecAppHtml":{
         "Overview": "Overview:",

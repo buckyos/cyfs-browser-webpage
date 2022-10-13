@@ -202,6 +202,7 @@ export const zh =  {
         "GasFee": "*交易费: 100 Qiu",
         "Payment": "支付:",
         "All": "所有",
+        "InstallVersion": "你想去安装这个版本吗?",
     },
     "UploadDecAppHtml":{
         "Overview": "简介:",

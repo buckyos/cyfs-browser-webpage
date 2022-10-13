@@ -52,10 +52,12 @@
           <div class="app_detail_ul">
             <span class="app_detail_client_box" set-lan="html:DecAppHtml.ClientSoftwareRequired"></span>
             <i class="app_detail_share_box_border"></i>
-            <i class="app_detail_share_cyfs app_detail_share_box"></i>
-            <i class="app_detail_share_discard app_detail_share_box"></i>
-            <i class="app_detail_share_twitter app_detail_share_box"></i>
-            <i class="app_detail_share_github app_detail_share_box"></i>
+            <div class="app_detail_share_box_container">
+              <i class="app_detail_share_cyfs app_detail_share_box"></i>
+              <i class="app_detail_share_discard app_detail_share_box"></i>
+              <i class="app_detail_share_twitter app_detail_share_box"></i>
+              <i class="app_detail_share_github app_detail_share_box"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -172,6 +174,17 @@
       <div class="app_overview_box"></div>
     </div>
   </div>
+  <div class="app_cover_box app_cover_install_container">
+    <div class="app_cover_install_box">
+      <h3 class="app_cover_overview_title" set-lan="html:DecAppHtml.Tip"></h3>
+      <i class="installed_close_cover_i"></i>
+      <div class="app_cover_install_p" set-lan="html:DecAppHtml.InstallVersion"></div>
+      <div class="app_cover_install_btn_box">
+        <button class="app_primary_btn app_install_yes_btn" set-lan="html:Yes"></button>
+        <button class="app_plain_btn app_install_no_btn" set-lan="html:No"></button>
+      </div>
+    </div>
+  </div>
   <textarea id="copy_textarea" style="display:none;"></textarea>
 </body>
 
@@ -248,8 +261,11 @@
 .app_detail_ul{
   width: 720px;
 }
+.app_detail_share_box_container{
+  display: inline-block;
+  float: left;
+}
 .app_detail_share_box{
-  display: none;
   display: block;
   width: 32px;
   height: 32px;
@@ -436,6 +452,9 @@
 .app_overview_box{
   width: 477px;
   margin: 0 auto;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 .app_tip_btn{
   width: 88px;
@@ -577,6 +596,45 @@
   border-left: 1px solid #000000;
   float: left;
   margin: 0 0 24px 12px;
+}
+.app_cover_install_box{
+  width: 320px;
+  height: 224px;
+  background: #fff;
+  position: absolute;
+  top: 320px;
+  left: 50%;
+  margin-left: -160px;
+  box-shadow: 0px 1px 2px rgb(0 0 0 / 8%);
+  border-radius: 16px;
+}
+.app_cover_install_p{
+  text-align: center;
+  font-size: 12px;
+  height: 16px;
+  line-height: 16px;
+  padding: 22px 0 60px 0;
+}
+.app_cover_install_btn_box{
+  overflow: hidden;
+}
+.app_cover_install_btn_box button{
+  width: 72px;
+  height: 32px;
+  border-radius: 16px;
+}
+.app_install_yes_btn{
+  margin: 0 20px 0 78px;
+}
+.installed_close_cover_i{
+  width: 24px;
+  height: 24px;
+  background: url(../img/app/installed_close_cover_i.svg) no-repeat center center;
+  cursor: pointer;
+  background-size: 100%;
+  position: absolute;
+  top: 12px;
+  right: 20px;
 }
 </style>
 

@@ -401,6 +401,7 @@ $('.tab_install_btn').on('click', function () {
   $('.app_list_box, .open_install_app_btn, .tab_tag_btn, .app_tags_list_box').css('display', 'none');
   $('.app_installed_list_box').css('display', 'block');
   $('.app_title_box').html(LANGUAGESTYPE == 'zh'? '已安装列表' : 'Installed list');
+  console.log('1111111', g_isShowSetting)
   if(g_isShowSetting){
     $('.app_installed_setting_i').css('display', 'block');
   }else{
@@ -520,11 +521,20 @@ $(".app_tag_list").on('click', '.app_uninstall_btn', async function (event) {
   $('.app_installed_confirm_container').css('display', 'block');
 })
 
-$('.app_installed_setting_i').on('click', function () {
+$('.app_installed_setting_i').on('click', async function () {
+  $('.app_installed_setting_ul').html('');
+  $('.automatic_update_all_box').css('display', 'none');
   $('.app_installed_setting_container').css('display', 'block');
+  let r = await AppUtil.getAllAppListFun();
+  console.origin.log('-------------r', r)
+  if (r.err) {
+  } else {
+    await AppStoreList.getInstalledAppList(r, false);
+  }
   let liHtml:string = '';
   let allUpdate:boolean = false;
   let i = 0;
+  console.origin.log('g_installedAppList', g_installedAppList);
   for (const app of g_installedAppList) {
       if(app.auto_update){
           i++;
@@ -542,7 +552,7 @@ $('.app_installed_setting_i').on('click', function () {
                       </label>
                   </li>`
   }
-  
+  $('.automatic_update_all_box').css('display', 'block');
   $('.app_installed_setting_ul').html(liHtml);
 })
 

@@ -38,10 +38,13 @@ if (window.location.search.split("?")[1]) {
             if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'error') {
                 g_error = arr[i].split('=')[1];
             }
+            if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'dec_id') {
+                g_appId = arr[i].split('=')[1];
+            }
         }
     }
 }
-console.log('---------g_appId, g_version, g_isInstalled:', g_appId, g_version, g_isInstalled);
+console.log('---------g_appId, g_version, g_isInstalled, g_error:', g_appId, g_version, g_isInstalled, g_error);
 $(async function(){
     isBind();
     if(LANGUAGESTYPE == 'zh'){
@@ -54,6 +57,10 @@ $(async function(){
       window.location.href = 'cyfs://static/browser.html';
     }
 });
+// if(g_error == 'not_installed'){
+//     alert(LANGUAGESTYPE == 'zh'?'此APP还未安装':'APP not install');
+// }
+
 
 class AppManager {
     m_sharedStatck: cyfs.SharedCyfsStack;
@@ -390,7 +397,7 @@ $('.app_cover_box').on('click', '.app_install_yes_btn', async function () {
     if(g_installVersion){
         await AppDetailUtil.installApp(g_appId, g_owner, g_installVersion);
     }
-    // window.location.href = 'cyfs://static/DecAppStore/app_store_list.html?installed';
+    window.location.href = 'cyfs://static/DecAppStore/app_store_list.html?installed';
 })
 
 $(".app_detail_software_list li, .app_detail_share_box i").on('click', function () {

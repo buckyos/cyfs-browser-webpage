@@ -183,6 +183,8 @@ class AppUtilClass {
         let owner = current_device.desc().owner().unwrap();
         const sysDecAppObjId = cyfs.get_system_dec_app().object_id;
         let ret = await this.getObjectFromRootState(cyfs.APP_LOCAL_LIST_PATH, owner, sysDecAppObjId, new cyfs.AppLocalListDecoder())
+        console.log('ret: ', ret)
+
         return ret;
     }
     

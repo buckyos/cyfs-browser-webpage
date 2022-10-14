@@ -205,6 +205,7 @@ class AppStoreListClass {
                           </div>
                         </li>`;
           $('.app_list_box').append(appHtml);
+          console.log('-----4545645645r')
         }
       }
     }

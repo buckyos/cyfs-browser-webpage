@@ -400,7 +400,14 @@ $('.app_cover_box').on('click', '.app_install_yes_btn', async function () {
     window.location.href = 'cyfs://static/DecAppStore/app_store_list.html?installed';
 })
 
-$(".app_detail_software_list li, .app_detail_share_box i").on('click', function () {
+$(".app_detail_software_list li").on('click', function () {
+    let url = $(this).attr('data-url');
+    if(url){
+        window.open(url);
+    }
+})
+
+$(".app_detail_right_box").on('click', '.app_detail_share_box', function () {
     let url = $(this).attr('data-url');
     if(url){
         window.open(url);

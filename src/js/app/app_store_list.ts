@@ -345,7 +345,7 @@ class AppStoreListClass {
                                   <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
                               </div>
                               <div class="float_l app_installed_info_box">
-                                  ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir" target="_blank"  href="cyfs://o/${app.webdir.to_base_58()}/index.html"></a>`:''}
+                                  ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir" target="_blank"  href="cyfs://a/${app.app_id}/index.html"></a>`:''}
                                   <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}"><span>${LANGUAGESTYPE == 'zh'?'更新': 'update'}</span></button>`:''}</p>
                                   <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
                                   <p>

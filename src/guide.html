@@ -1,4 +1,4 @@
-<html>
+<html style="overflow-x: hidden;">
 <head>
     <link rel="shortcut icon" href="./img/favicon.svg" type="image/x-icon" />
     <title></title>
@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
 
-<body>
+<body style="overflow-x: hidden;">
     <div class="guide_box">
         <div class="guide_header_box">
             <div class="browser_cyfs_icon"></div>
@@ -67,7 +67,8 @@
                 <h3 class="browser_guide_success_title browser_guide_title" set-lan="html:Guide.WhatToDoNext"></h3>
                 <button class="guide_success_confirm_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_acivate_box" set-lan="html:Guide.GoToActivateBtn"></button>
                 <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button>
-                <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button>
+                <!-- <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button> -->
+                <button class="browser_guide_btn browser_watch_last" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button>
             </div>
             <div class="browser_guide_loading_box" style="display: none;">
                 <i class="browser_guide_loading_icon"></i>
@@ -731,6 +732,27 @@ input, button, select{
 .ood_floating_window{
     height: 124px;
     top: -187px;
+}
+.browser_watch_last{
+    background: none;
+    width: 175px;
+    height: 16px;
+    font-size: 12px;
+    font-family: HarmonyOS Sans-Regular, HarmonyOS Sans;
+    font-weight: 400;
+    color: #333333;
+    line-height: 20px;
+    width: 365px;
+    display: block;
+    margin: 0 auto;
+    font-weight: 400;
+}
+.browser_watch_last i{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: text-top;
+    background: url(./img/browser_watch_last.svg) no-repeat center center;
 }
 </style>
 </html>

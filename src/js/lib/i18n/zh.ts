@@ -144,7 +144,7 @@ export const zh =  {
         "WhatToDoNext": "干得漂亮！下一步您想做什么？",
         "GoToActivateBtn": "去激活CYFS浏览器",
         "learnMoreAboutCYFS": "我是开发者，想了解更多CYFS的技术",
-        "LearnPreviousContents": "重新观看前面的内容",
+        "LearnPreviousContents": "<i></i>重新观看前面的内容",
         "AlmostThere": "马上就好！",
         "AlmostThereInfo": "请使用“Cyber Chat”扫描上面的二维码，以激活CYFS浏览器",
         "BACK": "返回",

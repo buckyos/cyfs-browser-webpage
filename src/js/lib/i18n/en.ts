@@ -136,7 +136,7 @@ export const en =  {
         "WhatToDoNext": "Well done! What to do next?",
         "GoToActivateBtn": "Go to activate CYFS Browser!",
         "learnMoreAboutCYFS": "I'm developer, learn more about CYFS!",
-        "LearnPreviousContents": "Learn previous contents again",
+        "LearnPreviousContents": "<i></i>Learn previous contents again",
         "AlmostThere": "Almost there!",
         "AlmostThereInfo": "Please use Cyber Chat to scan the QR code above for activating CYFS Browser.",
         "BACK": "BACK",

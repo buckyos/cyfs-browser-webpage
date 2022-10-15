@@ -77,6 +77,9 @@
     <div class="app_cover_installed_setting_box">
       <i class="close_cover_i installed_close_cover_i"></i>
       <h3 class="app_installed_setting_title" set-lan="html:DecAppHtml.Setting"></h3>
+      <div class="setting_app_status_loading">
+        <img src="../img/app/app_status_loading.gif" alt="">
+      </div>
       <h3 class="automatic_update_all_box">
         <span class="float_l" set-lan="html:DecAppHtml.AutomaticUpdateAllApps"></span>
         <label class="switch_label switch_animbg float_r">
@@ -630,6 +633,14 @@
     .app_installed_status{
       height: 24px;
       line-height: 24px;
+    }
+    .setting_app_status_loading{
+      width: 100px;
+      margin: 0 auto;
+      display: none;
+    }
+    .setting_app_status_loading img{
+      width: 100%;
     }
 </style>
 

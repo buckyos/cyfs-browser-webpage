@@ -205,7 +205,6 @@ class AppStoreListClass {
                           </div>
                         </li>`;
           $('.app_list_box').append(appHtml);
-          console.log('-----4545645645r')
         }
       }
     }
@@ -525,7 +524,7 @@ $(".app_tag_list").on('click', '.app_uninstall_btn', async function (event) {
 $('.app_installed_setting_i').on('click', async function () {
   $('.app_installed_setting_ul').html('');
   $('.automatic_update_all_box').css('display', 'none');
-  $('.app_installed_setting_container').css('display', 'block');
+  $('.app_installed_setting_container, .setting_app_status_loading').css('display', 'block');
   let r = await AppUtil.getAllAppListFun();
   console.origin.log('-------------r', r)
   if (r.err) {
@@ -553,6 +552,7 @@ $('.app_installed_setting_i').on('click', async function () {
                       </label>
                   </li>`
   }
+  $('.setting_app_status_loading').css('display', 'none');
   $('.automatic_update_all_box').css('display', 'block');
   $('.app_installed_setting_ul').html(liHtml);
 })

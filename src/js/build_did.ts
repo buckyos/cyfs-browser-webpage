@@ -21,6 +21,24 @@ let g_areaList: {
         }[]
     }[]
 }[] = [];
+let g_ip:string = '';
+let g_token:string = '';
+let g_isCallArea:boolean = false;
+
+if (window.location.search.split("?")[1]) {
+    let str = window.location.search.split("?")[1];
+    let arr = str.split('&');
+    if (arr) {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'accessToken') {
+                g_token = arr[i].split('=')[1];
+            }
+            if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'ip') {
+                g_ip = arr[i].split('=')[1];
+            }
+        }
+    }
+}
 
 $(async function(){
     if(LANGUAGESTYPE == 'zh'){
@@ -65,6 +83,9 @@ class BuildDid {
     }
 
     async RenderArea () {
+        if(!g_areaList.length){
+            await this.getAreaList();
+        }
         let countryHtml:string = '';
         let stateHtml:string = '';
         let cityHtml:string = '';
@@ -132,8 +153,26 @@ $('#state_select').on('change', function () {
     $('#city_select').html(cityHtml);
 })
 
+function lenghtstr(str:string){
+    var realLength = 0, len = str.length, charCode = -1;
+    for (var i = 0; i < len; i++) {
+        charCode = str.charCodeAt(i);
+        if (charCode >= 0 && charCode <= 128)
+            realLength += 1;
+        else
+            realLength += 2;
+    }
+    return realLength;
+}
+
 let buildDid = new BuildDid();
 buildDid.getAreaList();
+
+if(g_token && g_ip){
+    $('.create_did_step_one_box').css('display', 'none');
+    $('.create_did_step_two_box, .create_did_step_two').css('display', 'block');
+    buildDid.RenderArea();
+}
 
 $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_no', function () {
     $('.cover_box').css('display', 'none');
@@ -152,9 +191,6 @@ $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_yes', function () {
 $('.create_did_container').on('click', '.did_next_btn', function () {
     let last = $(this).attr('data-last');
     let next = $(this).attr('data-next');
-    if(!last && !next){
-        window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
-    }
     if(last){
         $(''+last).css('display', 'none');
     }
@@ -164,15 +200,24 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 })
 
 $('.did_buy_ood_btn').on('click', async function () {
-    // buildDid.RenderArea();
+    window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
 })
 
 $('.create_did_container').on('click', '.create_mnemonic_btn', async function () {
-    let didName = $('.did_info_name').val();
-    let oodName = $('.did_info_ood_name').val();
-    if(!didName && !oodName){
+    let didName = String($('.did_info_name').val()).trim() || '';
+    let oodName = String($('.did_info_ood_name').val()).trim() || '';
+    console.origin.log('------didName, oodName',didName, oodName)
+    if(!didName || !oodName){
         toast({
             message: LANGUAGESTYPE == 'zh'?"信息没有填写完成": 'Name cannot exceed 100 characters.',
+            time: 1500,
+            type: 'warn'
+        });
+        return;
+    }
+    if(didName && lenghtstr(didName) > 16){
+        toast({
+            message: LANGUAGESTYPE == 'zh'?"名称不可以超过16个字符": 'Nickname cannot exceed 16 characters.',
             time: 1500,
             type: 'warn'
         });

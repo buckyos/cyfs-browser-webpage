@@ -27,7 +27,7 @@ class ObjectManager {
     m_router: cyfs.NONRequestor;
     meta_client: cyfs.MetaClient;
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_router = this.m_sharedStatck.non_service();
         this.meta_client = cyfs.create_meta_client();
     }
@@ -168,7 +168,7 @@ class FileInfo {
     meta_client: cyfs.MetaClient;
 
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_util_service = this.m_sharedStatck.util();
         this.m_router = this.m_sharedStatck.non_service();
         this.meta_client = cyfs.create_meta_client();
@@ -340,9 +340,18 @@ class FileInfo {
         }else if(operation == 'reduce'){
             TRANS_PAGE_INDEX -- ;
         }
-        // let txLists = (await this.meta_client.getCollectTxList([objectId], TRANS_PAGE_INDEX*10, 10, null, null, ["0", "1"]))?.result;
-        let txLists = (await this.meta_client.getCollectTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result;
-        txLists = txLists?.concat((await this.meta_client.getPaymentTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result||[]);
+        let txLists:cyfs.SPVTx[] = [];
+        let paymentList = (await this.meta_client.getCollectTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result || [];
+        paymentList = paymentList?.concat((await this.meta_client.getPaymentTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result||[]);
+        console.origin.log('----------paymentList', paymentList)
+        // txLists = txLists?.concat((await this.meta_client.getPaymentTxList([objectId], 0, 50, null, null, ["0", "1"]))?.result||[]);
+        let hashArr:string[] = [];
+        paymentList.forEach((payment:cyfs.SPVTx) => {
+            if(hashArr.indexOf(payment.hash) == -1){
+                txLists.push(payment);
+                hashArr.push(payment.hash);
+            }
+        });
         console.origin.log('----------txLists', txLists)
         let txHtml = '';
         if (txLists && txLists.length ) {
@@ -354,7 +363,7 @@ class FileInfo {
                                 <td>${element.desc == '转账'?TXTYPES[0][LANGUAGESTYPE]:TXTYPES[1][LANGUAGESTYPE]}</td>
                                 <td><a class="color_475" href="cyfs://static/object_browser/objects.html?id=${element.from}" target="_blank">${getSubStr(element.from)}</a></td>
                                 <td>100 Qiu</td>
-                                <td>${castToLocalUnit(Number(element.value))} ECC</td>
+                                <td>${castToLocalUnit(Number(element.value))} DMC</td>
                                 <td>${element.result<=1 ? STATUSTYPE[element.result][LANGUAGESTYPE] : STATUSTYPE[1][LANGUAGESTYPE]}</td>
                             </tr>`;
             });
@@ -370,7 +379,7 @@ class FileInfo {
 
     async getBalance() {
         let balance = castToLocalUnit(Number((await this.meta_client.getBalance(0, objectId))?.result));
-        $('.balance_content').html(balance + 'ECC');
+        $('.balance_content').html(balance + 'DMC');
     }
     
 }
@@ -631,7 +640,7 @@ $('body').on('input propertychange', '#start_Time, #end_Time', function (event) 
 
 $('.browser_back_index').on('click', function () {
     if(!ANONYMOUS_STATUS){
-        window.location.href = './objects.html';
+        // window.location.href = './objects.html';
     }
 })
 

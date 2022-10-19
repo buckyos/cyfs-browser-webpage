@@ -91,8 +91,8 @@ class AppStoreListClass {
                       console.origin.log('------------------------------app_name', app.app_name, app.app.body().unwrap().update_time().toString(), sortIndex)
                       let appBody = app.app.body().unwrap();
                       let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
-                      if (appBody.content().desc.is_some()) {
-                          app_introduce = appBody.content().desc.unwrap().toString();
+                      if (appBody.content().desc) {
+                          app_introduce = appBody.content().desc;
                       }
                       let tagsHtml = '';
                       let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
@@ -168,10 +168,21 @@ class AppStoreListClass {
       if(list){
         g_hasStorageList = true;
         let appList: storageAppUtilType[] = JSON.parse(list);
-        g_appStorgeList = appList;
-        AppStoreList.getInstalledAppList(appList, true);
-        for (let index = 0; index < appList.length; index++) {
-          const app = appList[index];
+        let appStorageList: storageAppUtilType[] = [];
+        let r = await AppUtil.getAllAppListFun();
+        console.origin.log('-------------r', r)
+        if (!r.err) {
+          let storeList = r.app_list().array();
+          console.origin.log('storeList', storeList)
+          appList.forEach(app => {
+            if(storeList.indexOf(app.id) > -1){
+              g_appStorgeList.push(app);
+            }
+          });
+        }
+        AppStoreList.getInstalledAppList(g_appStorgeList, true);
+        for (let index = 0; index < g_appStorgeList.length; index++) {
+          const app = g_appStorgeList[index];
           let tagsHtml:string = '';
           if(app.tags){
             app.tags.forEach(tag => {
@@ -334,7 +345,7 @@ class AppStoreListClass {
                                   <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" alt="" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null">
                               </div>
                               <div class="float_l app_installed_info_box">
-                                  ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir" target="_blank"  href="cyfs://o/${app.webdir.to_base_58()}/index.html"></a>`:''}
+                                  ${((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir)?`<a class="app_installed_webdir" target="_blank"  href="cyfs://a/${app.app_id}/index.html"></a>`:''}
                                   <p class="app_tag_title" data-id="${app.app_id}">${app.app_name}<span class="appp_installed_version">(V ${app.version})</span>${app.fidArray[app.fidArray.length-1].version != app.version?`<button class="app_installed_update" data-id="${app.app_id}"><span>${LANGUAGESTYPE == 'zh'?'更新': 'update'}</span></button>`:''}</p>
                                   <p class="app_tag_info">${app.summary?app.summary:(LANGUAGESTYPE == 'zh'?'暂未介绍': 'No introduction yet')}</p>
                                   <p>
@@ -390,6 +401,7 @@ $('.tab_install_btn').on('click', function () {
   $('.app_list_box, .open_install_app_btn, .tab_tag_btn, .app_tags_list_box').css('display', 'none');
   $('.app_installed_list_box').css('display', 'block');
   $('.app_title_box').html(LANGUAGESTYPE == 'zh'? '已安装列表' : 'Installed list');
+  console.log('1111111', g_isShowSetting)
   if(g_isShowSetting){
     $('.app_installed_setting_i').css('display', 'block');
   }else{
@@ -509,11 +521,20 @@ $(".app_tag_list").on('click', '.app_uninstall_btn', async function (event) {
   $('.app_installed_confirm_container').css('display', 'block');
 })
 
-$('.app_installed_setting_i').on('click', function () {
-  $('.app_installed_setting_container').css('display', 'block');
+$('.app_installed_setting_i').on('click', async function () {
+  $('.app_installed_setting_ul').html('');
+  $('.automatic_update_all_box').css('display', 'none');
+  $('.app_installed_setting_container, .setting_app_status_loading').css('display', 'block');
+  let r = await AppUtil.getAllAppListFun();
+  console.origin.log('-------------r', r)
+  if (r.err) {
+  } else {
+    await AppStoreList.getInstalledAppList(r, false);
+  }
   let liHtml:string = '';
   let allUpdate:boolean = false;
   let i = 0;
+  console.origin.log('g_installedAppList', g_installedAppList);
   for (const app of g_installedAppList) {
       if(app.auto_update){
           i++;
@@ -531,7 +552,8 @@ $('.app_installed_setting_i').on('click', function () {
                       </label>
                   </li>`
   }
-  
+  $('.setting_app_status_loading').css('display', 'none');
+  $('.automatic_update_all_box').css('display', 'block');
   $('.app_installed_setting_ul').html(liHtml);
 })
 

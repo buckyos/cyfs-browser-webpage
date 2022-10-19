@@ -459,8 +459,8 @@ class MetaClient {
     // 获取余额
     async getBalanceInfo() {
         let balance = castToLocalUnit((await this.meta_client.getBalance(0, file_id.toString())).result);
-        document.getElementById('balance_dom').innerHTML = balance + 'ECC';
-        document.getElementById('balance_dom2').innerHTML = castToLocalUnit((await this.meta_client.getFileRewardAmount(file_id.toString())).result) + 'ECC';
+        document.getElementById('balance_dom').innerHTML = balance + 'DMC';
+        document.getElementById('balance_dom2').innerHTML = castToLocalUnit((await this.meta_client.getFileRewardAmount(file_id.toString())).result) + 'DMC';
     }
     // 获取转账列表
     async getCollectTxList() {
@@ -477,7 +477,7 @@ class MetaClient {
                                 <td>${getSubStr(element.from)}</td>
                                 <td>${getSubStr(element.hash)}</td>
                                 <td class="color_999">${formatDate(Number(element.create_time), true)}</td>
-                                <td class="color_999">${castToLocalUnit(Number(element.value))}ECC</td>
+                                <td class="color_999">${castToLocalUnit(Number(element.value))}DMC</td>
                             </tr>`
             });
             file_object_tbody.innerHTML = txHtml;

@@ -51,7 +51,7 @@ class UploadAppClass {
     meta_client: cyfs.MetaClient;
 
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_router = this.m_sharedStatck.non_service();
         this.m_util_service = this.m_sharedStatck.util();
         this.meta_client = cyfs.create_meta_client();
@@ -144,7 +144,7 @@ class UploadAppClass {
         $('.upload_app_info_dec_id').html(g_appId);
         $('.upload_app_info_id_copy').attr('data-id', g_appId);
         $('.upload_app_info_name').val(app.app_name);
-        if (app.app.body().unwrap().content().desc.is_some()) {
+        if (app.app.body().unwrap().content().desc) {
             $('.upload_app_overview_txt').val(app.app.body().unwrap().content().desc.unwrap().toString());
         }
         if (app.app_icon) {

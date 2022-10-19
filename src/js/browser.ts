@@ -199,7 +199,7 @@ async function searchTxt(value?:string) {
                 chrome.search.query({text: val, disposition: 'NEW_TAB'});
             }
         }else{
-            window.open("cyfs://static/object_browser/objects.html");
+            // window.open("cyfs://static/object_browser/objects.html");
         }
     }
 }
@@ -209,7 +209,7 @@ class Util {
     m_router: cyfs.NONRequestor;
     meta_client: cyfs.MetaClient;
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_util_service = this.m_sharedStatck.util();
         this.m_router = this.m_sharedStatck.non_service();
         // 空参数或'test'为测试链，传'dev'为正式链
@@ -245,6 +245,7 @@ class Util {
     
     async txtToId (id: string) {
         let idResult = cyfs.ObjectId.from_base_58(id);
+        console.origin.log('idResult', idResult)
         if (idResult.err) {
             return false;
         } else {
@@ -264,7 +265,7 @@ class Util {
                 let app_status = app.status;
                 if((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir){
                     console.log('get_app_status.webdir().to_base_58()', app.app_name, app.webdir.to_base_58())
-                    SHORTCUT_LIST.push({ url:`cyfs://o/${app.webdir.to_base_58()}/index.html`, name: app.app_name, icon: app.app_icon, index: SHORTCUT_LIST.length, isBuildin: true })
+                    SHORTCUT_LIST.push({ url:`cyfs://a/${appid.object_id}/index.html`, name: app.app_name, icon: app.app_icon, index: SHORTCUT_LIST.length, isBuildin: true })
                 }
             }
         }

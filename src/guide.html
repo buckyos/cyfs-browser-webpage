@@ -1,4 +1,4 @@
-<html>
+<html style="overflow-x: hidden;">
 <head>
     <link rel="shortcut icon" href="./img/favicon.svg" type="image/x-icon" />
     <title></title>
@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
 
-<body>
+<body style="overflow-x: hidden;">
     <div class="guide_box">
         <div class="guide_header_box">
             <div class="browser_cyfs_icon"></div>
@@ -66,8 +66,9 @@
                 <i class="browser_guide_success_icon"></i>
                 <h3 class="browser_guide_success_title browser_guide_title" set-lan="html:Guide.WhatToDoNext"></h3>
                 <button class="guide_success_confirm_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_acivate_box" set-lan="html:Guide.GoToActivateBtn"></button>
-                <button class="guide_success_confirm_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button>
-                <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button>
+                <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button>
+                <!-- <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button> -->
+                <button class="browser_guide_btn browser_watch_last" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button>
             </div>
             <div class="browser_guide_loading_box" style="display: none;">
                 <i class="browser_guide_loading_icon"></i>
@@ -381,9 +382,8 @@ input, button, select{
 .guide_success_cancel_btn{
     width: 365px;
     height: 40px;
-    background: #fff;
-    border: 1px solid #D5D5D5;
-    border-radius: 4px 4px 4px 4px;
+    background: #E8EEF3;
+    border-radius: 4px;
     text-align: center;
     font-size: 18px;
     font-weight: 400;
@@ -391,6 +391,7 @@ input, button, select{
     line-height: 40px;
     display: block;
     margin: 0 auto;
+    margin-bottom: 20px;
 }
 .browser_guide_success_title{
     padding: 4px 0 50px 0;
@@ -691,6 +692,67 @@ input, button, select{
 .scan_canvas_box img{
     width: 100%;
     height: 100%;
+}
+.did_click, .ood_click{
+    cursor: pointer;
+    position: relative;
+    text-decoration: underline;
+}
+.info_floating_window, .ood_floating_window{
+    width: 291px;
+    height: 106px;
+    padding: 34px 14px 18px 14px;
+    background: rgba(193, 193, 193, 0.2);
+    box-shadow: 0px 3px 6px 1px rgba(0,0,0,0.16);
+    border-radius: 8px 8px 8px 8px;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+    color: #333;
+    position: absolute;
+    top: -178px;
+    left: -120px;
+    white-space: nowrap;
+    border-radius: 4px;
+    font-style: normal;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+    display: none;
+}
+.close_window_i{
+    display: block;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: url(./img/close_window_i.svg) no-repeat center center;
+}
+.ood_floating_window{
+    height: 124px;
+    top: -187px;
+}
+.browser_watch_last{
+    background: none;
+    width: 175px;
+    height: 16px;
+    font-size: 12px;
+    font-family: HarmonyOS Sans-Regular, HarmonyOS Sans;
+    font-weight: 400;
+    color: #333333;
+    line-height: 20px;
+    width: 365px;
+    display: block;
+    margin: 0 auto;
+    font-weight: 400;
+}
+.browser_watch_last i{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: text-top;
+    background: url(./img/browser_watch_last.svg) no-repeat center center;
 }
 </style>
 </html>

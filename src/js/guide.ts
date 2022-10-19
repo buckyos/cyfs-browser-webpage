@@ -136,3 +136,19 @@ $('.guide_switch_box span').on('click', function () {
         }, 1000);
     }
 })
+
+$('.guide_content_box').on('click', '.did_click', function (e) {
+    if($(e.target).closest(".close_window_i").length == 0){
+        $('.info_floating_window').css('display', 'block');
+    }
+})
+
+$('.guide_content_box').on('click', '.close_window_i', function () {
+    $('.guide_content_box .info_floating_window, .guide_content_box .ood_floating_window').css('display', 'none');
+})
+
+$('.guide_content_box').on('click', '.ood_click', function (e) {
+    if($(e.target).closest(".close_window_i").length == 0){
+        $('.ood_floating_window').css('display', 'block');
+    }
+})

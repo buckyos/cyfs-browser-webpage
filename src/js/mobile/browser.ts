@@ -288,18 +288,18 @@ class Util {
             console.log('nft', nft)
             if (ISPC) {
                 nftHtml += `<li>
-                                    <a href="cyfs://static/show.html?${nft.id}" target="_blank">${getSubStr(nft.id)}</a>收到打赏，被打赏总额:${castToLocalUnit(nft.amount)}ECC
+                                    <a href="cyfs://static/show.html?${nft.id}" target="_blank">${getSubStr(nft.id)}</a>收到打赏，被打赏总额:${castToLocalUnit(nft.amount)}DMC
                                 </li>`;
             } else {
                 nftHtml += `<li>
-                                    <a href="cyfs://static/mobile/show.html?${nft.id}">${getSubStr(nft.id)}</a>收到打赏，被打赏总额:${castToLocalUnit(nft.amount)}ECC
+                                    <a href="cyfs://static/mobile/show.html?${nft.id}">${getSubStr(nft.id)}</a>收到打赏，被打赏总额:${castToLocalUnit(nft.amount)}DMC
                                 </li>`;
             }
         })
         document.getElementById('reward_box_ul')!.innerHTML = nftHtml;
         if (nft_list[0]) {
             document.getElementById('nft_list')!.style.display = 'block';
-            document.getElementById('last_reward')!.innerHTML = `${getSubStr(nft_list[0].id)}收到打赏，被打赏总额:${castToLocalUnit(nft_list[0].amount)}ECC`;
+            document.getElementById('last_reward')!.innerHTML = `${getSubStr(nft_list[0].id)}收到打赏，被打赏总额:${castToLocalUnit(nft_list[0].amount)}DMC`;
         } else {
             document.getElementById('nft_list')!.style.display = 'none';
         }
@@ -486,9 +486,9 @@ $('#signin_ul').on('click', ' .click-app-content', async function () {
             let status = appStatus.unwrap();
             if (status.webdir()) {
                 if (ISPC) {
-                    window.open(`cyfs://o/${status.webdir().to_base_58()}/index.html`);
+                    window.open(`cyfs://a/${id}/index.html`);
                 } else {
-                    window.location.href = `cyfs://o/${status.webdir().to_base_58()}/index.html`;
+                    window.location.href = `cyfs://a/${id}/index.html`;
                 }
             } else {
                 alert('应用正在初始化....');

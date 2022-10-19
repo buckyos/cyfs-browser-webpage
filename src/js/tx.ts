@@ -19,7 +19,7 @@ class Util {
     m_util_service: cyfs.UtilRequestor;
     m_router: cyfs.NONRequestor;
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_util_service = this.m_sharedStatck.util();
         this.m_router = this.m_sharedStatck.non_service();
     }
@@ -95,7 +95,7 @@ class MetaClient {
                                 <td>${element.desc == '转账'?TXTYPES[0][LANGUAGESTYPE]:TXTYPES[1][LANGUAGESTYPE]}</td>
                                 <td><a class="color_475" href="./object_browser/objects.html?id=${element.from}" target="_blank">${getSubStr(element.from)}</a></td>
                                 <td>100 Qiu</td>
-                                <td>${castToLocalUnit(Number(element.value))} ECC</td>
+                                <td>${castToLocalUnit(Number(element.value))} DMC</td>
                                 <td>${element.result<=1 ? STATUSTYPE[element.result][LANGUAGESTYPE] : STATUSTYPE[1][LANGUAGESTYPE]}</td>
                             </tr>`;
             });

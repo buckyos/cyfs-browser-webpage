@@ -149,7 +149,7 @@ class FileInfo {
     m_trans: cyfs.TransRequestor;
     m_ndn_router: cyfs.NDNRequestor;
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_router = this.m_sharedStatck.non_service();
         this.m_trans = this.m_sharedStatck.trans();
         this.m_util_service = this.m_sharedStatck.util();
@@ -491,7 +491,7 @@ class MetaClient {
     }
     // 获取余额
     async getBalanceInfo() {
-        document.getElementById('balance_dom2')!.innerHTML = castToLocalUnit((await this.meta_client.getFileRewardAmount(tx_id.toString())).result) + ' ECC';
+        document.getElementById('balance_dom2')!.innerHTML = castToLocalUnit((await this.meta_client.getFileRewardAmount(tx_id.toString())).result) + ' DMC';
     }
     // 获取转账列表
     async getCollectTxList() {
@@ -504,7 +504,7 @@ class MetaClient {
             tx_list = txLists;
             txLists.forEach((element, index) => {
                 if (index < 5) {
-                    liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}ECC  ${formatDate(Number(element.create_time))}</li>`
+                    liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}DMC ${formatDate(Number(element.create_time))}</li>`
                 }
             });
             $('.file_reward_record_list').html(liHtml)
@@ -561,7 +561,7 @@ $('.file_reward_record_container').on('click', ".open_file_reward_record", funct
         $('.open_file_reward_record').addClass('close_file_reward_record').removeClass('open_file_reward_record');
         let liHtml = '';
         tx_list.forEach(element => {
-            liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}ECC  ${formatDate(Number(element.create_time))}</li>`
+            liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}DMC ${formatDate(Number(element.create_time))}</li>`
         });
         $('.file_reward_record_list').html(liHtml)
     }
@@ -573,7 +573,7 @@ $('.file_reward_record_container').on('click', ".close_file_reward_record", func
         let liHtml = '';
         tx_list.forEach((element, index) => {
             if (index < 5) {
-                liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}ECC  ${formatDate(Number(element.create_time))}</li>`
+                liHtml += `<li>${getSubStr(element.from)}打赏了${castToLocalUnit(Number(element.value))}DMC ${formatDate(Number(element.create_time))}</li>`
             }
         });
         $('.file_reward_record_list').html(liHtml)

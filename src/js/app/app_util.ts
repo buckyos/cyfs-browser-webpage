@@ -11,7 +11,7 @@ class AppOthersClass {
     m_util_service: cyfs.UtilRequestor;
 
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_util_service = this.m_sharedStatck.util();
     }
 
@@ -36,7 +36,7 @@ class AppOthersClass {
 
     async getHeaderInfo() {
         let headerInfo = await ObjectUtil.getHeaderInfo();
-        $('.app_header_right').html(`<img class="ood_status" src="${headerInfo.oodStatusIcon}" alt=""><img class="people_head_sculpture" src=".${headerInfo.peoplePicture}" alt="" onerror="this.src='../img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${headerInfo.peopleName}</span>`);
+        $('.app_header_right').html(`<img class="ood_status" src="${headerInfo.oodStatusIcon}" alt=""><img class="people_head_sculpture" src="${headerInfo.peoplePicture}" alt="" onerror="this.src='./img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${headerInfo.peopleName}</span>`);
     }
 
 }
@@ -49,7 +49,7 @@ class AppUtilClass {
     m_router: cyfs.NONRequestor;
 
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_router = this.m_sharedStatck.non_service();
         this.m_util_service = this.m_sharedStatck.util();
     }
@@ -57,6 +57,7 @@ class AppUtilClass {
     async showApp(id: cyfs.ObjectId | string, isinstalled?: boolean) {
         if (typeof (id) == 'string') {
             let idResult = cyfs.ObjectId.from_base_58(id);
+            console.origin.log('---------idResult',idResult)
             if (idResult.err) {
               toast({
                 message: "Id格式不对",
@@ -120,8 +121,8 @@ class AppUtilClass {
             let get_app_status = await AppUtil.getAppStatus(id);
             console.origin.log('get_app_status', app.name(), get_app_status.version())
             let summary = '';
-            if (app.body().unwrap() && app.body().unwrap().content().desc.is_some()) {
-                summary = app.body().unwrap().content().desc.unwrap().toString();
+            if (app.body().unwrap() && app.body().unwrap().content().desc) {
+                summary = app.body().unwrap().content().desc;
             }
             let appObj: appDetailUtilType = {
                 app_id: id,
@@ -181,6 +182,8 @@ class AppUtilClass {
         let owner = current_device.desc().owner().unwrap();
         const sysDecAppObjId = cyfs.get_system_dec_app().object_id;
         let ret = await this.getObjectFromRootState(cyfs.APP_LOCAL_LIST_PATH, owner, sysDecAppObjId, new cyfs.AppLocalListDecoder())
+        console.log('ret: ', ret)
+
         return ret;
     }
     
@@ -242,7 +245,7 @@ class AppDetailUtilClass {
     m_router: cyfs.NONRequestor;
 
     constructor() {
-        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+        this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_router = this.m_sharedStatck.non_service();
         this.m_util_service = this.m_sharedStatck.util();
     }
@@ -252,7 +255,7 @@ class AppDetailUtilClass {
         if(app_id){
             const appCmdObj = cyfs.AppCmd.set_auto_update(owner, app_id, auto_update);
             console.origin.log('---appCmdObj', appCmdObj)
-            let postResult = await ObjectUtil.postObj(appCmdObj);
+            let postResult = await ObjectUtil.postObj(appCmdObj, cyfs.CYFS_SYSTEM_APP_CMD_VIRTUAL_PATH);
             if (postResult.err && postResult.val.code != cyfs.BuckyErrorCode.Ignored) {
                 return postResult;
             }
@@ -261,7 +264,7 @@ class AppDetailUtilClass {
 
     async operateApp (id: cyfs.DecAppId | string, owner:cyfs.ObjectId, operation: string) {
         let app_id: cyfs.DecAppId | undefined = await AppUtil.appIdFormat(id);
-        let appCmdObj;
+        let appCmdObj:cyfs.DecApp|cyfs.AppCmd|cyfs.AppExtInfo;
         if(app_id){
             if(operation == 'start'){
                 appCmdObj = cyfs.AppCmd.start(owner, app_id);
@@ -271,7 +274,7 @@ class AppDetailUtilClass {
                 appCmdObj = cyfs.AppCmd.uninstall(owner, app_id);
             }
             console.origin.log('---appCmdObj', appCmdObj)
-            let postResult = await ObjectUtil.postObj(appCmdObj);
+            let postResult = await ObjectUtil.postObj(appCmdObj!, cyfs.CYFS_SYSTEM_APP_CMD_VIRTUAL_PATH);
             if (postResult.err && postResult.val.code != cyfs.BuckyErrorCode.Ignored) {
                 if(operation == 'start'){
                     toast({
@@ -325,7 +328,7 @@ class AppDetailUtilClass {
         if(app_id){
             const appCmdObj = cyfs.AppCmd.install(owner, app_id, version, true);
             console.origin.log('--installApp-appCmdObj', appCmdObj)
-            let postResult = await ObjectUtil.postObj(appCmdObj);
+            let postResult = await ObjectUtil.postObj(appCmdObj, cyfs.CYFS_SYSTEM_APP_CMD_VIRTUAL_PATH);
             if (postResult.err && postResult.val.code != cyfs.BuckyErrorCode.Ignored) {
                 toast({
                     message: LANGUAGESTYPE == 'zh'? '操作失败！': 'Operation failed',
@@ -397,7 +400,7 @@ class AppDetailUtilClass {
 
         const appCmdObj = cyfs.AppCmd.add(owner_id, app_id);
         console.origin.log('--addToStore-appCmdObj', appCmdObj)
-        let putResult = await ObjectUtil.postObj(appCmdObj);
+        let putResult = await ObjectUtil.postObj(appCmdObj, cyfs.CYFS_SYSTEM_APP_CMD_VIRTUAL_PATH);
         console.origin.log('---putResult', putResult)
         if (putResult.err && putResult.val.code != cyfs.BuckyErrorCode.Ignored) {
           if(putResult.val.code == cyfs.BuckyErrorCode.AlreadyExists){

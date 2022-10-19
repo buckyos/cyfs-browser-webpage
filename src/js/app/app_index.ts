@@ -37,7 +37,7 @@ class ObjectManager {
   m_util_service: cyfs.UtilRequestor;
   m_router: cyfs.NONRequestor;
   constructor() {
-    this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
+    this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
     this.m_router = this.m_sharedStatck.non_service();
     this.m_util_service = this.m_sharedStatck.util();
    
@@ -253,7 +253,7 @@ class ObjectManager {
         toast({
           message: LANGUAGESTYPE == 'zh'? '添加失败': 'Add failed',
           time: 1500,
-          type: 'warn'
+          type: 'warn' 
         });
       }
     } else {
@@ -409,7 +409,7 @@ $(".useing_box, .swiper-container, #store_list").on("click", ".click_app", async
       });
     } else {
       if (status.webdir()) {
-        window.open(`cyfs://o/${status.webdir().toString()}/index.html`);
+        window.open(`cyfs://a/${id}/index.html`);
       } else {
         toast({
           message: LANGUAGESTYPE == 'zh'? '应用正在初始化....': 'App initializing',

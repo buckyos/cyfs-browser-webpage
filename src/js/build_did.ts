@@ -24,6 +24,17 @@ let g_areaList: {
 let g_ip:string = '';
 let g_token:string = '';
 let g_isCallArea:boolean = false;
+let g_country:string = '';
+let g_state:string = '';
+let g_city:string = '';
+let g_didName:string = '';
+let g_oodName:string = '';
+let g_peopleInfo:{
+    objectId: cyfs.ObjectId,
+    object: cyfs.People,
+    privateKey: cyfs.PrivateKey,
+    path: string
+};
 
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
@@ -109,7 +120,91 @@ class BuildDid {
         $('#city_select').html(cityHtml);
     }
 
+    async createPeople(info: {area: cyfs.Area,mnemonic: string,network: cyfs.CyfsChainNetwork,address_index: number,name?: string,icon?: cyfs.FileId}){
+        let gen = cyfs.CyfsSeedKeyBip.from_mnemonic(info.mnemonic);
+        if (gen.err) {
+            return gen;
+        }
+        let path = cyfs.CyfsChainBipPath.new_people(info.network,info.address_index);
+        let private_key_r = gen.unwrap().sub_key(path);
+        if (private_key_r.err) {
+            return private_key_r;
+        }
+        let private_key = private_key_r.unwrap();
+        let people = cyfs.People.create(cyfs.None, [], private_key.public(), cyfs.Some(info.area), info.name, info.icon, (build) => {
+            build.no_create_time()
+        });
+        let sign_ret = cyfs.sign_and_set_named_object(private_key, people, new cyfs.SignatureRefIndex(0));
+        if (sign_ret.err) {
+            return sign_ret;
+        }
+        let people_id = people.desc().calculate_id();
+        return {
+            objectId: people_id,
+            object: people,
+            privateKey: private_key,
+            path: path.to_string()
+        };
+    }
+
+    async createDevice(info:{
+        unique_id: string,
+        owner: cyfs.ObjectId,
+        owner_private: cyfs.PrivateKey,
+        area: cyfs.Area,
+        network: cyfs.CyfsChainNetwork,
+        address_index: number,
+        account: number,
+        nick_name: string,
+    category: cyfs.DeviceCategory}){
+        let gen = cyfs.CyfsSeedKeyBip.from_private_key(info.owner_private.to_vec().unwrap().toHex(), info.owner.to_base_58());
+        let path = cyfs.CyfsChainBipPath.new_device(
+            info.account,
+            info.network,
+            info.address_index,
+        );
+        let private_key_r = gen.unwrap().sub_key(path);
+        if (private_key_r.err) {
+            return private_key_r;
+        }
+        let private_key = private_key_r.unwrap()
+
+        let unique = cyfs.UniqueId.copy_from_slice(str2array(info.unique_id));
+        console.info(`unique_str: ${info.unique_id} -> ${unique.as_slice().toHex()}`);
+
+        let device = cyfs.Device.create(
+            cyfs.Some(info.owner),
+            unique,
+            [],
+            [],
+            [],
+            private_key.public(),
+            info.area,
+            info.category,
+            (builder) => {
+                builder.no_create_time();
+            }
+        );
+        device.set_name(info.nick_name)
+        let device_id = device.desc().calculate_id();
+    
+        console.log("create_device", device_id.to_base_58());
+        let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(0))
+        if (sign_ret.err) {
+            return sign_ret;
+        }
+    }
+
 }
+
+function str2array(str: string): Uint8Array {
+    let out = new Uint8Array(str.length);
+    for(let i = 0; i < str.length; ++i) {
+        out[i] = str.charCodeAt(i);
+    }
+    return out;
+}
+
 
 $('#country_select').on('change', function () {
     let country = $(this).val();
@@ -209,7 +304,7 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     console.origin.log('------didName, oodName',didName, oodName)
     if(!didName || !oodName){
         toast({
-            message: LANGUAGESTYPE == 'zh'?"信息没有填写完成": 'Name cannot exceed 100 characters.',
+            message: LANGUAGESTYPE == 'zh'?"信息没有填写完成": 'The information is not completed.',
             time: 1500,
             type: 'warn'
         });
@@ -223,6 +318,14 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
         });
         return;
     }
+    g_didName = didName;
+    g_oodName = oodName;
+    $('.create_did_step_two').css('display', 'none');
+    $('.did_mnemonic_create_box').css('display', 'block');
+    g_country = String($('#country_select').val()) || '';
+    g_state = String($('#state_select').val()) || '';
+    g_city = String($('#city_select').val()) || '';
+    console.log("----g_country, g_state, g_city:", g_country, g_state, g_city);
     let mnemonicList:string[] = await buildDid.createMnemonic();
     let mnemonicHtml:string = '';
     mnemonicList.forEach(mnemonic=>{
@@ -245,12 +348,40 @@ $('.did_choose_mnemonic_box').on('click', 'span', function () {
     $('.did_choose_mnemonic_container').append(mnemonicHtml);
 })
 
-$('.did_verify_btn').on('click', function () {
+function _hashCode(strValue: string): number {
+    let hash = 0;
+    for (let i = 0; i < strValue.length; i++) {
+        let chr = strValue.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+
+    hash = Math.floor(Math.abs(hash) / 63336);
+
+    return hash;
+}
+
+
+function _calcIndex(uniqueStr: string): number {
+
+    // 示例用了cyfs sdk依赖的node-forge库进行计算
+    const md5 = cyfs.forge.md.md5.create();
+    md5.update(uniqueStr, 'utf8')
+    let result = cyfs.forge.util.binary.hex.encode(md5.digest())
+    let index = _hashCode(result);
+
+    console.log(`calc init index: uniqueStr=${uniqueStr}, index=${index}`);
+
+    return index
+}
+
+
+$('.did_verify_btn').on('click', async function () {
     let mnemonic_Container = $('.did_choose_mnemonic_container').html();
     console.origin.log("mnemonic_Container:", mnemonic_Container);
     if(mnemonic_Container){
         toast({
-            message: LANGUAGESTYPE == 'zh'?"还有助记词没有选择": 'Name cannot exceed 100 characters.',
+            message: LANGUAGESTYPE == 'zh'?"还有助记词没有选择": 'There is no choice for mnemonics',
             time: 1500,
             type: 'warn'
         });
@@ -261,4 +392,42 @@ $('.did_verify_btn').on('click', function () {
     var reg2 = new RegExp("</span>","g");
     let mnemonicStr = mnemonicString.replace(reg,"").replace(reg2," ");
     console.origin.log("mnemonicStr:", mnemonicStr);
+    // let peopleRet = await buildDid.createPeople({area: cyfs.Area.from_str(`${g_country}:${g_state}:${g_city}`),mnemonic: mnemonicStr, network: cyfs.get_current_network(),address_index: 0,name: g_didName});
+    let peopleRet = await buildDid.createPeople({area: cyfs.Area.from_str(`${g_country}:${g_state}:${g_city}`).unwrap(),mnemonic: mnemonicStr, network: cyfs.CyfsChainNetwork.Test,address_index: 0,name: g_didName});
+    console.origin.log("peopleRet:", peopleRet);
+    if(!peopleRet.err){
+        g_peopleInfo = peopleRet;
+        $('.did_mnemonic_choose').css('display', 'none');
+        $('.did_create_success').css('display', 'block');
+    }else{
+        toast({
+            message: LANGUAGESTYPE == 'zh'?"创建people失败": 'Failed to create people',
+            time: 1500,
+            type: 'warn'
+        });
+    }
 })
+
+$('.did_success_next_btn').on('click', async function () {
+        let deviceRet = await buildDid.createDevice({unique_id: g_ip,
+            owner: g_peopleInfo.objectId,
+            owner_private: g_peopleInfo.privateKey,
+            area: cyfs.Area.from_str(`${g_country}:${g_state}:${g_city}`).unwrap(),
+            network: cyfs.CyfsChainNetwork.Test,
+            address_index: 0,
+            account:_calcIndex(g_ip),
+            nick_name: g_oodName,
+            category: cyfs.DeviceCategory.OOD
+        });
+        if(deviceRet.err){
+            toast({
+                message: LANGUAGESTYPE == 'zh'?"绑定失败": 'Binding failed',
+                time: 1500,
+                type: 'warn'
+            });
+        }else{
+            $('.create_did_step_two').css('display', 'none');
+            $('.create_did_step_three_box').css('display', 'block');
+        }
+})
+

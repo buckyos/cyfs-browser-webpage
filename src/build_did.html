@@ -182,7 +182,7 @@
                                 <img src="./img/did/did_bind_success_icon.svg" alt="">
                             </div>
                             <p class="did_bind_success_title">VOOD binding successfully</p>
-                            <p class="did_bind_success_subtitle">The page automatically jumps after <i>3 </i>seconds. </p>
+                            <p class="did_bind_success_subtitle"><span>The page automatically jumps after </span><span class="did_bind_success_subtitle_i">3</span> <span>seconds.</span></p>
                         </div>
                     </div>
                 </div>
@@ -574,15 +574,11 @@
     padding-bottom: 36px;
 }
 .did_bind_success_subtitle{
-    width: 226px;
     height: 14px;
     font-size: 10px;
     font-weight: 400;
     line-height: 14px;
     text-align: center;
-}
-.did_bind_success_subtitle i{
-    color: #0AD7B6;
 }
 .did_buy_ood_title{
     text-align: center;
@@ -619,6 +615,13 @@
 .did_buy_login_iframe{
     width: 100%;
     height: 100%;
+}
+.did_bind_success_subtitle span{
+    display: inline;
+}
+.did_bind_success_subtitle_i{
+    display: inline;
+    color: #0AD7B6;
 }
 </style>
 </html>

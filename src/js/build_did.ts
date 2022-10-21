@@ -42,6 +42,7 @@ let g_deviceInfo:{
     privateKey: cyfs.PrivateKey,
 };
 let g_uniqueId:string = '';
+let g_countDown:number = 3;
 
 
 if (window.location.search.split("?")[1]) {
@@ -498,6 +499,18 @@ $('.did_verify_btn').on('click', async function () {
     }
 })
 
+function countDown () {
+    setTimeout(() => {
+        if(g_countDown > 0){
+            $('.did_bind_success_subtitle_i').html(String(g_countDown - 1));
+            g_countDown--;
+            countDown();
+        }else{
+            chrome.runtime.restart();
+        }
+    }, 1000);
+}
+
 $('.did_success_next_btn').on('click', async function () {
     // People sign
     let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
@@ -545,5 +558,6 @@ $('.did_success_next_btn').on('click', async function () {
     } else {
         $('.create_did_step_two_box').css('display', 'none');
         $('.create_did_step_three_box').css('display', 'block');
+        countDown();
     }
 })

@@ -6,6 +6,8 @@ import { ObjectUtil, formatDate, LANGUAGESTYPE, castToLocalUnit } from './lib/ut
 import { getCountryList } from './lib/WorldArea'
 
 let g_mnemonicList:string[] = [];
+let g_mnemonicStr:string = '';
+g_mnemonicList
 let g_areaList: {
     id:string,
     cname:string,
@@ -23,10 +25,9 @@ let g_areaList: {
 }[] = [];
 let g_ip:string = '';
 let g_token:string = '';
-let g_isCallArea:boolean = false;
-let g_country:string = '';
-let g_state:string = '';
-let g_city:string = '';
+let g_country:number = 0;
+let g_state:number = 0;
+let g_city:number = 0;
 let g_didName:string = '';
 let g_oodName:string = '';
 let g_peopleInfo:{
@@ -35,6 +36,13 @@ let g_peopleInfo:{
     privateKey: cyfs.PrivateKey,
     path: string
 };
+let g_deviceInfo:{
+    deviceId: cyfs.ObjectId,
+    device: cyfs.Device,
+    privateKey: cyfs.PrivateKey,
+};
+let g_uniqueId:string = '';
+
 
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
@@ -67,18 +75,13 @@ $('.app_header_box').on('click', '.people_head_sculpture', function () {
 })
 
 class BuildDid {
-    m_sharedStatck: cyfs.SharedCyfsStack;
-    m_router: cyfs.NONRequestor;
-    m_util_service: cyfs.UtilRequestor;
-  
+    meta_client: cyfs.MetaClient;
     constructor() {
-      this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime();
-      this.m_router = this.m_sharedStatck.non_service();
-      this.m_util_service = this.m_sharedStatck.util();
+        this.meta_client = cyfs.create_meta_client();
     }
 
     async createMnemonic () {
-        let mnemonic = cyfs.bip39.generateMnemonic(128, undefined, cyfs.bip39.wordlists.english)
+        let mnemonic = g_mnemonicStr = cyfs.bip39.generateMnemonic(128, undefined, cyfs.bip39.wordlists.english)
         console.origin.log("gen mnemonic:", mnemonic);
         let mnemonicList:string[] = [];
         if(mnemonic){
@@ -95,7 +98,10 @@ class BuildDid {
 
     async RenderArea () {
         if(!g_areaList.length){
-            await this.getAreaList();
+            setTimeout(() => {
+                this.RenderArea();
+            }, 500);
+            return;
         }
         let countryHtml:string = '';
         let stateHtml:string = '';
@@ -134,10 +140,6 @@ class BuildDid {
         let people = cyfs.People.create(cyfs.None, [], private_key.public(), cyfs.Some(info.area), info.name, info.icon, (build) => {
             build.no_create_time()
         });
-        let sign_ret = cyfs.sign_and_set_named_object(private_key, people, new cyfs.SignatureRefIndex(0));
-        if (sign_ret.err) {
-            return sign_ret;
-        }
         let people_id = people.desc().calculate_id();
         return {
             objectId: people_id,
@@ -156,7 +158,8 @@ class BuildDid {
         address_index: number,
         account: number,
         nick_name: string,
-    category: cyfs.DeviceCategory}){
+        category: cyfs.DeviceCategory
+    }){
         let gen = cyfs.CyfsSeedKeyBip.from_private_key(info.owner_private.to_vec().unwrap().toHex(), info.owner.to_base_58());
         let path = cyfs.CyfsChainBipPath.new_device(
             info.account,
@@ -187,12 +190,53 @@ class BuildDid {
         );
         device.set_name(info.nick_name)
         let device_id = device.desc().calculate_id();
-    
         console.log("create_device", device_id.to_base_58());
-        let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(0))
-        if (sign_ret.err) {
-            return sign_ret;
+        
+        return {
+            deviceId: device_id,
+            device: device,
+            privateKey: private_key
         }
+    }
+
+    async getUniqueId (ip:string) {
+        $.ajax({
+            url: `http://${ip}/check?access_token=${g_token}`,
+            success:function(data){
+                let result = JSON.parse(data);
+                console.log(ip+'check-result', result);
+                g_uniqueId = String(result.device_info.mac_address);
+            }
+        })
+    }
+
+    async checkReceipt(client: cyfs.MetaClient, txId: cyfs.TxId): Promise<boolean> {
+        const _sleep = (ms: number) => {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+        while(true) {
+            await _sleep(3000)
+            let ret = await client.getReceipt(txId)
+            // 失败，表示tx还没有上链，等一段时间再查
+            if (ret.ok && ret.unwrap().is_some()) {
+                let [receipt, blocknumber] = ret.unwrap().unwrap()
+                // receipt.result为0，表示上链成功。result不为0，表示交易上链，但是执行失败，失败错误码为result
+                return receipt.result === 0
+            }
+        }
+    }
+
+    async upChain () {
+        let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_peopleInfo.object).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
+        let p_tx = p_ret.unwrap();
+        let p_meta_success = this.checkReceipt(this.meta_client, p_tx)
+        console.log('people desc on meta:', p_meta_success);
+        let o_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_deviceInfo.device).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
+        // 如果o_ret不报错，等待交易上链
+        let o_tx = o_ret.unwrap()
+        // 现在只有定期查询的接口
+        let o_meta_success = this.checkReceipt(this.meta_client, o_tx)
+        console.log('ood desc on meta:', o_meta_success)
     }
 
 }
@@ -267,6 +311,9 @@ if(g_token && g_ip){
     $('.create_did_step_one_box').css('display', 'none');
     $('.create_did_step_two_box, .create_did_step_two').css('display', 'block');
     buildDid.RenderArea();
+    let checkIp = g_ip.replace("[","").replace("]","");
+    console.log('------checkIp',checkIp)
+    buildDid.getUniqueId(checkIp);
 }
 
 $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_no', function () {
@@ -322,9 +369,9 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     g_oodName = oodName;
     $('.create_did_step_two').css('display', 'none');
     $('.did_mnemonic_create_box').css('display', 'block');
-    g_country = String($('#country_select').val()) || '';
-    g_state = String($('#state_select').val()) || '';
-    g_city = String($('#city_select').val()) || '';
+    g_country = Number($('#country_select').val()) || 0;
+    g_state = Number($('#state_select').val()) || 0;
+    g_city = Number($('#city_select').val()) || 0;
     console.log("----g_country, g_state, g_city:", g_country, g_state, g_city);
     let mnemonicList:string[] = await buildDid.createMnemonic();
     let mnemonicHtml:string = '';
@@ -390,15 +437,58 @@ $('.did_verify_btn').on('click', async function () {
     let mnemonicString = $('.did_choose_mnemonic_box').html();
     var reg = new RegExp("<span>","g");
     var reg2 = new RegExp("</span>","g");
-    let mnemonicStr = mnemonicString.replace(reg,"").replace(reg2," ");
-    console.origin.log("mnemonicStr:", mnemonicStr);
-    // let peopleRet = await buildDid.createPeople({area: cyfs.Area.from_str(`${g_country}:${g_state}:${g_city}`),mnemonic: mnemonicStr, network: cyfs.get_current_network(),address_index: 0,name: g_didName});
-    let peopleRet = await buildDid.createPeople({area: cyfs.Area.from_str(`${g_country}:${g_state}:${g_city}`).unwrap(),mnemonic: mnemonicStr, network: cyfs.CyfsChainNetwork.Test,address_index: 0,name: g_didName});
+    let mnemonicStr = mnemonicString.replace(reg,"").replace(reg2," ").slice(0, -1);
+    console.origin.log("mnemonicStr,g_mnemonicStr:", mnemonicStr, g_mnemonicStr);
+    if(g_mnemonicStr != mnemonicStr){
+        toast({
+            message: 'Recovery Phrase Validation Error',
+            time: 1500,
+            type: 'warn'
+        });
+        return;
+    }
+    let peopleInfo = {
+        area: new cyfs.Area(g_country ,g_state,g_city,0),
+        mnemonic: mnemonicStr,
+        network: cyfs.get_current_network(),
+        address_index: _calcIndex(g_uniqueId),
+        name: g_didName,
+        icon:undefined
+    }
+    console.origin.log("peopleInfo:", peopleInfo);
+    let peopleRet = await buildDid.createPeople(peopleInfo);
     console.origin.log("peopleRet:", peopleRet);
+    console.origin.log("peopleRet ood list:", peopleRet.object.body().unwrap().content());
     if(!peopleRet.err){
         g_peopleInfo = peopleRet;
-        $('.did_mnemonic_choose').css('display', 'none');
-        $('.did_create_success').css('display', 'block');
+        let deviceInfo = {
+            unique_id: g_uniqueId,
+            owner: g_peopleInfo.objectId,
+            owner_private: g_peopleInfo.privateKey,
+            area: new cyfs.Area(g_country ,g_state,g_city,0),
+            network: cyfs.get_current_network(),
+            address_index: _calcIndex(g_uniqueId),
+            account: 0,
+            nick_name: g_oodName,
+            category: cyfs.DeviceCategory.OOD
+        };
+        console.origin.log("deviceInfo:", deviceInfo);
+        let deviceRet = await buildDid.createDevice(deviceInfo);
+        console.origin.log("deviceRet:", deviceRet);
+        if(deviceRet.err){
+            toast({
+                message: LANGUAGESTYPE == 'zh'?"绑定失败": 'Binding failed',
+                time: 1500,
+                type: 'warn'
+            });
+        }else{
+            g_deviceInfo = deviceRet;
+            let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+            console.origin.log("pushOodList:", pushOodList);
+            console.origin.log("peopleRet ood list:", peopleRet.object.body().unwrap().content());
+            $('.did_mnemonic_choose').css('display', 'none');
+            $('.did_create_success').css('display', 'block');
+        }
     }else{
         toast({
             message: LANGUAGESTYPE == 'zh'?"创建people失败": 'Failed to create people',
@@ -409,25 +499,51 @@ $('.did_verify_btn').on('click', async function () {
 })
 
 $('.did_success_next_btn').on('click', async function () {
-        let deviceRet = await buildDid.createDevice({unique_id: g_ip,
-            owner: g_peopleInfo.objectId,
-            owner_private: g_peopleInfo.privateKey,
-            area: cyfs.Area.from_str(`${g_country}:${g_state}:${g_city}`).unwrap(),
-            network: cyfs.CyfsChainNetwork.Test,
-            address_index: 0,
-            account:_calcIndex(g_ip),
-            nick_name: g_oodName,
-            category: cyfs.DeviceCategory.OOD
+    // People sign
+    let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
+    if (sign_ret.err) {
+        toast({
+            message: 'Binding failed',
+            time: 1500,
+            type: 'warn'
         });
-        if(deviceRet.err){
-            toast({
-                message: LANGUAGESTYPE == 'zh'?"绑定失败": 'Binding failed',
-                time: 1500,
-                type: 'warn'
-            });
-        }else{
-            $('.create_did_step_two').css('display', 'none');
-            $('.create_did_step_three_box').css('display', 'block');
-        }
+        return ;
+    }
+    let device_sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(0))
+    if (device_sign_ret.err) {
+        toast({
+            message: 'Binding failed',
+            time: 1500,
+            type: 'warn'
+        });
+        return ;
+    }
+    cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
+    await buildDid.upChain();
+    let index = _calcIndex(g_uniqueId);
+    let bindInfo = {
+        owner: g_peopleInfo.object.to_hex().unwrap(),
+        desc: g_deviceInfo.device.to_hex().unwrap(),
+        sec: g_deviceInfo.privateKey.to_vec().unwrap().toHex(),
+        index
+    }
+    console.origin.log("bindInfo:", bindInfo);
+    const response = await fetch("http://127.0.0.1:1321/bind", {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }, body: JSON.stringify(bindInfo),
+    });
+    const ret = await response.json();
+    if (ret.result !== 0) {
+        toast({
+            message: LANGUAGESTYPE == 'zh'?"绑定失败": 'Binding failed',
+            time: 1500,
+            type: 'warn'
+        });
+    } else {
+        $('.create_did_step_two_box').css('display', 'none');
+        $('.create_did_step_three_box').css('display', 'block');
+    }
 })
-

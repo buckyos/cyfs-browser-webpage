@@ -66,7 +66,18 @@ $(async function(){
     }else{
         $('title').html('Build DID');
     }
+    
+    // gtag('js', new Date());
+    // gtag('config', 'G-6WGVN18K66');
 });
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){
+    dataLayer.push(arguments);
+    console.log('dataLayer:', dataLayer)
+}
+gtag('js', new Date());
+gtag('config', 'G-6WGVN18K66');
 
 // header render
 ObjectUtil.renderHeaderInfo();
@@ -83,11 +94,9 @@ class BuildDid {
 
     async createMnemonic () {
         let mnemonic = g_mnemonicStr = cyfs.bip39.generateMnemonic(128, undefined, cyfs.bip39.wordlists.english)
-        console.origin.log("gen mnemonic:", mnemonic);
         let mnemonicList:string[] = [];
         if(mnemonic){
             mnemonicList = mnemonic.split(" ");
-            console.origin.log("gen mnemonicList:", mnemonicList);
         }
         return mnemonicList;
     }
@@ -142,6 +151,10 @@ class BuildDid {
             build.no_create_time()
         });
         let people_id = people.desc().calculate_id();
+        let sign_ret = cyfs.sign_and_set_named_object(private_key, people, new cyfs.SignatureRefIndex(0));
+        if (sign_ret.err) {
+            return sign_ret;
+        }
         return {
             objectId: people_id,
             object: people,
@@ -192,7 +205,10 @@ class BuildDid {
         device.set_name(info.nick_name)
         let device_id = device.desc().calculate_id();
         console.log("create_device", device_id.to_base_58());
-        
+        let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(0))
+        if (sign_ret.err) {
+            return sign_ret;
+        }
         return {
             deviceId: device_id,
             device: device,
@@ -230,13 +246,13 @@ class BuildDid {
     async upChain () {
         let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_peopleInfo.object).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
         let p_tx = p_ret.unwrap();
-        let p_meta_success = this.checkReceipt(this.meta_client, p_tx)
+        let p_meta_success = await this.checkReceipt(this.meta_client, p_tx)
         console.log('people desc on meta:', p_meta_success);
         let o_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_deviceInfo.device).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
         // 如果o_ret不报错，等待交易上链
         let o_tx = o_ret.unwrap()
         // 现在只有定期查询的接口
-        let o_meta_success = this.checkReceipt(this.meta_client, o_tx)
+        let o_meta_success = await this.checkReceipt(this.meta_client, o_tx)
         console.log('ood desc on meta:', o_meta_success)
     }
 
@@ -311,10 +327,10 @@ buildDid.getAreaList();
 if(g_token && g_ip){
     $('.create_did_step_one_box').css('display', 'none');
     $('.create_did_step_two_box, .create_did_step_two').css('display', 'block');
-    buildDid.RenderArea();
     let checkIp = g_ip.replace("[","").replace("]","");
     console.log('------checkIp',checkIp)
     buildDid.getUniqueId(checkIp);
+    buildDid.RenderArea();
 }
 
 $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_no', function () {
@@ -381,7 +397,6 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     });
     $('.did_create_mnemonic_box_show').html(mnemonicHtml);
     g_mnemonicList = mnemonicList.sort(function(a,b){ return Math.random()>.5 ? -1 : 1;});
-    console.origin.log("gen g_mnemonicList:", g_mnemonicList);
 })
 
 $('.did_choose_mnemonic_container').on('click', 'span', function () {
@@ -426,7 +441,6 @@ function _calcIndex(uniqueStr: string): number {
 
 $('.did_verify_btn').on('click', async function () {
     let mnemonic_Container = $('.did_choose_mnemonic_container').html();
-    console.origin.log("mnemonic_Container:", mnemonic_Container);
     if(mnemonic_Container){
         toast({
             message: LANGUAGESTYPE == 'zh'?"还有助记词没有选择": 'There is no choice for mnemonics',
@@ -439,7 +453,6 @@ $('.did_verify_btn').on('click', async function () {
     var reg = new RegExp("<span>","g");
     var reg2 = new RegExp("</span>","g");
     let mnemonicStr = mnemonicString.replace(reg,"").replace(reg2," ").slice(0, -1);
-    console.origin.log("mnemonicStr,g_mnemonicStr:", mnemonicStr, g_mnemonicStr);
     if(g_mnemonicStr != mnemonicStr){
         toast({
             message: 'Recovery Phrase Validation Error',
@@ -459,7 +472,6 @@ $('.did_verify_btn').on('click', async function () {
     console.origin.log("peopleInfo:", peopleInfo);
     let peopleRet = await buildDid.createPeople(peopleInfo);
     console.origin.log("peopleRet:", peopleRet);
-    console.origin.log("peopleRet ood list:", peopleRet.object.body().unwrap().content());
     if(!peopleRet.err){
         g_peopleInfo = peopleRet;
         let deviceInfo = {
@@ -485,8 +497,6 @@ $('.did_verify_btn').on('click', async function () {
         }else{
             g_deviceInfo = deviceRet;
             let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
-            console.origin.log("pushOodList:", pushOodList);
-            console.origin.log("peopleRet ood list:", peopleRet.object.body().unwrap().content());
             $('.did_mnemonic_choose').css('display', 'none');
             $('.did_create_success').css('display', 'block');
         }
@@ -512,25 +522,8 @@ function countDown () {
 }
 
 $('.did_success_next_btn').on('click', async function () {
-    // People sign
-    let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
-    if (sign_ret.err) {
-        toast({
-            message: 'Binding failed',
-            time: 1500,
-            type: 'warn'
-        });
-        return ;
-    }
-    let device_sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(0))
-    if (device_sign_ret.err) {
-        toast({
-            message: 'Binding failed',
-            time: 1500,
-            type: 'warn'
-        });
-        return ;
-    }
+
+  
     cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
     await buildDid.upChain();
     let index = _calcIndex(g_uniqueId);

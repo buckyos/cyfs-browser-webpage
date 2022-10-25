@@ -44,8 +44,9 @@ let g_deviceInfo:{
 let g_uniqueId:string = '';
 let g_countDown:number = 3;
 let g_isResetDid:boolean = false;
-
-
+console.origin.log('window', window)
+// top.postMessage("hello", "http://localhost:8888/index.html");
+// $('#iframeaaa')[0].contentWondow.aaa();
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
     let arr = str.split('&');

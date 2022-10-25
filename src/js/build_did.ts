@@ -62,7 +62,7 @@ if (window.location.search.split("?")[1]) {
                 g_isResetDid = true;
                 window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_ip}`;
             }else{
-                $('.create_did_container').css('display', 'block');
+                $('.create_did_container, .create_did_step_one_box').css('display', 'block');
             }
         }
     }

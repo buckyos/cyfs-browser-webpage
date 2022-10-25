@@ -43,6 +43,7 @@ let g_deviceInfo:{
 };
 let g_uniqueId:string = '';
 let g_countDown:number = 3;
+let g_isResetDid:boolean = false;
 
 
 if (window.location.search.split("?")[1]) {
@@ -56,6 +57,13 @@ if (window.location.search.split("?")[1]) {
             if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'ip') {
                 g_ip = arr[i].split('=')[1];
             }
+            let isResetDid = sessionStorage.getItem('is-reset-did');
+            if(isResetDid == 'true'){
+                g_isResetDid = true;
+                window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_ip}`;
+            }else{
+                $('.create_did_container').css('display', 'block');
+            }
         }
     }
 }
@@ -66,9 +74,6 @@ $(async function(){
     }else{
         $('title').html('Build DID');
     }
-    
-    // gtag('js', new Date());
-    // gtag('config', 'G-6WGVN18K66');
 });
 
 window.dataLayer = window.dataLayer || [];
@@ -76,8 +81,6 @@ function gtag(){
     dataLayer.push(arguments);
     console.log('dataLayer:', dataLayer)
 }
-gtag('js', new Date());
-gtag('config', 'G-6WGVN18K66');
 
 // header render
 ObjectUtil.renderHeaderInfo();
@@ -221,8 +224,12 @@ class BuildDid {
             url: `http://${ip}/check?access_token=${g_token}`,
             success:function(data){
                 let result = JSON.parse(data);
-                console.log(ip+'check-result', result);
-                g_uniqueId = String(result.device_info.mac_address);
+                if (!result.activation) {
+                    console.log(ip+'check-result', result);
+                    g_uniqueId = String(result.device_info.mac_address);
+                } else {
+                    console.error(`local ood already binded`)
+                }
             }
         })
     }
@@ -231,8 +238,13 @@ class BuildDid {
         const _sleep = (ms: number) => {
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
+        let beforeDate = new Date; 
         while(true) {
             await _sleep(3000)
+            let currentDate = new Date; 
+            if (currentDate.getTime() > beforeDate.getTime() + 3000){
+                return false;
+            }
             let ret = await client.getReceipt(txId)
             // 失败，表示tx还没有上链，等一段时间再查
             if (ret.ok && ret.unwrap().is_some()) {
@@ -359,6 +371,11 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 })
 
 $('.did_buy_ood_btn').on('click', async function () {
+    gtag('js', new Date());
+    gtag('config', 'G-6WGVN18K66', {
+        'operation': 'buy-ood-click',
+        'time': new Date()
+    });
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
 })
 
@@ -397,6 +414,11 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     });
     $('.did_create_mnemonic_box_show').html(mnemonicHtml);
     g_mnemonicList = mnemonicList.sort(function(a,b){ return Math.random()>.5 ? -1 : 1;});
+    gtag('js', new Date());
+    gtag('config', 'G-6WGVN18K66', {
+        'operation': 'choose-area-next',
+        'time': new Date()
+    });
 })
 
 $('.did_choose_mnemonic_container').on('click', 'span', function () {
@@ -462,7 +484,7 @@ $('.did_verify_btn').on('click', async function () {
         return;
     }
     let peopleInfo = {
-        area: new cyfs.Area(g_country ,g_state,g_city,0),
+        area: new cyfs.Area(0 , 0, 0, 0),
         mnemonic: mnemonicStr,
         network: cyfs.get_current_network(),
         address_index: _calcIndex(g_uniqueId),
@@ -490,7 +512,7 @@ $('.did_verify_btn').on('click', async function () {
         console.origin.log("deviceRet:", deviceRet);
         if(deviceRet.err){
             toast({
-                message: LANGUAGESTYPE == 'zh'?"绑定失败": 'Binding failed',
+                message: 'create device failed',
                 time: 1500,
                 type: 'warn'
             });
@@ -522,8 +544,6 @@ function countDown () {
 }
 
 $('.did_success_next_btn').on('click', async function () {
-
-  
     cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
     await buildDid.upChain();
     let index = _calcIndex(g_uniqueId);
@@ -551,6 +571,11 @@ $('.did_success_next_btn').on('click', async function () {
     } else {
         $('.create_did_step_two_box').css('display', 'none');
         $('.create_did_step_three_box').css('display', 'block');
+        gtag('js', new Date());
+        gtag('config', 'G-6WGVN18K66', {
+            'operation': 'activate-success',
+            'time': new Date()
+        });
         countDown();
     }
 })

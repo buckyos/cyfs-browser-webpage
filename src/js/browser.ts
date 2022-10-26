@@ -329,13 +329,17 @@ $('#user_switch').on('click', function () {
                 clearInterval(isBindInterval);
             }
             $('.choose_did_container').css('display', 'none');
-        }else{
-            $('.choose_did_container, .classa_list_container').css('display', 'block');
-            $('.classb_reset_container, .classb_activate_container').css('display', 'none');
-            // showThisScan('#scan_box');
         }
     }
 })
+
+$('#user_switch').on('mouseenter', function () {
+    if(!isBind){
+        $('.choose_did_container, .classa_list_container').css('display', 'block');
+        $('.classb_reset_container, .classb_activate_container').css('display', 'none');
+    }
+})
+
 
 $('.browser-search-svg').on('click', (event) => {
     searchTxt()

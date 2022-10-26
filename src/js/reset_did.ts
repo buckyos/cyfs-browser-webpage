@@ -12,6 +12,8 @@ $(async function(){
     }
 });
 
+ObjectUtil.renderHeaderInfo();
+
 let g_mnemonic:string = '';
 let g_ip:string = '';
 let g_token:string = '';

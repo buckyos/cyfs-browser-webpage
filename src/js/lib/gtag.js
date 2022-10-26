@@ -5244,6 +5244,7 @@
           f = window;
       Cj(f) && (f.document.cookie = a);
       var g = Ej();
+      e = a; g = a;
       return e != g || void 0 != c && 0 <= Fj(b, g, !1, d).indexOf(c)
   }
   var Nj = function(a, b, c, d) {
@@ -11413,19 +11414,16 @@
               b && b.blacklisted && (P(34), a.K = !0)
           }
           var c = H.location.protocol;
-          if(c == "cyfs:"){
-            a.K = 1;
-          }
-          "http:" != c && "https:" != c && (P(29), a.K = !0);
+          "cyfs:" != c && "http:" != c && "https:" != c && (P(29), a.K = !0);
           Vb && "preview" == Vb.loadPurpose && (P(30), a.K = !0);
           var d = eh.grl;
           d || (d = wz(), eh.grl = d);
           d() || (P(35), a.K = !0);
-          // if (a.K) {
-          //     a.s.W();
-          //     Sb();
-          //     return
-          // }
+          if (a.K) {
+              a.s.W();
+              Sb();
+              return
+          }
           var e = {
               prefix: String(T(a.s, S.g.Za, "")),
               path: String(T(a.s, S.g.af, "/")),
@@ -11742,11 +11740,11 @@
           this.cd = pA(a, this.cd);
           T(a.s, S.g.ke) && (a.C[S.g.ke] = !0, dA(a, S.g.Ib));
           Xm(a, S.g.Vg);
-          // if (a.K) {
-          //     a.s.W();
-          //     Sb();
-          //     return
-          // }
+          if (a.K) {
+              a.s.W();
+              Sb();
+              return
+          }
           this.Mh(a);
           a.s.X()
       } catch (iE) {

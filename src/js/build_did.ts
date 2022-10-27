@@ -338,6 +338,34 @@ function lenghtstr(str:string){
 let buildDid = new BuildDid();
 buildDid.getAreaList();
 
+function DaysFormate(date:number){
+    //计算出相差天数
+    var days=Math.floor(date/(24*3600*1000));
+    //计算出小时数
+    var leave1=date%(24*3600*1000);    //计算天数后剩余的毫秒数
+    var hours=Math.floor(leave1/(3600*1000));
+    //计算相差分钟数
+    var leave2=leave1%(3600*1000) ;       //计算小时数后剩余的毫秒数
+    var minutes=Math.floor(leave2/(60*1000));
+    //计算相差秒数
+    var leave3=leave2%(60*1000) ;     //计算分钟数后剩余的毫秒数
+    var seconds=Math.round(leave3/1000);
+    if(days > 0){
+        return days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒";
+    }else{
+        if(hours > 0){
+            return hours+"小时 "+minutes+" 分钟"+seconds+" 秒";
+        }else{
+            if(minutes>0){
+                return minutes+" 分钟"+seconds+" 秒";
+            }else{
+                return seconds+" 秒";
+            }
+        }
+    }
+}
+    
+
 if(g_token && g_ip){
     $('.create_did_step_one_box').css('display', 'none');
     $('.create_did_step_two_box, .create_did_step_two').css('display', 'block');
@@ -352,6 +380,7 @@ if(g_token && g_ip){
     gtag('event', 'cyfs_build_did_first_enter_page', {
         'time': new Date()
     });
+    localStorage.setItem('cyfs-build-did-first-visit', String((new Date()).getTime()));
 }
 
 $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_no', function () {
@@ -383,6 +412,15 @@ $('.did_buy_ood_btn').on('click', async function () {
     gtag('event', 'cyfs_build_did_buy_ood_click', {
         'time': new Date()
     });
+    let currentTime = (new Date()).getTime();
+    let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
+    if(visitTimeStorage){
+        let visitTime = Number(visitTimeStorage);
+        let timeDiff = currentTime - visitTime;
+        gtag('event', 'cyfs_build_did_buy_ood_diff', {
+            'time': DaysFormate(timeDiff)
+        });
+    }
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
 })
 
@@ -605,6 +643,15 @@ $('.did_success_next_btn').on('click', async function () {
             gtag('event', 'cyfs_build_did_activate_success', {
                 'time': new Date()
             });
+            let currentTime = (new Date()).getTime();
+            let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
+            if(visitTimeStorage){
+                let visitTime = Number(visitTimeStorage);
+                let timeDiff = currentTime - visitTime;
+                gtag('event', 'cyfs_build_did_activete_ood_diff', {
+                    'time': DaysFormate(timeDiff)
+                });
+            }
             countDown();
         }
     }

@@ -281,7 +281,7 @@ async function bindOod () {
         } else {
             $('.reset_did_step_one_box').css('display', 'none');
             $('.create_did_step_three_box').css('display', 'block');
-            // countDown();
+            countDown();
         }
     }
 }
@@ -299,76 +299,101 @@ $('.did_verify_btn').on('click', async function () {
         });
         return;
     }
+    let peopleInfo = {
+        area: new cyfs.Area(0 ,0,0,0),
+        mnemonic: g_mnemonic,
+        network: cyfs.get_current_network(),
+        address_index: 0,
+        name: '',
+        icon:undefined
+    }
+    console.origin.log("peopleInfo:", peopleInfo);
+    let peopleRet = await resetDid.createPeople(peopleInfo);
+    console.origin.log("peopleRet:", peopleRet);
+    if(peopleRet.err){
+        toast({
+            message: 'Failed to create people',
+            time: 1500,
+            type: 'warn'
+        });
+    }
+    g_peopleInfo = peopleRet;
     if(g_token && g_ip){
-        let peopleInfo = {
-            area: new cyfs.Area(0 ,0,0,0),
-            mnemonic: g_mnemonic,
+        let deviceInfo = {
+            unique_id: g_uniqueId,
+            owner: peopleRet.objectId,
+            owner_private: peopleRet.privateKey,
+            area: new cyfs.Area(0 , 0, 0, 0),
             network: cyfs.get_current_network(),
             address_index: _calcIndex(g_uniqueId),
-            name: undefined,
-            icon:undefined
-        }
-        console.origin.log("peopleInfo:", peopleInfo);
-        let peopleRet = await resetDid.createPeople(peopleInfo);
-        console.origin.log("peopleRet:", peopleRet);
-        if(!peopleRet.err){
-            g_peopleInfo = peopleRet;
-            // if(peopleRet.object.body_expect().content().ood_list.length < 1){
-            //     toast({
-            //         message: 'ood list is empty',
-            //         time: 1500,
-            //         type: 'warn'
-            //     });
-            //     return;
-            // }
-            let deviceInfo = {
-                unique_id: g_uniqueId,
-                owner: peopleRet.objectId,
-                owner_private: peopleRet.privateKey,
-                area: new cyfs.Area(0 , 0, 0, 0),
-                network: cyfs.get_current_network(),
-                address_index: _calcIndex(g_uniqueId),
-                account: 0,
-                nick_name: '',
-                category: cyfs.DeviceCategory.OOD
-            };
-            console.origin.log("deviceInfo:", deviceInfo);
-            let deviceRet = await resetDid.createDevice(deviceInfo);
-            console.origin.log("deviceRet:", deviceRet);
-            if(deviceRet.err){
+            account: 0,
+            nick_name: '',
+            category: cyfs.DeviceCategory.OOD
+        };
+        console.origin.log("deviceInfo:", deviceInfo);
+        let deviceRet = await resetDid.createDevice(deviceInfo);
+        console.origin.log("deviceRet:", deviceRet);
+        if(deviceRet.err){
+            toast({
+                message: 'create device failed',
+                time: 1500,
+                type: 'warn'
+            });
+            return;
+        }else{
+            g_deviceInfo = deviceRet;
+            let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+            let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
+            if (sign_ret.err) {
                 toast({
                     message: 'create device failed',
                     time: 1500,
                     type: 'warn'
                 });
-                return;
-            }else{
-                g_deviceInfo = deviceRet;
-                let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
-                let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
-                if (sign_ret.err) {
-                    toast({
-                        message: 'create device failed',
-                        time: 1500,
-                        type: 'warn'
-                    });
-                    return ;
-                }
-                cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
-                await resetDid.upChain();
-                bindOod();
+                return ;
             }
-        }else{
+            cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
+            await resetDid.upChain();
+            bindOod();
+        }
+    }else{
+        if(peopleRet.object.body_expect().content().ood_list.length < 1){
             toast({
-                message: 'Failed to create people',
+                message: 'ood list is empty',
                 time: 1500,
                 type: 'warn'
             });
+            return;
         }
-    }else{
-
+        console.origin.log("ood_list:", peopleRet.object.body_expect().content().ood_list);
+        // let g_deviceInfo = peopleRet.object.body_expect().content().ood_list[0];
+        // let index = _calcIndex(g_uniqueId);
+        // let bindInfo = {
+        //     owner: g_peopleInfo.object.to_hex().unwrap(),
+        //     desc: g_deviceInfo.device.to_hex().unwrap(),
+        //     sec: g_deviceInfo.privateKey.to_vec().unwrap().toHex(),
+        //     index
+        // }
+        // const response = await fetch("http://127.0.0.1:1321/bind", {
+        //         method: 'POST',
+        //         headers: {
+        //             Accept: 'application/json',
+        //             'Content-Type': 'application/json',
+        //         }, body: JSON.stringify(bindInfo),
+        //     });
+        //     const ret = await response.json();
+        //     if (ret.result !== 0) {
+        //         toast({
+        //             message: 'Binding failed,' + ret.msg,
+        //             time: 1500,
+        //             type: 'warn'
+        //         });
+        //     } else {
+        //         $('.reset_did_step_one_box').css('display', 'none');
+        //         $('.create_did_step_three_box').css('display', 'block');
+        //         countDown();
+        //     }
     }
-
 })
 
 function countDown () {

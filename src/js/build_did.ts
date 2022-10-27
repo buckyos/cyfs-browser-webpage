@@ -492,7 +492,7 @@ $('.did_verify_btn').on('click', async function () {
         area: new cyfs.Area(0 , 0, 0, 0),
         mnemonic: mnemonicStr,
         network: cyfs.get_current_network(),
-        address_index: _calcIndex(g_uniqueId),
+        address_index: 0,
         name: g_didName,
         icon:undefined
     }

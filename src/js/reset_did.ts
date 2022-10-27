@@ -46,14 +46,6 @@ if (window.location.search.split("?")[1]) {
     }
 }
 
-if(g_token && g_ip){
-    $('.reset_did_step_one_box').css('display', 'block');
-    $('.reset_did_step_two_box').css('display', 'none');
-}else{
-    $('.reset_did_step_one_box').css('display', 'none');
-    $('.reset_did_step_two_box').css('display', 'block');
-}
-
 
 // header render
 ObjectUtil.renderHeaderInfo();
@@ -197,6 +189,17 @@ class ResetDid {
 }
 
 let resetDid = new ResetDid();
+if(g_token && g_ip){
+    let checkIp = g_ip.replace("[","").replace("]","");
+    console.log('------checkIp',checkIp)
+    resetDid.getUniqueId(checkIp);
+    $('.reset_did_step_one_box').css('display', 'block');
+    $('.reset_did_step_two_box').css('display', 'none');
+}else{
+    $('.reset_did_step_one_box').css('display', 'none');
+    $('.reset_did_step_two_box').css('display', 'block');
+}
+
 
 function _hashCode(strValue: string): number {
     let hash = 0;
@@ -235,14 +238,68 @@ $('.app_header_box').on('click', '.people_head_sculpture', function () {
     window.location.href = 'cyfs://static/info.html';
 })
 
+async function bindOod () {
+    let index = _calcIndex(g_uniqueId);
+    let bindInfo = {
+        owner: g_peopleInfo.object.to_hex().unwrap(),
+        desc: g_deviceInfo.device.to_hex().unwrap(),
+        sec: g_deviceInfo.privateKey.to_vec().unwrap().toHex(),
+        index
+    }
+    console.origin.log("bindInfo:", bindInfo);
+    let checkIp = g_ip.replace("[","").replace("]","");
+    const activeteResponse = await fetch(`http://${checkIp}/activate?access_token=${g_token}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }, body: JSON.stringify(bindInfo),
+    });
+    const activeteRet = await activeteResponse.json();
+    if (activeteRet.result !== 0) {
+        toast({
+            message: 'Activete ood failed',
+            time: 1500,
+            type: 'warn'
+        });
+        return;
+    }else{
+        const response = await fetch("http://127.0.0.1:1321/bind", {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(bindInfo),
+        });
+        const ret = await response.json();
+        if (ret.result !== 0) {
+            toast({
+                message: 'Binding failed,' + ret.msg,
+                time: 1500,
+                type: 'warn'
+            });
+        } else {
+            $('.reset_did_step_one_box').css('display', 'none');
+            $('.create_did_step_three_box').css('display', 'block');
+            // countDown();
+        }
+    }
+}
+
 $('.did_verify_btn').on('click', async function () {
     g_mnemonic = String($('.recovery_phrase_textarea').val());
     console.origin.log('---g_mnemonic:', g_mnemonic)
     let mnemonicR = cyfs.bip39.validateMnemonic(g_mnemonic);
     console.origin.log("gen mnemonicR:", mnemonicR);
-    if(mnemonicR){
-        $('.reset_did_step_one_box').css('display', 'none');
-        $('.reset_did_step_two_box').css('display', 'block');
+    if(!mnemonicR){
+        toast({
+            message: 'Recovery Phrase Validation Error',
+            time: 1500,
+            type: 'warn'
+        });
+        return;
+    }
+    if(g_token && g_ip){
         let peopleInfo = {
             area: new cyfs.Area(0 ,0,0,0),
             mnemonic: g_mnemonic,
@@ -253,16 +310,17 @@ $('.did_verify_btn').on('click', async function () {
         }
         console.origin.log("peopleInfo:", peopleInfo);
         let peopleRet = await resetDid.createPeople(peopleInfo);
+        console.origin.log("peopleRet:", peopleRet);
         if(!peopleRet.err){
             g_peopleInfo = peopleRet;
-            if(peopleRet.object.body_expect().content().ood_list.length < 1){
-                toast({
-                    message: 'ood list is empty',
-                    time: 1500,
-                    type: 'warn'
-                });
-                return;
-            }
+            // if(peopleRet.object.body_expect().content().ood_list.length < 1){
+            //     toast({
+            //         message: 'ood list is empty',
+            //         time: 1500,
+            //         type: 'warn'
+            //     });
+            //     return;
+            // }
             let deviceInfo = {
                 unique_id: g_uniqueId,
                 owner: peopleRet.objectId,
@@ -286,34 +344,19 @@ $('.did_verify_btn').on('click', async function () {
                 return;
             }else{
                 g_deviceInfo = deviceRet;
-                cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
-                await resetDid.upChain();
-                let index = _calcIndex(g_uniqueId);
-                let bindInfo = {
-                    owner: g_peopleInfo.object.to_hex().unwrap(),
-                    desc: g_deviceInfo.device.to_hex().unwrap(),
-                    sec: g_deviceInfo.privateKey.to_vec().unwrap().toHex(),
-                    index
-                }
-                console.origin.log("bindInfo:", bindInfo);
-                const response = await fetch("http://127.0.0.1:1321/bind", {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    }, body: JSON.stringify(bindInfo),
-                });
-                const ret = await response.json();
-                if (ret.result !== 0) {
+                let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+                let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
+                if (sign_ret.err) {
                     toast({
-                        message: LANGUAGESTYPE == 'zh'?"绑定失败": 'Binding failed',
+                        message: 'create device failed',
                         time: 1500,
                         type: 'warn'
                     });
-                } else {
-                    $('.create_did_step_two_box').css('display', 'none');
-                    $('.create_did_step_three_box').css('display', 'block');
+                    return ;
                 }
+                cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
+                await resetDid.upChain();
+                bindOod();
             }
         }else{
             toast({
@@ -323,11 +366,7 @@ $('.did_verify_btn').on('click', async function () {
             });
         }
     }else{
-        toast({
-            message: 'Recovery Phrase Validation Error',
-            time: 1500,
-            type: 'warn'
-        });
+
     }
 
 })

@@ -57,9 +57,10 @@ if (window.location.search.split("?")[1]) {
                 g_ip = arr[i].split('=')[1];
             }
             let isResetDid = sessionStorage.getItem('is-reset-did');
+            console.log('')
             if(isResetDid == 'true'){
                 g_isResetDid = true;
-                window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_ip}`;
+                window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_token}`;
             }else{
                 $('.create_did_container, .create_did_step_one_box').css('display', 'block');
             }
@@ -229,7 +230,7 @@ class BuildDid {
                     console.log(ip+'check-result', result);
                     g_uniqueId = String(result.device_info.mac_address);
                 } else {
-                    console.error(`local ood already binded`)
+                    window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=[${ip}]&accessToken=${g_token}`;
                 }
             }
         })
@@ -567,26 +568,44 @@ $('.did_success_next_btn').on('click', async function () {
         index
     }
     console.origin.log("bindInfo:", bindInfo);
-    const response = await fetch("http://127.0.0.1:1321/bind", {
+    let checkIp = g_ip.replace("[","").replace("]","");
+    const activeteResponse = await fetch(`http://${checkIp}/activate?access_token=${g_token}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         }, body: JSON.stringify(bindInfo),
     });
-    const ret = await response.json();
-    if (ret.result !== 0) {
+    const activeteRet = await activeteResponse.json();
+    if (activeteRet.result !== 0) {
         toast({
-            message: LANGUAGESTYPE == 'zh'?"绑定失败": 'Binding failed',
+            message: 'Activete ood failed',
             time: 1500,
             type: 'warn'
         });
-    } else {
-        $('.create_did_step_two_box').css('display', 'none');
-        $('.create_did_step_three_box').css('display', 'block');
-        gtag('event', 'cyfs_build_did_activate_success', {
-            'time': new Date()
+        return;
+    }else{
+        const response = await fetch("http://127.0.0.1:1321/bind", {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(bindInfo),
         });
-        countDown();
+        const ret = await response.json();
+        if (ret.result !== 0) {
+            toast({
+                message: 'Binding failed,' + ret.msg,
+                time: 1500,
+                type: 'warn'
+            });
+        } else {
+            $('.create_did_step_two_box').css('display', 'none');
+            $('.create_did_step_three_box').css('display', 'block');
+            gtag('event', 'cyfs_build_did_activate_success', {
+                'time': new Date()
+            });
+            countDown();
+        }
     }
 })

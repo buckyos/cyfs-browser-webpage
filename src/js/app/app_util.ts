@@ -36,7 +36,7 @@ class AppOthersClass {
 
     async getHeaderInfo() {
         let headerInfo = await ObjectUtil.getHeaderInfo();
-        $('.app_header_right').html(`<img class="ood_status" src="${headerInfo.oodStatusIcon}" alt=""><img class="people_head_sculpture" src="${headerInfo.peoplePicture}" alt="" onerror="this.src='./img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${headerInfo.peopleName}</span>`);
+        $('.app_header_right').html(`<img class="ood_status" src="${headerInfo.oodStatusIcon}" alt=""><img class="people_head_sculpture" src="${headerInfo.peoplePicture}" alt="" onerror="this.src='../img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${headerInfo.peopleName}</span>`);
     }
 
 }

@@ -12,6 +12,8 @@ $(async function(){
     }
 });
 
+ObjectUtil.renderHeaderInfo();
+
 let g_mnemonic:string = '';
 let g_ip:string = '';
 let g_token:string = '';
@@ -221,6 +223,13 @@ function _calcIndex(uniqueStr: string): number {
     return index
 }
 
+function str2array(str: string): Uint8Array {
+    let out = new Uint8Array(str.length);
+    for(let i = 0; i < str.length; ++i) {
+        out[i] = str.charCodeAt(i);
+    }
+    return out;
+}
 
 $('.app_header_box').on('click', '.people_head_sculpture', function () {
     window.location.href = 'cyfs://static/info.html';

@@ -212,12 +212,22 @@ class NONObject {
       peopleName: peopleName,
       peoplePicture: peoplePicture
     }
-    
   }
 
   async renderHeaderInfo() {
-    let headerInfo = await this.getHeaderInfo();
-    $('.util_header_right').html(`<img class="ood_status" src="${headerInfo.oodStatusIcon}" alt=""><img class="people_head_sculpture" src="${headerInfo.peoplePicture}" alt="" onerror="this.src='../img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${headerInfo.peopleName}</span>`);
+    $.ajax({
+      url: 'http://127.0.0.1:38090/status',
+      success: async function(result){
+        console.log('getStatus-result', result);
+        if (result.anonymous) {
+          $('.util_header_right').html(`<img class="people_head_sculpture" src="../img/browser_anonymous_icon.svg" alt=""><span class="people_name">${LANGUAGESTYPE == 'zh'? '匿名用户':'Anonymous People'}</span>`);
+        }else{
+          let headerInfo = await this.getHeaderInfo();
+          $('.util_header_right').html(`<img class="ood_status" src="${headerInfo.oodStatusIcon}" alt=""><img class="people_head_sculpture" src="${headerInfo.peoplePicture}" alt="" onerror="this.src='../img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${headerInfo.peopleName}</span>`);
+        }
+      }
+    });
+    
   }
 }
 
@@ -261,11 +271,10 @@ export function getSubStr(str: string | undefined | cyfs.ObjectId, beforeLength?
 export async function getStatus(){
   $.ajax({
     url: 'http://127.0.0.1:38090/status',
+    async: false,
     success:function(result){
       console.log('getStatus-result', result);
-      if(result.anonymous || !result.is_bind){
-      }else{
-      }
+      return result;
     }
   });
 }

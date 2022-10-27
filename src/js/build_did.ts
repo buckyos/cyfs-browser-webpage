@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import * as cyfs from '../cyfs_sdk/cyfs'
-let QRCode = require('qrcode')
 import { toast } from './lib/toast.min'
 import { ObjectUtil, formatDate, LANGUAGESTYPE, castToLocalUnit } from './lib/util'
 import { getCountryList } from './lib/WorldArea'
+require('./lib/gtag.js')
 
 let g_mnemonicList:string[] = [];
 let g_mnemonicStr:string = '';
@@ -45,8 +45,6 @@ let g_uniqueId:string = '';
 let g_countDown:number = 3;
 let g_isResetDid:boolean = false;
 console.origin.log('window', window)
-// top.postMessage("hello", "http://localhost:8888/index.html");
-// $('#iframeaaa')[0].contentWondow.aaa();
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
     let arr = str.split('&');
@@ -82,6 +80,8 @@ function gtag(){
     dataLayer.push(arguments);
     console.log('dataLayer:', dataLayer)
 }
+gtag('js', new Date());
+gtag('config', 'G-3F1C521DHQ');
 
 // header render
 ObjectUtil.renderHeaderInfo();
@@ -344,6 +344,13 @@ if(g_token && g_ip){
     console.log('------checkIp',checkIp)
     buildDid.getUniqueId(checkIp);
     buildDid.RenderArea();
+    gtag('event', 'cyfs_build_did_show_area', {
+        'time': new Date()
+    });
+}else{
+    gtag('event', 'cyfs_build_did_first_enter_page', {
+        'time': new Date()
+    });
 }
 
 $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_no', function () {
@@ -372,9 +379,7 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 })
 
 $('.did_buy_ood_btn').on('click', async function () {
-    gtag('js', new Date());
-    gtag('config', 'G-6WGVN18K66', {
-        'operation': 'buy-ood-click',
+    gtag('event', 'cyfs_build_did_buy_ood_click', {
         'time': new Date()
     });
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
@@ -415,9 +420,7 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     });
     $('.did_create_mnemonic_box_show').html(mnemonicHtml);
     g_mnemonicList = mnemonicList.sort(function(a,b){ return Math.random()>.5 ? -1 : 1;});
-    gtag('js', new Date());
-    gtag('config', 'G-6WGVN18K66', {
-        'operation': 'choose-area-next',
+    gtag('event', 'cyfs_build_did_choose_area_next', {
         'time': new Date()
     });
 })
@@ -520,6 +523,15 @@ $('.did_verify_btn').on('click', async function () {
         }else{
             g_deviceInfo = deviceRet;
             let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+            let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
+            if (sign_ret.err) {
+                toast({
+                    message: 'create device failed',
+                    time: 1500,
+                    type: 'warn'
+                });
+                return ;
+            }
             $('.did_mnemonic_choose').css('display', 'none');
             $('.did_create_success').css('display', 'block');
         }
@@ -572,9 +584,7 @@ $('.did_success_next_btn').on('click', async function () {
     } else {
         $('.create_did_step_two_box').css('display', 'none');
         $('.create_did_step_three_box').css('display', 'block');
-        gtag('js', new Date());
-        gtag('config', 'G-6WGVN18K66', {
-            'operation': 'activate-success',
+        gtag('event', 'cyfs_build_did_activate_success', {
             'time': new Date()
         });
         countDown();

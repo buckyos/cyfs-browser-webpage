@@ -588,6 +588,6 @@ $('.did_success_next_btn').on('click', async function () {
         gtag('event', 'cyfs_build_did_activate_success', {
             'time': new Date()
         });
-        countDown();
+        // countDown();
     }
 })

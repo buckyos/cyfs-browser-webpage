@@ -329,17 +329,12 @@ $('#user_switch').on('click', function () {
                 clearInterval(isBindInterval);
             }
             $('.choose_did_container').css('display', 'none');
+        }else{
+            $('.choose_did_container, .classa_list_container').css('display', 'block');
+            $('.classb_reset_container, .classb_activate_container').css('display', 'none');
         }
     }
 })
-
-$('#user_switch').on('mouseenter', function () {
-    if(!isBind){
-        $('.choose_did_container, .classa_list_container').css('display', 'block');
-        $('.classb_reset_container, .classb_activate_container').css('display', 'none');
-    }
-})
-
 
 $('.browser-search-svg').on('click', (event) => {
     searchTxt()
@@ -687,7 +682,7 @@ $('.choose_did_container').on('click', '.reset_did_btn', async function () {
     $('.classb_reset_container').css('display', 'block');
 })
 
-$('.choose_did_container').on('click', '.choose_btn', async function () {
+$('.choose_did_container').on('mouseover', '.choose_btn', async function () {
     let operation: string = $(this).attr('data-operation') || '';
     $('.choose_btn_box').css('display', 'none');
     $('.choose_btn').css('display', 'block');

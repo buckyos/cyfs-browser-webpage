@@ -309,7 +309,7 @@ $('.did_verify_btn').on('click', async function () {
     }
     console.origin.log("peopleInfo:", peopleInfo);
     let peopleRet = await resetDid.createPeople(peopleInfo);
-    console.origin.log("peopleRet:", peopleRet);
+    console.origin.log("peopleRet:", peopleRet, peopleRet.objectId.to_base_58());
     if(peopleRet.err){
         toast({
             message: 'Failed to create people',
@@ -366,33 +366,6 @@ $('.did_verify_btn').on('click', async function () {
             return;
         }
         console.origin.log("ood_list:", peopleRet.object.body_expect().content().ood_list);
-        // let g_deviceInfo = peopleRet.object.body_expect().content().ood_list[0];
-        // let index = _calcIndex(g_uniqueId);
-        // let bindInfo = {
-        //     owner: g_peopleInfo.object.to_hex().unwrap(),
-        //     desc: g_deviceInfo.device.to_hex().unwrap(),
-        //     sec: g_deviceInfo.privateKey.to_vec().unwrap().toHex(),
-        //     index
-        // }
-        // const response = await fetch("http://127.0.0.1:1321/bind", {
-        //         method: 'POST',
-        //         headers: {
-        //             Accept: 'application/json',
-        //             'Content-Type': 'application/json',
-        //         }, body: JSON.stringify(bindInfo),
-        //     });
-        //     const ret = await response.json();
-        //     if (ret.result !== 0) {
-        //         toast({
-        //             message: 'Binding failed,' + ret.msg,
-        //             time: 1500,
-        //             type: 'warn'
-        //         });
-        //     } else {
-        //         $('.reset_did_step_one_box').css('display', 'none');
-        //         $('.create_did_step_three_box').css('display', 'block');
-        //         countDown();
-        //     }
     }
 })
 

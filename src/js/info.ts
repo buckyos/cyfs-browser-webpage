@@ -334,7 +334,7 @@ class Util {
         $('#owner_id').html(`DID: ${getSubStr(OWNER_ID)}`);
         const peopleR = (await ObjectUtil.getObject({ id: OWNER_ID, isReturnResult: true, flags: 1 })).object;
         this.handlerOodList(peopleR.object.body().unwrap().content().ood_list);
-        console.origin.log('peopleR:', peopleR, peopleR.object.body().unwrap().content().ood_list, peopleR.object.icon() );
+        console.origin.log('peopleR:', peopleR, peopleR.object_id.to_base_58(), peopleR.object.body().unwrap().content().ood_list, peopleR.object.icon() );
         $('.info_main_name').html(peopleR.object.name());
         if(peopleR.object.icon()){
             $('.info_main_portrait').attr('src', 'cyfs://o/'+peopleR.object.icon().object_id);
@@ -507,6 +507,7 @@ class Util {
     async getOodStatus(id?:cyfs.ObjectId) {
         // 连接状态信息
         let req = id ? { common: { flags: 0, target: id } } : { common: { flags: 0 } };
+        console.log('1111111111111',req)
         let ood_status = await this.m_util_service.get_ood_status(req);
         if (!ood_status.err) {
             ood_status = ood_status.unwrap().status;

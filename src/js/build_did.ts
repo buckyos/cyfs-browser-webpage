@@ -590,7 +590,7 @@ function countDown () {
             g_countDown--;
             countDown();
         }else{
-            chrome.runtime.restart();
+            // chrome.runtime.restart();
         }
     }, 1000);
 }

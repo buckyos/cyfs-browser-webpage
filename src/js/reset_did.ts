@@ -57,13 +57,18 @@ class ResetDid {
         this.meta_client = cyfs.create_meta_client();
     }
 
-    async createPeople(info: {area: cyfs.Area,mnemonic: string,network: cyfs.CyfsChainNetwork,address_index: number,name?: string,icon?: cyfs.FileId}){
-        let gen = cyfs.CyfsSeedKeyBip.from_mnemonic(info.mnemonic);
+    async getPeoplePrivateKey (mnemonic:string, network: cyfs.CyfsChainNetwork, address_index: number) {
+        let gen = cyfs.CyfsSeedKeyBip.from_mnemonic(mnemonic);
         if (gen.err) {
             return gen;
         }
-        let path = cyfs.CyfsChainBipPath.new_people(info.network,info.address_index);
+        let path = cyfs.CyfsChainBipPath.new_people(network, address_index);
         let private_key_r = gen.unwrap().sub_key(path);
+        return [private_key_r, path];
+    }
+
+    async createPeople(info: {area: cyfs.Area,mnemonic: string,network: cyfs.CyfsChainNetwork,address_index: number,name?: string,icon?: cyfs.FileId}){
+        let [private_key_r, path] = await this.getPeoplePrivateKey(info.mnemonic, info.network, info.address_index);
         if (private_key_r.err) {
             return private_key_r;
         }
@@ -84,6 +89,29 @@ class ResetDid {
         };
     }
 
+    async check_people_on_meta(people_id: cyfs.ObjectId): Promise<cyfs.People | undefined> {
+        let people: cyfs.People | undefined = undefined, is_bind = false
+        const people_r = await this.meta_client.getDesc(people_id);
+        if (people_r.ok) {
+            people_r.unwrap().match({
+                People: (p: cyfs.People) => {
+                    // is_bind = p.body_expect().content().ood_list.length > 0;
+                    people = p;
+                    return people;
+                }
+            })
+        }
+        return people;
+        // return [people, is_bind]
+    }
+
+    async getDevicePrivateKey (owner_private: cyfs.PrivateKey, owner: cyfs.ObjectId, account: number, network: cyfs.CyfsChainNetwork, address_index: number) {
+        let gen = cyfs.CyfsSeedKeyBip.from_private_key(owner_private.to_vec().unwrap().toHex(), owner.to_base_58());
+        let path = cyfs.CyfsChainBipPath.new_device(account, network, address_index);
+        let private_key_r = gen.unwrap().sub_key(path);
+        return private_key_r;
+    }
+
     async createDevice(info:{
         unique_id: string,
         owner: cyfs.ObjectId,
@@ -95,17 +123,11 @@ class ResetDid {
         nick_name: string,
         category: cyfs.DeviceCategory
     }){
-        let gen = cyfs.CyfsSeedKeyBip.from_private_key(info.owner_private.to_vec().unwrap().toHex(), info.owner.to_base_58());
-        let path = cyfs.CyfsChainBipPath.new_device(
-            info.account,
-            info.network,
-            info.address_index,
-        );
-        let private_key_r = gen.unwrap().sub_key(path);
+        let private_key_r = await this.getDevicePrivateKey(info.owner_private, info.owner, info.account, info.network, info.address_index);
         if (private_key_r.err) {
             return private_key_r;
         }
-        let private_key = private_key_r.unwrap()
+        let private_key = private_key_r.unwrap();
 
         let unique = cyfs.UniqueId.copy_from_slice(str2array(info.unique_id));
         console.info(`unique_str: ${info.unique_id} -> ${unique.as_slice().toHex()}`);
@@ -318,6 +340,7 @@ $('.did_verify_btn').on('click', async function () {
         });
     }
     g_peopleInfo = peopleRet;
+    let peopleOnMeta = await resetDid.check_people_on_meta(peopleRet.objectId);
     if(g_token && g_ip){
         let deviceInfo = {
             unique_id: g_uniqueId,
@@ -357,15 +380,58 @@ $('.did_verify_btn').on('click', async function () {
             bindOod();
         }
     }else{
-        if(peopleRet.object.body_expect().content().ood_list.length < 1){
+        if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body_expect().content().ood_list.length < 1)){
             toast({
                 message: 'ood list is empty',
                 time: 1500,
                 type: 'warn'
             });
+            $('.reset_did_step_one_box').css('display', 'none');
+            $('.reset_did_step_two_box').css('display', 'block');
             return;
         }
-        console.origin.log("ood_list:", peopleRet.object.body_expect().content().ood_list);
+        console.origin.log("peopleRet-ood_list:", peopleRet.object.body_expect().content().ood_list);
+        if(peopleOnMeta && peopleOnMeta.body_expect().content().ood_list.length > 0){
+            console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta.body_expect().content().ood_list);
+            let deviceId = peopleOnMeta.body_expect().content().ood_list[0];
+            let deviceRet = (await ObjectUtil.getObject({ id: deviceId.object_id, isReturnResult: true })).object.object;
+            console.origin.log("deviceRet:", deviceRet);
+            let index = _calcIndex(deviceRet.desc().content().unique_id());
+            let devicePrivateKey = await resetDid.getDevicePrivateKey(g_peopleInfo.privateKey, g_peopleInfo.objectId, 0, cyfs.get_current_network(), index);
+            if (devicePrivateKey.err) {
+                console.origin.log("devicePrivateKey-err:", devicePrivateKey);
+                return devicePrivateKey;
+            }
+            let private_key = devicePrivateKey.unwrap();
+            let bindInfo = {
+                owner: g_peopleInfo.object.to_hex().unwrap(),
+                desc: deviceRet.to_hex().unwrap(),
+                sec: private_key.to_vec().unwrap().toHex(),
+                index
+            }
+            console.origin.log("bindInfo:", bindInfo);
+            const response = await fetch("http://127.0.0.1:1321/bind", {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                }, body: JSON.stringify(bindInfo),
+            });
+            const ret = await response.json();
+            if (ret.result !== 0) {
+                toast({
+                    message: 'Binding failed,' + ret.msg,
+                    time: 1500,
+                    type: 'warn'
+                });
+                return;
+            } else {
+                $('.reset_did_step_one_box').css('display', 'none');
+                $('.reset_did_ood_bind').css('display', 'block');
+                countDown();
+            }
+
+        }
     }
 })
 
@@ -376,7 +442,7 @@ function countDown () {
             g_countDown--;
             countDown();
         }else{
-            chrome.runtime.restart();
+            // chrome.runtime.restart();
         }
     }, 1000);
 }
@@ -390,8 +456,3 @@ $('.reset_ood_btn').on('click', function () {
     sessionStorage.setItem('is-reset-did', 'true');
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/reset_did.html&desc=#/login';
 })
-
-
-
-
-

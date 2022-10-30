@@ -505,8 +505,10 @@ function _calcIndex(uniqueStr: string): number {
 
 
 $('.did_verify_btn').on('click', async function () {
+    $('.did_loading_cover_container').css('display', 'block');
     let mnemonic_Container = $('.did_choose_mnemonic_container').html();
     if(mnemonic_Container){
+        $('.cover_box').css('display', 'none');
         toast({
             message: LANGUAGESTYPE == 'zh'?"还有助记词没有选择": 'There is no choice for mnemonics',
             time: 1500,
@@ -519,6 +521,7 @@ $('.did_verify_btn').on('click', async function () {
     var reg2 = new RegExp("</span>","g");
     let mnemonicStr = mnemonicString.replace(reg,"").replace(reg2," ").slice(0, -1);
     if(g_mnemonicStr != mnemonicStr){
+        $('.cover_box').css('display', 'none');
         toast({
             message: 'Recovery Phrase Validation Error',
             time: 1500,
@@ -564,6 +567,7 @@ $('.did_verify_btn').on('click', async function () {
             let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
             let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
             if (sign_ret.err) {
+                $('.cover_box').css('display', 'none');
                 toast({
                     message: 'create device failed',
                     time: 1500,
@@ -581,6 +585,7 @@ $('.did_verify_btn').on('click', async function () {
             type: 'warn'
         });
     }
+    $('.cover_box').css('display', 'none');
 })
 
 function countDown () {
@@ -596,6 +601,7 @@ function countDown () {
 }
 
 $('.did_success_next_btn').on('click', async function () {
+    $('.did_loading_cover_container').css('display', 'block');
     cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
     await buildDid.upChain();
     let index = _calcIndex(g_uniqueId);
@@ -616,6 +622,7 @@ $('.did_success_next_btn').on('click', async function () {
     });
     const activeteRet = await activeteResponse.json();
     if (activeteRet.result !== 0) {
+        $('.cover_box').css('display', 'none');
         toast({
             message: 'Activete ood failed',
             time: 1500,
@@ -623,12 +630,33 @@ $('.did_success_next_btn').on('click', async function () {
         });
         return;
     }else{
+        const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
+        console.origin.log("deviceInfo:", deviceInfo)
+        const runtimeInfo = await buildDid.createDevice({
+            unique_id: `${deviceInfo.device_info.mac_address}`,
+            owner: g_peopleInfo.objectId,
+            owner_private: g_peopleInfo.privateKey,
+            area: new cyfs.Area(0 ,0, 0, 0),
+            network: cyfs.get_current_network(),
+            address_index: 0,
+            account: 0,
+            nick_name: 'runtime',
+            category: cyfs.DeviceCategory.PC
+        });
+        cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, runtimeInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
+        let deviceIndex = _calcIndex(deviceInfo.device_info.mac_address);
+        let bindDeviceInfo = {
+            owner: g_peopleInfo.object.to_hex().unwrap(),
+            desc: runtimeInfo.device.to_hex().unwrap(),
+            sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
+            deviceIndex
+        }
         const response = await fetch("http://127.0.0.1:1321/bind", {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-            }, body: JSON.stringify(bindInfo),
+            }, body: JSON.stringify(bindDeviceInfo),
         });
         const ret = await response.json();
         if (ret.result !== 0) {
@@ -655,4 +683,5 @@ $('.did_success_next_btn').on('click', async function () {
             countDown();
         }
     }
+    $('.cover_box').css('display', 'none');
 })

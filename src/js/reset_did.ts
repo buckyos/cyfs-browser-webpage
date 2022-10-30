@@ -46,7 +46,6 @@ if (window.location.search.split("?")[1]) {
     }
 }
 
-
 // header render
 ObjectUtil.renderHeaderInfo();
 
@@ -256,9 +255,10 @@ function str2array(str: string): Uint8Array {
     return out;
 }
 
-$('.app_header_box').on('click', '.people_head_sculpture', function () {
+$('.app_header_box').on('click', '.people_head_sculpture', async function () {
     window.location.href = 'cyfs://static/info.html';
 })
+
 
 async function bindOod () {
     let index = _calcIndex(g_uniqueId);
@@ -284,36 +284,19 @@ async function bindOod () {
             time: 1500,
             type: 'warn'
         });
-        return;
-    }else{
-        const response = await fetch("http://127.0.0.1:1321/bind", {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            }, body: JSON.stringify(bindInfo),
-        });
-        const ret = await response.json();
-        if (ret.result !== 0) {
-            toast({
-                message: 'Binding failed,' + ret.msg,
-                time: 1500,
-                type: 'warn'
-            });
-        } else {
-            $('.reset_did_step_one_box').css('display', 'none');
-            $('.create_did_step_three_box').css('display', 'block');
-            countDown();
-        }
+        return false;
     }
+    return true;
 }
 
 $('.did_verify_btn').on('click', async function () {
+    $('.did_loading_cover_container').css('display', 'block');
     g_mnemonic = String($('.recovery_phrase_textarea').val());
     console.origin.log('---g_mnemonic:', g_mnemonic)
     let mnemonicR = cyfs.bip39.validateMnemonic(g_mnemonic);
     console.origin.log("gen mnemonicR:", mnemonicR);
     if(!mnemonicR){
+        $('.did_loading_cover_container').css('display', 'none');
         toast({
             message: 'Recovery Phrase Validation Error',
             time: 1500,
@@ -357,6 +340,7 @@ $('.did_verify_btn').on('click', async function () {
         let deviceRet = await resetDid.createDevice(deviceInfo);
         console.origin.log("deviceRet:", deviceRet);
         if(deviceRet.err){
+            $('.did_loading_cover_container').css('display', 'none');
             toast({
                 message: 'create device failed',
                 time: 1500,
@@ -368,6 +352,7 @@ $('.did_verify_btn').on('click', async function () {
             let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
             let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
             if (sign_ret.err) {
+                $('.did_loading_cover_container').css('display', 'none');
                 toast({
                     message: 'create device failed',
                     time: 1500,
@@ -377,10 +362,16 @@ $('.did_verify_btn').on('click', async function () {
             }
             cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
             await resetDid.upChain();
-            bindOod();
+            let bindOodRet = await bindOod();
+            if(!bindOodRet){
+                $('.did_loading_cover_container').css('display', 'none');
+                return;
+            }
         }
     }else{
-        if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body_expect().content().ood_list.length < 1)){
+        if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
+            
+            $('.did_loading_cover_container').css('display', 'none');
             toast({
                 message: 'ood list is empty',
                 time: 1500,
@@ -390,49 +381,52 @@ $('.did_verify_btn').on('click', async function () {
             $('.reset_did_step_two_box').css('display', 'block');
             return;
         }
-        console.origin.log("peopleRet-ood_list:", peopleRet.object.body_expect().content().ood_list);
-        if(peopleOnMeta && peopleOnMeta.body_expect().content().ood_list.length > 0){
-            console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta.body_expect().content().ood_list);
-            let deviceId = peopleOnMeta.body_expect().content().ood_list[0];
-            let deviceRet = (await ObjectUtil.getObject({ id: deviceId.object_id, isReturnResult: true })).object.object;
-            console.origin.log("deviceRet:", deviceRet);
-            let index = _calcIndex(deviceRet.desc().content().unique_id());
-            let devicePrivateKey = await resetDid.getDevicePrivateKey(g_peopleInfo.privateKey, g_peopleInfo.objectId, 0, cyfs.get_current_network(), index);
-            if (devicePrivateKey.err) {
-                console.origin.log("devicePrivateKey-err:", devicePrivateKey);
-                return devicePrivateKey;
-            }
-            let private_key = devicePrivateKey.unwrap();
-            let bindInfo = {
-                owner: g_peopleInfo.object.to_hex().unwrap(),
-                desc: deviceRet.to_hex().unwrap(),
-                sec: private_key.to_vec().unwrap().toHex(),
-                index
-            }
-            console.origin.log("bindInfo:", bindInfo);
-            const response = await fetch("http://127.0.0.1:1321/bind", {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                }, body: JSON.stringify(bindInfo),
-            });
-            const ret = await response.json();
-            if (ret.result !== 0) {
-                toast({
-                    message: 'Binding failed,' + ret.msg,
-                    time: 1500,
-                    type: 'warn'
-                });
-                return;
-            } else {
-                $('.reset_did_step_one_box').css('display', 'none');
-                $('.reset_did_ood_bind').css('display', 'block');
-                countDown();
-            }
-
-        }
+        console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
+        console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
     }
+    const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
+    console.origin.log("deviceInfo:", deviceInfo)
+    const runtimeInfo = await resetDid.createDevice({
+        unique_id: `${deviceInfo.device_info.mac_address}`,
+        owner: g_peopleInfo.objectId,
+        owner_private: g_peopleInfo.privateKey,
+        area: new cyfs.Area(0 ,0, 0, 0),
+        network: cyfs.get_current_network(),
+        address_index: 0,
+        account: 0,
+        nick_name: 'runtime',
+        category: cyfs.DeviceCategory.PC
+    });
+    cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, runtimeInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
+    let index = _calcIndex(deviceInfo.device_info.mac_address);
+    let bindDeviceInfo = {
+        owner: peopleOnMeta?.to_hex().unwrap(),
+        desc: runtimeInfo.device.to_hex().unwrap(),
+        sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
+        index
+    }
+    const response = await fetch("http://127.0.0.1:1321/bind", {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }, body: JSON.stringify(bindDeviceInfo),
+    });
+    const ret = await response.json();
+    if (ret.result !== 0) {
+        $('.did_loading_cover_container').css('display', 'none');
+        toast({
+            message: 'Binding failed,' + ret.msg,
+            time: 1500,
+            type: 'warn'
+        });
+        return;
+    } else {
+        $('.reset_did_step_one_box').css('display', 'none');
+        $('.reset_did_ood_bind').css('display', 'block');
+        countDown();
+    }
+    $('.did_loading_cover_container').css('display', 'none');
 })
 
 function countDown () {

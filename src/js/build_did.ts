@@ -651,36 +651,45 @@ $('.did_success_next_btn').on('click', async function () {
             sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
             deviceIndex
         }
-        const response = await fetch("http://127.0.0.1:1321/bind", {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            }, body: JSON.stringify(bindDeviceInfo),
-        });
-        const ret = await response.json();
-        if (ret.result !== 0) {
+        try{
+            const response = await fetch("http://127.0.0.1:1321/bind", {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                }, body: JSON.stringify(bindDeviceInfo),
+            });
+            const ret = await response.json();
+            if (ret.result !== 0) {
+                toast({
+                    message: 'Binding failed,' + ret.msg,
+                    time: 1500,
+                    type: 'warn'
+                });
+            } else {
+                $('.create_did_step_two_box').css('display', 'none');
+                $('.create_did_step_three_box').css('display', 'block');
+                gtag('event', 'cyfs_build_did_activate_success', {
+                    'time': new Date()
+                });
+                let currentTime = (new Date()).getTime();
+                let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
+                if(visitTimeStorage){
+                    let visitTime = Number(visitTimeStorage);
+                    let timeDiff = currentTime - visitTime;
+                    gtag('event', 'cyfs_build_did_activete_ood_diff', {
+                        'time': DaysFormate(timeDiff)
+                    });
+                }
+                countDown();
+            }
+        }catch{
             toast({
-                message: 'Binding failed,' + ret.msg,
+                message: 'Binding failed',
                 time: 1500,
                 type: 'warn'
             });
-        } else {
-            $('.create_did_step_two_box').css('display', 'none');
-            $('.create_did_step_three_box').css('display', 'block');
-            gtag('event', 'cyfs_build_did_activate_success', {
-                'time': new Date()
-            });
-            let currentTime = (new Date()).getTime();
-            let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
-            if(visitTimeStorage){
-                let visitTime = Number(visitTimeStorage);
-                let timeDiff = currentTime - visitTime;
-                gtag('event', 'cyfs_build_did_activete_ood_diff', {
-                    'time': DaysFormate(timeDiff)
-                });
-            }
-            countDown();
+            $('.cover_box').css('display', 'none');
         }
     }
     $('.cover_box').css('display', 'none');

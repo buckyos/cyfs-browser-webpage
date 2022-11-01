@@ -91,7 +91,9 @@ class ResetDid {
     async check_people_on_meta(people_id: cyfs.ObjectId): Promise<cyfs.People | undefined> {
         let people: cyfs.People | undefined = undefined, is_bind = false
         const people_r = await this.meta_client.getDesc(people_id);
+        console.origin.log('-----people_r', people_r);
         if (people_r.ok) {
+            console.origin.log('-----people_r.unwrap()', people_r.unwrap());
             people_r.unwrap().match({
                 People: (p: cyfs.People) => {
                     // is_bind = p.body_expect().content().ood_list.length > 0;
@@ -149,7 +151,12 @@ class ResetDid {
         console.log("create_device", device_id.to_base_58());
         let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(0))
         if (sign_ret.err) {
-            return sign_ret;
+            toast({
+                message: 'create device failed',
+                time: 1500,
+                type: 'warn'
+            });
+            return ;
         }
         return {
             deviceId: device_id,
@@ -270,23 +277,27 @@ async function bindOod () {
     }
     console.origin.log("bindInfo:", bindInfo);
     let checkIp = g_ip.replace("[","").replace("]","");
-    const activeteResponse = await fetch(`http://${checkIp}/activate?access_token=${g_token}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        }, body: JSON.stringify(bindInfo),
-    });
-    const activeteRet = await activeteResponse.json();
-    if (activeteRet.result !== 0) {
-        toast({
-            message: 'Activete ood failed',
-            time: 1500,
-            type: 'warn'
+    try{
+        const activeteResponse = await fetch(`http://${checkIp}/activate?access_token=${g_token}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(bindInfo),
         });
+        const activeteRet = await activeteResponse.json();
+        if (activeteRet.result !== 0) {
+            toast({
+                message: 'Activete ood failed',
+                time: 1500,
+                type: 'warn'
+            });
+            return false;
+        }
+        return true;
+    }catch{
         return false;
     }
-    return true;
 }
 
 $('.did_verify_btn').on('click', async function () {
@@ -355,6 +366,9 @@ $('.did_verify_btn').on('click', async function () {
                         cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
                         await resetDid.upChain();
                         let bindOodRet = await bindOod();
+                        if(!bindOodRet){
+                            $('.did_loading_cover_container').css('display', 'none');
+                        }
                     }
                 }
             }else{
@@ -385,12 +399,14 @@ $('.did_verify_btn').on('click', async function () {
             });
             cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, runtimeInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
             let index = _calcIndex(deviceInfo.device_info.mac_address);
+            console.origin.log("peopleOnMeta:", peopleOnMeta);
             let bindDeviceInfo = {
-                owner: peopleOnMeta?.to_hex().unwrap(),
+                owner: peopleOnMeta?.to_hex().unwrap() || g_peopleInfo.object.to_hex().unwrap(),
                 desc: runtimeInfo.device.to_hex().unwrap(),
                 sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
                 index
             }
+            console.origin.log('bindDeviceInfo', bindDeviceInfo)
             try{
                 const response = await fetch("http://127.0.0.1:1321/bind", {
                     method: 'POST',
@@ -400,7 +416,7 @@ $('.did_verify_btn').on('click', async function () {
                     }, body: JSON.stringify(bindDeviceInfo),
                 });
                 const ret = await response.json();
-                if (ret.result !== 0) {
+                if (ret.result != 0) {
                     toast({
                         message: 'Binding runtime failed,' + ret.msg,
                         time: 1500,
@@ -431,7 +447,7 @@ function countDown () {
             g_countDown--;
             countDown();
         }else{
-            // chrome.runtime.restart();
+            window.location.href = 'cyfs://static/browser.html?success';
         }
     }, 1000);
 }

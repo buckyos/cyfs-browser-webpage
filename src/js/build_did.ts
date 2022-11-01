@@ -57,7 +57,6 @@ if (window.location.search.split("?")[1]) {
                 g_ip = arr[i].split('=')[1];
             }
             let isResetDid = sessionStorage.getItem('is-reset-did');
-            console.log('')
             if(isResetDid == 'true'){
                 g_isResetDid = true;
                 window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_token}`;
@@ -212,6 +211,7 @@ class BuildDid {
         console.log("create_device", device_id.to_base_58());
         let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(0))
         if (sign_ret.err) {
+            console.origin.log('sign_ret-err', sign_ret);
             return sign_ret;
         }
         return {
@@ -232,42 +232,103 @@ class BuildDid {
                 } else {
                     window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=[${ip}]&accessToken=${g_token}`;
                 }
+            },
+            error: function(){
+                window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=[${ip}]&accessToken=${g_token}`;
             }
         })
     }
 
-    async checkReceipt(client: cyfs.MetaClient, txId: cyfs.TxId): Promise<boolean> {
+    async transformBuckyResult(ret:cyfs.Result<cyfs.Option<[cyfs.Receipt, number]>>) {
+        let result;
+        if (ret.err) {
+            result = { code: ret.val.code, msg: ret.val.msg };
+        } else {
+            result = { code: 0, value: ret.unwrap() };
+        }
+        return result;
+    }
+
+    async checkReceipt(txId: cyfs.TxId, checkTimeoutSecs = 300): Promise<boolean> {
         const _sleep = (ms: number) => {
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
-        let beforeDate = new Date; 
-        while(true) {
-            await _sleep(3000)
-            let currentDate = new Date; 
-            if (currentDate.getTime() > beforeDate.getTime() + 3000){
+        let interval = 1000;
+        let waitTime = interval;
+        let returnRet:boolean = false;
+        await _sleep(interval);
+        // && !returnRet
+        while (waitTime < checkTimeoutSecs * 1000) {
+            console.origin.log('waitTime, checkTimeoutSecs', waitTime, checkTimeoutSecs * 1000, waitTime < checkTimeoutSecs * 1000);
+            const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
+            console.origin.log('get receipt:', txId, ret);
+            if (ret.code == 0 && ret.value.is_some()) {
+                const [receipt, _] = ret.value.unwrap();
+                console.origin.log('update desc receipt:', txId, receipt.result);
+                if (receipt && receipt.result == 0) {
+                    return true;
+                    returnRet = true;
+                    // return { code: ErrorCode.RESULT_OK };
+                }else{
+                    returnRet = false;
+                }
+                console.origin.log('update desc failed, desc:', txId, ret);
                 return false;
+                // return { code: receipt ? receipt.result : ErrorCode.RESULT_PUT_DESC_FAILED };
             }
-            let ret = await client.getReceipt(txId)
-            // 失败，表示tx还没有上链，等一段时间再查
-            if (ret.ok && ret.unwrap().is_some()) {
-                let [receipt, blocknumber] = ret.unwrap().unwrap()
-                // receipt.result为0，表示上链成功。result不为0，表示交易上链，但是执行失败，失败错误码为result
-                return receipt.result === 0
-            }
+            waitTime += interval;
+            await _sleep(interval);
+            interval = Math.min(interval * 2, 5000);
         }
+        if (waitTime >= checkTimeoutSecs * 1000) {
+            console.origin.log('update desc time out:', txId);
+            return false;
+            returnRet = false;
+            // return { code: ErrorCode.RESULT_TIME_OUT };
+        }
+        // return { code: ErrorCode.RESULT_OK };
+        return returnRet;
     }
 
     async upChain () {
+        // getDesc upchain
+        let check_p_ret = await this.meta_client.getDesc(g_peopleInfo.objectId);
+        console.origin.log('check_p_ret', check_p_ret);
+        let check_o_ret = await this.meta_client.getDesc(g_deviceInfo.deviceId);
+        console.origin.log('check_o_ret', check_o_ret);
+        let p_tx:cyfs.TxId;
+        let o_tx:cyfs.TxId;
+        if(check_p_ret.err){
+        }else{
+        }
         let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_peopleInfo.object).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
-        let p_tx = p_ret.unwrap();
-        let p_meta_success = await this.checkReceipt(this.meta_client, p_tx)
-        console.log('people desc on meta:', p_meta_success);
+        console.origin.log('p_ret', p_ret)
+        p_tx = p_ret.unwrap();
+        // push device up chain
         let o_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_deviceInfo.device).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
+        console.origin.log('o_ret', o_ret)
         // 如果o_ret不报错，等待交易上链
-        let o_tx = o_ret.unwrap()
-        // 现在只有定期查询的接口
-        let o_meta_success = await this.checkReceipt(this.meta_client, o_tx)
+        o_tx = o_ret.unwrap();
+        // check upchain
+        let p_meta_success = await this.checkReceipt(p_tx)
+        console.log('people desc on meta:', p_meta_success);
+        
+        let o_meta_success = await this.checkReceipt(o_tx)
         console.log('ood desc on meta:', o_meta_success)
+    }
+
+    async runtimeUpChain (id:cyfs.ObjectId) {
+        // getDesc upchain
+        let check_r_ret = await this.meta_client.getDesc(id);
+        console.origin.log('check_r_ret', check_r_ret);
+        // push device up chain
+        let r_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_deviceInfo.device).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
+        console.origin.log('r_ret', r_ret)
+        // 如果o_ret不报错，等待交易上链
+        let r_tx = r_ret.unwrap();
+        // check upchain
+        let r_meta_success = await this.checkReceipt(r_tx)
+        console.log('runtime desc on meta:', r_meta_success);
     }
 
 }
@@ -351,15 +412,15 @@ function DaysFormate(date:number){
     var leave3=leave2%(60*1000) ;     //计算分钟数后剩余的毫秒数
     var seconds=Math.round(leave3/1000);
     if(days > 0){
-        return days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒";
+        return days+"days "+hours+"hours "+minutes+" mins"+seconds+" s";
     }else{
         if(hours > 0){
-            return hours+"小时 "+minutes+" 分钟"+seconds+" 秒";
+            return hours+"hours "+minutes+" mins"+seconds+" s";
         }else{
             if(minutes>0){
-                return minutes+" 分钟"+seconds+" 秒";
+                return minutes+" mins"+seconds+" s";
             }else{
-                return seconds+" 秒";
+                return seconds+" s";
             }
         }
     }
@@ -374,11 +435,11 @@ if(g_token && g_ip){
     buildDid.getUniqueId(checkIp);
     buildDid.RenderArea();
     gtag('event', 'cyfs_build_did_show_area', {
-        'time': new Date()
+        'gtagTime': new Date()
     });
 }else{
     gtag('event', 'cyfs_build_did_first_enter_page', {
-        'time': new Date()
+        'gtagTime': new Date()
     });
     localStorage.setItem('cyfs-build-did-first-visit', String((new Date()).getTime()));
 }
@@ -410,7 +471,7 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 
 $('.did_buy_ood_btn').on('click', async function () {
     gtag('event', 'cyfs_build_did_buy_ood_click', {
-        'time': new Date()
+        'gtagTime': new Date()
     });
     let currentTime = (new Date()).getTime();
     let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
@@ -418,7 +479,7 @@ $('.did_buy_ood_btn').on('click', async function () {
         let visitTime = Number(visitTimeStorage);
         let timeDiff = currentTime - visitTime;
         gtag('event', 'cyfs_build_did_buy_ood_diff', {
-            'time': DaysFormate(timeDiff)
+            'diffTimeFormate': DaysFormate(timeDiff)
         });
     }
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
@@ -460,7 +521,7 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     $('.did_create_mnemonic_box_show').html(mnemonicHtml);
     g_mnemonicList = mnemonicList.sort(function(a,b){ return Math.random()>.5 ? -1 : 1;});
     gtag('event', 'cyfs_build_did_choose_area_next', {
-        'time': new Date()
+        'gtagTime': new Date()
     });
 })
 
@@ -595,7 +656,7 @@ function countDown () {
             g_countDown--;
             countDown();
         }else{
-            // chrome.runtime.restart();
+            window.location.href = 'cyfs://static/browser.html?success';
         }
     }, 1000);
 }
@@ -603,6 +664,7 @@ function countDown () {
 $('.did_success_next_btn').on('click', async function () {
     $('.did_loading_cover_container').css('display', 'block');
     cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
+    cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(254)).unwrap();
     await buildDid.upChain();
     let index = _calcIndex(g_uniqueId);
     let bindInfo = {
@@ -613,84 +675,99 @@ $('.did_success_next_btn').on('click', async function () {
     }
     console.origin.log("bindInfo:", bindInfo);
     let checkIp = g_ip.replace("[","").replace("]","");
-    const activeteResponse = await fetch(`http://${checkIp}/activate?access_token=${g_token}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        }, body: JSON.stringify(bindInfo),
-    });
-    const activeteRet = await activeteResponse.json();
-    if (activeteRet.result !== 0) {
-        $('.cover_box').css('display', 'none');
+    try{
+        const activeteResponse = await fetch(`http://${checkIp}/activate?access_token=${g_token}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(bindInfo),
+        });
+        const activeteRet = await activeteResponse.json();
+        if (activeteRet.result != 0) {
+            $('.cover_box').css('display', 'none');
+            toast({
+                message: 'Activete ood failed',
+                time: 1500,
+                type: 'warn'
+            });
+            return;
+        }else{
+            const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
+            console.origin.log("deviceInfo:", deviceInfo)
+            const runtimecreateInfo = {
+                unique_id: deviceInfo.device_info.mac_address,
+                owner: g_peopleInfo.objectId,
+                owner_private: g_peopleInfo.privateKey,
+                area: new cyfs.Area(0 ,0, 0, 0),
+                network: cyfs.get_current_network(),
+                address_index: _calcIndex(deviceInfo.device_info.mac_address),
+                account: 0,
+                nick_name: 'runtime',
+                category: cyfs.DeviceCategory.PC
+            };
+            const runtimeInfo = await buildDid.createDevice(runtimecreateInfo);
+            console.origin.log("runtimeInfo:", runtimeInfo)
+            if(!runtimeInfo.err){
+                cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, runtimeInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
+                await buildDid.runtimeUpChain(runtimeInfo.deviceId);
+                let index = _calcIndex(deviceInfo.device_info.mac_address);
+                let bindDeviceInfo = {
+                    owner: g_peopleInfo.object.to_hex().unwrap(),
+                    desc: runtimeInfo.device.to_hex().unwrap(),
+                    sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
+                    index
+                }
+                console.origin.log("bindDeviceInfo:", bindDeviceInfo)
+                try{
+                    const response = await fetch("http://127.0.0.1:1321/bind", {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        }, body: JSON.stringify(bindDeviceInfo),
+                    });
+                    const ret = await response.json();
+                    if (ret.result !== 0) {
+                        toast({
+                            message: 'Binding failed,' + ret.msg,
+                            time: 1500,
+                            type: 'warn'
+                        });
+                    } else {
+                        $('.create_did_step_two_box').css('display', 'none');
+                        $('.create_did_step_three_box').css('display', 'block');
+                        gtag('event', 'cyfs_build_did_activate_success', {
+                            'gtagTime': new Date()
+                        });
+                        let currentTime = (new Date()).getTime();
+                        let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
+                        if(visitTimeStorage){
+                            let visitTime = Number(visitTimeStorage);
+                            let timeDiff = currentTime - visitTime;
+                            gtag('event', 'cyfs_build_did_activete_ood_diff', {
+                                'diffTimeFormate': DaysFormate(timeDiff)
+                            });
+                        }
+                        countDown();
+                    }
+                }catch{
+                    toast({
+                        message: 'Binding failed',
+                        time: 1500,
+                        type: 'warn'
+                    });
+                    $('.cover_box').css('display', 'none');
+                }
+            }
+        }
+    }catch{
         toast({
             message: 'Activete ood failed',
             time: 1500,
             type: 'warn'
         });
-        return;
-    }else{
-        const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
-        console.origin.log("deviceInfo:", deviceInfo)
-        const runtimeInfo = await buildDid.createDevice({
-            unique_id: `${deviceInfo.device_info.mac_address}`,
-            owner: g_peopleInfo.objectId,
-            owner_private: g_peopleInfo.privateKey,
-            area: new cyfs.Area(0 ,0, 0, 0),
-            network: cyfs.get_current_network(),
-            address_index: 0,
-            account: 0,
-            nick_name: 'runtime',
-            category: cyfs.DeviceCategory.PC
-        });
-        cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, runtimeInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
-        let deviceIndex = _calcIndex(deviceInfo.device_info.mac_address);
-        let bindDeviceInfo = {
-            owner: g_peopleInfo.object.to_hex().unwrap(),
-            desc: runtimeInfo.device.to_hex().unwrap(),
-            sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
-            deviceIndex
-        }
-        try{
-            const response = await fetch("http://127.0.0.1:1321/bind", {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                }, body: JSON.stringify(bindDeviceInfo),
-            });
-            const ret = await response.json();
-            if (ret.result !== 0) {
-                toast({
-                    message: 'Binding failed,' + ret.msg,
-                    time: 1500,
-                    type: 'warn'
-                });
-            } else {
-                $('.create_did_step_two_box').css('display', 'none');
-                $('.create_did_step_three_box').css('display', 'block');
-                gtag('event', 'cyfs_build_did_activate_success', {
-                    'time': new Date()
-                });
-                let currentTime = (new Date()).getTime();
-                let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
-                if(visitTimeStorage){
-                    let visitTime = Number(visitTimeStorage);
-                    let timeDiff = currentTime - visitTime;
-                    gtag('event', 'cyfs_build_did_activete_ood_diff', {
-                        'time': DaysFormate(timeDiff)
-                    });
-                }
-                countDown();
-            }
-        }catch{
-            toast({
-                message: 'Binding failed',
-                time: 1500,
-                type: 'warn'
-            });
-            $('.cover_box').css('display', 'none');
-        }
+        $('.cover_box').css('display', 'none');
     }
     $('.cover_box').css('display', 'none');
 })

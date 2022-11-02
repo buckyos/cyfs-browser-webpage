@@ -155,10 +155,7 @@ class BuildDid {
             build.no_create_time()
         });
         let people_id = people.desc().calculate_id();
-        let sign_ret = cyfs.sign_and_set_named_object(private_key, people, new cyfs.SignatureRefIndex(0));
-        if (sign_ret.err) {
-            return sign_ret;
-        }
+
         return {
             objectId: people_id,
             object: people,
@@ -209,7 +206,7 @@ class BuildDid {
         device.set_name(info.nick_name)
         let device_id = device.desc().calculate_id();
         console.log("create_device", device_id.to_base_58());
-        let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(0))
+        let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(254))
         if (sign_ret.err) {
             console.origin.log('sign_ret-err', sign_ret);
             return sign_ret;
@@ -257,24 +254,17 @@ class BuildDid {
         let waitTime = interval;
         let returnRet:boolean = false;
         await _sleep(interval);
-        // && !returnRet
-        while (waitTime < checkTimeoutSecs * 1000) {
-            console.origin.log('waitTime, checkTimeoutSecs', waitTime, checkTimeoutSecs * 1000, waitTime < checkTimeoutSecs * 1000);
+        while (waitTime < checkTimeoutSecs * 1000 && !returnRet) {
             const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
             console.origin.log('get receipt:', txId, ret);
             if (ret.code == 0 && ret.value.is_some()) {
                 const [receipt, _] = ret.value.unwrap();
-                console.origin.log('update desc receipt:', txId, receipt.result);
-                if (receipt && receipt.result == 0) {
-                    return true;
+                console.origin.log('update desc receipt:', txId.to_base_58(), receipt.result);
+                if ((receipt && receipt.result == 0) || (receipt && receipt.result == 16)) {
                     returnRet = true;
-                    // return { code: ErrorCode.RESULT_OK };
                 }else{
                     returnRet = false;
                 }
-                console.origin.log('update desc failed, desc:', txId, ret);
-                return false;
-                // return { code: receipt ? receipt.result : ErrorCode.RESULT_PUT_DESC_FAILED };
             }
             waitTime += interval;
             await _sleep(interval);
@@ -282,55 +272,45 @@ class BuildDid {
         }
         if (waitTime >= checkTimeoutSecs * 1000) {
             console.origin.log('update desc time out:', txId);
-            return false;
             returnRet = false;
-            // return { code: ErrorCode.RESULT_TIME_OUT };
         }
-        // return { code: ErrorCode.RESULT_OK };
         return returnRet;
     }
 
-    async upChain () {
-        // getDesc upchain
-        let check_p_ret = await this.meta_client.getDesc(g_peopleInfo.objectId);
-        console.origin.log('check_p_ret', check_p_ret);
-        let check_o_ret = await this.meta_client.getDesc(g_deviceInfo.deviceId);
-        console.origin.log('check_o_ret', check_o_ret);
-        let p_tx:cyfs.TxId;
-        let o_tx:cyfs.TxId;
-        if(check_p_ret.err){
-        }else{
+    async check_people_on_meta(id: cyfs.ObjectId): Promise<boolean> {
+        const ret = await this.meta_client.getDesc(id);
+        if (ret.ok) {
+            ret.unwrap().match({
+                People: (p: cyfs.People) => {
+                    return true;
+                },
+                Device: (p: cyfs.Device) => {
+                    return true;
+                }
+            })
         }
-        let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_peopleInfo.object).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
-        console.origin.log('p_ret', p_ret)
-        p_tx = p_ret.unwrap();
-        // push device up chain
-        let o_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_deviceInfo.device).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
-        console.origin.log('o_ret', o_ret)
-        // 如果o_ret不报错，等待交易上链
-        o_tx = o_ret.unwrap();
+        return false;
+    }
+
+    async upChain (id:cyfs.ObjectId, obj: cyfs.AnyNamedObject) {
+        // getDesc upchain
+        let check_p_ret = await this.check_people_on_meta(id);
+        console.origin.log('check_p_ret', check_p_ret);
+        let p_tx:cyfs.TxId;
+        if(check_p_ret){
+            let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, g_peopleInfo.privateKey);
+            console.origin.log('p_ret', p_ret)
+            p_tx = p_ret.unwrap();
+        }else{
+            let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
+            console.origin.log('p_ret', p_ret)
+            p_tx = p_ret.unwrap();
+        }
         // check upchain
         let p_meta_success = await this.checkReceipt(p_tx)
         console.log('people desc on meta:', p_meta_success);
-        
-        let o_meta_success = await this.checkReceipt(o_tx)
-        console.log('ood desc on meta:', o_meta_success)
+        return p_meta_success;
     }
-
-    async runtimeUpChain (id:cyfs.ObjectId) {
-        // getDesc upchain
-        let check_r_ret = await this.meta_client.getDesc(id);
-        console.origin.log('check_r_ret', check_r_ret);
-        // push device up chain
-        let r_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_deviceInfo.device).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
-        console.origin.log('r_ret', r_ret)
-        // 如果o_ret不报错，等待交易上链
-        let r_tx = r_ret.unwrap();
-        // check upchain
-        let r_meta_success = await this.checkReceipt(r_tx)
-        console.log('runtime desc on meta:', r_meta_success);
-    }
-
 }
 
 function str2array(str: string): Uint8Array {
@@ -616,7 +596,7 @@ $('.did_verify_btn').on('click', async function () {
         };
         console.origin.log("deviceInfo:", deviceInfo);
         let deviceRet = await buildDid.createDevice(deviceInfo);
-        console.origin.log("deviceRet:", deviceRet);
+        console.origin.log("deviceRet:", deviceRet.device.signs().body_signs(),deviceRet.device.signs().body_signs());
         if(deviceRet.err){
             toast({
                 message: 'create device failed',
@@ -626,7 +606,7 @@ $('.did_verify_btn').on('click', async function () {
         }else{
             g_deviceInfo = deviceRet;
             let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
-            let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
+            let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
             if (sign_ret.err) {
                 $('.cover_box').css('display', 'none');
                 toast({
@@ -663,9 +643,8 @@ function countDown () {
 
 $('.did_success_next_btn').on('click', async function () {
     $('.did_loading_cover_container').css('display', 'block');
-    cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
-    cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(254)).unwrap();
-    await buildDid.upChain();
+    await buildDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object );
+    await buildDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device );
     let index = _calcIndex(g_uniqueId);
     let bindInfo = {
         owner: g_peopleInfo.object.to_hex().unwrap(),
@@ -709,8 +688,7 @@ $('.did_success_next_btn').on('click', async function () {
             const runtimeInfo = await buildDid.createDevice(runtimecreateInfo);
             console.origin.log("runtimeInfo:", runtimeInfo)
             if(!runtimeInfo.err){
-                cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, runtimeInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
-                await buildDid.runtimeUpChain(runtimeInfo.deviceId);
+                await buildDid.upChain(runtimeInfo.deviceId, runtimeInfo.device );
                 let index = _calcIndex(deviceInfo.device_info.mac_address);
                 let bindDeviceInfo = {
                     owner: g_peopleInfo.object.to_hex().unwrap(),

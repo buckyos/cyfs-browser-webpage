@@ -76,10 +76,6 @@ class ResetDid {
             build.no_create_time()
         });
         let people_id = people.desc().calculate_id();
-        let sign_ret = cyfs.sign_and_set_named_object(private_key, people, new cyfs.SignatureRefIndex(0));
-        if (sign_ret.err) {
-            return sign_ret;
-        }
         return {
             objectId: people_id,
             object: people,
@@ -149,7 +145,7 @@ class ResetDid {
         device.set_name(info.nick_name)
         let device_id = device.desc().calculate_id();
         console.log("create_device", device_id.to_base_58());
-        let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(0))
+        let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(254))
         if (sign_ret.err) {
             toast({
                 message: 'create device failed',
@@ -180,40 +176,66 @@ class ResetDid {
         })
     }
 
-    async checkReceipt(client: cyfs.MetaClient, txId: cyfs.TxId): Promise<boolean> {
+    async transformBuckyResult(ret:cyfs.Result<cyfs.Option<[cyfs.Receipt, number]>>) {
+        let result;
+        if (ret.err) {
+            result = { code: ret.val.code, msg: ret.val.msg };
+        } else {
+            result = { code: 0, value: ret.unwrap() };
+        }
+        return result;
+    }
+
+    async checkReceipt(txId: cyfs.TxId, checkTimeoutSecs = 300): Promise<boolean> {
         const _sleep = (ms: number) => {
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
-        let beforeDate = new Date; 
-        while(true) {
-            await _sleep(3000)
-            let currentDate = new Date; 
-            if (currentDate.getTime() > beforeDate.getTime() + 3000){
-                return false;
+        let interval = 1000;
+        let waitTime = interval;
+        let returnRet:boolean = false;
+        await _sleep(interval);
+        while (waitTime < checkTimeoutSecs * 1000 && !returnRet) {
+            const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
+            console.origin.log('get receipt:', txId, ret);
+            if (ret.code == 0 && ret.value.is_some()) {
+                const [receipt, _] = ret.value.unwrap();
+                console.origin.log('update desc receipt:', txId.to_base_58(), receipt.result);
+                if ((receipt && receipt.result == 0) || (receipt && receipt.result == 16)) {
+                    returnRet = true;
+                }else{
+                    returnRet = false;
+                }
             }
-            let ret = await client.getReceipt(txId)
-            // 失败，表示tx还没有上链，等一段时间再查
-            if (ret.ok && ret.unwrap().is_some()) {
-                let [receipt, blocknumber] = ret.unwrap().unwrap()
-                // receipt.result为0，表示上链成功。result不为0，表示交易上链，但是执行失败，失败错误码为result
-                return receipt.result === 0
-            }
+            waitTime += interval;
+            await _sleep(interval);
+            interval = Math.min(interval * 2, 5000);
         }
-    }
-    
-    async upChain () {
-        let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_peopleInfo.object).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
-        let p_tx = p_ret.unwrap();
-        let p_meta_success = await this.checkReceipt(this.meta_client, p_tx)
-        console.log('people desc on meta:', p_meta_success);
-        let o_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(g_deviceInfo.device).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
-        // 如果o_ret不报错，等待交易上链
-        let o_tx = o_ret.unwrap()
-        // 现在只有定期查询的接口
-        let o_meta_success = await this.checkReceipt(this.meta_client, o_tx)
-        console.log('ood desc on meta:', o_meta_success)
+        if (waitTime >= checkTimeoutSecs * 1000) {
+            console.origin.log('update desc time out:', txId);
+            returnRet = false;
+        }
+        return returnRet;
     }
 
+    async upChain (id:cyfs.ObjectId, obj: cyfs.AnyNamedObject) {
+        // getDesc upchain
+        let check_p_ret = await this.check_people_on_meta(id);
+        console.origin.log('check_p_ret', check_p_ret);
+        let p_tx:cyfs.TxId;
+        if(check_p_ret){
+            let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, g_peopleInfo.privateKey);
+            console.origin.log('p_ret', p_ret)
+            p_tx = p_ret.unwrap();
+        }else{
+            let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
+            console.origin.log('p_ret', p_ret)
+            p_tx = p_ret.unwrap();
+        }
+        // check upchain
+        let p_meta_success = await this.checkReceipt(p_tx)
+        console.log('people desc on meta:', p_meta_success);
+        return p_meta_success;
+    }
 }
 
 let resetDid = new ResetDid();
@@ -355,7 +377,7 @@ $('.did_verify_btn').on('click', async function () {
                 }else{
                     g_deviceInfo = deviceRet;
                     let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
-                    let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(0));
+                    let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
                     if (sign_ret.err) {
                         toast({
                             message: 'create device failed',
@@ -363,8 +385,8 @@ $('.did_verify_btn').on('click', async function () {
                             type: 'warn'
                         });
                     }else{
-                        cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, g_deviceInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
-                        await resetDid.upChain();
+                        await resetDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object);
+                        await resetDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device);
                         let bindOodRet = await bindOod();
                         if(!bindOodRet){
                             $('.did_loading_cover_container').css('display', 'none');
@@ -397,7 +419,7 @@ $('.did_verify_btn').on('click', async function () {
                 nick_name: 'runtime',
                 category: cyfs.DeviceCategory.PC
             });
-            cyfs.sign_and_push_named_object(g_peopleInfo.privateKey, runtimeInfo.device, new cyfs.SignatureRefIndex(254)).unwrap();
+            await resetDid.upChain(runtimeInfo.deviceId, runtimeInfo.device );
             let index = _calcIndex(deviceInfo.device_info.mac_address);
             console.origin.log("peopleOnMeta:", peopleOnMeta);
             let bindDeviceInfo = {

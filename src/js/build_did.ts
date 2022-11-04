@@ -260,7 +260,7 @@ class BuildDid {
             if (ret.code == 0 && ret.value.is_some()) {
                 const [receipt, _] = ret.value.unwrap();
                 console.origin.log('update desc receipt:', txId.to_base_58(), receipt.result);
-                if ((receipt && receipt.result == 0) || (receipt && receipt.result == 16)) {
+                if (receipt && receipt.result == 0) {
                     returnRet = true;
                 }else{
                     returnRet = false;

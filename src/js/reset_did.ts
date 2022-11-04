@@ -419,7 +419,6 @@ $('.did_verify_btn').on('click', async function () {
                 nick_name: 'runtime',
                 category: cyfs.DeviceCategory.PC
             });
-            await resetDid.upChain(runtimeInfo.deviceId, runtimeInfo.device );
             let index = _calcIndex(deviceInfo.device_info.mac_address);
             console.origin.log("peopleOnMeta:", peopleOnMeta);
             let bindDeviceInfo = {

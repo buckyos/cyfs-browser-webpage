@@ -4,7 +4,6 @@ import { toast } from './lib/toast.min'
 import { ObjectUtil, formatDate, LANGUAGESTYPE, castToLocalUnit } from './lib/util'
 import { getCountryList } from './lib/WorldArea'
 require('./lib/gtag.js')
-
 let g_mnemonicList:string[] = [];
 let g_mnemonicStr:string = '';
 g_mnemonicList
@@ -44,6 +43,7 @@ let g_deviceInfo:{
 let g_uniqueId:string = '';
 let g_countDown:number = 3;
 let g_isResetDid:boolean = false;
+let g_buyOodAfterTime: number;
 console.origin.log('window', window)
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
@@ -379,33 +379,10 @@ function lenghtstr(str:string){
 let buildDid = new BuildDid();
 buildDid.getAreaList();
 
-function DaysFormate(date:number){
-    //计算出相差天数
-    var days=Math.floor(date/(24*3600*1000));
-    //计算出小时数
-    var leave1=date%(24*3600*1000);    //计算天数后剩余的毫秒数
-    var hours=Math.floor(leave1/(3600*1000));
-    //计算相差分钟数
-    var leave2=leave1%(3600*1000) ;       //计算小时数后剩余的毫秒数
-    var minutes=Math.floor(leave2/(60*1000));
-    //计算相差秒数
-    var leave3=leave2%(60*1000) ;     //计算分钟数后剩余的毫秒数
-    var seconds=Math.round(leave3/1000);
-    if(days > 0){
-        return days+"days "+hours+"hours "+minutes+" mins"+seconds+" s";
-    }else{
-        if(hours > 0){
-            return hours+"hours "+minutes+" mins"+seconds+" s";
-        }else{
-            if(minutes>0){
-                return minutes+" mins"+seconds+" s";
-            }else{
-                return seconds+" s";
-            }
-        }
-    }
+function SecondsFormate(date:number){
+    var seconds=Math.round(date/1000);
+    return seconds+" s";
 }
-    
 
 if(g_token && g_ip){
     $('.create_did_step_one_box').css('display', 'none');
@@ -414,14 +391,22 @@ if(g_token && g_ip){
     console.log('------checkIp',checkIp)
     buildDid.getUniqueId(checkIp);
     buildDid.RenderArea();
-    gtag('event', 'cyfs_build_did_show_area', {
-        'gtagTime': new Date()
+    gtag('event', 'build_did_pv_2_show_area', {
+        'gtagTime': formatDate(new Date())
     });
+    let currentTime = g_buyOodAfterTime = (new Date()).getTime();
+    let visitTimeStorage = localStorage.getItem('cyfs-build-did-buy-ood-time');
+    if(visitTimeStorage){
+        let visitTime = Number(visitTimeStorage);
+        let timeDiff = currentTime - visitTime;
+        gtag('event', 'diff_build_did_1_buy_ood', {
+            'diffTimeFormate': SecondsFormate(timeDiff)
+        });
+    }
 }else{
-    gtag('event', 'cyfs_build_did_first_enter_page', {
-        'gtagTime': new Date()
+    gtag('event', 'build_did_pv_1_first_visit', {
+        'gtagTime': formatDate(new Date())
     });
-    localStorage.setItem('cyfs-build-did-first-visit', String((new Date()).getTime()));
 }
 
 $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_no', function () {
@@ -436,6 +421,9 @@ $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_yes', function () {
         mnemonicHtml += `<span>${mnemonic}</span>`;
     });
     $('.did_choose_mnemonic_container').html(mnemonicHtml);
+    gtag('event', 'build_did_pv_4_choose_mnemonics', {
+        'gtagTime': formatDate(new Date())
+    });
 })
 
 $('.create_did_container').on('click', '.did_next_btn', function () {
@@ -450,18 +438,10 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 })
 
 $('.did_buy_ood_btn').on('click', async function () {
-    gtag('event', 'cyfs_build_did_buy_ood_click', {
-        'gtagTime': new Date()
+    gtag('event', 'click_build_did_1_buy_ood', {
+        'gtagTime': formatDate(new Date())
     });
-    let currentTime = (new Date()).getTime();
-    let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
-    if(visitTimeStorage){
-        let visitTime = Number(visitTimeStorage);
-        let timeDiff = currentTime - visitTime;
-        gtag('event', 'cyfs_build_did_buy_ood_diff', {
-            'diffTimeFormate': DaysFormate(timeDiff)
-        });
-    }
+    localStorage.setItem('cyfs-build-did-buy-ood-time', String((new Date()).getTime()));
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
 })
 
@@ -488,6 +468,9 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     g_didName = didName;
     g_oodName = oodName;
     $('.create_did_step_two').css('display', 'none');
+    gtag('event', 'build_did_pv_3_show_mnemonics', {
+        'gtagTime': formatDate(new Date())
+    });
     $('.did_mnemonic_create_box').css('display', 'block');
     g_country = Number($('#country_select').val()) || 0;
     g_state = Number($('#state_select').val()) || 0;
@@ -500,9 +483,6 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     });
     $('.did_create_mnemonic_box_show').html(mnemonicHtml);
     g_mnemonicList = mnemonicList.sort(function(a,b){ return Math.random()>.5 ? -1 : 1;});
-    gtag('event', 'cyfs_build_did_choose_area_next', {
-        'gtagTime': new Date()
-    });
 })
 
 $('.did_choose_mnemonic_container').on('click', 'span', function () {
@@ -547,6 +527,9 @@ function _calcIndex(uniqueStr: string): number {
 
 $('.did_verify_btn').on('click', async function () {
     $('.did_loading_cover_container').css('display', 'block');
+    gtag('event', 'click_build_did_2_vertify', {
+        'gtagTime': formatDate(new Date())
+    });
     let mnemonic_Container = $('.did_choose_mnemonic_container').html();
     if(mnemonic_Container){
         $('.cover_box').css('display', 'none');
@@ -618,6 +601,9 @@ $('.did_verify_btn').on('click', async function () {
             }
             $('.did_mnemonic_choose').css('display', 'none');
             $('.did_create_success').css('display', 'block');
+            gtag('event', 'build_did_pv_5_activate', {
+                'gtagTime': formatDate(new Date())
+            });
         }
     }else{
         toast({
@@ -643,8 +629,20 @@ function countDown () {
 
 $('.did_success_next_btn').on('click', async function () {
     $('.did_loading_cover_container').css('display', 'block');
-    await buildDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object );
-    await buildDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device );
+    gtag('event', 'click_build_did_3_activate', {
+        'gtagTime': formatDate(new Date())
+    });
+    let peopleUpChainR = await buildDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object );
+    let oodUpChainR = await buildDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device );
+    if(!peopleUpChainR || !oodUpChainR){
+        $('.cover_box').css('display', 'none');
+        toast({
+            message: 'Activete ood failed',
+            time: 1500,
+            type: 'warn'
+        });
+        return;
+    }
     let index = _calcIndex(g_uniqueId);
     let bindInfo = {
         owner: g_peopleInfo.object.to_hex().unwrap(),
@@ -688,7 +686,6 @@ $('.did_success_next_btn').on('click', async function () {
             const runtimeInfo = await buildDid.createDevice(runtimecreateInfo);
             console.origin.log("runtimeInfo:", runtimeInfo)
             if(!runtimeInfo.err){
-                await buildDid.upChain(runtimeInfo.deviceId, runtimeInfo.device );
                 let index = _calcIndex(deviceInfo.device_info.mac_address);
                 let bindDeviceInfo = {
                     owner: g_peopleInfo.object.to_hex().unwrap(),
@@ -715,18 +712,22 @@ $('.did_success_next_btn').on('click', async function () {
                     } else {
                         $('.create_did_step_two_box').css('display', 'none');
                         $('.create_did_step_three_box').css('display', 'block');
-                        gtag('event', 'cyfs_build_did_activate_success', {
-                            'gtagTime': new Date()
+                        gtag('event', 'build_did_pv_6_activatee_success', {
+                            'gtagTime': formatDate(new Date())
                         });
                         let currentTime = (new Date()).getTime();
-                        let visitTimeStorage = localStorage.getItem('cyfs-build-did-first-visit');
+                        let visitTimeStorage = localStorage.getItem('cyfs-build-did-buy-ood-time');
                         if(visitTimeStorage){
                             let visitTime = Number(visitTimeStorage);
                             let timeDiff = currentTime - visitTime;
-                            gtag('event', 'cyfs_build_did_activete_ood_diff', {
-                                'diffTimeFormate': DaysFormate(timeDiff)
+                            gtag('event', 'diff_build_did_2_activete_process', {
+                                'diffTimeFormate': SecondsFormate(timeDiff)
                             });
                         }
+                        let timeDiff2 = currentTime - g_buyOodAfterTime;
+                        gtag('event', 'diff_build_did_3_buy_after_activate', {
+                            'diffTimeFormate': SecondsFormate(timeDiff2)
+                        });
                         countDown();
                     }
                 }catch{

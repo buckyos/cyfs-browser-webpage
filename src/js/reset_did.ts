@@ -30,6 +30,9 @@ let g_deviceInfo:{
     device: cyfs.Device,
     privateKey: cyfs.PrivateKey,
 };
+let g_peopleOnMeta: cyfs.People | undefined;
+let g_peopleId: string;
+let g_activation:boolean = false;
 
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
@@ -162,18 +165,29 @@ class ResetDid {
     }
 
     async getUniqueId (ip:string) {
-        $.ajax({
-            url: `http://${ip}/check?access_token=${g_token}`,
-            success:function(data){
-                let result = JSON.parse(data);
-                if (!result.activation) {
-                    console.log(ip+'check-result', result);
+        try{
+            $.ajax({
+                url: `http://${ip}/check?access_token=${g_token}`,
+                success: async function(data){
+                    let result = JSON.parse(data);
                     g_uniqueId = String(result.device_info.mac_address);
-                } else {
-                    console.error(`local ood already binded`)
+                    if (result.activation) {
+                        console.log(ip+'check-result', result);
+                        g_peopleId = String(result.bind_info.owner_id || '');
+                        $('.activated_title_id').html('DID ：' + g_peopleId);
+                        $('.reset_did_step_two_box, .recovery_phrase_title').css('display', 'none');
+                        $('.reset_did_step_one_box, .activated_title').css('display', 'block');
+                        g_activation = true;
+                    } else {
+                        $('.haved_did_click').css('display', 'block');
+                    }
                 }
-            }
-        })
+            })
+        }catch{
+            $('.reset_did_step_two_box, .recovery_phrase_title').css('display', 'none');
+            $('.reset_did_step_one_box, .activated_title').css('display', 'block');
+        }
+        
     }
 
     async transformBuckyResult(ret:cyfs.Result<cyfs.Option<[cyfs.Receipt, number]>>) {
@@ -242,14 +256,29 @@ let resetDid = new ResetDid();
 if(g_token && g_ip){
     let checkIp = g_ip.replace("[","").replace("]","");
     console.log('------checkIp',checkIp)
-    resetDid.getUniqueId(checkIp);
     $('.reset_did_step_one_box').css('display', 'block');
     $('.reset_did_step_two_box').css('display', 'none');
+    resetDid.getUniqueId(checkIp);
 }else{
-    $('.reset_did_step_one_box').css('display', 'none');
+    $('.reset_did_step_one_box, .haved_did_click').css('display', 'none');
     $('.reset_did_step_two_box').css('display', 'block');
 }
 
+function copyData (data:string) {
+    $('#copy_textarea').text(data).show();
+    $('#copy_textarea').select();
+    document.execCommand('copy', false, '');
+    $('#copy_textarea').hide();
+    toast({
+        message: LANGUAGESTYPE == 'zh'?"复制成功":'Copied successfully',
+        time: 1500,
+        type: 'success'
+    });
+}
+
+$('.info_main_copy_svg').on('click', async function () {
+    copyData(g_peopleId || '');
+})
 
 function _hashCode(strValue: string): number {
     let hash = 0;
@@ -322,6 +351,64 @@ async function bindOod () {
     }
 }
 
+async function bindRuntime () {
+    const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
+    console.origin.log("deviceInfo:", deviceInfo)
+    const runtimeInfo = await resetDid.createDevice({
+        unique_id: `${deviceInfo.device_info.mac_address}`,
+        owner: g_peopleInfo.objectId,
+        owner_private: g_peopleInfo.privateKey,
+        area: new cyfs.Area(0 ,0, 0, 0),
+        network: cyfs.get_current_network(),
+        address_index: 0,
+        account: 0,
+        nick_name: 'runtime',
+        category: cyfs.DeviceCategory.PC
+    });
+    let index = _calcIndex(deviceInfo.device_info.mac_address);
+    console.origin.log("peopleOnMeta:", g_peopleOnMeta);
+    let bindDeviceInfo = {
+        owner: g_peopleOnMeta?.to_hex().unwrap() || g_peopleInfo.object.to_hex().unwrap(),
+        desc: runtimeInfo.device.to_hex().unwrap(),
+        sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
+        index
+    }
+    console.origin.log('bindDeviceInfo', bindDeviceInfo)
+    try{
+        const response = await fetch("http://127.0.0.1:1321/bind", {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }, body: JSON.stringify(bindDeviceInfo),
+        });
+        const ret = await response.json();
+        if (ret.result != 0) {
+            toast({
+                message: 'Binding runtime failed,' + ret.msg,
+                time: 1500,
+                type: 'warn'
+            });
+        } else {
+            if(g_activation || !g_peopleId){
+                $('.reset_did_activate_ood_title').html('Your DID has been reset successfully');
+            }else{
+                $('.reset_did_activate_ood_title').html('VOOD binding successfully');
+            }
+            $('.reset_did_step_one_box, .reset_did_activate_ood').css('display', 'none');
+            $('.reset_did_ood_bind').css('display', 'block');
+            countDown();
+        }
+    }catch{
+        toast({
+            message: 'Binding runtime failed',
+            time: 1500,
+            type: 'warn'
+        });
+        $('.did_loading_cover_container').css('display', 'none');
+    }
+}
+
 $('.did_verify_btn').on('click', async function () {
     $('.did_loading_cover_container').css('display', 'block');
     g_mnemonic = String($('.recovery_phrase_textarea').val());
@@ -352,113 +439,101 @@ $('.did_verify_btn').on('click', async function () {
             });
         }else{
             g_peopleInfo = peopleRet;
-            let peopleOnMeta = await resetDid.check_people_on_meta(peopleRet.objectId);
-            if(g_token && g_ip){
-                let deviceInfo = {
-                    unique_id: g_uniqueId,
-                    owner: peopleRet.objectId,
-                    owner_private: peopleRet.privateKey,
-                    area: new cyfs.Area(0 , 0, 0, 0),
-                    network: cyfs.get_current_network(),
-                    address_index: _calcIndex(g_uniqueId),
-                    account: 0,
-                    nick_name: '',
-                    category: cyfs.DeviceCategory.OOD
-                };
-                console.origin.log("deviceInfo:", deviceInfo);
-                let deviceRet = await resetDid.createDevice(deviceInfo);
-                console.origin.log("deviceRet:", deviceRet);
-                if(deviceRet.err){
-                    toast({
-                        message: 'create device failed',
-                        time: 1500,
-                        type: 'warn'
-                    });
-                }else{
-                    g_deviceInfo = deviceRet;
-                    let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
-                    let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
-                    if (sign_ret.err) {
+            if(g_peopleId && (peopleRet.objectId.to_base_58() != g_peopleId)){
+                toast({
+                    message: `The recovery phrase you entered does not match the DID (${g_peopleId}).`,
+                    time: 1500,
+                    type: 'warn'
+                });
+                $('.reset_did_step_one_box').css('display', 'none');
+                $('.reset_did_step_two_box').css('display', 'block');
+            }else{
+                let peopleOnMeta = g_peopleOnMeta = await resetDid.check_people_on_meta(peopleRet.objectId);
+                if(g_token && g_ip && !g_activation){
+                    let deviceInfo = {
+                        unique_id: g_uniqueId,
+                        owner: peopleRet.objectId,
+                        owner_private: peopleRet.privateKey,
+                        area: new cyfs.Area(0 , 0, 0, 0),
+                        network: cyfs.get_current_network(),
+                        address_index: _calcIndex(g_uniqueId),
+                        account: 0,
+                        nick_name: '',
+                        category: cyfs.DeviceCategory.OOD
+                    };
+                    console.origin.log("deviceInfo:", deviceInfo);
+                    let deviceRet = await resetDid.createDevice(deviceInfo);
+                    console.origin.log("deviceRet:", deviceRet);
+                    if(deviceRet.err){
                         toast({
                             message: 'create device failed',
                             time: 1500,
                             type: 'warn'
                         });
                     }else{
-                        await resetDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object);
-                        await resetDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device);
-                        let bindOodRet = await bindOod();
-                        if(!bindOodRet){
-                            $('.did_loading_cover_container').css('display', 'none');
+                        g_deviceInfo = deviceRet;
+                        let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+                        let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
+                        if (sign_ret.err) {
+                            toast({
+                                message: 'create device failed',
+                                time: 1500,
+                                type: 'warn'
+                            });
+                        }else{
+                            $('.did_loading_cover_container, .reset_did_step_one_box').css('display', 'none');
+                            $('.reset_did_activate_ood').css('display', 'block');
                         }
                     }
+                }else{
+                    if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
+                        toast({
+                            message: 'ood list is empty',
+                            time: 1500,
+                            type: 'warn'
+                        });
+                        $('.reset_did_step_one_box').css('display', 'none');
+                        $('.reset_did_step_two_box').css('display', 'block');
+                    }
+                    console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
+                    console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
+                    await bindRuntime();
                 }
-            }else{
-                if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
-                    toast({
-                        message: 'ood list is empty',
-                        time: 1500,
-                        type: 'warn'
-                    });
-                    $('.reset_did_step_one_box').css('display', 'none');
-                    $('.reset_did_step_two_box').css('display', 'block');
-                }
-                console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
-                console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
-            }
-            const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
-            console.origin.log("deviceInfo:", deviceInfo)
-            const runtimeInfo = await resetDid.createDevice({
-                unique_id: `${deviceInfo.device_info.mac_address}`,
-                owner: g_peopleInfo.objectId,
-                owner_private: g_peopleInfo.privateKey,
-                area: new cyfs.Area(0 ,0, 0, 0),
-                network: cyfs.get_current_network(),
-                address_index: 0,
-                account: 0,
-                nick_name: 'runtime',
-                category: cyfs.DeviceCategory.PC
-            });
-            let index = _calcIndex(deviceInfo.device_info.mac_address);
-            console.origin.log("peopleOnMeta:", peopleOnMeta);
-            let bindDeviceInfo = {
-                owner: peopleOnMeta?.to_hex().unwrap() || g_peopleInfo.object.to_hex().unwrap(),
-                desc: runtimeInfo.device.to_hex().unwrap(),
-                sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
-                index
-            }
-            console.origin.log('bindDeviceInfo', bindDeviceInfo)
-            try{
-                const response = await fetch("http://127.0.0.1:1321/bind", {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    }, body: JSON.stringify(bindDeviceInfo),
-                });
-                const ret = await response.json();
-                if (ret.result != 0) {
-                    toast({
-                        message: 'Binding runtime failed,' + ret.msg,
-                        time: 1500,
-                        type: 'warn'
-                    });
-                } else {
-                    $('.reset_did_step_one_box').css('display', 'none');
-                    $('.reset_did_ood_bind').css('display', 'block');
-                    countDown();
-                }
-            }catch{
-                toast({
-                    message: 'Binding runtime failed',
-                    time: 1500,
-                    type: 'warn'
-                });
-                $('.did_loading_cover_container').css('display', 'none');
             }
         }
     }
     $('.did_loading_cover_container').css('display', 'none');
+})
+
+$('.activate_vood_btn').on('click', async function () {
+    $('.did_loading_cover_container').css('display', 'block');
+    let peopleUpRet = await resetDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object);
+    if(peopleUpRet){
+        let deviceUpRet = await resetDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device);
+        if(deviceUpRet){
+            let bindOodRet = await bindOod();
+            if(bindOodRet){
+                await bindRuntime();
+            }
+        }else{
+            toast({
+                message: 'ood up chain failed',
+                time: 1500,
+                type: 'warn'
+            });
+        }
+    }else{
+        toast({
+            message: 'people up chain failed',
+            time: 1500,
+            type: 'warn'
+        });
+    }
+    $('.did_loading_cover_container').css('display', 'none');
+})
+
+$('.reset_did_step_one_box .haved_did_click').on('click', async function () {
+    window.location.href = `cyfs://static/build_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_token}`;
 })
 
 function countDown () {

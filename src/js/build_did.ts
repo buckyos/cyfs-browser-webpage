@@ -637,10 +637,11 @@ $('.did_success_next_btn').on('click', async function () {
     if(!peopleUpChainR || !oodUpChainR){
         $('.cover_box').css('display', 'none');
         toast({
-            message: 'Activete ood failed',
+            message: 'up chain failed',
             time: 1500,
             type: 'warn'
         });
+        $('.did_loading_cover_container').css('display', 'none');
         return;
     }
     let index = _calcIndex(g_uniqueId);

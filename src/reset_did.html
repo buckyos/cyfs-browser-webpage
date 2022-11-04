@@ -17,8 +17,14 @@
                 <h2 class="did_title"></h2>
                 <div class="recovery_phrase_box">
                     <h3 class="recovery_phrase_title">Enter your recovery phrase</h3>
-                    <textarea placeholder="Restoring your account using  DID recovery phrase." class="recovery_phrase_textarea" name="" id="" ></textarea>
+                    <p class="recovery_phrase_warn_title activated_title">Your VOOD has been bound, please use the recovery phrase for the DID below to recover your identity.</p>
+                    <div class="recovery_phrase_did_box activated_title">
+                        <p class="activated_title_id">DID ：</p>
+                        <i class="info_main_copy_svg"></i>
+                    </div>
+                    <textarea placeholder="Restoring your account using DID recovery phrase." class="recovery_phrase_textarea" name="" id="" ></textarea>
                     <button class="did_next_btn did_verify_btn">Verify</button>
+                    <p class="haved_did_click">If you do not have a DID, please create your own DID first.</p>
                 </div>
             </div>
             <div class="reset_did_step_two_box">
@@ -49,7 +55,7 @@
                         <div class="reset_did_ood_bind_icon">
                             <img src="./img/did/did_bind_success_icon.svg" alt="">
                         </div>
-                        <p class="reset_did_activate_ood_title">VOOD binding successfully</p>
+                        <p class="reset_did_activate_ood_title"></p>
                         <p class="reset_did_activate_ood_subtitle">The page automatically jumps after <i class="did_bind_success_subtitle_i">3</i> seconds.</p>
                     </div>
                 </div>
@@ -62,6 +68,7 @@
             <p>Loading...</p>
         </div>
     </div>
+    <textarea id="copy_textarea" style="display:none;"></textarea>
 </body>
 <style>
 .reset_did_step_one_box, .reset_did_step_two_box, .reset_did_miss_container, .reset_did_activate_ood, .reset_did_ood_bind{
@@ -132,6 +139,7 @@
     border: 1px solid #DAE4F3;
     margin-bottom: 36px;
     outline: none;
+    resize: none;
 }
 .recovery_phrase_choose_box{
     height: 363px;
@@ -261,6 +269,42 @@
     line-height: 24px;
     height: 24px;
     text-align: center;
+}
+.recovery_phrase_warn_title{
+    width: 449px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #E23F53;
+    line-height: 22px;
+    padding: 30px 0 12px 0;
+}
+.recovery_phrase_did_box{
+    height: 24px;
+    padding-bottom: 18px;
+}
+.recovery_phrase_did_box p{
+    line-height: 24px;
+    height: 24px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #5F6368;
+    float: left;
+}
+.activated_title{
+    display: none;
+}
+.haved_did_click{
+    display: block;
+    width: 334px;
+    height: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #2873F7;
+    line-height: 16px;
+    padding-top: 15px;
+    margin: 0 auto;
+    text-decoration: underline;
+    display: none;
 }
 </style>
 </html>

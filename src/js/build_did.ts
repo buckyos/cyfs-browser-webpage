@@ -379,9 +379,27 @@ function lenghtstr(str:string){
 let buildDid = new BuildDid();
 buildDid.getAreaList();
 
-function SecondsFormate(date:number){
-    var seconds=Math.round(date/1000);
-    return seconds+" s";
+function TimesFormate(date:number){
+     var days=Math.floor(date/(24*3600*1000));
+     var leave1=date%(24*3600*1000);
+     var hours=Math.floor(leave1/(3600*1000));
+     var leave2=leave1%(3600*1000) ;
+     var minutes=Math.floor(leave2/(60*1000));
+     var leave3=leave2%(60*1000) ;
+     var seconds=Math.round(leave3/1000);
+     if(days > 0){
+         return days+"days "+hours+"hours "+minutes+" mins"+seconds+" s";
+     }else{
+         if(hours > 0){
+             return hours+"hours "+minutes+" mins"+seconds+" s";
+         }else{
+             if(minutes>0){
+                 return minutes+" mins"+seconds+" s";
+             }else{
+                 return seconds+" s";
+             }
+         }
+     }
 }
 
 if(g_token && g_ip){
@@ -400,7 +418,8 @@ if(g_token && g_ip){
         let visitTime = Number(visitTimeStorage);
         let timeDiff = currentTime - visitTime;
         gtag('event', 'diff_build_did_1_buy_ood', {
-            'diffTimeFormate': SecondsFormate(timeDiff)
+            'diffTimeFormate': TimesFormate(timeDiff),
+            'diffSenconds': Math.round(timeDiff/1000)
         });
     }
 }else{
@@ -722,12 +741,14 @@ $('.did_success_next_btn').on('click', async function () {
                             let visitTime = Number(visitTimeStorage);
                             let timeDiff = currentTime - visitTime;
                             gtag('event', 'diff_build_did_2_activete_process', {
-                                'diffTimeFormate': SecondsFormate(timeDiff)
+                                'diffTimeFormate': TimesFormate(timeDiff),
+                                'diffSenconds': Math.round(timeDiff/1000)
                             });
                         }
                         let timeDiff2 = currentTime - g_buyOodAfterTime;
                         gtag('event', 'diff_build_did_3_buy_after_activate', {
-                            'diffTimeFormate': SecondsFormate(timeDiff2)
+                            'diffTimeFormate': TimesFormate(timeDiff2),
+                            'diffSenconds': Math.round(timeDiff/1000)
                         });
                         countDown();
                     }

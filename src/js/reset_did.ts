@@ -256,6 +256,9 @@ let resetDid = new ResetDid();
 if(g_token && g_ip){
     let checkIp = g_ip.replace("[","").replace("]","");
     console.log('------checkIp',checkIp)
+    if(checkIp.indexOf(':') < 0){
+        checkIp = checkIp + ':1320';
+    }
     $('.reset_did_step_one_box').css('display', 'block');
     $('.reset_did_step_two_box').css('display', 'none');
     resetDid.getUniqueId(checkIp);
@@ -473,6 +476,8 @@ $('.did_verify_btn').on('click', async function () {
                     }else{
                         g_deviceInfo = deviceRet;
                         let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+                        g_peopleInfo.object.set_ood_work_mode(cyfs.OODWorkMode.ActiveStandby);
+                        g_peopleInfo.object.body_expect().set_update_time(cyfs.bucky_time_now());
                         let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
                         if (sign_ret.err) {
                             toast({

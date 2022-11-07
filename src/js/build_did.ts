@@ -652,15 +652,23 @@ $('.did_success_next_btn').on('click', async function () {
         'gtagTime': formatDate(new Date())
     });
     let peopleUpChainR = await buildDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object );
-    let oodUpChainR = await buildDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device );
-    if(!peopleUpChainR || !oodUpChainR){
-        $('.cover_box').css('display', 'none');
+    if(!peopleUpChainR){
+        $('.cover_box, .did_loading_cover_container').css('display', 'none');
         toast({
-            message: 'up chain failed',
+            message: 'people up chain failed',
             time: 1500,
             type: 'warn'
         });
-        $('.did_loading_cover_container').css('display', 'none');
+        return;
+    }
+    let oodUpChainR = await buildDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device );
+    if(!oodUpChainR){
+        $('.cover_box, .did_loading_cover_container').css('display', 'none');
+        toast({
+            message: 'ood up chain failed',
+            time: 1500,
+            type: 'warn'
+        });
         return;
     }
     let index = _calcIndex(g_uniqueId);
@@ -723,9 +731,9 @@ $('.did_success_next_btn').on('click', async function () {
                         }, body: JSON.stringify(bindDeviceInfo),
                     });
                     const ret = await response.json();
-                    if (ret.result !== 0) {
+                    if (ret.result != 0) {
                         toast({
-                            message: 'Binding failed,' + ret.msg,
+                            message: 'Bind failed,' + ret.msg,
                             time: 1500,
                             type: 'warn'
                         });
@@ -754,7 +762,7 @@ $('.did_success_next_btn').on('click', async function () {
                     }
                 }catch{
                     toast({
-                        message: 'Binding failed',
+                        message: 'Bind failed',
                         time: 1500,
                         type: 'warn'
                     });

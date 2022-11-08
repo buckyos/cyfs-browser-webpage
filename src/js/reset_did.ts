@@ -550,6 +550,7 @@ $('.activate_vood_btn').on('click', async function () {
 })
 
 $('.reset_did_step_one_box .haved_did_click').on('click', async function () {
+    sessionStorage.removeItem('is-reset-did');
     window.location.href = `cyfs://static/build_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_token}`;
 })
 

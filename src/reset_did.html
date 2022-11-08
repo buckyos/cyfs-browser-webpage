@@ -23,7 +23,7 @@
                         <i class="info_main_copy_svg"></i>
                     </div>
                     <textarea placeholder="Restoring your account using DID recovery phrase." class="recovery_phrase_textarea" name="" id="" ></textarea>
-                    <button class="did_next_btn did_verify_btn">Verify</button>
+                    <button class="did_next_btn did_verify_btn" disabled>Verify</button>
                     <p class="haved_did_click">If you do not have a DID, please create your own DID first.</p>
                 </div>
             </div>
@@ -112,6 +112,9 @@
     color: #FFFFFF;
     line-height: 28px;
     border: none;
+}
+.did_next_btn:disabled{
+    background: #E2E3E9;
 }
 .recovery_phrase_box{
     width: 468px;

@@ -40,7 +40,7 @@
                     <div class="did_buy_ood_container">
                         <div class="did_buy_ood_box">
                             <p class="did_buy_ood_title">You need to buy  VOOD to store your assets and data.</p>
-                            <button class="did_next_btn did_buy_ood_btn">Buy  VOOD </button>
+                            <button class="did_next_btn did_buy_ood_btn" >Buy  VOOD </button>
                             <p class="did_buy_ood_info">VOOD is one of the OOD types, OOD (Owner Online Device)  is a personal server device based on the CYFS protocol. You could use the OOD for decentralized, secure data storage and install DEC (Data Exchange Contract) App. The data is encrypted and stored in the OOD to guarantee your data privacy and security.</p>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                             <div class="did_create_mnemonic_box did_choose_mnemonic_box"></div>
                             <p class="did_mnemonic_choose_p">Please click the following words in order</p>
                             <div class="did_choose_mnemonic_container"></div>
-                            <button class="did_next_btn did_verify_btn">Verify</button>
+                            <button class="did_next_btn did_verify_btn" disabled>Verify</button>
                         </div>
                         <div class="did_create_success_box did_create_success">
                             <div class="create_did_success_box">
@@ -360,6 +360,9 @@
     line-height: 28px;
     border: none;
     margin-top: 5px;
+}
+.did_next_btn:disabled{
+    background: #E2E3E9;
 }
 .did_mnemonic_create_title{
     height: 19px;

@@ -512,12 +512,18 @@ $('.did_choose_mnemonic_container').on('click', 'span', function () {
     $(this).remove();
     let mnemonicHtml = `<span>${$(this).html() }</span>`;
     $('.did_choose_mnemonic_box').append(mnemonicHtml);
+    if($('.did_choose_mnemonic_container').html() == ''){
+        $('.did_verify_btn').removeAttr('disabled');
+    }
 })
 
 $('.did_choose_mnemonic_box').on('click', 'span', function () {
     $(this).remove();
     let mnemonicHtml = `<span>${$(this).html()}</span>`;
     $('.did_choose_mnemonic_container').append(mnemonicHtml);
+    if($('.did_choose_mnemonic_container').html() != ''){
+        $('.did_verify_btn').attr('disabled', 'disabled');
+    }
 })
 
 function _hashCode(strValue: string): number {
@@ -780,8 +786,6 @@ $('.did_success_next_btn').on('click', async function () {
                 'gtagTime': formatDate(new Date())
             });
         }
-        console.log('currentTime,g_buyOodAfterTime',currentTime,g_buyOodAfterTime);
-        console.log('currentTime-g_buyOodAfterTime',currentTime - g_buyOodAfterTime);
         let timeDiff2 = currentTime - g_buyOodAfterTime;
         gtag('event', 'diff_build_did_3_buy_after_activate', {
             'diffTimeFormate': TimesFormate(timeDiff2),

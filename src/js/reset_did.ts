@@ -175,8 +175,9 @@ class ResetDid {
                         console.log(ip+'check-result', result);
                         g_peopleId = String(result.bind_info.owner_id || '');
                         $('.activated_title_id').html('DID ：' + g_peopleId);
-                        $('.reset_did_step_two_box, .recovery_phrase_title').css('display', 'none');
-                        $('.reset_did_step_one_box, .activated_title').css('display', 'block');
+                        // $('.recovery_phrase_choose_box').css('display', 'none');
+                        $('.recovery_phrase_title').css('display', 'block');
+                        // $('.reset_did_step_one_box, .activated_title').css('display', 'block');
                         g_activation = true;
                     } else {
                         $('.haved_did_click').css('display', 'block');
@@ -208,7 +209,8 @@ class ResetDid {
         let waitTime = interval;
         let returnRet:boolean = false;
         await _sleep(interval);
-        while (waitTime < checkTimeoutSecs * 1000 && !returnRet) {
+        let hasReturnRet:boolean = false;
+        while (waitTime < checkTimeoutSecs * 1000 && !hasReturnRet) {
             const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
             console.origin.log('get receipt:', txId, ret);
             if (ret.code == 0 && ret.value.is_some()) {
@@ -216,8 +218,10 @@ class ResetDid {
                 console.origin.log('update desc receipt:', txId.to_base_58(), receipt.result);
                 if (receipt && receipt.result == 0) {
                     returnRet = true;
+                    hasReturnRet = true;
                 }else{
                     returnRet = false;
+                    hasReturnRet = true;
                 }
             }
             waitTime += interval;
@@ -448,46 +452,54 @@ $('.did_verify_btn').on('click', async function () {
                     time: 1500,
                     type: 'warn'
                 });
-                $('.reset_did_step_one_box').css('display', 'none');
-                $('.reset_did_step_two_box').css('display', 'block');
+                $('.recovery_phrase_textarea').val('');
+                $('.reset_did_step_one_box, .recovery_phrase_title').css('display', 'none');
+                $('.reset_did_step_one_box, .activated_title').css('display', 'block');
             }else{
                 let peopleOnMeta = g_peopleOnMeta = await resetDid.check_people_on_meta(peopleRet.objectId);
                 if(g_token && g_ip && !g_activation){
-                    let deviceInfo = {
-                        unique_id: g_uniqueId,
-                        owner: peopleRet.objectId,
-                        owner_private: peopleRet.privateKey,
-                        area: new cyfs.Area(0 , 0, 0, 0),
-                        network: cyfs.get_current_network(),
-                        address_index: _calcIndex(g_uniqueId),
-                        account: 0,
-                        nick_name: '',
-                        category: cyfs.DeviceCategory.OOD
-                    };
-                    console.origin.log("deviceInfo:", deviceInfo);
-                    let deviceRet = await resetDid.createDevice(deviceInfo);
-                    console.origin.log("deviceRet:", deviceRet);
-                    if(deviceRet.err){
+                    let oodList = g_peopleInfo.object.body_expect().content().ood_list;
+                    if((oodList.length >= 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length >= 1)){
                         toast({
-                            message: 'create device failed',
+                            message: 'You have multiple VOODs, the browser does not currently support multiple OOD modes.',
                             time: 1500,
                             type: 'warn'
                         });
                     }else{
-                        g_deviceInfo = deviceRet;
-                        let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
-                        g_peopleInfo.object.set_ood_work_mode(cyfs.OODWorkMode.ActiveStandby);
-                        g_peopleInfo.object.body_expect().set_update_time(cyfs.bucky_time_now());
-                        let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
-                        if (sign_ret.err) {
+                        let deviceInfo = {
+                            unique_id: g_uniqueId,
+                            owner: peopleRet.objectId,
+                            owner_private: peopleRet.privateKey,
+                            area: new cyfs.Area(0 , 0, 0, 0),
+                            network: cyfs.get_current_network(),
+                            address_index: _calcIndex(g_uniqueId),
+                            account: 0,
+                            nick_name: '',
+                            category: cyfs.DeviceCategory.OOD
+                        };
+                        console.origin.log("deviceInfo:", deviceInfo);
+                        let deviceRet = await resetDid.createDevice(deviceInfo);
+                        console.origin.log("deviceRet:", deviceRet);
+                        if(deviceRet.err){
                             toast({
                                 message: 'create device failed',
                                 time: 1500,
                                 type: 'warn'
                             });
                         }else{
-                            $('.did_loading_cover_container, .reset_did_step_one_box').css('display', 'none');
-                            $('.reset_did_activate_ood').css('display', 'block');
+                            g_deviceInfo = deviceRet;
+                            let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+                            let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
+                            if (sign_ret.err) {
+                                toast({
+                                    message: 'create device failed',
+                                    time: 1500,
+                                    type: 'warn'
+                                });
+                            }else{
+                                $('.did_loading_cover_container, .reset_did_step_one_box').css('display', 'none');
+                                $('.reset_did_activate_ood').css('display', 'block');
+                            }
                         }
                     }
                 }else{

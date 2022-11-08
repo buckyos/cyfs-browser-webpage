@@ -253,8 +253,9 @@ class BuildDid {
         let interval = 1000;
         let waitTime = interval;
         let returnRet:boolean = false;
+        let hasReturnRet:boolean = false;
         await _sleep(interval);
-        while (waitTime < checkTimeoutSecs * 1000 && !returnRet) {
+        while (waitTime < checkTimeoutSecs * 1000 && !hasReturnRet) {
             const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
             console.origin.log('get receipt:', txId, ret);
             if (ret.code == 0 && ret.value.is_some()) {
@@ -262,8 +263,10 @@ class BuildDid {
                 console.origin.log('update desc receipt:', txId.to_base_58(), receipt.result);
                 if (receipt && receipt.result == 0) {
                     returnRet = true;
+                    hasReturnRet = true;
                 }else{
                     returnRet = false;
+                    hasReturnRet = true;
                 }
             }
             waitTime += interval;
@@ -277,7 +280,7 @@ class BuildDid {
         return returnRet;
     }
 
-    async check_people_on_meta(id: cyfs.ObjectId): Promise<boolean> {
+    async check_object_on_meta(id: cyfs.ObjectId): Promise<boolean> {
         const ret = await this.meta_client.getDesc(id);
         if (ret.ok) {
             ret.unwrap().match({
@@ -293,8 +296,8 @@ class BuildDid {
     }
 
     async upChain (id:cyfs.ObjectId, obj: cyfs.AnyNamedObject) {
-        // getDesc upchain
-        let check_p_ret = await this.check_people_on_meta(id);
+        // getDesc up chain
+        let check_p_ret = await this.check_object_on_meta(id);
         console.origin.log('check_p_ret', check_p_ret);
         let p_tx:cyfs.TxId;
         if(check_p_ret){
@@ -306,7 +309,7 @@ class BuildDid {
             console.origin.log('p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }
-        // check upchain
+        // check up chain
         let p_meta_success = await this.checkReceipt(p_tx)
         console.log('people desc on meta:', p_meta_success);
         return p_meta_success;
@@ -419,7 +422,8 @@ if(g_token && g_ip){
         let timeDiff = currentTime - visitTime;
         gtag('event', 'diff_build_did_1_buy_ood', {
             'diffTimeFormate': TimesFormate(timeDiff),
-            'diffSenconds': Math.round(timeDiff/1000)
+            'diffSenconds': Math.round(timeDiff/1000),
+            'gtagTime': formatDate(new Date())
         });
     }
 }else{
@@ -598,7 +602,7 @@ $('.did_verify_btn').on('click', async function () {
         };
         console.origin.log("deviceInfo:", deviceInfo);
         let deviceRet = await buildDid.createDevice(deviceInfo);
-        console.origin.log("deviceRet:", deviceRet.device.signs().body_signs(),deviceRet.device.signs().body_signs());
+        console.origin.log("deviceRet:", deviceRet.device.signs().body_signs());
         if(deviceRet.err){
             toast({
                 message: 'create device failed',
@@ -697,78 +701,6 @@ $('.did_success_next_btn').on('click', async function () {
                 type: 'warn'
             });
             return;
-        }else{
-            const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
-            console.origin.log("deviceInfo:", deviceInfo)
-            const runtimecreateInfo = {
-                unique_id: deviceInfo.device_info.mac_address,
-                owner: g_peopleInfo.objectId,
-                owner_private: g_peopleInfo.privateKey,
-                area: new cyfs.Area(0 ,0, 0, 0),
-                network: cyfs.get_current_network(),
-                address_index: _calcIndex(deviceInfo.device_info.mac_address),
-                account: 0,
-                nick_name: 'runtime',
-                category: cyfs.DeviceCategory.PC
-            };
-            const runtimeInfo = await buildDid.createDevice(runtimecreateInfo);
-            console.origin.log("runtimeInfo:", runtimeInfo)
-            if(!runtimeInfo.err){
-                let index = _calcIndex(deviceInfo.device_info.mac_address);
-                let bindDeviceInfo = {
-                    owner: g_peopleInfo.object.to_hex().unwrap(),
-                    desc: runtimeInfo.device.to_hex().unwrap(),
-                    sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
-                    index
-                }
-                console.origin.log("bindDeviceInfo:", bindDeviceInfo)
-                try{
-                    const response = await fetch("http://127.0.0.1:1321/bind", {
-                        method: 'POST',
-                        headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json',
-                        }, body: JSON.stringify(bindDeviceInfo),
-                    });
-                    const ret = await response.json();
-                    if (ret.result != 0) {
-                        toast({
-                            message: 'Bind failed,' + ret.msg,
-                            time: 1500,
-                            type: 'warn'
-                        });
-                    } else {
-                        $('.create_did_step_two_box').css('display', 'none');
-                        $('.create_did_step_three_box').css('display', 'block');
-                        gtag('event', 'build_did_pv_6_activatee_success', {
-                            'gtagTime': formatDate(new Date())
-                        });
-                        let currentTime = (new Date()).getTime();
-                        let visitTimeStorage = localStorage.getItem('cyfs-build-did-buy-ood-time');
-                        if(visitTimeStorage){
-                            let visitTime = Number(visitTimeStorage);
-                            let timeDiff = currentTime - visitTime;
-                            gtag('event', 'diff_build_did_2_activete_process', {
-                                'diffTimeFormate': TimesFormate(timeDiff),
-                                'diffSenconds': Math.round(timeDiff/1000)
-                            });
-                        }
-                        let timeDiff2 = currentTime - g_buyOodAfterTime;
-                        gtag('event', 'diff_build_did_3_buy_after_activate', {
-                            'diffTimeFormate': TimesFormate(timeDiff2),
-                            'diffSenconds': Math.round(timeDiff/1000)
-                        });
-                        countDown();
-                    }
-                }catch{
-                    toast({
-                        message: 'Bind failed',
-                        time: 1500,
-                        type: 'warn'
-                    });
-                    $('.cover_box').css('display', 'none');
-                }
-            }
         }
     }catch{
         toast({
@@ -777,6 +709,86 @@ $('.did_success_next_btn').on('click', async function () {
             type: 'warn'
         });
         $('.cover_box').css('display', 'none');
+        return;
+    }
+    const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
+    console.origin.log("deviceInfo:", deviceInfo)
+    const runtimecreateInfo = {
+        unique_id: deviceInfo.device_info.mac_address,
+        owner: g_peopleInfo.objectId,
+        owner_private: g_peopleInfo.privateKey,
+        area: new cyfs.Area(0 ,0, 0, 0),
+        network: cyfs.get_current_network(),
+        address_index: _calcIndex(deviceInfo.device_info.mac_address),
+        account: 0,
+        nick_name: 'runtime',
+        category: cyfs.DeviceCategory.PC
+    };
+    const runtimeInfo = await buildDid.createDevice(runtimecreateInfo);
+    console.origin.log("runtimeInfo:", runtimeInfo)
+    if(!runtimeInfo.err){
+        let index = _calcIndex(deviceInfo.device_info.mac_address);
+        let bindDeviceInfo = {
+            owner: g_peopleInfo.object.to_hex().unwrap(),
+            desc: runtimeInfo.device.to_hex().unwrap(),
+            sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
+            index
+        }
+        console.origin.log("bindDeviceInfo:", bindDeviceInfo)
+        try{
+            const response = await fetch("http://127.0.0.1:1321/bind", {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                }, body: JSON.stringify(bindDeviceInfo),
+            });
+            const ret = await response.json();
+            console.origin.log('ret',ret);
+            console.log('ret.result',ret.result);
+            console.log('ret.result != 0', ret.result != 0);
+            if (ret.result != 0) {
+                toast({
+                    message: 'Bind failed,' + ret.msg,
+                    time: 1500,
+                    type: 'warn'
+                });
+                return;
+            }
+        }catch{
+            toast({
+                message: 'Bind failed',
+                time: 1500,
+                type: 'warn'
+            });
+            $('.cover_box').css('display', 'none');
+            return;
+        }
+        $('.create_did_step_two_box').css('display', 'none');
+        $('.create_did_step_three_box').css('display', 'block');
+        gtag('event', 'build_did_pv_6_activatee_success', {
+            'gtagTime': formatDate(new Date())
+        });
+        let currentTime = (new Date()).getTime();
+        let visitTimeStorage = localStorage.getItem('cyfs-build-did-buy-ood-time');
+        if(visitTimeStorage){
+            let visitTime = Number(visitTimeStorage);
+            let timeDiff = currentTime - visitTime;
+            gtag('event', 'diff_build_did_2_activete_process', {
+                'diffTimeFormate': TimesFormate(timeDiff),
+                'diffSenconds': Math.round(timeDiff/1000),
+                'gtagTime': formatDate(new Date())
+            });
+        }
+        console.log('currentTime,g_buyOodAfterTime',currentTime,g_buyOodAfterTime);
+        console.log('currentTime-g_buyOodAfterTime',currentTime - g_buyOodAfterTime);
+        let timeDiff2 = currentTime - g_buyOodAfterTime;
+        gtag('event', 'diff_build_did_3_buy_after_activate', {
+            'diffTimeFormate': TimesFormate(timeDiff2),
+            'diffSenconds': Math.round(timeDiff2/1000),
+            'gtagTime': formatDate(new Date())
+        });
+        countDown();
     }
     $('.cover_box').css('display', 'none');
 })

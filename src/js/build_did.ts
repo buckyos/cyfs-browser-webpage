@@ -68,11 +68,7 @@ if (window.location.search.split("?")[1]) {
 }
 
 $(async function(){
-    if(LANGUAGESTYPE == 'zh'){
-        $('title').html('创建DID');
-    }else{
-        $('title').html('Build DID');
-    }
+    $('title').html('Build DID');
 });
 
 window.dataLayer = window.dataLayer || [];
@@ -407,7 +403,7 @@ function TimesFormate(date:number){
 
 if(g_token && g_ip){
     $('.create_did_step_one_box').css('display', 'none');
-    $('.create_did_step_two_box, .create_did_step_two').css('display', 'block');
+    $('.create_did_step_two_box, .create_did_step_two, .did_title_intro_btn_did').css('display', 'block');
     let checkIp = g_ip.replace("[","").replace("]","");
     console.log('------checkIp',checkIp)
     buildDid.getUniqueId(checkIp);
@@ -427,6 +423,7 @@ if(g_token && g_ip){
         });
     }
 }else{
+    $('.did_title_intro_btn_vood').css('display', 'block');
     gtag('event', 'build_did_pv_1_first_visit', {
         'gtagTime': formatDate(new Date())
     });
@@ -437,7 +434,7 @@ $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_no', function () {
 })
 
 $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_yes', function () {
-    $('.cover_box, .did_mnemonic_create').css('display', 'none');
+    $('.cover_box, .did_mnemonic_create, .did_title_intro_btn').css('display', 'none');
     $('.did_mnemonic_choose').css('display', 'block');
     let mnemonicHtml:string = '';
     g_mnemonicList.forEach(mnemonic=>{
@@ -474,7 +471,7 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     console.origin.log('------didName, oodName',didName, oodName)
     if(!didName || !oodName){
         toast({
-            message: LANGUAGESTYPE == 'zh'?"信息没有填写完成": 'The information is not completed.',
+            message: 'The information is not completed.',
             time: 3000,
             type: 'warn'
         });
@@ -482,7 +479,7 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     }
     if(didName && lenghtstr(didName) > 16){
         toast({
-            message: LANGUAGESTYPE == 'zh'?"名称不可以超过16个字符": 'Nickname cannot exceed 16 characters.',
+            message: 'Nickname cannot exceed 16 characters.',
             time: 3000,
             type: 'warn'
         });
@@ -490,11 +487,11 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     }
     g_didName = didName;
     g_oodName = oodName;
-    $('.create_did_step_two').css('display', 'none');
+    $('.create_did_step_two, .did_title_intro_btn_did').css('display', 'none');
     gtag('event', 'build_did_pv_3_show_mnemonics', {
         'gtagTime': formatDate(new Date())
     });
-    $('.did_mnemonic_create_box').css('display', 'block');
+    $('.did_mnemonic_create_box, .did_title_intro_btn_phrase').css('display', 'block');
     g_country = Number($('#country_select').val()) || 0;
     g_state = Number($('#state_select').val()) || 0;
     g_city = Number($('#city_select').val()) || 0;
@@ -563,7 +560,7 @@ $('.did_verify_btn').on('click', async function () {
     if(mnemonic_Container){
         $('.cover_box').css('display', 'none');
         toast({
-            message: LANGUAGESTYPE == 'zh'?"还有助记词没有选择": 'There is no choice for mnemonics',
+            message: 'There is no choice for mnemonics',
             time: 3000,
             type: 'warn'
         });
@@ -636,7 +633,7 @@ $('.did_verify_btn').on('click', async function () {
         }
     }else{
         toast({
-            message: LANGUAGESTYPE == 'zh'?"创建people失败": 'Failed to create people',
+            message: 'Failed to create people',
             time: 3000,
             type: 'warn'
         });
@@ -802,5 +799,8 @@ $('.did_intro_container').on('click', '.did_intro_close_i', function () {
 })
 
 $('.did_title_intro_btn').on('click', function () {
-    $('.did_intro_container').css('display', 'block');
+    let box = $(this).attr('data-box');
+    if(box){
+        $('.'+box).css('display', 'block');
+    }
 })

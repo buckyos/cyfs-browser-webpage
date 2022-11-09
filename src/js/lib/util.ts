@@ -320,58 +320,58 @@ export function castToLocalUnit(value: number | null | undefined) {
 export let LANGUAGESTYPE:string = 'en';
 export let LANGUAGESOBJECT = en;
 
-export async function setLanguages (languages: string){
-  $('[set-lan]').each(function () {
-    let _this = $(this);
-    let setLanContent = _this.attr('set-lan')!.split(':');
-    let domKey = setLanContent[0];
-    let keyName:string = setLanContent[1];
-    let lan = en;
-    if(languages == 'zh'){
-      LANGUAGESOBJECT = lan = zh;
-      LANGUAGESTYPE = 'zh';
-    }else{
-      lan = LANGUAGESOBJECT = en;
-      LANGUAGESTYPE = 'en';
-    }
-    let showContent:string = '';
-    if(keyName.indexOf('.') > -1){
-      const keys = keyName.split('.');
-      const firstKey:string = keys[0];
-      const secondKey:string = keys[1];
-      showContent = lan[firstKey][secondKey];
-    }else{
-      showContent = lan[keyName];
-    }
-    switch (domKey) {
-      case 'html':
-        _this.html(showContent); 
-        break;
-      case 'val':
-      case 'value':
-        _this.val(showContent);
-        break;
-      case 'src':
-        _this.attr('src',showContent); 
-        break;
-      case 'placeholder':
-        _this.attr('placeholder',showContent); 
-        break;
-      default:
-        _this.html(showContent);
-    }
-  });
-}
+// export async function setLanguages (languages: string){
+//   $('[set-lan]').each(function () {
+//     let _this = $(this);
+//     let setLanContent = _this.attr('set-lan')!.split(':');
+//     let domKey = setLanContent[0];
+//     let keyName:string = setLanContent[1];
+//     let lan = en;
+//     if(languages == 'zh'){
+//       LANGUAGESOBJECT = lan = zh;
+//       LANGUAGESTYPE = 'zh';
+//     }else{
+//       lan = LANGUAGESOBJECT = en;
+//       LANGUAGESTYPE = 'en';
+//     }
+//     let showContent:string = '';
+//     if(keyName.indexOf('.') > -1){
+//       const keys = keyName.split('.');
+//       const firstKey:string = keys[0];
+//       const secondKey:string = keys[1];
+//       showContent = lan[firstKey][secondKey];
+//     }else{
+//       showContent = lan[keyName];
+//     }
+//     switch (domKey) {
+//       case 'html':
+//         _this.html(showContent); 
+//         break;
+//       case 'val':
+//       case 'value':
+//         _this.val(showContent);
+//         break;
+//       case 'src':
+//         _this.attr('src',showContent); 
+//         break;
+//       case 'placeholder':
+//         _this.attr('placeholder',showContent); 
+//         break;
+//       default:
+//         _this.html(showContent);
+//     }
+//   });
+// }
 
-$(function(){
-  var browerLanguage =(navigator.languages[0] || navigator.browserLanguage).toLowerCase();
-  console.log('browerLanguage', browerLanguage)
-  if(browerLanguage.indexOf('zh')!=-1){
-    setLanguages('zh');
-  }else{
-    setLanguages('en');
-  }
-});
+// $(function(){
+//   var browerLanguage =(navigator.languages[0] || navigator.browserLanguage).toLowerCase();
+//   console.log('browerLanguage', browerLanguage)
+//   if(browerLanguage.indexOf('zh')!=-1){
+//     setLanguages('zh');
+//   }else{
+//     setLanguages('en');
+//   }
+// });
 
 export const STATUSTYPE:{'zh':string,'en':string}[] = [
   {

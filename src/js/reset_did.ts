@@ -586,3 +586,14 @@ $('.recovery_phrase_textarea').on('keyup', function () {
         $('.did_verify_btn').attr('disabled', 'disabled');
     }
 })
+
+$('.did_title_intro_btn').on('click', function () {
+    let box = $(this).attr('data-box');
+    if(box){
+        $('.'+box).css('display', 'block');
+    }
+})
+
+$('.did_intro_container').on('click', '.did_intro_close_i', function () {
+    $('.did_intro_container').css('display', 'none');
+})

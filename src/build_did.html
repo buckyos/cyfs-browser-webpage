@@ -15,8 +15,8 @@
             <div class="create_did_step_one_box">
                 <div class="create_did_box">
                     <h2 class="did_title">Buy VOOD 
-                        <span class="did_title_intro"><span class="did_title_intro_btn">what is  VOOD ?</span>
-                            <div class="did_intro_container">
+                        <span class="did_title_intro"><span class="did_title_intro_btn did_title_intro_btn_vood" data-box="did_intro_container_vood">what is  VOOD ?</span>
+                            <div class="did_intro_container did_intro_container_vood">
                                 <h2 class="did_intro_title">what is  VOOD ?</h2>
                                 <i class="did_intro_close_i"></i>
                                 <div class="did_intro_img_box">
@@ -69,8 +69,18 @@
             <div class="create_did_step_two_box">
                 <div class="create_did_box">
                     <h2 class="did_title">Create Your DID
-                        <span class="did_title_intro did_title_intro_phrase"><span class="did_title_intro_btn">What is a recovery phrase?</span>
-                            <div class="did_intro_container">
+                        <span class="did_title_intro did_title_intro_phrase"><span class="did_title_intro_btn did_title_intro_btn_did" data-box="did_intro_container_did">what is  DID ?</span><span class="did_title_intro_btn did_title_intro_btn_phrase" data-box="did_intro_container_phrase">What is a recovery phrase?</span>
+                            <div class="did_intro_container did_intro_container_did">
+                                <h2 class="did_intro_title">what is  DID ?</h2>
+                                <i class="did_intro_close_i"></i>
+                                <div class="did_intro_img_box">
+                                    <img src="./img/did/did_intro_img.svg" alt="">
+                                </div>
+                                <div class="did_intro_p_box">
+                                    <p class="did_intro_p">Decentralized identity (DID)  , also referred to as self-sovereign identity, is an open-standards based identity framework that uses digital identifiers and verifiable credentials that are self-owned, independent, and enable trusted data exchange.</p>
+                                </div>
+                            </div>
+                            <div class="did_intro_container did_intro_container_phrase">
                                 <h2 class="did_intro_title what_did_click">What is a recovery phrase?</h2>
                                 <i class="did_intro_close_i"></i>
                                 <div class="did_intro_img_box">
@@ -155,10 +165,9 @@
                             <div class="did_mnemonic_tips_box">
                                 <h3 class="did_mnemonic_tips_title"><i class="did_mnemonic_tips_title_i"></i>Tips:</h3>
                                 <div class="did_mnemonic_tips">
-                                    • Do not reveal the mnemonic to anyone
-                                    • Once the mnemonic is lost, the asset cannot be recovered
+                                    • Do not reveal the mnemonic to anyone<br/>
+                                    • Once the mnemonic is lost, the asset cannot be recovered<br/>
                                     • Do not backup and save by means of screenshots or network transmissions
-                                    • In any case, please do not uninstall the app easily
                                 </div>
                             </div>
                             <button class="did_mnemonic_tips_next did_next_btn" data-next=".warn_did_cover_box" data-last="">Next</button>
@@ -186,28 +195,36 @@
                 </p>
             </div>
             <div class="create_did_step_three_box">
-                <h2 class="did_title">Activate VOOD</h2>
                 <div class="create_did_box">
-                    <div class="did_progress_box">
+                    <h2 class="did_title">Activate VOOD</h2>
+                    <div class="did_progress_box did_progress_box_one">
                         <div class="did_progress_container">
-                            <div class="did_progress">
-                                <div>1</div>
+                            <div class="did_progress did_progress_actived">
+                                <div></div>
                             </div>
-                            <p class="did_progress_p">Buy VOOD</p>
                         </div>
-                        <div class="did_progress_border"></div>
+                        <div class="did_progress_border did_progress_border_active"></div>
                         <div class="did_progress_container">
-                            <div class="did_progress ">
-                                <div>2</div>
+                            <div class="did_progress did_progress_actived">
+                                <div></div>
                             </div>
-                            <p class="did_progress_p did_progress_p_two">Create DID</p>
                         </div>
-                        <div class="did_progress_border"></div>
+                        <div class="did_progress_border did_progress_border_active"></div>
                         <div class="did_progress_container">
                             <div class="did_progress did_progress_active">
-                                <div>3</div>
+                                <div></div>
                             </div>
-                            <p class="did_progress_p did_progress_p_three">Activate VOOD</p>
+                        </div>
+                    </div>
+                    <div class="did_progress_box did_progress_box_two">
+                        <div class="did_progress_container">
+                            <p class="did_progress_p">Buy VOOD</p>
+                        </div>
+                        <div class="did_progress_container">
+                            <p class="did_progress_p did_progress_p_two ">Create DID</p>
+                        </div>
+                        <div class="did_progress_container">
+                            <p class="did_progress_p did_progress_p_three did_progress_p_active">Activate VOOD</p>
                         </div>
                     </div>
                     <div class="create_did_content_box">
@@ -239,7 +256,7 @@
     </div>
     <div class="cover_box did_loading_cover_container">
         <div class="cover_container_box did_loading_cover_box">
-            <img src="./img/app/app_status_loading.gif" alt="">
+            <img src="./img/did/did_loading.gif" alt="">
             <p>Loading...</p>
         </div>
     </div>
@@ -269,16 +286,18 @@
     text-decoration: underline;
     line-height: 65px;
     cursor: pointer;
+    color: #2873F7;
     position: relative;
 }
 .did_title_intro_btn{
     font-weight: 400;
     font-size: 12px;
     color: #2873F7;
+    display: none;
 }
 .create_did_box{
     width: 528px;
-    height: 100%;
+    /* height: 100%; */
     background: #FFFFFF;
     box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
     border-radius: 8px 8px 8px 8px;
@@ -297,10 +316,11 @@
 }
 .create_did_content_box{
     width: 526px;
-    height: 399px;
+    height: 347px;
     background: #FAFAFA;
     border-radius: 0px 0px 7px 7px;
     margin: 0 auto;
+    padding-top: 70px;
 }
 .did_mnemonic_create_box{
     padding: 18px 33px 0 33px;
@@ -308,7 +328,7 @@
 .what_did_click_p{
     padding-top: 13px;
 }
-.did_title_intro_phrase .did_intro_container{
+.did_intro_container_phrase{
     left: 201px;
 }
 .did_progress_container{
@@ -368,7 +388,7 @@
     padding-left: 102px;
 }
 .did_info_box_two{
-    border: 1px solid #DAE4F3;
+    border: 1px dashed #DAE4F3;
     border-left: none;
     border-right: none;
 }
@@ -424,17 +444,15 @@
     font-weight: 400;
     color: #E23F53;
     line-height: 18px;
+    padding-bottom: 16px;
 }
 .did_create_mnemonic_box{
     width: 426px;
     overflow: hidden;
-    overflow-y: auto ;
     background: #E2E3E9;
     border-radius: 8px;
     border: 1px solid #DAE4F3;
     padding: 16px 17px 4px 17px;
-    margin-top: 16px;
-    height: 80px;
 }
 .did_create_mnemonic_box span, .did_choose_mnemonic_container span{
     display: block;
@@ -471,7 +489,7 @@
     background: url(./img/did/did_mnemonic_tips_title.svg) no-repeat center center;
 }
 .did_mnemonic_tips{
-    height: 87px;
+    height: 84px;
     overflow-y: auto;
     font-size: 12px;
     font-weight: 400;
@@ -490,6 +508,7 @@
 .create_did_step_two_box .create_did_content_box{
     padding-top: 3px;
     height: 415px;
+    /* height: 440px; */
 }
 .did_cover_box{
     width: 320px;
@@ -502,8 +521,8 @@
     width: 16px;
     height: 16px;
     float: right;
-    margin: 10px 17px 0 0;
-    background: url(./img/did/did_close_cover_i.svg) no-repeat center center;
+    margin: 10px 12px 0 0;
+    background: url(./img/did/did_intro_close_i.svg) no-repeat center center;
     cursor: pointer;
 }
 .did_warn_icon{
@@ -540,7 +559,7 @@
 .did_warn_container_box div{
     float: left;
 }
-.did_mnemonic_tips_title_i{
+.did_warn_container_box .did_mnemonic_tips_title_i{
     margin: 12px 6px 20px 10px;
 }
 .did_warn_info{
@@ -566,8 +585,8 @@
     padding: 18px 0 17px 0;
 }
 .did_choose_mnemonic_box{
-    width: 431px;
-    margin: 0;
+    width: 426px;
+    min-height: 80px;
 }
 .did_mnemonic_choose_p{
     width: 239px;
@@ -580,11 +599,12 @@
 }
 .did_choose_mnemonic_container{
     width: 460px;
-    height: 148px;
+    min-height: 130px;
     overflow: hidden ;
 }
 .did_verify_btn{
     margin-top: 0;
+    margin: 0 auto;
 }
 .create_did_success_box{
     width: 320px;
@@ -614,6 +634,7 @@
     line-height: 24px;
 }
 .did_success_next_btn{
+    margin: 0 auto;
     margin-top: 59px;
 }
 .did_bind_success_box{
@@ -623,7 +644,6 @@
     border-radius: 8px;
     border: 1px solid #DAE4F3;
     margin: 0 auto;
-    margin-top: 70px;
 }
 .did_bind_success_title{
     text-align: center;
@@ -687,7 +707,6 @@
 }
 .did_bind_success_subtitle_i{
     display: inline;
-    color: #0AD7B6;
 }
 .did_loading_cover_box{
     width: 320px;

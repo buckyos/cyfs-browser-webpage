@@ -507,7 +507,6 @@ class Util {
     async getOodStatus(id?:cyfs.ObjectId) {
         // 连接状态信息
         let req = id ? { common: { flags: 0, target: id } } : { common: { flags: 0 } };
-        console.log('1111111111111',req)
         let ood_status = await this.m_util_service.get_ood_status(req);
         if (!ood_status.err) {
             ood_status = ood_status.unwrap().status;

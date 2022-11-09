@@ -626,11 +626,8 @@ $('#signin_ul').on('click', '.app_edit_p', async function () {
 //删除快捷方式
 $('#signin_ul').on('click', '.app_delete_p', async function () {
     let index = $(this).attr('data-edit');
-    console.origin.log('122223333333', index, SHORTCUT_LIST)
     $(this).parent('.app_edit_box').css('display', 'none');
     SHORTCUT_LIST.splice(Number(index), 1);
-    console.origin.log('122223333333', SHORTCUT_LIST)
-
     renderingShortcut(SHORTCUT_LIST);
 })
 

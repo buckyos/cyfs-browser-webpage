@@ -575,3 +575,14 @@ $('.reset_ood_btn').on('click', function () {
     sessionStorage.setItem('is-reset-did', 'true');
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/reset_did.html&desc=#/login';
 })
+
+$('.recovery_phrase_textarea').on('keyup', function () {
+    g_mnemonic = String($('.recovery_phrase_textarea').val());
+    let mnemonicR = cyfs.bip39.validateMnemonic(g_mnemonic);
+    console.origin.log("gen mnemonicR:", mnemonicR);
+    if(mnemonicR){
+        $('.did_verify_btn').removeAttr('disabled');
+    }else{
+        $('.did_verify_btn').attr('disabled', 'disabled');
+    }
+})

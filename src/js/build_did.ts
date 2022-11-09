@@ -796,3 +796,11 @@ $('.did_success_next_btn').on('click', async function () {
     }
     $('.cover_box').css('display', 'none');
 })
+
+$('.did_intro_container').on('click', '.did_intro_close_i', function () {
+    $('.did_intro_container').css('display', 'none');
+})
+
+$('.did_title_intro_btn').on('click', function () {
+    $('.did_intro_container').css('display', 'block');
+})

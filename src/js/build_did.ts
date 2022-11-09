@@ -475,7 +475,7 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     if(!didName || !oodName){
         toast({
             message: LANGUAGESTYPE == 'zh'?"信息没有填写完成": 'The information is not completed.',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
         return;
@@ -483,7 +483,7 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     if(didName && lenghtstr(didName) > 16){
         toast({
             message: LANGUAGESTYPE == 'zh'?"名称不可以超过16个字符": 'Nickname cannot exceed 16 characters.',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
         return;
@@ -564,7 +564,7 @@ $('.did_verify_btn').on('click', async function () {
         $('.cover_box').css('display', 'none');
         toast({
             message: LANGUAGESTYPE == 'zh'?"还有助记词没有选择": 'There is no choice for mnemonics',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
         return;
@@ -577,7 +577,7 @@ $('.did_verify_btn').on('click', async function () {
         $('.cover_box').css('display', 'none');
         toast({
             message: 'Recovery Phrase Validation Error',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
         return;
@@ -612,7 +612,7 @@ $('.did_verify_btn').on('click', async function () {
         if(deviceRet.err){
             toast({
                 message: 'create device failed',
-                time: 1500,
+                time: 3000,
                 type: 'warn'
             });
         }else{
@@ -623,7 +623,7 @@ $('.did_verify_btn').on('click', async function () {
                 $('.cover_box').css('display', 'none');
                 toast({
                     message: 'create device failed',
-                    time: 1500,
+                    time: 3000,
                     type: 'warn'
                 });
                 return ;
@@ -637,7 +637,7 @@ $('.did_verify_btn').on('click', async function () {
     }else{
         toast({
             message: LANGUAGESTYPE == 'zh'?"创建people失败": 'Failed to create people',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
     }
@@ -666,7 +666,7 @@ $('.did_success_next_btn').on('click', async function () {
         $('.cover_box, .did_loading_cover_container').css('display', 'none');
         toast({
             message: 'people up chain failed',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
         return;
@@ -676,7 +676,7 @@ $('.did_success_next_btn').on('click', async function () {
         $('.cover_box, .did_loading_cover_container').css('display', 'none');
         toast({
             message: 'ood up chain failed',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
         return;
@@ -703,7 +703,7 @@ $('.did_success_next_btn').on('click', async function () {
             $('.cover_box').css('display', 'none');
             toast({
                 message: 'Activete ood failed',
-                time: 1500,
+                time: 3000,
                 type: 'warn'
             });
             return;
@@ -711,7 +711,7 @@ $('.did_success_next_btn').on('click', async function () {
     }catch{
         toast({
             message: 'Activete ood failed',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
         $('.cover_box').css('display', 'none');
@@ -756,7 +756,7 @@ $('.did_success_next_btn').on('click', async function () {
             if (ret.result != 0) {
                 toast({
                     message: 'Bind failed,' + ret.msg,
-                    time: 1500,
+                    time: 3000,
                     type: 'warn'
                 });
                 return;
@@ -764,7 +764,7 @@ $('.did_success_next_btn').on('click', async function () {
         }catch{
             toast({
                 message: 'Bind failed',
-                time: 1500,
+                time: 3000,
                 type: 'warn'
             });
             $('.cover_box').css('display', 'none');

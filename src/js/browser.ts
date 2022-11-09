@@ -678,8 +678,9 @@ $('.choose_did_container').on('click', '.activate_btn', async function () {
 })
 
 $('.choose_did_container').on('click', '.reset_did_btn', async function () {
-    $('.classa_list_container').css('display', 'none');
-    $('.classb_reset_container').css('display', 'block');
+    window.location.href = 'cyfs://static/reset_did.html';
+    // $('.classa_list_container').css('display', 'none');
+    // $('.classb_reset_container').css('display', 'block');
 })
 
 $('.choose_did_container').on('mouseover', '.choose_btn', async function () {

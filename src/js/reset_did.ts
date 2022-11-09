@@ -152,7 +152,7 @@ class ResetDid {
         if (sign_ret.err) {
             toast({
                 message: 'create device failed',
-                time: 1500,
+                time: 3000,
                 type: 'warn'
             });
             return ;
@@ -278,7 +278,7 @@ function copyData (data:string) {
     $('#copy_textarea').hide();
     toast({
         message: LANGUAGESTYPE == 'zh'?"复制成功":'Copied successfully',
-        time: 1500,
+        time: 3000,
         type: 'success'
     });
 }
@@ -347,7 +347,7 @@ async function bindOod () {
         if (activeteRet.result !== 0) {
             toast({
                 message: 'Activete ood failed',
-                time: 1500,
+                time: 3000,
                 type: 'warn'
             });
             return false;
@@ -393,7 +393,7 @@ async function bindRuntime () {
         if (ret.result != 0) {
             toast({
                 message: 'Binding runtime failed,' + ret.msg,
-                time: 1500,
+                time: 3000,
                 type: 'warn'
             });
         } else {
@@ -409,7 +409,7 @@ async function bindRuntime () {
     }catch{
         toast({
             message: 'Binding runtime failed',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
         $('.did_loading_cover_container').css('display', 'none');
@@ -424,7 +424,7 @@ $('.did_verify_btn').on('click', async function () {
     if(!mnemonicR){
         toast({
             message: 'Recovery Phrase Validation Error',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
     }else{
@@ -441,7 +441,7 @@ $('.did_verify_btn').on('click', async function () {
         if(peopleRet.err){
             toast({
                 message: 'Failed to create people',
-                time: 1500,
+                time: 3000,
                 type: 'warn'
             });
         }else{
@@ -449,7 +449,7 @@ $('.did_verify_btn').on('click', async function () {
             if(g_peopleId && (peopleRet.objectId.to_base_58() != g_peopleId)){
                 toast({
                     message: `The recovery phrase you entered does not match the DID (${g_peopleId}).`,
-                    time: 1500,
+                    time: 3000,
                     type: 'warn'
                 });
                 $('.recovery_phrase_textarea').val('');
@@ -462,7 +462,7 @@ $('.did_verify_btn').on('click', async function () {
                     if((oodList.length >= 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length >= 1)){
                         toast({
                             message: 'You have multiple VOODs, the browser does not currently support multiple OOD modes.',
-                            time: 1500,
+                            time: 3000,
                             type: 'warn'
                         });
                     }else{
@@ -483,7 +483,7 @@ $('.did_verify_btn').on('click', async function () {
                         if(deviceRet.err){
                             toast({
                                 message: 'create device failed',
-                                time: 1500,
+                                time: 3000,
                                 type: 'warn'
                             });
                         }else{
@@ -493,7 +493,7 @@ $('.did_verify_btn').on('click', async function () {
                             if (sign_ret.err) {
                                 toast({
                                     message: 'create device failed',
-                                    time: 1500,
+                                    time: 3000,
                                     type: 'warn'
                                 });
                             }else{
@@ -506,7 +506,7 @@ $('.did_verify_btn').on('click', async function () {
                     if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
                         toast({
                             message: 'ood list is empty',
-                            time: 1500,
+                            time: 3000,
                             type: 'warn'
                         });
                         $('.reset_did_step_one_box').css('display', 'none');
@@ -535,14 +535,14 @@ $('.activate_vood_btn').on('click', async function () {
         }else{
             toast({
                 message: 'ood up chain failed',
-                time: 1500,
+                time: 3000,
                 type: 'warn'
             });
         }
     }else{
         toast({
             message: 'people up chain failed',
-            time: 1500,
+            time: 3000,
             type: 'warn'
         });
     }

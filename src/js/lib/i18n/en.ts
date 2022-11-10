@@ -1,5 +1,5 @@
 export const en =  {
-    "AnonymousMode": "read only mode",
+    "AnonymousMode": "read-only mode",
     "WelcomeToBrowser": "Welcome to CYFS Browser!",
     "WelcomeToBrowserIntroduce": "We prepare some rewards for you to explore the Web 3.0 world. The following steps will lead you to create a Digital Identity and activate CYFS Browser so that you can use the full functionality！",
     "Skip": "Skip",
@@ -44,7 +44,7 @@ export const en =  {
     "ScanCodeActivate": "Please scan the QR code with Cyber Chat to activate",
     "HowToGetStart": "How to get started？",
     "ActivatedSuccessfully": "Activated successfully! Please manually close & reopen browser to initialize.",
-    "ReviewTheTutorial": "<i class='anonymous_subtitle_i'></i><span class='browser_tutorial'>Review the tutorial and Activate<span>",
+    "ReviewTheTutorial": "<i class='anonymous_subtitle_i'></i><span class='browser_tutorial'>Review the tutorial<span>",
     "BrowserInputText": "search for information or query hash",
     "BindAfterApp": "<a href='javascript:' class='app_click'>bind</a>View app information ",
     // 打赏

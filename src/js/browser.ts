@@ -148,11 +148,10 @@ function isUnbind() {
             if (result.anonymous) {
                 // 匿名模式
                 $('#ood_status_icon').css('background', 'none');
-                console.log('1111LANGUAGESTYPE', LANGUAGESTYPE)
-                $('#people_name2').html(LANGUAGESTYPE == 'zh'? '匿名用户':'Anonymous People');
+                $('#people_name2').html('Anonymous');
                 $('#user_switch').css({'background':'url(./img/browser_anonymous_icon.svg) no-repeat center center','background-size': '100%'});
                 $('.anonymous_box').css('display', 'block');
-                $('.review_anonymous_box').css('display', 'block');
+                $('.review_anonymous_box, .choose_did_container').css('display', 'block');
                 $('#signin_ul').css('display', 'none');
                 $('#unsignin_input').addClass('unsignin_input').attr('disabled', 'disabled');
                 isBind = false;
@@ -595,7 +594,7 @@ async function getIcon(origin:string, pathname:string) {
 $('.input-div').on('click', (event) => {
     if(ANONYMOUS_STATUS){
         toast({
-            message: LANGUAGESTYPE == 'zh'?"当前为匿名模式，不可使用该功能！": 'Current mode is for read-only, and this function is unavailable!',
+            message: 'Activating, please do not operate.',
             time: 1500,
             type: 'warn'
         });

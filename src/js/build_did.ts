@@ -67,10 +67,6 @@ if (window.location.search.split("?")[1]) {
     }
 }
 
-$(async function(){
-    $('title').html('Build DID');
-});
-
 window.dataLayer = window.dataLayer || [];
 function gtag(){
     dataLayer.push(arguments);
@@ -78,9 +74,6 @@ function gtag(){
 }
 gtag('js', new Date());
 gtag('config', 'G-3F1C521DHQ');
-
-// header render
-ObjectUtil.renderHeaderInfo();
 
 $('.app_header_box').on('click', '.people_head_sculpture', function () {
     window.location.href = 'cyfs://static/info.html';
@@ -795,12 +788,12 @@ $('.did_success_next_btn').on('click', async function () {
 })
 
 $('.did_intro_container').on('click', '.did_intro_close_i', function () {
-    $('.did_intro_container').css('display', 'none');
+    $('.did_introduce_cover_container, .did_intro_container').css('display', 'none');
 })
 
 $('.did_title_intro_btn').on('click', function () {
     let box = $(this).attr('data-box');
     if(box){
-        $('.'+box).css('display', 'block');
+        $('.did_introduce_cover_container, .'+box).css('display', 'block');
     }
 })

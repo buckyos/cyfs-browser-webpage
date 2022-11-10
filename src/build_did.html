@@ -2,13 +2,14 @@
 <head>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link href="./css/main.css" rel="stylesheet" />
-    <title></title>
+    <title>Create Your DID</title>
     <script src="./cyfs_sdk/cyfs.js"></script>
     <script src="./js/lib/jquery.js"></script>
 </head>
 <body style="background-color: #F2F3F5;">
     <div>
         <div class="util_header_box">
+            <div class="browser_cyfs_icon"></div>
             <div class="util_header_right"></div>
         </div>
         <div class="create_did_container">
@@ -128,14 +129,14 @@
                         </div>
                         <div class="did_mnemonic_create_box did_mnemonic_create">
                             <div class="did_mnemonic_create_title">Backup recovery phrase</div>
-                            <p class="did_mnemonic_create_info">The recovery phrase is used to restore the digital identity or reset the digital identity password. Please transcribe it in order accurately on paper and keep it in a safe place that only known by you.</p>
+                            <p class="did_mnemonic_create_info"> Next The recovery phrase is used to restore the digital identity or reset the digital identity password. Please transcribe it in order accurately on paper and keep it in a safe place that only known by you.</p>
                             <div class="did_create_mnemonic_box did_create_mnemonic_box_show"></div>
                             <div class="did_mnemonic_tips_box">
                                 <h3 class="did_mnemonic_tips_title"><i class="did_mnemonic_tips_title_i"></i>Tips:</h3>
                                 <div class="did_mnemonic_tips">
-                                    • Do not reveal the mnemonic to anyone<br/>
-                                    • Once the mnemonic is lost, the asset cannot be recovered<br/>
-                                    • Do not backup and save by means of screenshots or network transmissions
+                                    • Do not reveal the recovery phrase to anyone.<br/>
+                                    • Once the recovery phrase is lost, the asset cannot be recovered.<br/>
+                                    • Do not take screenshot of this page as backup.
                                 </div>
                             </div>
                             <button class="did_mnemonic_tips_next did_next_btn" data-next=".warn_did_cover_box" data-last="">Next</button>
@@ -150,9 +151,9 @@
                         <div class="did_create_success_box did_create_success">
                             <div class="create_did_success_box">
                                 <div class="did_success_icon">
-                                    <img src="./img/did/did_success_icon.svg" alt="">
+                                    <img src="./img/did/did_to_bind_icon.svg" alt="">
                                 </div>
-                                <p  class="did_success_info">Perfect ! Verification of recovery phrase is complete and your DID has been successfully created.</p>
+                                <p  class="did_success_info">Perfect! Verification of recovery phrase is complete and your DID has been successfully created.</p>
                             </div>
                             <button class="did_next_btn did_success_next_btn">Activate VOOD</button>
                         </div>
@@ -198,7 +199,7 @@
                     <div class="create_did_content_box">
                         <div class="did_bind_success_box">
                             <div class="did_bind_success_icon">
-                                <img src="./img/did/did_bind_success_icon.svg" alt="">
+                                <img src="./img/did/did_success_icon.svg" alt="">
                             </div>
                             <p class="did_bind_success_title">VOOD binding successfully</p>
                             <p class="did_bind_success_subtitle"><span>The page automatically jumps after </span><span class="did_bind_success_subtitle_i">3</span> <span>seconds.</span></p>
@@ -225,7 +226,7 @@
     <div class="cover_box did_loading_cover_container">
         <div class="cover_container_box did_loading_cover_box">
             <img src="./img/did/did_loading.gif" alt="">
-            <p>Loading...</p>
+            <p class="did_loading_cover_title">Activating, please do not operate.</p>
         </div>
     </div>
     <div class="cover_box did_introduce_cover_container">
@@ -299,10 +300,10 @@
 }
 .did_progress_box_one{
     height: 14px;
-    padding: 27px 0 0 56px;
+    padding: 27px 0 0 46px;
 }
 .did_progress_box_two{
-    padding: 14px 0 25px 36px;
+    padding: 14px 0 25px 29px;
     background:none;
     overflow: hidden;
     border-bottom: 1px solid #DAE4F3;
@@ -373,7 +374,7 @@
     background: rgba(7, 212, 179, 0.3);
 }
 .did_progress_p_two{
-    margin: 0 124px 0 152px;
+    margin: 0 127px 0 144px;
 }
 .did_info_box{
     overflow: hidden;
@@ -614,11 +615,11 @@
 }
 .did_success_info{
     width: 286px;
-    padding: 0 17px;
-    font-size: 14px;
+    padding: 0 0px 0 32px;
+    font-size: 12px;
     font-weight: 400;
     color: #333333;
-    line-height: 24px;
+    line-height: 20px;
 }
 .did_success_next_btn{
     margin: 0 auto;
@@ -631,6 +632,7 @@
     border-radius: 8px;
     border: 1px solid #DAE4F3;
     margin: 0 auto;
+    margin-top: 100px;
 }
 .did_bind_success_title{
     text-align: center;
@@ -689,6 +691,7 @@
 }
 .did_bind_success_subtitle_i{
     display: inline;
+    color: #0AD7B6;
 }
 .did_loading_cover_box{
     width: 320px;
@@ -712,6 +715,7 @@
     line-height: 24px;
     height: 24px;
     text-align: center;
+    font-weight: bold;
 }
 .did_intro_container{
     width: 300px;
@@ -752,6 +756,17 @@
     right: 12px;
     cursor: pointer;
     background: url(./img/did/did_intro_close_i.svg) no-repeat center center;
+}
+.browser_cyfs_icon{
+    width: 100px;
+    height: 38px;
+    float: left;
+    background: url(./img/browser_cyfs_icon.svg) no-repeat center center;
+    background-size: 80%;
+    margin: 6px 0 24px 108px;
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder, select::-webkit-input-placeholder{
+    color: #999;
 }
 </style>
 </html>

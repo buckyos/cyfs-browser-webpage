@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import * as cyfs from '../cyfs_sdk/cyfs'
 import { toast } from './lib/toast.min'
-import { ObjectUtil, formatDate, LANGUAGESTYPE, castToLocalUnit } from './lib/util'
+import { formatDate, LANGUAGESTYPE } from './lib/util'
 import { getCountryList } from './lib/WorldArea'
 require('./lib/gtag.js')
 let g_mnemonicList:string[] = [];
@@ -67,6 +67,7 @@ if (window.location.search.split("?")[1]) {
     }
 }
 
+
 window.dataLayer = window.dataLayer || [];
 function gtag(){
     dataLayer.push(arguments);
@@ -83,6 +84,19 @@ class BuildDid {
     meta_client: cyfs.MetaClient;
     constructor() {
         this.meta_client = cyfs.create_meta_client();
+    }
+
+    async getStatus(){
+        $.ajax({
+            url: 'http://127.0.0.1:38090/status',
+            async: false,
+            success:function(result){
+                console.log('getStatus-result', result);
+                if(result.is_bind){
+                    window.location.href = 'cyfs://static/browser.html';
+                }
+            }
+        });
     }
 
     async createMnemonic () {
@@ -106,9 +120,9 @@ class BuildDid {
             }, 500);
             return;
         }
-        let countryHtml:string = '';
-        let stateHtml:string = '';
-        let cityHtml:string = '';
+        let countryHtml:string = '<option value=""></option>';
+        let stateHtml:string = '<option value=""></option>';
+        let cityHtml:string = '<option value=""></option>';
         g_areaList.forEach((area, index)=>{
             countryHtml += `<option value="${area.id}">${LANGUAGESTYPE == 'zh'?area.cname:area.name}</option>`;
             if(index === 0){
@@ -369,6 +383,7 @@ function lenghtstr(str:string){
 }
 
 let buildDid = new BuildDid();
+buildDid.getStatus();
 buildDid.getAreaList();
 
 function TimesFormate(date:number){
@@ -451,9 +466,11 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 })
 
 $('.did_buy_ood_btn').on('click', async function () {
+    sessionStorage.removeItem('is-reset-did');
     gtag('event', 'click_build_did_1_buy_ood', {
         'gtagTime': formatDate(new Date())
     });
+    
     localStorage.setItem('cyfs-build-did-buy-ood-time', String((new Date()).getTime()));
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
 })
@@ -480,15 +497,23 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     }
     g_didName = didName;
     g_oodName = oodName;
+    g_country = Number($('#country_select').val());
+    if(!g_country){
+        toast({
+            message: 'Please choose Country.',
+            time: 3000,
+            type: 'warn'
+        });
+        return;
+    }
+    g_state = Number($('#state_select').val()) || 0;
+    g_city = Number($('#city_select').val()) || 0;
+    console.log("----g_country, g_state, g_city:", g_country, g_state, g_city);
     $('.create_did_step_two, .did_title_intro_btn_did').css('display', 'none');
     gtag('event', 'build_did_pv_3_show_mnemonics', {
         'gtagTime': formatDate(new Date())
     });
     $('.did_mnemonic_create_box, .did_title_intro_btn_phrase').css('display', 'block');
-    g_country = Number($('#country_select').val()) || 0;
-    g_state = Number($('#state_select').val()) || 0;
-    g_city = Number($('#city_select').val()) || 0;
-    console.log("----g_country, g_state, g_city:", g_country, g_state, g_city);
     let mnemonicList:string[] = await buildDid.createMnemonic();
     let mnemonicHtml:string = '';
     mnemonicList.forEach(mnemonic=>{
@@ -545,6 +570,7 @@ function _calcIndex(uniqueStr: string): number {
 
 
 $('.did_verify_btn').on('click', async function () {
+    $('.did_loading_cover_title').html('Loading......');
     $('.did_loading_cover_container').css('display', 'block');
     gtag('event', 'click_build_did_2_vertify', {
         'gtagTime': formatDate(new Date())
@@ -647,6 +673,7 @@ function countDown () {
 }
 
 $('.did_success_next_btn').on('click', async function () {
+    $('.did_loading_cover_title').html('Activating, please do not operate.');
     $('.did_loading_cover_container').css('display', 'block');
     gtag('event', 'click_build_did_3_activate', {
         'gtagTime': formatDate(new Date())
@@ -744,16 +771,25 @@ $('.did_success_next_btn').on('click', async function () {
             console.log('ret.result',ret.result);
             console.log('ret.result != 0', ret.result != 0);
             if (ret.result != 0) {
-                toast({
-                    message: 'Bind failed,' + ret.msg,
-                    time: 3000,
-                    type: 'warn'
-                });
-                return;
+                if(ret.result == 5){
+                    toast({
+                        message: 'browser is activated.',
+                        time: 3000,
+                        type: 'warn'
+                    });
+                    window.location.href = 'cyfs://static/browser.html';
+                }else{
+                    toast({
+                        message: 'Activate runtime failed,' + ret.msg,
+                        time: 3000,
+                        type: 'warn'
+                    });
+                    return;
+                }
             }
         }catch{
             toast({
-                message: 'Bind failed',
+                message: 'Activate runtime failed',
                 time: 3000,
                 type: 'warn'
             });

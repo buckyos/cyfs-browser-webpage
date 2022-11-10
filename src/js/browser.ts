@@ -151,9 +151,12 @@ function isUnbind() {
                 $('#people_name2').html('Anonymous');
                 $('#user_switch').css({'background':'url(./img/browser_anonymous_icon.svg) no-repeat center center','background-size': '100%'});
                 $('.anonymous_box').css('display', 'block');
-                $('.review_anonymous_box, .choose_did_container').css('display', 'block');
+                $('.review_anonymous_box').css('display', 'block');
                 $('#signin_ul').css('display', 'none');
                 $('#unsignin_input').addClass('unsignin_input').attr('disabled', 'disabled');
+                if (window.location.search != '?success') {
+                    $('.choose_did_container').css('display', 'block');
+                }
                 isBind = false;
                 IS_FIRST_BIND = true;
             }else{
@@ -162,9 +165,12 @@ function isUnbind() {
                         handlerGuidingProcess();
                         IS_FIRST_IN = false;
                     }
-                    $('.anonymous_box').css('display', 'none');
+                    $('.anonymous_box, .choose_did_container').css('display', 'none');
                     $('.review_anonymous_box').css('display', 'none');
                 }
+            }
+            if (result.is_bind) {
+                $('.choose_did_container').css('display', 'none');
             }
         }
     });
@@ -594,7 +600,7 @@ async function getIcon(origin:string, pathname:string) {
 $('.input-div').on('click', (event) => {
     if(ANONYMOUS_STATUS){
         toast({
-            message: 'Activating, please do not operate.',
+            message: 'Current mode is for read-only, and this function is unavailable!',
             time: 1500,
             type: 'warn'
         });

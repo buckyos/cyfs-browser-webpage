@@ -159,7 +159,7 @@ class Util {
                                             <li>
                                                 <div class="device_rom_svg"></div>
                                                 <p class="device_item_name">RAM</p>
-                                                <p class="device_item_intro">${getfilesize(systemInfo?.systemInfo?.used_memory || 0)}</p>
+                                                <p class="device_item_intro">${getfilesize(systemInfo?.systemInfo?.used_memory || 0, true)}</p>
                                             </li>
                                             <li>
                                                 <div class="device_host_svg"></div>
@@ -277,7 +277,7 @@ class Util {
                     dasharray: 2*systemInfo.cpu_usage.toFixed(0)+ ","+ perimeter
                 },
                 ramInfo: {
-                    info: getfilesize(systemInfo.used_memory) + '/' + getfilesize(systemInfo.total_memory),
+                    info: getfilesize(systemInfo.used_memory, true) + '/' + getfilesize(systemInfo.total_memory, true),
                     stroke: memoryNum >= 90 ?"#ED3360":"#1DBFA2",
                     innerInfo: memoryNum + '%',
                     dasharray: 2*memoryNum + ","+ perimeter

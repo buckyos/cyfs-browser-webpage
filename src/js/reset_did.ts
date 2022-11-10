@@ -47,9 +47,6 @@ if (window.location.search.split("?")[1]) {
     }
 }
 
-// header render
-ObjectUtil.renderHeaderInfo();
-
 class ResetDid {
     meta_client: cyfs.MetaClient;
 
@@ -173,9 +170,7 @@ class ResetDid {
                         console.log(ip+'check-result', result);
                         g_peopleId = String(result.bind_info.owner_id || '');
                         $('.activated_title_id').html('DID ：' + g_peopleId);
-                        // $('.recovery_phrase_choose_box').css('display', 'none');
                         $('.recovery_phrase_title').css('display', 'block');
-                        // $('.reset_did_step_one_box, .activated_title').css('display', 'block');
                         g_activation = true;
                     } else {
                         $('.haved_did_click').css('display', 'block');
@@ -252,9 +247,23 @@ class ResetDid {
         console.log('people desc on meta:', p_meta_success);
         return p_meta_success;
     }
+
+    async getStatus(){
+        $.ajax({
+            url: 'http://127.0.0.1:38090/status',
+            async: false,
+            success:function(result){
+                console.log('getStatus-result', result);
+                if(result.is_bind){
+                    window.location.href = 'cyfs://static/browser.html';
+                }
+            }
+        });
+    }
 }
 
 let resetDid = new ResetDid();
+resetDid.getStatus()
 if(g_token && g_ip){
     let checkIp = g_ip.replace("[","").replace("]","");
     console.log('------checkIp',checkIp)
@@ -389,16 +398,25 @@ async function bindRuntime () {
         });
         const ret = await response.json();
         if (ret.result != 0) {
-            toast({
-                message: 'Binding runtime failed,' + ret.msg,
-                time: 3000,
-                type: 'warn'
-            });
+            if(ret.result == 5){
+                toast({
+                    message: 'browser is activated.',
+                    time: 3000,
+                    type: 'warn'
+                });
+                window.location.href = 'cyfs://static/browser.html';
+            }else{
+                toast({
+                    message: 'activate runtime failed,' + ret.msg,
+                    time: 3000,
+                    type: 'warn'
+                });
+            }
         } else {
-            if(g_activation || !g_peopleId){
+            if(g_activation || g_peopleId){
                 $('.reset_did_activate_ood_title').html('Your DID has been reset successfully');
             }else{
-                $('.reset_did_activate_ood_title').html('VOOD binding successfully');
+                $('.reset_did_activate_ood_title').html('VOOD activating successfully');
             }
             $('.reset_did_step_one_box, .reset_did_activate_ood').css('display', 'none');
             $('.reset_did_ood_bind').css('display', 'block');
@@ -406,7 +424,7 @@ async function bindRuntime () {
         }
     }catch{
         toast({
-            message: 'Binding runtime failed',
+            message: 'Activate runtime failed',
             time: 3000,
             type: 'warn'
         });
@@ -415,105 +433,95 @@ async function bindRuntime () {
 }
 
 $('.did_verify_btn').on('click', async function () {
+    $('.did_loading_cover_title').html('Loading......');
     $('.did_loading_cover_container').css('display', 'block');
-    g_mnemonic = String($('.recovery_phrase_textarea').val());
-    let mnemonicR = cyfs.bip39.validateMnemonic(g_mnemonic);
-    console.origin.log("gen mnemonicR:", mnemonicR);
-    if(!mnemonicR){
+    let peopleInfo = {
+        area: new cyfs.Area(0 ,0,0,0),
+        mnemonic: g_mnemonic,
+        network: cyfs.get_current_network(),
+        address_index: 0,
+        name: '',
+        icon:undefined
+    }
+    let peopleRet = await resetDid.createPeople(peopleInfo);
+    console.origin.log("peopleRet:", peopleRet, peopleRet.objectId.to_base_58());
+    if(peopleRet.err){
         toast({
-            message: 'Recovery Phrase Validation Error',
+            message: 'Failed to create people',
             time: 3000,
             type: 'warn'
         });
     }else{
-        let peopleInfo = {
-            area: new cyfs.Area(0 ,0,0,0),
-            mnemonic: g_mnemonic,
-            network: cyfs.get_current_network(),
-            address_index: 0,
-            name: '',
-            icon:undefined
-        }
-        let peopleRet = await resetDid.createPeople(peopleInfo);
-        console.origin.log("peopleRet:", peopleRet, peopleRet.objectId.to_base_58());
-        if(peopleRet.err){
+        g_peopleInfo = peopleRet;
+        if(g_peopleId && (peopleRet.objectId.to_base_58() != g_peopleId)){
             toast({
-                message: 'Failed to create people',
+                message: `The recovery phrase you entered does not match the DID (${g_peopleId}).`,
                 time: 3000,
                 type: 'warn'
             });
+            $('.recovery_phrase_textarea').val('');
+            $('.reset_did_step_one_box, .recovery_phrase_title').css('display', 'none');
+            $('.reset_did_step_one_box, .activated_title').css('display', 'block');
         }else{
-            g_peopleInfo = peopleRet;
-            if(g_peopleId && (peopleRet.objectId.to_base_58() != g_peopleId)){
-                toast({
-                    message: `The recovery phrase you entered does not match the DID (${g_peopleId}).`,
-                    time: 3000,
-                    type: 'warn'
-                });
-                $('.recovery_phrase_textarea').val('');
-                $('.reset_did_step_one_box, .recovery_phrase_title').css('display', 'none');
-                $('.reset_did_step_one_box, .activated_title').css('display', 'block');
-            }else{
-                let peopleOnMeta = g_peopleOnMeta = await resetDid.check_people_on_meta(peopleRet.objectId);
-                if(g_token && g_ip && !g_activation){
-                    let oodList = g_peopleInfo.object.body_expect().content().ood_list;
-                    if((oodList.length >= 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length >= 1)){
+            let peopleOnMeta = g_peopleOnMeta = await resetDid.check_people_on_meta(peopleRet.objectId);
+            if(g_token && g_ip && !g_activation){
+                let oodList = g_peopleInfo.object.body_expect().content().ood_list;
+                if((oodList.length >= 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length >= 1)){
+                    toast({
+                        message: 'You have multiple VOODs, the browser does not currently support multiple OOD modes.',
+                        time: 3000,
+                        type: 'warn'
+                    });
+                }else{
+                    let deviceInfo = {
+                        unique_id: g_uniqueId,
+                        owner: peopleRet.objectId,
+                        owner_private: peopleRet.privateKey,
+                        area: new cyfs.Area(0 , 0, 0, 0),
+                        network: cyfs.get_current_network(),
+                        address_index: _calcIndex(g_uniqueId),
+                        account: 0,
+                        nick_name: '',
+                        category: cyfs.DeviceCategory.OOD
+                    };
+                    console.origin.log("deviceInfo:", deviceInfo);
+                    let deviceRet = await resetDid.createDevice(deviceInfo);
+                    console.origin.log("deviceRet:", deviceRet);
+                    if(deviceRet.err){
                         toast({
-                            message: 'You have multiple VOODs, the browser does not currently support multiple OOD modes.',
+                            message: 'create device failed',
                             time: 3000,
                             type: 'warn'
                         });
                     }else{
-                        let deviceInfo = {
-                            unique_id: g_uniqueId,
-                            owner: peopleRet.objectId,
-                            owner_private: peopleRet.privateKey,
-                            area: new cyfs.Area(0 , 0, 0, 0),
-                            network: cyfs.get_current_network(),
-                            address_index: _calcIndex(g_uniqueId),
-                            account: 0,
-                            nick_name: '',
-                            category: cyfs.DeviceCategory.OOD
-                        };
-                        console.origin.log("deviceInfo:", deviceInfo);
-                        let deviceRet = await resetDid.createDevice(deviceInfo);
-                        console.origin.log("deviceRet:", deviceRet);
-                        if(deviceRet.err){
+                        g_deviceInfo = deviceRet;
+                        let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+                        let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
+                        if (sign_ret.err) {
                             toast({
                                 message: 'create device failed',
                                 time: 3000,
                                 type: 'warn'
                             });
                         }else{
-                            g_deviceInfo = deviceRet;
-                            let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
-                            let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
-                            if (sign_ret.err) {
-                                toast({
-                                    message: 'create device failed',
-                                    time: 3000,
-                                    type: 'warn'
-                                });
-                            }else{
-                                $('.did_loading_cover_container, .reset_did_step_one_box').css('display', 'none');
-                                $('.reset_did_activate_ood').css('display', 'block');
-                            }
+                            $('.did_loading_cover_container, .reset_did_step_one_box').css('display', 'none');
+                            $('.reset_did_activate_ood').css('display', 'block');
                         }
                     }
-                }else{
-                    if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
-                        toast({
-                            message: 'ood list is empty',
-                            time: 3000,
-                            type: 'warn'
-                        });
-                        $('.reset_did_step_one_box').css('display', 'none');
-                        $('.reset_did_step_two_box').css('display', 'block');
-                    }
-                    console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
-                    console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
-                    await bindRuntime();
                 }
+            }else{
+                if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
+                    toast({
+                        message: 'ood list is empty',
+                        time: 3000,
+                        type: 'warn'
+                    });
+                    $('.reset_did_step_one_box').css('display', 'none');
+                    $('.reset_did_step_two_box').css('display', 'block');
+                }
+                console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
+                console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
+                await bindRuntime();
             }
         }
     }
@@ -521,6 +529,7 @@ $('.did_verify_btn').on('click', async function () {
 })
 
 $('.activate_vood_btn').on('click', async function () {
+    $('.did_loading_cover_title').html('Activating, please do not operate.');
     $('.did_loading_cover_container').css('display', 'block');
     let peopleUpRet = await resetDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object);
     if(peopleUpRet){
@@ -575,7 +584,14 @@ $('.reset_ood_btn').on('click', function () {
 })
 
 $('.recovery_phrase_textarea').on('keyup', function () {
-    g_mnemonic = String($('.recovery_phrase_textarea').val());
+    let mnemonicsList:string[] = String($('.recovery_phrase_textarea').val()).split(' ');
+    let mnemonics:string = '';
+    mnemonicsList.forEach((mnemonic, index) => {
+        if(mnemonic){
+            mnemonics += mnemonic + ' ';
+        }
+    });
+    g_mnemonic = mnemonics.slice(0, -1);
     let mnemonicR = cyfs.bip39.validateMnemonic(g_mnemonic);
     console.origin.log("gen mnemonicR:", mnemonicR);
     if(mnemonicR){
@@ -588,10 +604,10 @@ $('.recovery_phrase_textarea').on('keyup', function () {
 $('.did_title_intro_btn').on('click', function () {
     let box = $(this).attr('data-box');
     if(box){
-        $('.'+box).css('display', 'block');
+        $('.did_introduce_cover_container, .'+box).css('display', 'block');
     }
 })
 
 $('.did_intro_container').on('click', '.did_intro_close_i', function () {
-    $('.did_intro_container').css('display', 'none');
+    $('.did_introduce_cover_container, .did_intro_container').css('display', 'none');
 })

@@ -220,7 +220,7 @@ class NONObject {
       success: async function(result){
         console.log('getStatus-result', result);
         if (result.anonymous) {
-          $('.util_header_right').html(`<img class="people_head_sculpture" src="../img/browser_anonymous_icon.svg" alt=""><span class="people_name">'Anonymous'</span>`);
+          $('.util_header_right').html(`<img class="people_head_sculpture" src="../img/browser_anonymous_icon.svg" alt=""><span class="people_name">Anonymous</span>`);
         }else{
           let headerInfo = await this.getHeaderInfo();
           $('.util_header_right').html(`<img class="ood_status" src="${headerInfo.oodStatusIcon}" alt=""><img class="people_head_sculpture" src="${headerInfo.peoplePicture}" alt="" onerror="this.src='../img/browser_people_icon.svg';this.οnerrοr=null"><span class="people_name">${headerInfo.peopleName}</span>`);

@@ -10,6 +10,7 @@
 <body style="background-color: #F2F3F5;">
     <div>
         <div class="util_header_box">
+            <div class="browser_cyfs_icon"></div>
             <div class="util_header_right"></div>
         </div>
         <div class="create_did_container">
@@ -22,7 +23,7 @@
                         <p class="activated_title_id">DID ：</p>
                         <i class="info_main_copy_svg"></i>
                     </div>
-                    <textarea placeholder="Restoring your account using DID recovery phrase." class="recovery_phrase_textarea" name="" id="" ></textarea>
+                    <textarea placeholder="Restoring your account using DID recovery phrase，Separate each word with a space." class="recovery_phrase_textarea" name="" id="" ></textarea>
                     <button class="did_next_btn did_verify_btn" disabled>Verify</button>
                     <p class="haved_did_click">If you do not have a DID, please create your own DID first.</p>
                 </div>
@@ -30,21 +31,10 @@
             <div class="reset_did_step_two_box">
                 <div class="recovery_phrase_box recovery_phrase_choose_box">
                     <h2 class="did_title">Reset Your DID 
-                        <span class="did_title_intro"><span class="did_title_intro_btn did_title_intro_btn_vood" data-box="did_intro_container_vood">what is  VOOD ?</span>
-                            <div class="did_intro_container did_intro_container_vood">
-                                <h2 class="did_intro_title">what is  VOOD ?</h2>
-                                <i class="did_intro_close_i"></i>
-                                <div class="did_intro_img_box">
-                                    <img src="./img/did/did_intro_img.svg" alt="">
-                                </div>
-                                <div class="did_intro_p_box">
-                                    <p class="did_intro_p">VOOD is one of the OOD types, OOD (Owner Online Device)  is a personal server device based on the CYFS protocol. You could use the OOD for decentralized, secure data storage and install DEC(DataExchange Contract) App. The data is encrypted and stored in theOOD to guarantee your data privacy and security.</p>
-                                </div>
-                            </div>
-                        </span>
+                        <span class="did_title_intro"><span class="did_title_intro_btn did_title_intro_btn_vood" data-box="did_intro_container_vood">what is  VOOD ?</span></span>
                     </h2>
                     <h3 class="recovery_phrase_choose_title">Choose the option that suits you</h3>
-                    <button class="browser_primary_btn choose_ood_btn">You already have VOOD activated.</button>
+                    <button class="browser_primary_btn choose_ood_btn">You already have VOOD activated</button>
                     <button class="browser_plain_btn reset_ood_btn">You do not have VOOD or have not activated VOOD</button>
                 </div>
             </div>
@@ -54,7 +44,7 @@
                     <div class="reset_did_activate_ood_container" >
                         <div class="reset_did_activate_ood_box">
                             <div class="reset_did_activate_ood_icon">
-                                <img src="./img/did/did_warn_icon.svg" alt="">
+                                <img src="./img/did/did_to_bind_icon.svg" alt="">
                             </div>
                             <p class="reset_did_activate_ood_title">Activate your OOD.</p>
                         </div>
@@ -68,7 +58,7 @@
                     <div class="reset_did_activate_ood_container" >
                         <div class="reset_did_activate_ood_box">
                             <div class="reset_did_ood_bind_icon">
-                                <img src="./img/did/did_bind_success_icon.svg" alt="">
+                                <img src="./img/did/did_success_icon.svg" alt="">
                             </div>
                             <p class="reset_did_activate_ood_title"></p>
                             <p class="reset_did_activate_ood_subtitle">The page automatically jumps after <i class="did_bind_success_subtitle_i">3</i> seconds.</p>
@@ -80,8 +70,17 @@
     </div>
     <div class="cover_box did_loading_cover_container">
         <div class="cover_container_box did_loading_cover_box">
-            <img src="./img/app/app_status_loading.gif" alt="">
-            <p>Loading...</p>
+            <img src="./img/did/did_loading.gif" alt="">
+            <p>Activating, please do not operate.</p>
+        </div>
+    </div>
+    <div class="cover_box did_introduce_cover_container">
+        <div class="did_intro_container did_intro_container_vood">
+            <h2 class="did_intro_title">what is VOOD ?</h2>
+            <i class="did_intro_close_i"></i>
+            <div class="did_intro_p_box">
+                <p class="did_intro_p">VOOD is one of the OOD types, OOD (Owner Online Device)  is a personal server device based on the CYFS protocol. You could use the OOD for decentralized, secure data storage and install DEC(DataExchange Contract) App. The data is encrypted and stored in theOOD to guarantee your data privacy and security.</p>
+            </div>
         </div>
     </div>
     <textarea id="copy_textarea" style="display:none;"></textarea>
@@ -112,14 +111,14 @@
 .did_next_btn{
     display: block;
     width: 288px;
-    height: 28px;
+    height: 35px;
     margin: 0 auto;
     background: #0AD7B6;
     border-radius: 4px;
     font-size: 12px;
     font-weight: 400;
     color: #FFFFFF;
-    line-height: 28px;
+    line-height: 1;
     border: none;
 }
 .did_next_btn:disabled{
@@ -127,7 +126,7 @@
 }
 .recovery_phrase_box{
     width: 528px;
-    height: 413px;
+    height: 604px;
     background: #FFFFFF;
     box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
     border-radius: 8px 8px 8px 8px;
@@ -136,15 +135,14 @@
 }
 .recovery_phrase_title{
     height: 17px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #1C201E;
+    font-size: 12px;
+    color: #333;
     line-height: 17px;
-    padding: 30px 0 18px 35px;
+    padding: 61px 0 18px 58px;
 }
 .recovery_phrase_textarea{
-    width: 436px;
-    height: 84px;
+    width: 420px;
+    height: 120px;
     display: block;
     background: #E2E3E9;
     border-radius: 8px;
@@ -153,18 +151,17 @@
     resize: none;
     font-size: 12px;
     padding: 8px 12px;
-    margin: 0 0 36px 35px;
-}
-.recovery_phrase_choose_box{
-    height: 363px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    font-family: 'Roboto','Microsoft YaHei','PingFang SC';
 }
 .recovery_phrase_choose_title{
     height: 19px;
     text-align: center;
-    font-size: 16px;
+    font-size: 12px;
     line-height: 19px;
     color: #1C201E;
-    margin: 92px 0 49px 0;
+    margin: 150px 0 46px 0;
 }
 .create_did_success_box{
     width: 320px;
@@ -194,14 +191,14 @@
     line-height: 24px;
 }
 .choose_ood_btn, .reset_ood_btn{
-    width: 288px;
-    height: 28px;
+    width: 330px;
+    height: 35px;
     display: block;
     margin: 0 auto;
     font-size: 10px;
 }
 .choose_ood_btn{
-    margin-bottom: 15px;
+    margin-bottom: 38px;
 }
 .reset_ood_btn{
     margin-bottom:60px;
@@ -209,12 +206,12 @@
 }
 .reset_did_activate_ood_container{
     width: 528px;
-    height: 310px;
+    height: 418px;
     background: #FAFAFA;
-    box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.08);
+    box-shadow: 0px 1px 2px 1px rgb(0 0 0 / 8%);
     border-radius: 8px;
     margin: 0 auto;
-    padding-top: 36px;
+    padding-top: 120px;
 }
 .reset_did_activate_ood_box{
     width: 320px;
@@ -222,14 +219,14 @@
     background: #FFFFFF;
     border-radius: 8px;
     border: 1px solid #DAE4F3;
-    margin: 0 105px 27px 103px;
+    margin: 0 105px 50px 103px;
 }
 .reset_did_activate_ood_icon{
     padding: 62px 0 25px 0;
 }
 .reset_did_activate_ood_title{
     height: 19px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     color: #333333;
     line-height: 19px;
@@ -237,7 +234,7 @@
 }
 .activate_vood_btn{
     width: 288px;
-    height: 28px;
+    height: 35px;
     display: block;
     margin: 0 auto;
 }
@@ -275,6 +272,7 @@
     line-height: 24px;
     height: 24px;
     text-align: center;
+    font-weight: bold;
 }
 .recovery_phrase_warn_title{
     width: 449px;
@@ -282,11 +280,11 @@
     font-weight: bold;
     color: #E23F53;
     line-height: 22px;
-    padding: 30px 0 12px 35px;
+    padding: 59px 0 12px 46px;
 }
 .recovery_phrase_did_box{
     height: 24px;
-    padding:0 0 18px 35px;
+    padding: 0 0 46px 54px;
 }
 .recovery_phrase_did_box p{
     line-height: 24px;
@@ -307,7 +305,7 @@
     font-weight: 400;
     color: #2873F7;
     line-height: 16px;
-    padding-top: 15px;
+    padding-top: 20px;
     margin: 0 auto;
     text-decoration: underline;
     display: none;
@@ -333,6 +331,8 @@
     font-weight: 400;
     font-size: 12px;
     color: #2873F7;
+    height: 65px;
+    line-height: 100px;
 }
 .did_intro_container{
     width: 300px;
@@ -341,8 +341,9 @@
     background: #fff;
     box-shadow: 0px 2px 3px 1px rgba(0,0,0,0.16);
     border-radius: 8px 8px 8px 8px;
-    top: 40px;
-    left: 135px;
+    top: 320px;
+    left: 50%;
+    margin-left: -150px;
     display: none;
 }
 .did_intro_title{
@@ -364,7 +365,6 @@
 }
 .did_intro_p_box{
     width: 270px;
-    line-height: 12px;
     padding: 0 15px;
 }
 .did_intro_p{
@@ -380,7 +380,20 @@
     position: absolute;
     top: 10px;
     right: 12px;
+    cursor: pointer;
+    line-height: 20px;
     background: url(./img/did/did_intro_close_i.svg) no-repeat center center;
+}
+.browser_cyfs_icon{
+    width: 100px;
+    height: 38px;
+    float: left;
+    background: url(./img/browser_cyfs_icon.svg) no-repeat center center;
+    background-size: 80%;
+    margin: 6px 0 24px 108px;
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder, select::-webkit-input-placeholder{
+    color: #999;
 }
 </style>
 </html>

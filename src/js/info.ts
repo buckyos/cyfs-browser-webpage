@@ -335,7 +335,7 @@ class Util {
         const peopleR = (await ObjectUtil.getObject({ id: OWNER_ID, isReturnResult: true, flags: 1 })).object;
         this.handlerOodList(peopleR.object.body().unwrap().content().ood_list);
         console.origin.log('peopleR:', peopleR, peopleR.object_id.to_base_58(), peopleR.object.body().unwrap().content().ood_list, peopleR.object.icon() );
-        $('.info_main_name').html(peopleR.object.name());
+        $('.info_main_name').html(peopleR.object.name() || 'name not set');
         if(peopleR.object.icon()){
             $('.info_main_portrait').attr('src', 'cyfs://o/'+peopleR.object.icon().object_id);
         }

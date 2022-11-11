@@ -416,7 +416,7 @@ async function bindRuntime () {
             if(g_activation || g_peopleId){
                 $('.reset_did_activate_ood_title').html('Your DID has been reset successfully');
             }else{
-                $('.reset_did_activate_ood_title').html('VOOD activating successfully');
+                $('.reset_did_activate_ood_title').html('VOOD activated successfully');
             }
             $('.reset_did_step_one_box, .reset_did_activate_ood').css('display', 'none');
             $('.reset_did_ood_bind').css('display', 'block');
@@ -444,7 +444,7 @@ $('.did_verify_btn').on('click', async function () {
         icon:undefined
     }
     let peopleRet = await resetDid.createPeople(peopleInfo);
-    console.origin.log("peopleRet:", peopleRet, peopleRet.objectId.to_base_58());
+    console.origin.log("peopleRet.objectId:", peopleRet.objectId.to_base_58());
     if(peopleRet.err){
         toast({
             message: 'Failed to create people',
@@ -510,7 +510,7 @@ $('.did_verify_btn').on('click', async function () {
                     }
                 }
             }else{
-                if((!peopleOnMeta && g_peopleInfo.object.body_expect().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
+                if((!peopleOnMeta && g_peopleInfo.object.body().unwrap().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
                     toast({
                         message: 'ood list is empty',
                         time: 3000,
@@ -521,7 +521,25 @@ $('.did_verify_btn').on('click', async function () {
                 }
                 console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
                 console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
-                await bindRuntime();
+                let oodId: cyfs.DeviceId;
+                if(peopleOnMeta && peopleOnMeta?.body().unwrap().content().ood_list.length > 0){
+                    oodId = peopleOnMeta?.body().unwrap().content().ood_list[0];
+                }else{
+                    oodId = g_peopleInfo.object?.body().unwrap().content().ood_list[0];
+                }
+                const oodObject:cyfs.Device = (await ObjectUtil.getObject({ id: oodId.object_id, isReturnResult: true })).object;
+                if(oodObject.desc().owner()?.unwrap().to_base_58() != peopleRet.objectId.to_base_58()){
+                    toast({
+                        message: `The recovery phrase you entered does not match the DID (${g_peopleId}).`,
+                        time: 3000,
+                        type: 'warn'
+                    });
+                    $('.recovery_phrase_textarea').val('');
+                    $('.reset_did_step_one_box, .recovery_phrase_title').css('display', 'none');
+                    $('.reset_did_step_one_box, .activated_title').css('display', 'block');
+                }else{
+                    await bindRuntime();
+                }
             }
         }
     }

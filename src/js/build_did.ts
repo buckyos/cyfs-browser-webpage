@@ -305,11 +305,11 @@ class BuildDid {
         let p_tx:cyfs.TxId;
         if(check_p_ret){
             let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, g_peopleInfo.privateKey);
-            console.origin.log('p_ret', p_ret)
+            console.origin.log('update_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }else{
             let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
-            console.origin.log('p_ret', p_ret)
+            console.origin.log('create_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }
         // check up chain

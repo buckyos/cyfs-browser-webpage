@@ -167,7 +167,7 @@ class BuildDid {
         let people = cyfs.People.create(cyfs.None, [], private_key.public(), cyfs.Some(info.area), info.name, info.icon, (build) => {
             build.no_create_time()
         });
-        let people_id = people.desc().calculate_id();
+        let people_id = people.calculate_id();
 
         return {
             objectId: people_id,
@@ -217,7 +217,7 @@ class BuildDid {
             }
         );
         device.set_name(info.nick_name)
-        let device_id = device.desc().calculate_id();
+        let device_id = device.device_id();
         console.log("create_device", device_id.to_base_58());
         let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(254))
         if (sign_ret.err) {
@@ -320,17 +320,17 @@ class BuildDid {
         return false;
     }
 
-    async upChain (id:cyfs.ObjectId, obj: cyfs.AnyNamedObject) {
+    async upChain (obj: cyfs.AnyNamedObject, private_key: cyfs.PrivateKey) {
         // getDesc up chain
-        let check_p_ret = await this.check_object_on_meta(id);
+        let check_p_ret = await this.check_object_on_meta(obj.calculate_id());
         console.origin.log('check_p_ret', check_p_ret);
         let p_tx:cyfs.TxId;
         if(check_p_ret){
-            let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, g_peopleInfo.privateKey);
+            let p_ret = await this.meta_client.update_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, private_key);
             console.origin.log('update_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }else{
-            let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
+            let p_ret = await this.meta_client.create_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, private_key);
             console.origin.log('create_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }
@@ -724,7 +724,7 @@ $('.did_success_next_btn').on('click', async function () {
     gtag('event', 'click_build_did_3_activate', {
         'gtagTime': formatDate(new Date())
     });
-    let peopleUpChainR = await buildDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object );
+    let peopleUpChainR = await buildDid.upChain(g_peopleInfo.object, g_peopleInfo.privateKey );
     if(!peopleUpChainR){
         $('.cover_box, .did_loading_cover_container').css('display', 'none');
         toast({
@@ -734,7 +734,7 @@ $('.did_success_next_btn').on('click', async function () {
         });
         return;
     }
-    let oodUpChainR = await buildDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device );
+    let oodUpChainR = await buildDid.upChain(g_deviceInfo.device, g_deviceInfo.privateKey );
     if(!oodUpChainR){
         $('.cover_box, .did_loading_cover_container').css('display', 'none');
         toast({

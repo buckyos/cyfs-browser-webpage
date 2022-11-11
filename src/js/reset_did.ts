@@ -83,7 +83,7 @@ class ResetDid {
         let people = cyfs.People.create(cyfs.None, [], private_key.public(), cyfs.Some(info.area), info.name, info.icon, (build) => {
             build.no_create_time()
         });
-        let people_id = people.desc().calculate_id();
+        let people_id = people.calculate_id();
         return {
             objectId: people_id,
             object: people,
@@ -92,22 +92,22 @@ class ResetDid {
         };
     }
 
-    async check_people_on_meta(people_id: cyfs.ObjectId): Promise<cyfs.People | undefined> {
-        let people: cyfs.People | undefined = undefined, is_bind = false
-        const people_r = await this.meta_client.getDesc(people_id);
-        console.origin.log('-----people_r', people_r);
-        if (people_r.ok) {
-            console.origin.log('-----people_r.unwrap()', people_r.unwrap());
-            people_r.unwrap().match({
+    async check_object_on_meta(id: cyfs.ObjectId): Promise<[boolean, cyfs.People|undefined]> {
+        let people: cyfs.People | undefined = undefined;
+        let isHaveObject: boolean = false;
+        const ret = await this.meta_client.getDesc(id);
+        if (ret.ok) {
+            ret.unwrap().match({
                 People: (p: cyfs.People) => {
-                    // is_bind = p.body_expect().content().ood_list.length > 0;
                     people = p;
-                    return people;
+                    isHaveObject = true;
+                },
+                Device: (p: cyfs.Device) => {
+                    isHaveObject = true;
                 }
             })
         }
-        return people;
-        // return [people, is_bind]
+        return [isHaveObject, people];
     }
 
     async getDevicePrivateKey (owner_private: cyfs.PrivateKey, owner: cyfs.ObjectId, account: number, network: cyfs.CyfsChainNetwork, address_index: number) {
@@ -151,7 +151,7 @@ class ResetDid {
             }
         );
         device.set_name(info.nick_name)
-        let device_id = device.desc().calculate_id();
+        let device_id = device.device_id();
         console.log("create_device", device_id.to_base_58());
         let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(254))
         if (sign_ret.err) {
@@ -250,21 +250,21 @@ class ResetDid {
         return returnRet;
     }
 
-    async upChain (id:cyfs.ObjectId, obj: cyfs.AnyNamedObject) {
-        // getDesc upchain
-        let check_p_ret = await this.check_people_on_meta(id);
+    async upChain (obj: cyfs.AnyNamedObject, private_key: cyfs.PrivateKey) {
+        // getDesc up chain
+        let [ ,check_p_ret] = await this.check_object_on_meta(obj.calculate_id());
         console.origin.log('check_p_ret', check_p_ret);
         let p_tx:cyfs.TxId;
         if(check_p_ret){
-            let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, g_peopleInfo.privateKey);
-            console.origin.log('p_ret', p_ret)
+            let p_ret = await this.meta_client.update_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, private_key);
+            console.origin.log('update_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }else{
-            let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
-            console.origin.log('p_ret', p_ret)
+            let p_ret = await this.meta_client.create_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, private_key);
+            console.origin.log('create_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }
-        // check upchain
+        // check up chain
         let p_meta_success = await this.checkReceipt(p_tx)
         console.log('people desc on meta:', p_meta_success);
         return p_meta_success;
@@ -505,7 +505,7 @@ $('.did_verify_btn').on('click', async function () {
             $('.reset_did_step_one_box, .recovery_phrase_title').css('display', 'none');
             $('.reset_did_step_one_box, .activated_title').css('display', 'block');
         }else{
-            let peopleOnMeta = g_peopleOnMeta = await resetDid.check_people_on_meta(peopleRet.objectId);
+            let [,peopleOnMeta] = [ , g_peopleOnMeta] = await resetDid.check_object_on_meta(peopleRet.objectId);
             if(g_token && g_ip && !g_activation){
                 let oodList = g_peopleInfo.object.body_expect().content().ood_list;
                 if((oodList.length >= 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length >= 1)){
@@ -611,9 +611,9 @@ $('.did_verify_btn').on('click', async function () {
 $('.activate_vood_btn').on('click', async function () {
     $('.did_loading_cover_title').html('Activating, please do not operate.');
     $('.did_loading_cover_container').css('display', 'block');
-    let peopleUpRet = await resetDid.upChain(g_peopleInfo.objectId, g_peopleInfo.object);
+    let peopleUpRet = await resetDid.upChain(g_peopleInfo.object, g_peopleInfo.privateKey);
     if(peopleUpRet){
-        let deviceUpRet = await resetDid.upChain(g_deviceInfo.deviceId, g_deviceInfo.device);
+        let deviceUpRet = await resetDid.upChain(g_deviceInfo.device, g_deviceInfo.privateKey);
         if(deviceUpRet){
             let bindOodRet = await bindOod();
             if(bindOodRet){

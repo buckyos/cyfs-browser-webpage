@@ -23,6 +23,7 @@ let g_areaList: {
     }[]
 }[] = [];
 let g_ip:string = '';
+let g_ipArr:string[] = [];
 let g_token:string = '';
 let g_country:number = 0;
 let g_state:number = 0;
@@ -54,7 +55,16 @@ if (window.location.search.split("?")[1]) {
                 g_token = arr[i].split('=')[1];
             }
             if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'ip') {
-                g_ip = arr[i].split('=')[1];
+                g_ipArr = arr[i].split('=')[1].replace("[","").replace("]","").split(',');
+                if(g_ipArr.length == 1){
+                    let ipSplitArr = g_ipArr[0].split(':');
+                    if((ipSplitArr.length == 1) || (ipSplitArr.length == 2 && ipSplitArr[1] == '' )){
+                        g_ip = ipSplitArr[0] + ':1320';
+                    }else{
+                        g_ip = g_ipArr[0];
+                    }
+                }
+                console.origin.log('g_ipArr', g_ipArr, g_ip)
             }
             let isResetDid = sessionStorage.getItem('is-reset-did');
             if(isResetDid == 'true'){
@@ -65,8 +75,8 @@ if (window.location.search.split("?")[1]) {
             }
         }
     }
+    
 }
-
 
 window.dataLayer = window.dataLayer || [];
 function gtag(){
@@ -222,21 +232,33 @@ class BuildDid {
     }
 
     async getUniqueId (ip:string) {
-        $.ajax({
-            url: `http://${ip}/check?access_token=${g_token}`,
-            success:function(data){
-                let result = JSON.parse(data);
-                if (!result.activation) {
-                    console.log(ip+'check-result', result);
-                    g_uniqueId = String(result.device_info.mac_address);
+        let returnRet:boolean = false;
+        try{
+            const activeteResponse = await fetch(`http://${ip}/check?access_token=${g_token}`, {
+                method: 'get',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            });
+            const activeteRet = await activeteResponse.json();
+            console.origin.log('activeteRet',activeteRet)
+            if (activeteRet.result != 0) {
+                returnRet = true;
+                if (!activeteRet.activation) {
+                    console.log(ip+'check-result', activeteRet);
+                    g_uniqueId = String(activeteRet.device_info.mac_address);
                 } else {
                     window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=[${ip}]&accessToken=${g_token}`;
                 }
-            },
-            error: function(){
-                window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=[${ip}]&accessToken=${g_token}`;
+                return returnRet;
+            }else{
+                return returnRet;
             }
-        })
+        }catch{
+            returnRet = false;
+            return returnRet;
+        }
     }
 
     async transformBuckyResult(ret:cyfs.Result<cyfs.Option<[cyfs.Receipt, number]>>) {
@@ -262,8 +284,8 @@ class BuildDid {
             const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
             console.origin.log('get receipt:', txId, ret);
             if (ret.code == 0 && ret.value.is_some()) {
-                const [receipt, _] = ret.value.unwrap();
-                console.origin.log('update desc receipt:', txId.to_base_58(), receipt.result);
+                const [receipt, block] = ret.value.unwrap();
+                console.origin.log('create or update desc receipt:', txId.to_base_58(), block, receipt.result);
                 if (receipt && receipt.result == 0) {
                     returnRet = true;
                     hasReturnRet = true;
@@ -409,33 +431,57 @@ function TimesFormate(date:number){
      }
 }
 
-if(g_token && g_ip){
-    $('.create_did_step_one_box').css('display', 'none');
-    $('.create_did_step_two_box, .create_did_step_two, .did_title_intro_btn_did').css('display', 'block');
-    let checkIp = g_ip.replace("[","").replace("]","");
-    console.log('------checkIp',checkIp)
-    buildDid.getUniqueId(checkIp);
-    buildDid.RenderArea();
-    gtag('event', 'build_did_pv_2_show_area', {
-        'gtagTime': formatDate(new Date())
-    });
-    let currentTime = g_buyOodAfterTime = (new Date()).getTime();
-    let visitTimeStorage = localStorage.getItem('cyfs-build-did-buy-ood-time');
-    if(visitTimeStorage){
-        let visitTime = Number(visitTimeStorage);
-        let timeDiff = currentTime - visitTime;
-        gtag('event', 'diff_build_did_1_buy_ood', {
-            'diffTimeFormate': TimesFormate(timeDiff),
-            'diffSenconds': Math.round(timeDiff/1000),
+async function initData(){
+    if(g_token){
+        buildDid.RenderArea();
+        $('.create_did_step_one_box').css('display', 'none');
+        $('.create_did_step_two_box, .create_did_step_two, .did_title_intro_btn_did').css('display', 'block');
+        if(g_ip){
+            buildDid.getUniqueId(g_ip);
+        }else{
+            for (let index = 0; index < g_ipArr.length; index++) {
+                const ip = g_ipArr[index];
+                if(!g_ip){
+                    let isIpCanUse:boolean = false;
+                    let ipCanUse:string = '';
+                    let ipSplitArr:string[] = ip.split(':');
+                    if((ipSplitArr.length == 1) || (ipSplitArr.length == 2 && ipSplitArr[1] == '')){
+                        ipCanUse = ipSplitArr[0] + ':1320';
+                        isIpCanUse = await buildDid.getUniqueId(ipCanUse);
+                    }else{
+                        ipCanUse = ip;
+                        isIpCanUse = await buildDid.getUniqueId(ip);
+                    }
+                    console.log('isIpCanUse', isIpCanUse);
+                    if(isIpCanUse){
+                        g_ip = ipCanUse;
+                    }
+                }
+            }
+        }
+        console.log('---g_ip', g_ip);
+        gtag('event', 'build_did_pv_2_show_area', {
+            'gtagTime': formatDate(new Date())
+        });
+        let currentTime = g_buyOodAfterTime = (new Date()).getTime();
+        let visitTimeStorage = localStorage.getItem('cyfs-build-did-buy-ood-time');
+        if(visitTimeStorage){
+            let visitTime = Number(visitTimeStorage);
+            let timeDiff = currentTime - visitTime;
+            gtag('event', 'diff_build_did_1_buy_ood', {
+                'diffTimeFormate': TimesFormate(timeDiff),
+                'diffSenconds': Math.round(timeDiff/1000),
+                'gtagTime': formatDate(new Date())
+            });
+        }
+    }else{
+        $('.did_title_intro_btn_vood').css('display', 'block');
+        gtag('event', 'build_did_pv_1_first_visit', {
             'gtagTime': formatDate(new Date())
         });
     }
-}else{
-    $('.did_title_intro_btn_vood').css('display', 'block');
-    gtag('event', 'build_did_pv_1_first_visit', {
-        'gtagTime': formatDate(new Date())
-    });
 }
+initData();
 
 $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_no', function () {
     $('.cover_box').css('display', 'none');
@@ -706,9 +752,8 @@ $('.did_success_next_btn').on('click', async function () {
         index
     }
     console.origin.log("bindInfo:", bindInfo);
-    let checkIp = g_ip.replace("[","").replace("]","");
     try{
-        const activeteResponse = await fetch(`http://${checkIp}/activate?access_token=${g_token}`, {
+        const activeteResponse = await fetch(`http://${g_ip}/activate?access_token=${g_token}`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

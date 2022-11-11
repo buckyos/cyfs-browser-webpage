@@ -14,6 +14,7 @@ $(async function(){
 
 let g_mnemonic:string = '';
 let g_ip:string = '';
+let g_ipArr:string[] = [];
 let g_token:string = '';
 let g_uniqueId:string = '';
 let g_countDown:number = 3;
@@ -41,7 +42,16 @@ if (window.location.search.split("?")[1]) {
                 g_token = arr[i].split('=')[1];
             }
             if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'ip') {
-                g_ip = arr[i].split('=')[1];
+                g_ipArr = arr[i].split('=')[1].replace("[","").replace("]","").split(',');
+                if(g_ipArr.length == 1){
+                    let ipSplitArr = g_ipArr[0].split(':');
+                    if((ipSplitArr.length == 1) || (ipSplitArr.length == 2 && ipSplitArr[1] == '' )){
+                        g_ip = ipSplitArr[0] + ':1320';
+                    }else{
+                        g_ip = g_ipArr[0];
+                    }
+                }
+                console.origin.log('g_ipArr', g_ipArr, g_ip)
             }
         }
     }
@@ -160,28 +170,40 @@ class ResetDid {
     }
 
     async getUniqueId (ip:string) {
+        let returnRet:boolean = false;
         try{
-            $.ajax({
-                url: `http://${ip}/check?access_token=${g_token}`,
-                success: async function(data){
-                    let result = JSON.parse(data);
-                    g_uniqueId = String(result.device_info.mac_address);
-                    if (result.activation) {
-                        console.log(ip+'check-result', result);
-                        g_peopleId = String(result.bind_info.owner_id || '');
-                        $('.activated_title_id').html('DID ：' + g_peopleId);
-                        $('.recovery_phrase_title').css('display', 'block');
-                        g_activation = true;
-                    } else {
-                        $('.haved_did_click').css('display', 'block');
-                    }
+            const activeteResponse = await fetch(`http://${ip}/check?access_token=${g_token}`, {
+                method: 'get',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            });
+            const activeteRet = await activeteResponse.json();
+            console.origin.log('activeteRet',activeteRet)
+            if (activeteRet.result != 0) {
+                returnRet = true;
+                let result = activeteRet;
+                g_uniqueId = String(result.device_info.mac_address);
+                if (result.activation) {
+                    console.log(ip+'check-result', result);
+                    g_peopleId = String(result.bind_info.owner_id || '');
+                    $('.activated_title_id').html('DID ：' + g_peopleId);
+                    $('.recovery_phrase_title').css('display', 'block');
+                    g_activation = true;
+                } else {
+                    $('.haved_did_click').css('display', 'block');
                 }
-            })
+                return returnRet;
+            }else{
+                return returnRet;
+            }
         }catch{
-            $('.reset_did_step_two_box, .recovery_phrase_title').css('display', 'none');
-            $('.reset_did_step_one_box, .activated_title').css('display', 'block');
+            // $('.reset_did_step_two_box, .recovery_phrase_title').css('display', 'none');
+            // $('.reset_did_step_one_box, .activated_title').css('display', 'block');
+            returnRet = false;
+            return returnRet;
         }
-        
     }
 
     async transformBuckyResult(ret:cyfs.Result<cyfs.Option<[cyfs.Receipt, number]>>) {
@@ -207,8 +229,8 @@ class ResetDid {
             const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
             console.origin.log('get receipt:', txId, ret);
             if (ret.code == 0 && ret.value.is_some()) {
-                const [receipt, _] = ret.value.unwrap();
-                console.origin.log('update desc receipt:', txId.to_base_58(), receipt.result);
+                const [receipt, block] = ret.value.unwrap();
+                console.origin.log('create or update desc receipt:', txId.to_base_58(), block, receipt.result);
                 if (receipt && receipt.result == 0) {
                     returnRet = true;
                     hasReturnRet = true;
@@ -263,20 +285,40 @@ class ResetDid {
 }
 
 let resetDid = new ResetDid();
-resetDid.getStatus()
-if(g_token && g_ip){
-    let checkIp = g_ip.replace("[","").replace("]","");
-    console.log('------checkIp',checkIp)
-    if(checkIp.indexOf(':') < 0){
-        checkIp = checkIp + ':1320';
+resetDid.getStatus();
+async function initData(){
+    if(g_token){
+        $('.reset_did_step_one_box').css('display', 'block');
+        $('.reset_did_step_two_box').css('display', 'none');
+        if(g_ip){
+            resetDid.getUniqueId(g_ip);
+        }else{
+            for (let index = 0; index < g_ipArr.length; index++) {
+                const ip = g_ipArr[index];
+                if(!g_ip){
+                    let isIpCanUse:boolean = false;
+                    let ipCanUse:string = '';
+                    let ipSplitArr:string[] = ip.split(':');
+                    if((ipSplitArr.length == 1) || (ipSplitArr.length == 2 && ipSplitArr[1] == '')){
+                        ipCanUse = ipSplitArr[0] + ':1320';
+                        isIpCanUse = await resetDid.getUniqueId(ipCanUse);
+                    }else{
+                        ipCanUse = ip;
+                        isIpCanUse = await resetDid.getUniqueId(ip);
+                    }
+                    console.log('isIpCanUse',ipCanUse, isIpCanUse);
+                    if(isIpCanUse){
+                        g_ip = ipCanUse;
+                    }
+                }
+            }
+        }
+    }else{
+        $('.reset_did_step_one_box, .haved_did_click').css('display', 'none');
+        $('.reset_did_step_two_box').css('display', 'block');
     }
-    $('.reset_did_step_one_box').css('display', 'block');
-    $('.reset_did_step_two_box').css('display', 'none');
-    resetDid.getUniqueId(checkIp);
-}else{
-    $('.reset_did_step_one_box, .haved_did_click').css('display', 'none');
-    $('.reset_did_step_two_box').css('display', 'block');
 }
+initData();
 
 function copyData (data:string) {
     $('#copy_textarea').text(data).show();
@@ -518,27 +560,47 @@ $('.did_verify_btn').on('click', async function () {
                     });
                     $('.reset_did_step_one_box').css('display', 'none');
                     $('.reset_did_step_two_box').css('display', 'block');
-                }
-                console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
-                console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
-                let oodId: cyfs.DeviceId;
-                if(peopleOnMeta && peopleOnMeta?.body().unwrap().content().ood_list.length > 0){
-                    oodId = peopleOnMeta?.body().unwrap().content().ood_list[0];
                 }else{
-                    oodId = g_peopleInfo.object?.body().unwrap().content().ood_list[0];
-                }
-                const oodObject:cyfs.Device = (await ObjectUtil.getObject({ id: oodId.object_id, isReturnResult: true })).object;
-                if(oodObject.desc().owner()?.unwrap().to_base_58() != peopleRet.objectId.to_base_58()){
-                    toast({
-                        message: `The recovery phrase you entered does not match the DID (${g_peopleId}).`,
-                        time: 3000,
-                        type: 'warn'
-                    });
-                    $('.recovery_phrase_textarea').val('');
-                    $('.reset_did_step_one_box, .recovery_phrase_title').css('display', 'none');
-                    $('.reset_did_step_one_box, .activated_title').css('display', 'block');
-                }else{
-                    await bindRuntime();
+                    // await bindRuntime();
+                    // return;
+                    console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
+                    console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
+                    let oodId: cyfs.DeviceId;
+                    if(peopleOnMeta && peopleOnMeta?.body().unwrap().content().ood_list.length > 0){
+                        oodId = peopleOnMeta?.body().unwrap().content().ood_list[0];
+                    }else{
+                        oodId = g_peopleInfo.object?.body().unwrap().content().ood_list[0];
+                    }
+                    console.origin.log("oodId:", oodId.object_id.to_base_58());
+                    const oodObjectRet = await ObjectUtil.getObject({ id: oodId.object_id, flags: 1, isReturnResult: true });
+                    console.origin.log("oodObjectRet:", oodObjectRet);
+                    if(oodObjectRet.err){
+                        $('.did_loading_cover_container').css('display', 'none');
+                        toast({
+                            message: `get device err,` + oodObjectRet.val.code,
+                            time: 3000,
+                            type: 'warn'
+                        });
+                        $('.recovery_phrase_textarea').val('');
+                        $('.reset_did_step_one_box').css('display', 'none');
+                        $('.reset_did_step_two_box').css('display', 'block');
+                    }else{
+                        const oodObject:cyfs.Device = oodObjectRet.object.object;
+                        console.origin.log("oodObject:", oodObject.desc().owner()?.unwrap().to_base_58());
+                        console.origin.log("oodObject:", peopleRet.objectId.to_base_58());
+                        if(oodObject.desc().owner()?.unwrap().to_base_58() != peopleRet.objectId.to_base_58()){
+                            toast({
+                                message: `The recovery phrase you entered does not match the DID (${oodObject.desc().owner()?.unwrap().to_base_58()}).`,
+                                time: 3000,
+                                type: 'warn'
+                            });
+                            $('.recovery_phrase_textarea').val('');
+                            $('.reset_did_step_one_box, .recovery_phrase_title').css('display', 'none');
+                            $('.reset_did_step_one_box, .activated_title').css('display', 'block');
+                        }else{
+                            await bindRuntime();
+                        }
+                    }
                 }
             }
         }

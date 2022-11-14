@@ -152,7 +152,7 @@ class ResetDid {
             }
         );
         device.set_name(info.nick_name)
-        let device_id = device.device_id();
+        let device_id = device.calculate_id();
         console.log("create_device", device_id.to_base_58());
         let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(254))
         if (sign_ret.err) {

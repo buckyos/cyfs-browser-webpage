@@ -130,7 +130,7 @@ class BuildDid {
             }, 500);
             return;
         }
-        let countryHtml:string = '<option value=""></option>';
+        let countryHtml:string = '<option value="">Please select your region.</option>';
         let stateHtml:string = '<option value=""></option>';
         let cityHtml:string = '<option value=""></option>';
         g_areaList.forEach((area, index)=>{
@@ -217,7 +217,7 @@ class BuildDid {
             }
         );
         device.set_name(info.nick_name)
-        let device_id = device.device_id();
+        let device_id = device.calculate_id();
         console.log("create_device", device_id.to_base_58());
         let sign_ret = cyfs.sign_and_set_named_object(info.owner_private, device, new cyfs.SignatureRefIndex(254))
         if (sign_ret.err) {
@@ -323,7 +323,7 @@ class BuildDid {
     async upChain (obj: cyfs.AnyNamedObject, private_key: cyfs.PrivateKey) {
         // getDesc up chain
         let check_p_ret = await this.check_object_on_meta(obj.calculate_id());
-        console.origin.log('check_p_ret', check_p_ret);
+        console.origin.log('check_p_ret',obj.calculate_id().to_base_58(), check_p_ret);
         let p_tx:cyfs.TxId;
         if(check_p_ret){
             let p_ret = await this.meta_client.update_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, private_key);
@@ -351,6 +351,7 @@ function str2array(str: string): Uint8Array {
 
 
 $('#country_select').on('change', function () {
+    $('#country_select, #state_select, #city_select').css('color', '#333');
     let country = $(this).val();
     let stateHtml:string = '';
     let cityHtml:string = '';
@@ -433,6 +434,20 @@ function TimesFormate(date:number){
 
 async function initData(){
     if(g_token){
+        gtag('event', 'build_did_pv_2_show_area', {
+            'gtagTime': formatDate(new Date())
+        });
+        let currentTime = g_buyOodAfterTime = (new Date()).getTime();
+        let visitTimeStorage = localStorage.getItem('cyfs-build-did-buy-ood-time');
+        if(visitTimeStorage){
+            let visitTime = Number(visitTimeStorage);
+            let timeDiff = currentTime - visitTime;
+            gtag('event', 'diff_build_did_1_buy_ood', {
+                'diffTimeFormate': TimesFormate(timeDiff),
+                'diffSenconds': Math.round(timeDiff/1000),
+                'gtagTime': formatDate(new Date())
+            });
+        }
         buildDid.RenderArea();
         $('.create_did_step_one_box').css('display', 'none');
         $('.create_did_step_two_box, .create_did_step_two, .did_title_intro_btn_did').css('display', 'block');
@@ -460,20 +475,6 @@ async function initData(){
             }
         }
         console.log('---g_ip', g_ip);
-        gtag('event', 'build_did_pv_2_show_area', {
-            'gtagTime': formatDate(new Date())
-        });
-        let currentTime = g_buyOodAfterTime = (new Date()).getTime();
-        let visitTimeStorage = localStorage.getItem('cyfs-build-did-buy-ood-time');
-        if(visitTimeStorage){
-            let visitTime = Number(visitTimeStorage);
-            let timeDiff = currentTime - visitTime;
-            gtag('event', 'diff_build_did_1_buy_ood', {
-                'diffTimeFormate': TimesFormate(timeDiff),
-                'diffSenconds': Math.round(timeDiff/1000),
-                'gtagTime': formatDate(new Date())
-            });
-        }
     }else{
         $('.did_title_intro_btn_vood').css('display', 'block');
         gtag('event', 'build_did_pv_1_first_visit', {

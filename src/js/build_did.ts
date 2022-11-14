@@ -37,7 +37,6 @@ let g_peopleInfo:{
     path: string
 };
 let g_deviceInfo:{
-    deviceId: cyfs.ObjectId,
     device: cyfs.Device,
     privateKey: cyfs.PrivateKey,
 };
@@ -225,7 +224,6 @@ class BuildDid {
             return sign_ret;
         }
         return {
-            deviceId: device_id,
             device: device,
             privateKey: private_key
         }
@@ -680,7 +678,8 @@ $('.did_verify_btn').on('click', async function () {
             });
         }else{
             g_deviceInfo = deviceRet;
-            let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+            console.origin.log('g_deviceInfo.device.device_id()',g_deviceInfo.device.device_id().to_base_58());
+            let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(g_deviceInfo.device.device_id());
             let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
             if (sign_ret.err) {
                 $('.cover_box').css('display', 'none');

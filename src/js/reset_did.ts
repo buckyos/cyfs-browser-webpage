@@ -538,7 +538,7 @@ $('.did_verify_btn').on('click', async function () {
                         });
                     }else{
                         g_deviceInfo = deviceRet;
-                        let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(deviceRet.deviceId);
+                        let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(g_deviceInfo.device.device_id());
                         let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
                         if (sign_ret.err) {
                             toast({

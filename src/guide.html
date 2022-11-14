@@ -16,59 +16,45 @@
             <div class="browser_guide_index">
                 <i class="browser_guide_index_icon"></i>
                 <h3 class="browser_guide_index_title browser_guide_title" set-lan="html:Guide.WelcomeTo"></h3>
-                <p class="browser_guide_index_subtitle browser_guide_subtitle" set-lan="html:Guide.WelcomeToInfo"></p>
-                <button class="browser_guide_index_btn browser_guide_btn" data-current="browser_guide_index" data-next="browser_guide_one_box" set-lan="html:Guide.GetStarted"></button>
+                <p class="browser_guide_index_subtitle browser_guide_subtitle text_align_center">Web3 starts with CYFS — We are committed to making CYFS browser the best browser for web3 .</p>
+                <button class="browser_guide_index_btn browser_guide_btn" data-current="browser_guide_index" data-next="browser_guide_one_box">Get Started</button>
             </div>
-            <div class="browser_guide_one_box" style="display: none;">
-                <i class="browser_guide_one_icon"></i>
-                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.StartJourney"></h3>
-                <p class="browser_guide_index_subtitle browser_guide_subtitle" set-lan="html:Guide.StartJourneyInfo"></p>
-                <div class="guide_switch_btn_box">
-                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
-                    <div class="guide_switch_box">
-                        <span class="guide_switch_active_span"></span>
-                        <span data-current="browser_guide_one_box" data-direction="left" data-next="browser_guide_two_box"></span>
-                        <span data-current="browser_guide_one_box" data-direction="left" data-next="browser_guide_three_box"></span>
-                    </div>
-                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_one_box" data-next="browser_guide_two_box" set-lan="html:Next"></button>
+            <div class="guide_two_content_box">
+                <div class="browser_guide_one_box box_display_none browser_guide_box" >
+                    <i class="browser_guide_one_icon"></i>
+                    <h3 class="browser_guide_one_title browser_guide_title">Supports decentralized network protocols</h3>
+                    <p class="browser_guide_index_subtitle browser_guide_subtitle">CYFS browser will support a variety of decentralized network protocols (currently supports CYFS, IPFS), allowing you to open Web3 links more easily and bring you a better browsing experience.</p>
                 </div>
-            </div>
-            <div class="browser_guide_two_box" style="display: none;">
-                <i class="browser_guide_two_icon"></i>
-                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.CreateIdentity"></h3>
-                <p class="browser_guide_one_subtitle browser_guide_subtitle" set-lan="html:Guide.CreateIdentityInfo"></p>
-                <div class="guide_switch_btn_box">
-                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
-                    <div class="guide_switch_box">
-                        <span data-current="browser_guide_two_box" data-direction="right" data-next="browser_guide_one_box"></span>
-                        <span class="guide_switch_active_span"></span>
-                        <span data-current="browser_guide_two_box" data-direction="left" data-next="browser_guide_three_box"></span>
-                    </div>
-                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_two_box" data-next="browser_guide_three_box" set-lan="html:Next"></button>
+                <div class="browser_guide_two_box box_display_none browser_guide_box" >
+                    <i class="browser_guide_two_icon"></i>
+                    <h3 class="browser_guide_one_title browser_guide_title">You should have a decentralized identity</h3>
+                    <p class="browser_guide_one_subtitle browser_guide_subtitle">Decentralized identity (DID) is like a passport, allowing you to travel the Web3 world. You can use DID to manage digital assets (Token, NFT, etc.), and you can use DID to manage data that belongs to you.</p>
+                    <p class="title_intro_btn_p"><span class="did_title_intro_btn did_title_intro_btn_vood" data-box="did_intro_container_did" style="margin-right: 30px;">what is DID ?</span></p>
                 </div>
-            </div>
-            <div class="browser_guide_three_box" style="display: none;">
-                <i class="browser_guide_three_icon"></i>
-                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.AccessOOD"></h3>
-                <p class="browser_guide_subtitle" set-lan="html:Guide.AccessOODInfo"></p>
-                <p class="browser_guide_three_subtitle browser_guide_subtitle" set-lan="html:Guide.AccessOODInfoTwo"></p>
-                <div class="guide_switch_btn_box">
-                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
-                    <div class="guide_switch_box">
-                        <span data-current="browser_guide_three_box" data-direction="right" data-next="browser_guide_one_box"></span>
-                        <span data-current="browser_guide_three_box" data-direction="right" data-next="browser_guide_two_box"></span>
-                        <span class="guide_switch_active_span"></span>
-                    </div>
-                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_three_box" data-next="browser_guide_success_box" set-lan="html:Next"></button>
+                <div class="browser_guide_three_box box_display_none browser_guide_box" >
+                    <i class="browser_guide_three_icon"></i>
+                    <h3 class="browser_guide_one_title browser_guide_title">CYFS makes data ownership truly yours.</h3>
+                    <p class="browser_guide_subtitle">The CYFS protocol securely stores your data in a decentralized network, and the storage medium is OOD, so you need to have an OOD that is completely under your control.</p>
+                    <p class="title_intro_btn_p"><span class="did_title_intro_btn did_title_intro_btn_vood" data-box="did_intro_container_ood">what is OOD ?</span></p>
                 </div>
-            </div>
-            <div class="browser_guide_success_box" style="display: none;">
-                <i class="browser_guide_success_icon"></i>
-                <h3 class="browser_guide_success_title browser_guide_title" set-lan="html:Guide.WhatToDoNext"></h3>
-                <button class="guide_success_confirm_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_acivate_box" set-lan="html:Guide.GoToActivateBtn"></button>
-                <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button>
-                <!-- <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button> -->
-                <button class="browser_guide_btn browser_watch_last" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button>
+                <div class="guide_switch_btn_box" style="display: none;">
+                    <div class="guide_switch_box">
+                        <span data-current="browser_guide_one_box" data-next="browser_guide_one_box"  class="guide_switch_active_span"></span>
+                        <span data-current="browser_guide_two_box"  data-next="browser_guide_two_box"></span>
+                        <span data-current="browser_guide_three_box"></span>
+                    </div>
+                </div>
+                <div class="browser_guide_success_box" style="display: none;">
+                    <button class="guide_success_confirm_btn browser_guide_btn href_to_did" data-href="cyfs://static/build_did.html">Create Your DID</button>
+                    <button class="guide_success_cancel_btn browser_guide_btn href_to_did" data-href="cyfs://static/reset_did.html">Reset Your DID</button>
+                    <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_acivate_box" >Activate your browser with CyberChat</button>
+                    <!-- <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button> -->
+                    <!-- <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button> -->
+                    <div class="browser_guide_btn_box">
+                        <a class="to_cyberchat_click float_l" href="https://www.cyfs.com/download">what is CyberChat ?</a>
+                        <button class="browser_guide_btn browser_watch_last guide_skip_btn">skip for now</button>
+                    </div>
+                </div>
             </div>
             <div class="browser_guide_loading_box" style="display: none;">
                 <i class="browser_guide_loading_icon"></i>
@@ -91,7 +77,7 @@
             </div>
             <div class="browser_guide_acivate_box" style="display: none;">
                 <i class="browser_guide_acivate_icon">
-                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_acivate_box" data-next="browser_guide_success_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
+                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_acivate_box" data-next="browser_guide_one_box, .guide_two_content_box, .app_footer_box, .browser_guide_success_box, .guide_switch_btn_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
                     <div class="scan_canvas_box">
                         <canvas class="scan_canvas" id="scan_canvas"></canvas>
                     </div>
@@ -113,66 +99,49 @@
                     </div>
                     <div class="clear_both" style="display: none;"></div>
                 </div>
-            </div>
-            <div class="browser_guide_intro_one_box" style="display: none;">
-                <i class="browser_guide_intro_one_icon">
-                    <button class="guide_back_btn guide_back_btn browser_guide_btn"  data-current="browser_guide_intro_one_box" data-next="browser_guide_success_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
-                </i>
-                <h3 class="browser_guide_one_title browser_guide_title"  set-lan="html:Guide.WhatHowWorks"></h3>
-                <p class="browser_guide_one_subtitle" set-lan="html:Guide.WhatHowWorksInfo"> </p>
-                <div class="guide_switch_btn_box">
-                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
-                    <div class="guide_switch_box">
-                        <span class="guide_switch_active_span"></span>
-                        <span data-current="browser_guide_intro_one_box" data-direction="left" data-next="browser_guide_intro_two_box"></span>
-                        <span data-current="browser_guide_intro_one_box" data-direction="left" data-next="browser_guide_intro_three_box"></span>
-                    </div>
-                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_intro_one_box" data-next="browser_guide_intro_two_box" set-lan="html:Next"></button>
-                </div>
-            </div>
-            <div class="browser_guide_intro_two_box" style="display: none;">
-                <i class="browser_guide_intro_two_icon">
-                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_intro_two_box" data-next="browser_guide_success_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
-                </i>
-                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.TryAnySite"></h3>
-                <p class="guide_intro_two_p" set-lan="html:Guide.TryAnySiteInfoOne"></p>
-                <p class="guide_intro_two_p" set-lan="html:Guide.TryAnySiteInfoTwo"></p>
-                <p class="guide_intro_two_p guide_intro_two_btm" set-lan="html:Guide.TryAnySiteInfoThree"></p>
-                <div class="guide_switch_btn_box">
-                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
-                    <div class="guide_switch_box">
-                        <span data-current="browser_guide_intro_two_box" data-direction="right" data-next="browser_guide_intro_one_box"></span>
-                        <span class="guide_switch_active_span"></span>
-                        <span data-current="browser_guide_intro_two_box" data-direction="left" data-next="browser_guide_intro_three_box"></span>
-                    </div>
-                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_intro_two_box" data-next="browser_guide_intro_three_box" set-lan="html:Next"></button>
-                </div>
-            </div>
-            <div class="browser_guide_intro_three_box" style="display: none;">
-                <i class="browser_guide_intro_three_icon">
-                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_intro_three_box" data-next="browser_guide_success_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
-                </i>
-                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.BuildTRealWeb3"></h3>
-                <p class="guide_intro_two_p" set-lan="html:Guide.BuildTRealWeb3Info"></p>
-                <p class="guide_intro_three_p" set-lan="html:Guide.BuildTRealWeb3InfoTwo"></p>
-                <div class="guide_switch_btn_box">
-                    <button class="guide_last_btn guide_skip_btn guide_confirm_btn" set-lan="html:Skip"></button>
-                    <div class="guide_switch_box">
-                        <span data-current="browser_guide_intro_three_box" data-direction="right" data-next="browser_guide_intro_one_box"></span>
-                        <span data-current="browser_guide_intro_three_box" data-direction="right" data-next="browser_guide_intro_two_box"></span>
-                        <span class="guide_switch_active_span"></span>
-                    </div>
-                    <button class="guide_next_btn browser_guide_btn" data-current="browser_guide_intro_three_box" data-next="browser_guide_acivate_box" style="width: 152px;" set-lan="html:Guide.GoToActivate"></button>
-                </div>
+                <p class="title_intro_btn_p"><a class="to_cyberchat_click float_r" href="https://www.cyfs.com/download">what is CyberChat ?</a></p>
             </div>
         </div>
     </div>
+    <div class="app_footer_box">
+        <div class="app_footer_content_box">
+          <div class=" app_footer_box_r">
+            <a class="app_footer_i app_footer_github_i" href="https://github.com/buckyos/CYFS"></a>
+            <a class="app_footer_i app_footer_discard_i" href="https://discord.com/invite/cyfs"></a>
+            <a class="app_footer_i app_footer_tittwer_i" href="https://twitter.com/CYFSTech"></a>
+            <a class="footer_text_r">Join us to build Web3 together</a>
+          </div>
+        </div>
+      </div>
     <div class="guide_shadow_box">
         <div class="guide_confirm_box">
-            <p class="guide_confirm_p" set-lan="html:Guide.GoToActivateWarn"></p>
+            <p class="guide_confirm_p">Are you sure you don't activate the browser for now and use read-only mode first?</p>
             <div class="guide_confirm_btn_box">
-                <button class="guide_confirm_cancel_btn" set-lan="html:Cancel"></button>
                 <button class="guide_confirm_yes_btn" set-lan="html:Yes"></button>
+                <button class="guide_confirm_cancel_btn">NO</button>
+            </div>
+        </div>
+    </div>
+    <div class="cover_box did_introduce_cover_container">
+        <div class="did_intro_container did_intro_container_ood">
+            <h2 class="did_intro_title">what is OOD ?</h2>
+            <i class="did_intro_close_i"></i>
+            <div class="did_intro_p_box">
+                <p class="did_intro_p">OOD (Owner Online Device) is more like your smartphone and is a personal server device based on the CYFS protocol. You can use OOD for decentralized data storage, and install a Web3 app (DecApp--a data exchange contract application), and all your data will be safely stored in OOD.</p>
+            </div>
+        </div>
+        <div class="did_intro_container did_intro_container_did">
+            <h2 class="did_intro_title">what is  DID ?</h2>
+            <i class="did_intro_close_i"></i>
+            <div class="did_intro_p_box">
+                <p class="did_intro_p">Decentralized identity (DID)  , also referred to as self-sovereign identity, is an open-standards based identity framework that uses digital identifiers and verifiable credentials that are self-owned, independent, and enable trusted data exchange.</p>
+            </div>
+        </div>
+        <div class="did_intro_container did_intro_container_chat">
+            <h2 class="did_intro_title what_did_click">what is CyberChat ?</h2>
+            <i class="did_intro_close_i"></i>
+            <div class="did_intro_p_box">
+                <p class="did_intro_p">A recovery phrase is basically a human-readable form of your wallet's private key—the unique, secret passcode used to authenticate and encrypt your wallet access.</p>
             </div>
         </div>
     </div>
@@ -213,6 +182,12 @@ input, button, select{
 .guide_box{
     width: 100%;
 }
+.float_l{
+    float: left;
+}
+.float_r{
+    float: right;
+}
 .guide_header_box{
     width: 1180px;
     margin: 0 auto;
@@ -232,12 +207,13 @@ input, button, select{
 }
 .browser_guide_index_icon{
     display: block;
-    width: 221px;
-    height: 221px;
+    width: 160px;
+    height: 160px;
     margin: 0 auto;
     padding-top: 107px;
     padding-bottom: 80px;
     background: url(./img/browser_guide_index_icon.svg) no-repeat center center;
+    background-size: 100%;
 }
 .browser_guide_index_title{
     padding-bottom: 19px;
@@ -249,9 +225,6 @@ input, button, select{
     font-weight: bold;
     line-height: 40px;
 }
-.browser_guide_index_subtitle{
-    padding-bottom: 119px;
-}
 .browser_guide_subtitle{
     font-size: 14px;
     font-weight: 400;
@@ -261,16 +234,17 @@ input, button, select{
 .browser_guide_index_btn{
     display: block;
     width: 152px;
-    height: 40px;
+    height: 35px;
     background: #0AD7B6;
     border-radius: 4px 4px 4px 4px;
     text-align: center;
-    font-size: 18px;
+    font-size: 12px;
     font-weight: 400;
     color: #FFFFFF;
-    line-height: 40px;
+    line-height: 35px;
     margin: 0 auto;
     cursor: pointer;
+    margin-top: 119px;
 }
 .browser_guide_one_icon{
     display: block;
@@ -334,9 +308,9 @@ input, button, select{
 }
 .guide_switch_box{
     width: 81px;
-    padding: 16px 0 0 126px;
+    padding: 16px 0 0 0;
     overflow: hidden;
-    float: left;
+    margin: 0 auto;
 }
 .guide_switch_box span{
     display: block;
@@ -359,39 +333,38 @@ input, button, select{
 .browser_guide_one_title{
     padding: 4px 0 19px 0;
 }
-.browser_guide_one_subtitle{
-    padding-bottom: 95px;
-}
 .browser_guide_three_subtitle{
     padding: 19px 0 57px 0;
 }
 .guide_success_confirm_btn{
     width: 365px;
-    height: 40px;
+    height: 35px;
     background: linear-gradient(270deg, #0AD7B6 0%, #00BFA8 100%);
     border-radius: 4px 4px 4px 4px;
     text-align: center;
-    font-size: 18px;
+    font-size: 12px;
     font-weight: 400;
     color: #FFFFFF;
-    line-height: 40px;
+    line-height: 35px;
     display: block;
     margin: 0 auto;
     margin-bottom: 23px;
 }
 .guide_success_cancel_btn{
     width: 365px;
-    height: 40px;
-    background: #E8EEF3;
+    height: 35px;
+    background: #fff;
     border-radius: 4px;
     text-align: center;
-    font-size: 18px;
+    font-size: 12px;
     font-weight: 400;
-    color: #0AD7B6;
-    line-height: 40px;
+    line-height: 35px;
     display: block;
     margin: 0 auto;
     margin-bottom: 20px;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #D5D5D5;
+    color: #0AD7B6;
 }
 .browser_guide_success_title{
     padding: 4px 0 50px 0;
@@ -449,6 +422,9 @@ input, button, select{
     margin: 0 auto;
     border-radius: 4px 4px 4px 4px;
 }
+.title_intro_btn_p{
+    height: 20px;
+}
 .browser_guide_acivate_success_icon{
     display: block;
     width: 56px;
@@ -472,11 +448,11 @@ input, button, select{
 }
 .guide_acivate_success_box button{
     width: 104px;
-    height: 40px;
+    height: 35px;
     border-radius: 4px 4px 4px 4px;
     text-align: center;
-    line-height: 40px;
-    font-size: 18px;
+    line-height: 35px;
+    font-size: 12px;
 }
 .guide_acivate_success_confirm_btn{
     background: linear-gradient(270deg, #0AD7B6 0%, #00BFA8 100%);
@@ -489,7 +465,7 @@ input, button, select{
     float: left;
     color: #0AD7B6;
 }
-.guide_shadow_box{
+.guide_shadow_box, .cover_box{
     width: 100%;
     height: 100%;
     background: rgba(51, 51, 51, 0.4);
@@ -525,22 +501,25 @@ input, button, select{
 }
 .guide_confirm_btn_box button{
     width: 104px;
-    height: 40px;
+    height: 35px;
     border-radius: 4px 4px 4px 4px;
-    font-size: 18px;
-    line-height: 40px;
+    font-size: 12px;
+    line-height: 35px;
     font-weight: 400;
+}
+.text_align_center{
+    text-align: center;
 }
 .guide_confirm_cancel_btn{
     border: 1px solid #D5D5D5;
     color: #0AD7B6;
     background: #fff;
-    float: left;
+    float: right;
 }
 .guide_confirm_yes_btn{
     background: #0AD7B6;
     color: #fff;
-    float: right;
+    float: left;
 }
 .browser_guide_acivate_icon{
     display: block;
@@ -611,7 +590,7 @@ input, button, select{
 }
 .guide_back_btn{
     width: 105px;
-    height: 32px;
+    height: 35px;
     background: #F2F3F5;
     border-radius: 4px 4px 4px 4px;
     position: absolute;
@@ -633,7 +612,7 @@ input, button, select{
     font-size: 16px;
     font-weight: 400;
     color: #04C9AE;
-    line-height: 32px;
+    line-height: 35px;
     margin-left: 4px;
 }
 .browser_guide_intro_one_icon{
@@ -733,19 +712,26 @@ input, button, select{
     height: 124px;
     top: -187px;
 }
+.browser_guide_btn_box{
+    width: 365px;
+    height: 20px;
+    margin: 0 auto;
+    overflow: hidden;
+}
 .browser_watch_last{
     background: none;
-    width: 175px;
     height: 16px;
     font-size: 12px;
     font-family: HarmonyOS Sans-Regular, HarmonyOS Sans;
     font-weight: 400;
     color: #333333;
     line-height: 20px;
-    width: 365px;
     display: block;
-    margin: 0 auto;
     font-weight: 400;
+    float: right;
+}
+.browser_guide_box {
+    height: 520px;
 }
 .browser_watch_last i{
     display: inline-block;
@@ -753,6 +739,132 @@ input, button, select{
     height: 16px;
     vertical-align: text-top;
     background: url(./img/browser_watch_last.svg) no-repeat center center;
+}
+.app_footer_box{
+    width: 100%;
+    height: 143px;
+    background: #FFFFFF;
+    display: none;
+}
+.app_footer_content_box{
+    width: 1200px;
+    margin: 0 auto;
+}
+.app_footer_cyfs_icon{
+    width: 80px;
+    height: 31px;
+    background: url(../img/app/app_footer_cyfs_icon.svg) no-repeat center center;
+    margin: 48px 56px 54px 0;
+    float: left;
+}
+.app_footer_box_l{
+    float: left;
+}
+.app_footer_box_r{
+    height: 32px;
+    line-height: 32px;
+    padding-top: 95px;
+    margin: 0 auto;
+    text-align: center;
+    vertical-align: text-top;
+}
+.app_footer_box_r .app_footer_i {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+    vertical-align: text-top;
+    cursor: pointer;
+}
+.app_footer_discard_i{
+    background: url(../img/app/app_footer_discard_i.svg) no-repeat center center;
+}
+.app_footer_box_l p{
+    height: 23px;
+    padding-top: 55px;
+    font-weight: 400;
+    color: #242726;
+    line-height: 23px;
+    float: left;
+}
+.app_footer_tittwer_i{
+    background: url(../img/app/app_footer_tittwer_i.svg) no-repeat center center;
+    margin-right: 31px;
+}
+.app_footer_github_i{
+    background: url(../img/app/app_footer_github_i.svg) no-repeat center center;
+}
+.app_footer_box_r .footer_text_r{
+    height: 32px;
+    line-height: 32px;
+    color: #242726;
+    display: inline-block;
+    vertical-align: text-top;
+}
+.browser_guide_success_box{
+    margin-top: 20px;
+}
+.box_display_none{
+    display: none;
+}
+.box_display_block{
+    display: block!important;
+}
+.did_title_intro_btn{
+    font-weight: 400;
+    font-size: 16px;
+    color: #2873F7;
+    height: 16px;
+    line-height: 16px;
+    cursor: pointer;
+    float: right;
+}
+.to_cyberchat_click{
+    font-weight: 400;
+    font-size: 16px;
+    color: #2873F7;
+    height: 16px;
+    line-height: 16px;
+    cursor: pointer;
+}
+.did_intro_container{
+    width: 300px;
+    height: 232px;
+    position: absolute;
+    background: #fff;
+    box-shadow: 0px 2px 3px 1px rgba(0,0,0,0.16);
+    border-radius: 8px 8px 8px 8px;
+    top: 320px;
+    left: 50%;
+    margin-left: -150px;
+    display: none;
+}
+.did_intro_title{
+    font-size: 14px;
+    color: #333333;
+    padding: 16px;
+    height: 19px;
+    line-height: 19px;
+}
+.did_intro_p_box{
+    width: 270px;
+    padding: 0 15px;
+}
+.did_intro_p{
+    font-size: 12px;
+    color: #333333;
+    font-weight: 400;
+    line-height: 20px;
+}
+.did_intro_close_i{
+    display: block;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    cursor: pointer;
+    background: url(./img/did/did_intro_close_i.svg) no-repeat center center;
 }
 </style>
 </html>

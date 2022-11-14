@@ -163,6 +163,7 @@ class NONObject {
     console.info('current_device_static_info:', current_device_static_info);
     let oodStatusIcon:string = '../img/browser_main_ood_offline.svg';
     let peopleName:string = '';
+    // let peoplePicture:string = '../img/browser_people_icon.svg';
     let peoplePicture:string = '';
     if (current_device_static_info.owner_id) {
         const peopleR = (await ObjectUtil.getObject({ id: current_device_static_info.owner_id, isReturnResult: true, flags: 1 })).object;
@@ -203,8 +204,6 @@ class NONObject {
         peopleName = peopleR.object.name() ? peopleR.object.name() : (LANGUAGESTYPE == 'zh'? '未设置名称':'name not set');
         if(peopleR.object.icon()){
             peoplePicture = 'cyfs://o/'+peopleR.object.icon().object_id;
-        }else{
-            peoplePicture = '../img/browser_people_icon.svg';
         }
     }
     return {

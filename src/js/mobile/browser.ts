@@ -157,7 +157,7 @@ class Util {
         document.getElementById('device_object')!.innerHTML = '对象缓存' + device_noc.count;
         document.getElementById('device_data')!.innerHTML = '数据缓存' + device_noc.storage_size;
         util.getNocInfo(true);
-        document.getElementById('people_name')!.innerHTML = document.getElementById('people_name2')!.innerHTML = (await ObjectUtil.getObject({ id: current_device_static_info.owner_id, isReturnResult: true })).object.object.name();
+        document.getElementById('people_name')!.innerHTML = document.getElementById('people_name2')!.innerHTML = (await ObjectUtil.getObject({ id: current_device_static_info.owner_id, isReturnResult: true })).object.object.name() || 'name not set';
     }
 
     async getOodStatus() {

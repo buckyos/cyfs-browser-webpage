@@ -168,7 +168,7 @@ class BuildDid {
             build.no_create_time()
         });
         let people_id = people.calculate_id();
-
+        console.log("create_people", people_id.to_base_58());
         return {
             objectId: people_id,
             object: people,

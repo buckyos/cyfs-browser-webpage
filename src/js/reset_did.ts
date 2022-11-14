@@ -84,6 +84,7 @@ class ResetDid {
             build.no_create_time()
         });
         let people_id = people.calculate_id();
+        console.log("create_people", people_id.to_base_58());
         return {
             objectId: people_id,
             object: people,
@@ -561,8 +562,6 @@ $('.did_verify_btn').on('click', async function () {
                     $('.reset_did_step_one_box').css('display', 'none');
                     $('.reset_did_step_two_box').css('display', 'block');
                 }else{
-                    // await bindRuntime();
-                    // return;
                     console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
                     console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
                     let oodId: cyfs.DeviceId;

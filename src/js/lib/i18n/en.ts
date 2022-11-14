@@ -123,7 +123,7 @@ export const en =  {
         "InstallBtn": "Install",
     },
     "Guide":{
-        "WelcomeTo": "Welcome to CYFS Browser!",
+        "WelcomeTo": "Welcome to CYFS Browser !",
         "WelcomeToInfo": "You can access the real Web3 world with CYFS Browser—High performance, unprecedented protocol, and fast speed to make you browsing the pure Web3 site.",
         "GetStarted": "Get started",
         "StartJourney": "Start the real Web3 journey",

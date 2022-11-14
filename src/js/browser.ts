@@ -244,7 +244,7 @@ class Util {
     async renderHeaderInfo() {
         let headerInfo = await ObjectUtil.getHeaderInfo();
         $('#ood_status_icon').css('background', `url(${headerInfo.oodStatusIcon}) no-repeat center center`);
-        $('#people_name2').html(headerInfo.peopleName);
+        $('#people_name2').html(headerInfo.peopleName || 'name not set');
         $('#user_switch').css({'background': 'url(' + headerInfo.peoplePicture + ') no-repeat center center','background-size': '100% 100%'});
     }
     

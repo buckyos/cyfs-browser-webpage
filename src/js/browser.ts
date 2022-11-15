@@ -143,7 +143,6 @@ function isUnbind() {
                     window.location.href = 'cyfs://static/browser.html?success';
                     IS_FIRST_BIND = false;
                 }
-                util.renderHeaderInfo();
             }
             if (result.anonymous) {
                 // 匿名模式
@@ -161,6 +160,7 @@ function isUnbind() {
                 IS_FIRST_BIND = true;
             }else{
                 if (result.is_bind) {
+                    util.renderHeaderInfo();
                     if(IS_FIRST_IN){
                         handlerGuidingProcess();
                         IS_FIRST_IN = false;
@@ -270,7 +270,7 @@ class Util {
                 let app_status = app.status;
                 if((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir){
                     console.log('get_app_status.webdir().to_base_58()', app.app_name, app.webdir.to_base_58())
-                    SHORTCUT_LIST.push({ url:`cyfs://a/${appid.object_id}/index.html`, name: app.app_name, icon: app.app_icon, index: SHORTCUT_LIST.length, isBuildin: true })
+                    SHORTCUT_LIST.push({ url:`cyfs://a.${appid.object_id.to_base_36()}/index.html`, name: app.app_name, icon: app.app_icon, index: SHORTCUT_LIST.length, isBuildin: true })
                 }
             }
         }

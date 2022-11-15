@@ -357,14 +357,22 @@ $('#country_select').on('change', function () {
         if(country === area.id){
             for (let i = 0; i < area.states.length; i++) {
                 const element = area.states[i];
-                stateHtml += `<option value="${element.id}">${LANGUAGESTYPE == 'zh'?element.cname:element.name}</option>`;
+                stateHtml += `<option value="${element.id}">${element.name||'--'}</option>`;
                 if(i === 0){
                     for (let k = 0; k < element.cities.length; k++) {
                         const city = element.cities[k];
-                        cityHtml += `<option value="${city.id}">${LANGUAGESTYPE == 'zh'?city.cname:city.name}</option>`;
+                        cityHtml += `<option value="${city.id}">${city.name||'--'}</option>`;
+                    }
+                    if(element.cities.length < 1){
+                        cityHtml += `<option value="">--</option>`;
                     }
                 }
             }
+            if(area.states.length < 1){
+                stateHtml += `<option value="">--</option>`;
+                cityHtml += `<option value="">--</option>`;
+            }
+           
         }
     })
     $('#state_select').html(stateHtml);
@@ -658,7 +666,7 @@ $('.did_verify_btn').on('click', async function () {
         g_peopleInfo = peopleRet;
         let deviceInfo = {
             unique_id: g_uniqueId,
-            owner: g_peopleInfo.objectId,
+            owner: g_peopleInfo.object.calculate_id(),
             owner_private: g_peopleInfo.privateKey,
             area: new cyfs.Area(g_country ,g_state,g_city,0),
             network: cyfs.get_current_network(),

@@ -37,7 +37,6 @@ module.exports = (env, argv) => {
             'm_tx': './src/js/mobile/tx.ts',
             'browser': './src/js/browser.ts',
             'm_browser': './src/js/mobile/browser.ts',
-            'app_index': './src/js/app/app_index.ts',
             'app_detail': './src/js/app/app_detail.ts',
             'app_installed': './src/js/app/app_installed.ts',
             'localstate': './src/js/localstate.ts',

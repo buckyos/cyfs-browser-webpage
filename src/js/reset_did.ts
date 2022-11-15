@@ -4,14 +4,6 @@ let QRCode = require('qrcode')
 import { toast } from './lib/toast.min'
 import { ObjectUtil, formatDate, LANGUAGESTYPE, castToLocalUnit } from './lib/util'
 
-$(async function(){
-    if(LANGUAGESTYPE == 'zh'){
-        $('title').html('重置DID');
-    }else{
-        $('title').html('Reset DID');
-    }
-});
-
 let g_mnemonic:string = '';
 let g_ip:string = '';
 let g_ipArr:string[] = [];
@@ -161,7 +153,7 @@ class ResetDid {
                 time: 3000,
                 type: 'warn'
             });
-            return ;
+            return sign_ret ;
         }
         return {
             deviceId: device_id,
@@ -565,6 +557,7 @@ $('.did_verify_btn').on('click', async function () {
                     console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
                     console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
                     let oodId: cyfs.DeviceId;
+                    g_activation = true;
                     if(peopleOnMeta && peopleOnMeta?.body().unwrap().content().ood_list.length > 0){
                         oodId = peopleOnMeta?.body().unwrap().content().ood_list[0];
                     }else{

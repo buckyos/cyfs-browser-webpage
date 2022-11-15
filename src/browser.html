@@ -38,6 +38,13 @@
                             <button class="create_did_btn">Create Your DID</button>
                         </div>
                         <button class="choose_btn create_did_choose_btn" data-operation="create">Create Your DID</button>
+                        <div class="reset_did_box choose_btn_box">
+                            <div class="create_did_img_box choose_btn_img_box">
+                                <img src="./img/did/reset_did_img_box.svg" alt="">
+                            </div>
+                            <button class="reset_did_btn">Reset Your DID</button>
+                        </div>
+                        <button class="choose_btn " data-operation="reset">Reset Your DID</button>
                         <div class="activate_box choose_btn_box">
                             <div class="create_did_img_box choose_btn_img_box">
                                 <img src="./img/did/activate_img_box.svg" alt="">
@@ -45,13 +52,9 @@
                             <button class="activate_btn">Activate your browser</button>
                         </div>
                         <button class="choose_btn " data-operation="activate">Activate your browser</button>
-                        <div class="reset_did_box choose_btn_box">
-                            <div class="create_did_img_box choose_btn_img_box">
-                                <img src="./img/did/reset_did_img_box.svg" alt="">
-                            </div>
-                            <button class="reset_did_btn">Reset DID</button>
-                        </div>
-                        <button class="choose_btn " data-operation="reset">Reset DID</button>
+                        <p class="">
+                            <a class="to_cyberchat_click" target="_blank" href="https://www.cyfs.com/download">what is CyberChat ?</a>
+                        </p>
                     </div>
                     <div class="classb_activate_container">
                         <div class="reset_back_icon">
@@ -385,9 +388,16 @@ ul,li {
     white-space: normal;
     word-break: break-all;
 }
+.to_cyberchat_click{
+    float: right;
+    font-weight: 400;
+    font-size: 12px;
+    color: #2873F7;
+    padding:7px 22px 0 0;
+}
 .choose_did_container{
     width: 240px;
-    height: 280px;
+    height: 300px;
     padding: 0 13px;
     box-shadow: 0px 2px 3px 1px rgba(0,0,0,0.16);
     border-radius: 4px;

@@ -44,7 +44,6 @@ let g_uniqueId:string = '';
 let g_countDown:number = 3;
 let g_isResetDid:boolean = false;
 let g_buyOodAfterTime: number;
-console.origin.log('window', window)
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
     let arr = str.split('&');
@@ -119,7 +118,6 @@ class BuildDid {
 
     async getAreaList () {
         g_areaList = await getCountryList(LANGUAGESTYPE);
-        console.origin.log("g_areaList:", g_areaList);
     }
 
     async RenderArea () {
@@ -533,7 +531,6 @@ $('.did_buy_ood_btn').on('click', async function () {
 $('.create_did_container').on('click', '.create_mnemonic_btn', async function () {
     let didName = String($('.did_info_name').val()).trim() || '';
     let oodName = String($('.did_info_ood_name').val()).trim() || '';
-    console.origin.log('------didName, oodName',didName, oodName)
     if(!didName || !oodName){
         toast({
             message: 'The information is not completed.',
@@ -563,7 +560,6 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     }
     g_state = Number($('#state_select').val()) || 0;
     g_city = Number($('#city_select').val()) || 0;
-    console.log("----g_country, g_state, g_city:", g_country, g_state, g_city);
     $('.create_did_step_two, .did_title_intro_btn_did').css('display', 'none');
     gtag('event', 'build_did_pv_3_show_mnemonics', {
         'gtagTime': formatDate(new Date())
@@ -661,9 +657,7 @@ $('.did_verify_btn').on('click', async function () {
         name: g_didName,
         icon:undefined
     }
-    console.origin.log("peopleInfo:", peopleInfo);
     let peopleRet = await buildDid.createPeople(peopleInfo);
-    console.origin.log("peopleRet:", peopleRet);
     if(!peopleRet.err){
         g_peopleInfo = peopleRet;
         let deviceInfo = {
@@ -677,9 +671,7 @@ $('.did_verify_btn').on('click', async function () {
             nick_name: g_oodName,
             category: cyfs.DeviceCategory.OOD
         };
-        console.origin.log("deviceInfo:", deviceInfo);
         let deviceRet = await buildDid.createDevice(deviceInfo);
-        console.origin.log("deviceRet:", deviceRet.device.signs().body_signs());
         if(deviceRet.err){
             toast({
                 message: 'create device failed',
@@ -688,7 +680,6 @@ $('.did_verify_btn').on('click', async function () {
             });
         }else{
             g_deviceInfo = deviceRet;
-            console.origin.log('g_deviceInfo.device.device_id()',g_deviceInfo.device.device_id().to_base_58());
             let pushOodList = g_peopleInfo.object.body_expect().content().ood_list.push(g_deviceInfo.device.device_id());
             let sign_ret = cyfs.sign_and_set_named_object(g_peopleInfo.privateKey, g_peopleInfo.object, new cyfs.SignatureRefIndex(255));
             if (sign_ret.err) {
@@ -723,8 +714,7 @@ function countDown () {
             g_countDown--;
             countDown();
         }else{
-            // todo
-            // window.location.href = 'cyfs://static/browser.html?success';
+            window.location.href = 'cyfs://static/browser.html?success';
         }
     }, 1000);
 }
@@ -762,7 +752,6 @@ $('.did_success_next_btn').on('click', async function () {
         sec: g_deviceInfo.privateKey.to_vec().unwrap().toHex(),
         index
     }
-    console.origin.log("bindInfo:", bindInfo);
     try{
         const activeteResponse = await fetch(`http://${g_ip}/activate?access_token=${g_token}`, {
             method: 'POST',
@@ -791,7 +780,6 @@ $('.did_success_next_btn').on('click', async function () {
         return;
     }
     const deviceInfo = await (await fetch('http://127.0.0.1:1321/check')).json();
-    console.origin.log("deviceInfo:", deviceInfo)
     const runtimecreateInfo = {
         unique_id: deviceInfo.device_info.mac_address,
         owner: g_peopleInfo.objectId,
@@ -804,7 +792,6 @@ $('.did_success_next_btn').on('click', async function () {
         category: cyfs.DeviceCategory.PC
     };
     const runtimeInfo = await buildDid.createDevice(runtimecreateInfo);
-    console.origin.log("runtimeInfo:", runtimeInfo)
     if(!runtimeInfo.err){
         let index = _calcIndex(deviceInfo.device_info.mac_address);
         let bindDeviceInfo = {
@@ -813,7 +800,6 @@ $('.did_success_next_btn').on('click', async function () {
             sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
             index
         }
-        console.origin.log("bindDeviceInfo:", bindDeviceInfo)
         try{
             const response = await fetch("http://127.0.0.1:1321/bind", {
                 method: 'POST',
@@ -823,9 +809,6 @@ $('.did_success_next_btn').on('click', async function () {
                 }, body: JSON.stringify(bindDeviceInfo),
             });
             const ret = await response.json();
-            console.origin.log('ret',ret);
-            console.log('ret.result',ret.result);
-            console.log('ret.result != 0', ret.result != 0);
             if (ret.result != 0) {
                 if(ret.result == 5){
                     toast({

@@ -173,7 +173,6 @@ class ResetDid {
                 },
             });
             const activeteRet = await activeteResponse.json();
-            console.origin.log('activeteRet',activeteRet)
             if (activeteRet.result != 0) {
                 returnRet = true;
                 let result = activeteRet;
@@ -422,7 +421,6 @@ async function bindRuntime () {
         sec: runtimeInfo.privateKey.to_vec().unwrap().toHex(),
         index
     }
-    console.origin.log('bindDeviceInfo', bindDeviceInfo)
     try{
         const response = await fetch("http://127.0.0.1:1321/bind", {
             method: 'POST',
@@ -479,7 +477,6 @@ $('.did_verify_btn').on('click', async function () {
         icon:undefined
     }
     let peopleRet = await resetDid.createPeople(peopleInfo);
-    console.origin.log("peopleRet.objectId:", peopleRet.objectId.to_base_58());
     if(peopleRet.err){
         toast({
             message: 'Failed to create people',
@@ -519,9 +516,7 @@ $('.did_verify_btn').on('click', async function () {
                         nick_name: '',
                         category: cyfs.DeviceCategory.OOD
                     };
-                    console.origin.log("deviceInfo:", deviceInfo);
                     let deviceRet = await resetDid.createDevice(deviceInfo);
-                    console.origin.log("deviceRet:", deviceRet);
                     if(deviceRet.err){
                         toast({
                             message: 'create device failed',
@@ -563,9 +558,7 @@ $('.did_verify_btn').on('click', async function () {
                     }else{
                         oodId = g_peopleInfo.object?.body().unwrap().content().ood_list[0];
                     }
-                    console.origin.log("oodId:", oodId.object_id.to_base_58());
                     const oodObjectRet = await ObjectUtil.getObject({ id: oodId.object_id, flags: 1, isReturnResult: true });
-                    console.origin.log("oodObjectRet:", oodObjectRet);
                     if(oodObjectRet.err){
                         $('.did_loading_cover_container').css('display', 'none');
                         toast({
@@ -578,8 +571,6 @@ $('.did_verify_btn').on('click', async function () {
                         $('.reset_did_step_two_box').css('display', 'block');
                     }else{
                         const oodObject:cyfs.Device = oodObjectRet.object.object;
-                        console.origin.log("oodObject:", oodObject.desc().owner()?.unwrap().to_base_58());
-                        console.origin.log("oodObject:", peopleRet.objectId.to_base_58());
                         if(oodObject.desc().owner()?.unwrap().to_base_58() != peopleRet.objectId.to_base_58()){
                             toast({
                                 message: `The recovery phrase you entered does not match the DID (${oodObject.desc().owner()?.unwrap().to_base_58()}).`,

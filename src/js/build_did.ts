@@ -722,7 +722,7 @@ function countDown () {
             countDown();
         }else{
             // todo
-            // window.location.href = 'cyfs://static/browser.html?success';
+            window.location.href = 'cyfs://static/browser.html?success';
         }
     }, 1000);
 }
@@ -733,7 +733,7 @@ $('.did_success_next_btn').on('click', async function () {
     gtag('event', 'click_build_did_3_activate', {
         'gtagTime': formatDate(new Date())
     });
-    let peopleUpChainR = await buildDid.upChain(g_peopleInfo.object, g_peopleInfo.privateKey );
+    let peopleUpChainR = await buildDid.upChain(g_peopleInfo.object);
     if(!peopleUpChainR){
         $('.cover_box, .did_loading_cover_container').css('display', 'none');
         toast({
@@ -743,7 +743,7 @@ $('.did_success_next_btn').on('click', async function () {
         });
         return;
     }
-    let oodUpChainR = await buildDid.upChain(g_deviceInfo.device, g_deviceInfo.privateKey );
+    let oodUpChainR = await buildDid.upChain(g_deviceInfo.device);
     if(!oodUpChainR){
         $('.cover_box, .did_loading_cover_container').css('display', 'none');
         toast({

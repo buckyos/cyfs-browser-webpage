@@ -322,6 +322,7 @@ class BuildDid {
         // getDesc up chain
         let check_p_ret = await this.check_object_on_meta(obj.calculate_id());
         console.origin.log('check_p_ret',obj.calculate_id().to_base_58(), check_p_ret);
+        console.origin.log('cyfs.Device.hex', (obj as cyfs.Device||cyfs.People).to_hex().unwrap());
         let p_tx:cyfs.TxId;
         if(check_p_ret){
             let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, g_peopleInfo.privateKey);
@@ -722,7 +723,7 @@ function countDown () {
             countDown();
         }else{
             // todo
-            window.location.href = 'cyfs://static/browser.html?success';
+            // window.location.href = 'cyfs://static/browser.html?success';
         }
     }, 1000);
 }

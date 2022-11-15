@@ -687,15 +687,12 @@ $('.choose_did_container').on('click', '.reset_did_btn', async function () {
 
 $('.choose_did_container').on('mouseover', '.choose_btn', async function () {
     let operation: string = $(this).attr('data-operation') || '';
-    $('.choose_btn_box').css('display', 'none');
-    $('.choose_btn').css('display', 'block');
-    $(this).css('display', 'none');
     if(operation == 'create'){
-        $('.create_did_box').css('display', 'block');
+        $('.choose_btn_img').attr('src', './img/did/create_did_img_box.svg');
     }else if(operation == 'activate'){
-        $('.activate_box').css('display', 'block');
+        $('.choose_btn_img').attr('src', './img/did/reset_did_img_box.svg');
     }else{
-        $('.reset_did_box').css('display', 'block');
+        $('.choose_btn_img').attr('src', './img/did/activate_img_box.svg');
     }
 })
 

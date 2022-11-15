@@ -41,7 +41,7 @@ export const en =  {
         "Save": "Save",
         "AddShortcut": "Add Shortcut",
     },
-    "ScanCodeActivate": "Please scan the QR code with Cyber Chat to activate",
+    "ScanCodeActivate": "Please scan the QR code with CyberChat to activate",
     "HowToGetStart": "How to get started？",
     "ActivatedSuccessfully": "Activated successfully! Please manually close & reopen browser to initialize.",
     "ReviewTheTutorial": "<i class='anonymous_subtitle_i'></i><span class='browser_tutorial'>Review the tutorial<span>",

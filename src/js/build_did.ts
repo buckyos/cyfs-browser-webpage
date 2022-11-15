@@ -338,6 +338,7 @@ class BuildDid {
         console.log('people desc on meta:', p_meta_success);
         return p_meta_success;
     }
+  
 }
 
 function str2array(str: string): Uint8Array {
@@ -669,7 +670,7 @@ $('.did_verify_btn').on('click', async function () {
             unique_id: g_uniqueId,
             owner: g_peopleInfo.object.calculate_id(),
             owner_private: g_peopleInfo.privateKey,
-            area: new cyfs.Area(g_country ,g_state,g_city,0),
+            area: new cyfs.Area(g_country % 512 , 0, g_city % 8192,  0),
             network: cyfs.get_current_network(),
             address_index: _calcIndex(g_uniqueId),
             account: 0,

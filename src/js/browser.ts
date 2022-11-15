@@ -274,7 +274,7 @@ class Util {
                 }
             }
         }
-        // renderingShortcut(SHORTCUT_LIST);
+        renderingShortcut(SHORTCUT_LIST);
     }
 }
 const util = new Util();

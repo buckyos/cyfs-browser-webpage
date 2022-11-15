@@ -318,17 +318,17 @@ class BuildDid {
         return false;
     }
 
-    async upChain (obj: cyfs.AnyNamedObject, private_key: cyfs.PrivateKey) {
+    async upChain (obj: cyfs.AnyNamedObject) {
         // getDesc up chain
         let check_p_ret = await this.check_object_on_meta(obj.calculate_id());
         console.origin.log('check_p_ret',obj.calculate_id().to_base_58(), check_p_ret);
         let p_tx:cyfs.TxId;
         if(check_p_ret){
-            let p_ret = await this.meta_client.update_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, private_key);
+            let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, g_peopleInfo.privateKey);
             console.origin.log('update_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }else{
-            let p_ret = await this.meta_client.create_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, private_key);
+            let p_ret = await this.meta_client.create_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.JSBI.BigInt(0), 0, 0, g_peopleInfo.privateKey);
             console.origin.log('create_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }
@@ -721,7 +721,8 @@ function countDown () {
             g_countDown--;
             countDown();
         }else{
-            window.location.href = 'cyfs://static/browser.html?success';
+            // todo
+            // window.location.href = 'cyfs://static/browser.html?success';
         }
     }, 1000);
 }

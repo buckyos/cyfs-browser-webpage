@@ -310,8 +310,8 @@ function showThisScan(name:string) {
             }
             QRCode.toCanvas(document.getElementById('scan_box'), JSON.stringify(content), {
                 errorCorrectionLevel: 'L',
-                width: 98,
-                height: 98,
+                width: 130,
+                height: 130,
                 margin: 0
             });
             if(!BIND_STATUS){

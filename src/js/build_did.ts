@@ -64,7 +64,7 @@ if (window.location.search.split("?")[1]) {
                 }
                 console.origin.log('g_ipArr', g_ipArr, g_ip)
             }
-            let isResetDid = sessionStorage.getItem('is-reset-did');
+            let isResetDid = localStorage.getItem('is-reset-did');
             if(isResetDid == 'true'){
                 g_isResetDid = true;
                 window.location.href = `cyfs://static/reset_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_token}`;
@@ -519,7 +519,7 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 })
 
 $('.did_buy_ood_btn').on('click', async function () {
-    sessionStorage.removeItem('is-reset-did');
+    localStorage.removeItem('is-reset-did');
     gtag('event', 'click_build_did_1_buy_ood', {
         'gtagTime': formatDate(new Date())
     });

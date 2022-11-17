@@ -620,7 +620,7 @@ $('.activate_vood_btn').on('click', async function () {
 })
 
 $('.reset_did_step_one_box .haved_did_click').on('click', async function () {
-    sessionStorage.removeItem('is-reset-did');
+    localStorage.removeItem('is-reset-did');
     window.location.href = `cyfs://static/build_did.html?action=bindVood&ip=${g_ip}&accessToken=${g_token}`;
 })
 
@@ -642,7 +642,7 @@ $('.choose_ood_btn').on('click', function () {
 })
 
 $('.reset_ood_btn').on('click', function () {
-    sessionStorage.setItem('is-reset-did', 'true');
+    localStorage.setItem('is-reset-did', 'true');
     window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/reset_did.html&desc=#/login';
 })
 

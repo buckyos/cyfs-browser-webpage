@@ -263,12 +263,14 @@ class Util {
             // 内存
             let memoryNum = systemInfo.total_memory === 0 ? 0 : Number((systemInfo.used_memory * 100 / systemInfo.total_memory).toFixed(0));
             let perimeter = Math.PI*2*31;
+            let storageTotal = systemInfo.ssd_disk_total + systemInfo.hdd_disk_total;
+            let storageAvail = systemInfo.ssd_disk_avail + systemInfo.hdd_disk_avail;
             return {
                 storageInfo: {
                     stroke: '#1DBFA2',
-                    percentageInfo: (100-(systemInfo.ssd_disk_avail/systemInfo.ssd_disk_total)*100).toFixed(0) + '%',
-                    dasharray: 200*(systemInfo.ssd_disk_total-systemInfo.ssd_disk_avail)/systemInfo.ssd_disk_total + ', ' + perimeter,
-                    innerInfo: getfilesize(systemInfo.ssd_disk_total-systemInfo.ssd_disk_avail, true)+'/'+getfilesize(systemInfo.ssd_disk_total, true),
+                    percentageInfo: storageTotal == 0?'0%':(100-(storageAvail/storageTotal)*100).toFixed(0) + '%',
+                    dasharray: storageTotal == 0?'0, ' + perimeter:200*(storageTotal-storageAvail)/storageTotal + ', ' + perimeter,
+                    innerInfo: getfilesize(storageTotal-storageAvail, true)+'/'+getfilesize(storageTotal, true),
                 },
                 cpuInfo: {
                     info: String(systemInfo.cpu_usage * 3) + ",1000",

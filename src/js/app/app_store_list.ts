@@ -28,7 +28,7 @@ let g_hasStorageList:boolean = false;
 let g_isInstalledPage: boolean = false;
 let g_isShowSetting: boolean = false;
 let g_appStorgeList: storageAppUtilType[] = [];
-
+let g_appFrameStorgeList: storageAppUtilType[] = [];
 
 class AppStoreListClass {
     m_sharedStatck: cyfs.SharedCyfsStack;
@@ -48,6 +48,11 @@ class AppStoreListClass {
       }
       let current_device = result.device
       g_owner = current_device.desc().owner().unwrap();
+    }
+
+    async getFrameList () {
+      let list = ['9tGpLNnBj523yrTEJ2Qc7feh19YZaiurDiUcQ2XTQACR'];
+      return list;
     }
 
     //app store list
@@ -162,27 +167,94 @@ class AppStoreListClass {
       }
       console.origin.log('------------------------------g_appList', g_appList)
     }
-    
-    async getStorageAppList () {
-      let list:string|null = localStorage.getItem('browser-app-store-list');
-      if(list){
-        g_hasStorageList = true;
-        let appList: storageAppUtilType[] = JSON.parse(list);
-        let appStorageList: storageAppUtilType[] = [];
-        let r = await AppUtil.getAllAppListFun();
-        console.origin.log('-------------r', r)
-        if (!r.err) {
-          let storeList = r.app_list().array();
-          console.origin.log('storeList', storeList)
-          appList.forEach(app => {
-            if(storeList.indexOf(app.id) > -1){
-              g_appStorgeList.push(app);
+
+    async renderAppFrameList(list?:string[]) {
+      let r = list ? list : await this.getFrameList();
+      if (r) {
+        let storeHtml:string = '';
+        for (let i = 0; i < r.length; i++) {
+          if (r[i]) {
+            let app = await AppUtil.showApp(r[i], false);
+            let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
+            console.log('appExtId:', appExtId);
+            let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
+            let appBody = app.app.body().unwrap();
+            let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
+            if (appBody.content().desc) {
+                app_introduce = appBody.content().desc;
             }
-          });
+            let tagsHtml = '';
+            let tags:string[] = [];
+            if (!appExt.err) {
+              if (appExt[0]) {
+                let info = JSON.parse(appExt[0].info());
+                console.origin.log('appExt-info', app.app_name, info);
+                if (info && info['cyfs-app-store']){
+                  if(info['cyfs-app-store'].tag){
+                      tags = info['cyfs-app-store'].tag;
+                      tags.forEach(tag => {
+                        tagsHtml += `<span data-tag="${tag}"># ${tag}</span>`;
+                      });
+                  }
+                }
+              }
+            }
+            storeHtml +=  `<li>
+                            <div class="app_list_info">
+                              <div class="app_list_info_l" data-id="${app.app_id}">
+                                <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null" alt="">
+                              </div>
+                              <div class="app_list_info_r">
+                                <p class="app_list_info_title" data-id="${app.app_id}">${ app.app_name}</p>
+                                <p class="app_list_info_subtitle">${app_introduce}</p>
+                              </div>
+                            </div>
+                            <div class="app_list_extra_info">
+                              <div class="app_list_extra_info_l">${tagsHtml}</div>
+                              <div class="app_list_extra_info_r"></div>
+                            </div>
+                          </li>`;
+          }
         }
-        AppStoreList.getInstalledAppList(g_appStorgeList, true);
-        for (let index = 0; index < g_appStorgeList.length; index++) {
-          const app = g_appStorgeList[index];
+      }
+    }
+    
+    async getStorageAppList (itemName: string) {
+      let list:string|null = localStorage.getItem(itemName);
+      let appForList:storageAppUtilType[];
+      if(list){
+        if(itemName == 'browser-app-store-list'){
+          g_hasStorageList = true;
+          let appList: storageAppUtilType[] = JSON.parse(list);
+          let appStorageList: storageAppUtilType[] = [];
+          let r = await AppUtil.getAllAppListFun();
+          console.origin.log('-------------r', r)
+          if (!r.err) {
+            let storeList = r.app_list().array();
+            console.origin.log('storeList', storeList)
+            appList.forEach(app => {
+              if(storeList.indexOf(app.id) > -1){
+                g_appStorgeList.push(app);
+              }
+            });
+          }
+          appForList = g_appStorgeList;
+          AppStoreList.getInstalledAppList(g_appStorgeList, true);
+        }else{
+          let appList = JSON.parse(list);
+          let r = await this.getFrameList();
+          if (r) {
+            appList.forEach(app => {
+              if(g_appStorgeList.indexOf(app.id) < 0 && r.indexOf(app.id) > -1){
+                g_appFrameStorgeList.push(app);
+              }
+            });
+          }
+          appForList = g_appFrameStorgeList;
+          this.renderAppFrameList(r);
+        }
+        for (let index = 0; index < appForList.length; index++) {
+          const app = appForList[index];
           let tagsHtml:string = '';
           if(app.tags){
             app.tags.forEach(tag => {
@@ -204,7 +276,9 @@ class AppStoreListClass {
                             <div class="app_list_extra_info_r"></div>
                           </div>
                         </li>`;
-          $('.app_list_box').append(appHtml);
+          if(itemName == 'browser-app-store-list'){
+            $('.app_list_box').append(appHtml);
+          }
         }
       }
     }
@@ -381,9 +455,10 @@ class AppStoreListClass {
     }
 
     async initPage () {
-      await AppStoreList.getStorageAppList();
+      await AppStoreList.getStorageAppList('browser-app-store-list');
       AppStoreList.getAllAppList();
       AppStoreList.getOwner();
+      AppStoreList.getStorageAppList('browser-app-frame-list');
       setTimeout(() => {
         AppStoreList.setTimeGetList();
       }, 30000);

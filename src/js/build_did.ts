@@ -44,6 +44,7 @@ let g_uniqueId:string = '';
 let g_countDown:number = 3;
 let g_isResetDid:boolean = false;
 let g_buyOodAfterTime: number;
+let g_environment:string = cyfs.get_channel();
 if (window.location.search.split("?")[1]) {
     let str = window.location.search.split("?")[1];
     let arr = str.split('&');
@@ -79,7 +80,7 @@ if (window.location.search.split("?")[1]) {
 window.dataLayer = window.dataLayer || [];
 function gtag(){
     dataLayer.push(arguments);
-    console.log('dataLayer:', dataLayer)
+    console.log('dataLayer:', g_environment, dataLayer)
 }
 gtag('js', new Date());
 gtag('config', 'G-3F1C521DHQ');
@@ -440,7 +441,7 @@ function TimesFormate(date:number){
 
 async function initData(){
     if(g_token){
-        gtag('event', 'build_did_pv_2_show_area', {
+        gtag('event', g_environment + '_build_did_pv_2_show_area', {
             'gtagTime': formatDate(new Date())
         });
         let currentTime = g_buyOodAfterTime = (new Date()).getTime();
@@ -448,7 +449,7 @@ async function initData(){
         if(visitTimeStorage){
             let visitTime = Number(visitTimeStorage);
             let timeDiff = currentTime - visitTime;
-            gtag('event', 'diff_build_did_1_buy_ood', {
+            gtag('event', g_environment + '_diff_build_did_1_buy_ood', {
                 'diffTimeFormate': TimesFormate(timeDiff),
                 'diffSenconds': Math.round(timeDiff/1000),
                 'gtagTime': formatDate(new Date())
@@ -483,7 +484,7 @@ async function initData(){
         console.log('---g_ip', g_ip);
     }else{
         $('.did_title_intro_btn_vood').css('display', 'block');
-        gtag('event', 'build_did_pv_1_first_visit', {
+        gtag('event', g_environment + '_build_did_pv_1_first_visit', {
             'gtagTime': formatDate(new Date())
         });
     }
@@ -502,7 +503,7 @@ $('.cover_box').on('click', '.close_cover_i, .did_warn_btn_yes', function () {
         mnemonicHtml += `<span>${mnemonic}</span>`;
     });
     $('.did_choose_mnemonic_container').html(mnemonicHtml);
-    gtag('event', 'build_did_pv_4_choose_mnemonics', {
+    gtag('event', g_environment + '_build_did_pv_4_choose_mnemonics', {
         'gtagTime': formatDate(new Date())
     });
 })
@@ -520,7 +521,7 @@ $('.create_did_container').on('click', '.did_next_btn', function () {
 
 $('.did_buy_ood_btn').on('click', async function () {
     localStorage.removeItem('is-reset-did');
-    gtag('event', 'click_build_did_1_buy_ood', {
+    gtag('event', g_environment + '_click_build_did_1_buy_ood', {
         'gtagTime': formatDate(new Date())
     });
     
@@ -561,7 +562,7 @@ $('.create_did_container').on('click', '.create_mnemonic_btn', async function ()
     g_state = Number($('#state_select').val()) || 0;
     g_city = Number($('#city_select').val()) || 0;
     $('.create_did_step_two, .did_title_intro_btn_did').css('display', 'none');
-    gtag('event', 'build_did_pv_3_show_mnemonics', {
+    gtag('event', g_environment + '_build_did_pv_3_show_mnemonics', {
         'gtagTime': formatDate(new Date())
     });
     $('.did_mnemonic_create_box, .did_title_intro_btn_phrase').css('display', 'block');
@@ -623,7 +624,7 @@ function _calcIndex(uniqueStr: string): number {
 $('.did_verify_btn').on('click', async function () {
     $('.did_loading_cover_title').html('Loading......');
     $('.did_loading_cover_container').css('display', 'block');
-    gtag('event', 'click_build_did_2_vertify', {
+    gtag('event', g_environment + '_click_build_did_2_vertify', {
         'gtagTime': formatDate(new Date())
     });
     let mnemonic_Container = $('.did_choose_mnemonic_container').html();
@@ -693,7 +694,7 @@ $('.did_verify_btn').on('click', async function () {
             }
             $('.did_mnemonic_choose').css('display', 'none');
             $('.did_create_success').css('display', 'block');
-            gtag('event', 'build_did_pv_5_activate', {
+            gtag('event', g_environment + '_build_did_pv_5_activate', {
                 'gtagTime': formatDate(new Date())
             });
         }
@@ -722,7 +723,7 @@ function countDown () {
 $('.did_success_next_btn').on('click', async function () {
     $('.did_loading_cover_title').html('Activating, please do not operate.');
     $('.did_loading_cover_container').css('display', 'block');
-    gtag('event', 'click_build_did_3_activate', {
+    gtag('event', g_environment + '_click_build_did_3_activate', {
         'gtagTime': formatDate(new Date())
     });
     let peopleUpChainR = await buildDid.upChain(g_peopleInfo.object);
@@ -837,7 +838,7 @@ $('.did_success_next_btn').on('click', async function () {
         }
         $('.create_did_step_two_box').css('display', 'none');
         $('.create_did_step_three_box').css('display', 'block');
-        gtag('event', 'build_did_pv_6_activatee_success', {
+        gtag('event', g_environment + '_build_did_pv_6_activatee_success', {
             'gtagTime': formatDate(new Date())
         });
         let currentTime = (new Date()).getTime();
@@ -845,14 +846,14 @@ $('.did_success_next_btn').on('click', async function () {
         if(visitTimeStorage){
             let visitTime = Number(visitTimeStorage);
             let timeDiff = currentTime - visitTime;
-            gtag('event', 'diff_build_did_2_activete_process', {
+            gtag('event', g_environment + '_diff_build_did_2_activete_process', {
                 'diffTimeFormate': TimesFormate(timeDiff),
                 'diffSenconds': Math.round(timeDiff/1000),
                 'gtagTime': formatDate(new Date())
             });
         }
         let timeDiff2 = currentTime - g_buyOodAfterTime;
-        gtag('event', 'diff_build_did_3_buy_after_activate', {
+        gtag('event', g_environment + '_diff_build_did_3_buy_after_activate', {
             'diffTimeFormate': TimesFormate(timeDiff2),
             'diffSenconds': Math.round(timeDiff2/1000),
             'gtagTime': formatDate(new Date())

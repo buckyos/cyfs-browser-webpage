@@ -4531,7 +4531,7 @@
             , f = window;
         Cj(f) && (f.document.cookie = a);
         var g = Ej();
-        e = a; g = a;
+        //e = a; g = a;
         return e != g || void 0 != c && 0 <= Fj(b, g, !1, d).indexOf(c)
     }
     var Nj = function (a, b, c, d) {

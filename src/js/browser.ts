@@ -270,7 +270,7 @@ class Util {
                 let app_status = app.status;
                 if((app_status == cyfs.AppLocalStatusCode.NoService || app_status == cyfs.AppLocalStatusCode.Running) && app.webdir){
                     console.log('get_app_status.webdir().to_base_58()', app.app_name, app.webdir.to_base_58())
-                    SHORTCUT_LIST.push({ url:`cyfs://a.${appid.object_id.to_base_36()}/index.html`, name: app.app_name, icon: app.app_icon, index: SHORTCUT_LIST.length, isBuildin: true })
+                    SHORTCUT_LIST.push({ url:`cyfs://a.${appid.object_id.to_base_36()}/${appid.object_id}/index.html`, name: app.app_name, icon: app.app_icon, index: SHORTCUT_LIST.length, isBuildin: true })
                 }
             }
         }

@@ -111,13 +111,11 @@ class ObjectManager {
             //所有者
             let owner_info = "";
             if (element.object?.desc().owner()) {
-                owner_info = element.object.desc().owner()!.unwrap().toString();
+                owner_info = element.object.desc().owner()!.toString();
             }
             
             let decid:string = '';
-            if(element.object?.desc().dec_id().is_some()){
-                decid = element.object?.desc().dec_id().unwrap().toString();
-            }
+            decid = element.object?.desc().dec_id()?.toString() || '';
             let getNftR = await this.meta_client.nft_get(element.object!.desc().calculate_id().toString());
             let nftIcon = '';
             console.log('getNftR', getNftR)
@@ -236,21 +234,14 @@ class FileInfo {
             //所有者
             let owner_info: string = "-";
             if (ret_info.object?.desc().owner()) {
-                owner_info = ret_info.object!.desc().owner()!.unwrap().toString();
+                owner_info = ret_info.object!.desc().owner()!.toString();
             }
             // 区域
             let area_info = await file_info.getArea(ret_info.object?.desc());
             // nonce
             let nonce = '-';
-            // if (ret_info.object.nonce().is_some()) {
-            //     let nonce = ret_info.object.nonce().unwrap();
-            //     console.origin.log('----------------nonce', nonce)
-            // }
             let decid:string = '';
-            if(ret_info.object?.desc().dec_id().is_some()){
-                decid = ret_info.object?.desc().dec_id().unwrap().toString();
-            }
-
+            decid = ret_info.object?.desc().dec_id()?.toString() || '';
             if(ret_info.object?.desc().calculate_id()){
                 let getNftR = await this.meta_client.nft_get(ret_info.object?.desc().calculate_id().toString());
                 console.log('getNftR', getNftR)

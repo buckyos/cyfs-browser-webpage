@@ -162,7 +162,7 @@ class BuildDid {
             return private_key_r;
         }
         let private_key = private_key_r.unwrap();
-        let people = cyfs.People.create(cyfs.None, [], private_key.public(), cyfs.Some(info.area), info.name, info.icon, (build) => {
+        let people = cyfs.People.create(undefined, [], private_key.public(), info.area, info.name, info.icon, (build) => {
             build.no_create_time()
         });
         let people_id = people.calculate_id();
@@ -202,7 +202,7 @@ class BuildDid {
         console.info(`unique_str: ${info.unique_id} -> ${unique.as_slice().toHex()}`);
 
         let device = cyfs.Device.create(
-            cyfs.Some(info.owner),
+            info.owner,
             unique,
             [],
             [],
@@ -258,7 +258,7 @@ class BuildDid {
         }
     }
 
-    async transformBuckyResult(ret:cyfs.Result<cyfs.Option<[cyfs.Receipt, number]>>) {
+    async transformBuckyResult(ret:cyfs.Result<[cyfs.Receipt, number]>) {
         let result;
         if (ret.err) {
             result = { code: ret.val.code, msg: ret.val.msg };
@@ -280,8 +280,8 @@ class BuildDid {
         while (waitTime < checkTimeoutSecs * 1000 && !hasReturnRet) {
             const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
             console.origin.log('get receipt:', txId, ret);
-            if (ret.code == 0 && ret.value.is_some()) {
-                const [receipt, block] = ret.value.unwrap();
+            if (ret.code == 0 && ret.value) {
+                const [receipt, block] = ret.value;
                 console.origin.log('create or update desc receipt:', txId.to_base_58(), block, receipt.result);
                 if (receipt && receipt.result == 0) {
                     returnRet = true;
@@ -324,7 +324,7 @@ class BuildDid {
         console.origin.log('cyfs.Device.hex', (obj as cyfs.Device||cyfs.People).to_hex().unwrap());
         let p_tx:cyfs.TxId;
         if(check_p_ret){
-            let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, g_peopleInfo.privateKey);
+            let p_ret = await this.meta_client.update_desc(g_peopleInfo.object, cyfs.SavedMetaObject.try_from(obj).unwrap(), undefined, undefined, g_peopleInfo.privateKey);
             console.origin.log('update_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }else{
@@ -753,6 +753,7 @@ $('.did_success_next_btn').on('click', async function () {
         sec: g_deviceInfo.privateKey.to_vec().unwrap().toHex(),
         index
     }
+    console.origin.log('bindInfo',bindInfo)
     try{
         const activeteResponse = await fetch(`http://${g_ip}/activate?access_token=${g_token}`, {
             method: 'POST',

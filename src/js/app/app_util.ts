@@ -89,7 +89,7 @@ class AppUtilClass {
                 app_name: '',
                 app_icon: '',
                 fidArray: [],
-                owner: app.desc().owner()?.unwrap(),
+                owner: app.desc().owner(),
                 app: r
                 };
                 appObj.app_name = app.name() || '';
@@ -179,7 +179,7 @@ class AppUtilClass {
         }
         let current_device = result.device
         console.log('current_device: ', current_device)
-        let owner = current_device.desc().owner().unwrap();
+        let owner = current_device.desc().owner();
         const sysDecAppObjId = cyfs.get_system_dec_app().object_id;
         let ret = await this.getObjectFromRootState(cyfs.APP_LOCAL_LIST_PATH, owner, sysDecAppObjId, new cyfs.AppLocalListDecoder())
         console.log('ret: ', ret)
@@ -187,7 +187,8 @@ class AppUtilClass {
         return ret;
     }
     
-    async getAppStatus(app_id) {
+    async getAppStatus(app_id:string|cyfs.DecAppId) {
+        let appId:cyfs.DecAppId;
         if (typeof (app_id) == 'string') {
             let idRet = cyfs.ObjectId.from_base_58(app_id);
             console.log('idRet', idRet)
@@ -199,8 +200,10 @@ class AppUtilClass {
                 });
                 return;
             } else {
-                app_id = idRet.unwrap();
+                appId= app_id = idRet.unwrap();
             }
+        }else{
+            appId = app_id;
         }
         let result = await this.m_util_service.get_device({ common: { flags: 0 } });
         if (!result.err) {
@@ -209,7 +212,7 @@ class AppUtilClass {
         let current_device = result.device
         let owner = current_device.desc().owner().unwrap();
         const sysDecAppObjId = cyfs.get_system_dec_app().object_id;
-        const path = cyfs.AppLocalStatus.get_path(app_id);
+        const path = cyfs.AppLocalStatus.get_path(appId);
         const ret = await this.getObjectFromRootState(path, owner, sysDecAppObjId, new cyfs.AppLocalStatusDecoder())
         return ret;
     }
@@ -349,7 +352,7 @@ class AppDetailUtilClass {
         }
     }
 
-    async getObjectId(url) {
+    async getObjectId(url:string) {
         var myHeaders = new Headers();
         var myRequest = new Request(url, {
           method: 'GET',
@@ -387,7 +390,7 @@ class AppDetailUtilClass {
         });
     };
 
-    async addToStore(id, ownerId) {
+    async addToStore(id:string|cyfs.DecAppId, ownerId:string|cyfs.ObjectId) {
         let app_id: cyfs.DecAppId | undefined = await AppUtil.appIdFormat(id);
         if(!app_id){
             return;

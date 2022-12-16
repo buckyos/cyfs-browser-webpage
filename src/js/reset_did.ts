@@ -72,7 +72,7 @@ class ResetDid {
             return private_key_r;
         }
         let private_key = private_key_r.unwrap();
-        let people = cyfs.People.create(cyfs.None, [], private_key.public(), cyfs.Some(info.area), info.name, info.icon, (build) => {
+        let people = cyfs.People.create(undefined, [], private_key.public(), info.area, info.name, info.icon, (build) => {
             build.no_create_time()
         });
         let people_id = people.calculate_id();
@@ -131,7 +131,7 @@ class ResetDid {
         console.info(`unique_str: ${info.unique_id} -> ${unique.as_slice().toHex()}`);
 
         let device = cyfs.Device.create(
-            cyfs.Some(info.owner),
+            info.owner,
             unique,
             [],
             [],
@@ -198,7 +198,7 @@ class ResetDid {
         }
     }
 
-    async transformBuckyResult(ret:cyfs.Result<cyfs.Option<[cyfs.Receipt, number]>>) {
+    async transformBuckyResult(ret:cyfs.Result<[cyfs.Receipt, number]>) {
         let result;
         if (ret.err) {
             result = { code: ret.val.code, msg: ret.val.msg };
@@ -220,7 +220,7 @@ class ResetDid {
         while (waitTime < checkTimeoutSecs * 1000 && !hasReturnRet) {
             const ret = await this.transformBuckyResult(await this.meta_client.getReceipt(txId));
             console.origin.log('get receipt:', txId, ret);
-            if (ret.code == 0 && ret.value.is_some()) {
+            if (ret.code == 0 && ret.value) {
                 const [receipt, block] = ret.value.unwrap();
                 console.origin.log('create or update desc receipt:', txId.to_base_58(), block, receipt.result);
                 if (receipt && receipt.result == 0) {
@@ -248,7 +248,7 @@ class ResetDid {
         console.origin.log('check_p_ret', check_p_ret);
         let p_tx:cyfs.TxId;
         if(check_p_ret){
-            let p_ret = await this.meta_client.update_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), cyfs.None, cyfs.None, private_key);
+            let p_ret = await this.meta_client.update_desc(obj, cyfs.SavedMetaObject.try_from(obj).unwrap(), undefined, undefined, private_key);
             console.origin.log('update_p_ret', p_ret)
             p_tx = p_ret.unwrap();
         }else{
@@ -498,7 +498,7 @@ $('.did_verify_btn').on('click', async function () {
             let [,peopleOnMeta] = [ , g_peopleOnMeta] = await resetDid.check_object_on_meta(peopleRet.objectId);
             if(g_token && g_ip && !g_activation){
                 let oodList = g_peopleInfo.object.body_expect().content().ood_list;
-                if((oodList.length >= 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length >= 1)){
+                if((oodList.length >= 1) || (peopleOnMeta && peopleOnMeta.body()?.content()?.ood_list && peopleOnMeta.body()?.content()?.ood_list!.length && peopleOnMeta.body()?.content()?.ood_list!.length! >= 1)){
                     toast({
                         message: 'You have multiple VOODs, the browser does not currently support multiple OOD modes.',
                         time: 3000,
@@ -540,7 +540,7 @@ $('.did_verify_btn').on('click', async function () {
                     }
                 }
             }else{
-                if((!peopleOnMeta && g_peopleInfo.object.body().unwrap().content().ood_list.length < 1) || (peopleOnMeta && peopleOnMeta.body().unwrap().content().ood_list.length < 1)){
+                if((!peopleOnMeta && g_peopleInfo.object.body()?.content()?.ood_list && g_peopleInfo.object.body()?.content()?.ood_list?.length && g_peopleInfo.object.body()?.content()?.ood_list?.length! < 1) || (peopleOnMeta && peopleOnMeta.body()?.content()?.ood_list && peopleOnMeta.body()?.content()?.ood_list.length && peopleOnMeta.body()?.content()?.ood_list?.length! < 1)){
                     toast({
                         message: 'ood list is empty',
                         time: 3000,
@@ -549,14 +549,14 @@ $('.did_verify_btn').on('click', async function () {
                     $('.reset_did_step_one_box').css('display', 'none');
                     $('.reset_did_step_two_box').css('display', 'block');
                 }else{
-                    console.origin.log("peopleRet-ood_list:", peopleRet.object.body().unwrap().content().ood_list);
-                    console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body().unwrap().content().ood_list);
+                    console.origin.log("peopleRet-ood_list:", peopleRet.object.body().content().ood_list);
+                    console.origin.log("peopleOnMeta-ood_list:", peopleOnMeta?.body()?.content().ood_list);
                     let oodId: cyfs.DeviceId;
                     g_activation = true;
-                    if(peopleOnMeta && peopleOnMeta?.body().unwrap().content().ood_list.length > 0){
-                        oodId = peopleOnMeta?.body().unwrap().content().ood_list[0];
+                    if(peopleOnMeta && peopleOnMeta?.body()?.content()?.ood_list&& peopleOnMeta?.body()?.content()?.ood_list.length &&  peopleOnMeta?.body()?.content()?.ood_list?.length! > 0){
+                        oodId = peopleOnMeta?.body()?.content().ood_list[0]!;
                     }else{
-                        oodId = g_peopleInfo.object?.body().unwrap().content().ood_list[0];
+                        oodId = g_peopleInfo.object?.body()?.content().ood_list[0]!;
                     }
                     const oodObjectRet = await ObjectUtil.getObject({ id: oodId.object_id, flags: 1, isReturnResult: true });
                     if(oodObjectRet.err){
@@ -571,9 +571,9 @@ $('.did_verify_btn').on('click', async function () {
                         $('.reset_did_step_two_box').css('display', 'block');
                     }else{
                         const oodObject:cyfs.Device = oodObjectRet.object.object;
-                        if(oodObject.desc().owner()?.unwrap().to_base_58() != peopleRet.objectId.to_base_58()){
+                        if(oodObject.desc().owner()?.to_base_58() != peopleRet.objectId.to_base_58()){
                             toast({
-                                message: `The recovery phrase you entered does not match the DID (${oodObject.desc().owner()?.unwrap().to_base_58()}).`,
+                                message: `The recovery phrase you entered does not match the DID (${oodObject.desc().owner()?.to_base_58()}).`,
                                 time: 3000,
                                 type: 'warn'
                             });

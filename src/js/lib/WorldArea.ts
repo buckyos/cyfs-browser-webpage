@@ -22449,7 +22449,7 @@ let countries:{
     }
 ];
 
-export function getCountryList(locale) {
+export function getCountryList(locale:string) {
     let arr = countries;
     if (locale !== 'zh') {
         arr.sort((a, b) => {

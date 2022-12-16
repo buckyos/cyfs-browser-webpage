@@ -221,7 +221,7 @@ class FileInfo {
             let area_info = await file_info.getArea(ret_info.object?.desc());
             // nonce
             let nonce = '--';
-            // if (ret_info.object.nonce().is_some()) {
+            // if (ret_info.object.nonce()) {
             //     let nonce = ret_info.object.nonce().unwrap();
             //     console.origin.log('----------------nonce', nonce)
             // }
@@ -231,8 +231,8 @@ class FileInfo {
             $('#table_owner').html(owner_info);
             $('#table_area').html(area_info);
             $('#table_time').html(formatDate(cyfs.bucky_time_2_js_time(ret_info.object!.desc().create_time())));
-            if (ret_info.object?.body().is_some()) {
-                $('#table_updateTime').html(formatDate(cyfs.bucky_time_2_js_time(ret_info.object.body().unwrap().update_time())));
+            if (ret_info.object?.body()) {
+                $('#table_updateTime').html(formatDate(cyfs.bucky_time_2_js_time(ret_info.object.body()?.update_time())));
             } else {
                 $('#table_updateTime').html('--');
             }

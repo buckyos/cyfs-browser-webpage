@@ -100,7 +100,7 @@ class Util {
                     let networkInfo;
                     let systemInfo;
                     if(status){
-                        area = await this.getArea(element.object.desc().area().unwrap());
+                        area = await this.getArea(element.object.desc().area());
                         networkInfo = await this.getNetworkAccessInfo(element.object_id);
                         systemInfo = await this.getSystemInfo(element.object_id);
                     }
@@ -335,7 +335,7 @@ class Util {
         $('#zone_id').html(`( ID:${getSubStr(ZONE_ID)}  <i class="info_main_copy_svg info_main_copy_zone_svg">&nbsp;</i>)`);
         $('#owner_id').html(`DID: ${getSubStr(OWNER_ID)}`);
         const peopleR = (await ObjectUtil.getObject({ id: OWNER_ID, isReturnResult: true, flags: 1 })).object;
-        this.handlerOodList(peopleR.object.body().unwrap().content().ood_list);
+        this.handlerOodList(peopleR.object.body().content().ood_list);
         console.origin.log('peopleR:', peopleR, peopleR.object_id.to_base_58(), peopleR.object.body().unwrap().content().ood_list, peopleR.object.icon() );
         $('.info_main_name').html(peopleR.object.name() || 'name not set');
         if(peopleR.object.icon()){
@@ -381,7 +381,7 @@ class Util {
                     this.setIntervalSystemInfo();
                 }, 300000);
             }
-            let area = await this.getArea(element.object.desc().area().unwrap());
+            let area = await this.getArea(element.object.desc().area());
             let networkInfo = await this.getNetworkAccessInfo(element.object_id);
             let systemInfo = await this.getSystemInfo(element.object_id);
             let category:string = '';

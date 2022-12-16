@@ -210,7 +210,7 @@ class FileInfo {
         let author_info_dom = document.getElementById('author_info')
         if (object_info.author()) {
             author_info_dom.innerHTML = object_info.author()
-        } else if (object_info.owner() && object_info.owner().is_some()) {
+        } else if (object_info.owner() && object_info.owner()) {
             author_info_dom.innerHTML = object_info.owner().unwrap();
         }
         if (retObject.object.object.desc().create_time().length) {
@@ -218,7 +218,7 @@ class FileInfo {
         } else {
             document.getElementById('create_time_info').innerHTML = retObject.object.object.desc().create_time();
         }
-        if (object_info.owner() && object_info.owner().is_some()) {
+        if (object_info.owner() && object_info.owner()) {
             document.getElementById('owner_info').innerHTML = '有主对象,Owner:' + object_info.owner().unwrap();
             OWNER_ID = object_info.owner().unwrap();
         } else {

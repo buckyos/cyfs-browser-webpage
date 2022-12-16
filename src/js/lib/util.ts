@@ -167,7 +167,7 @@ class NONObject {
     if (current_device_static_info.owner_id) {
         const peopleR = (await ObjectUtil.getObject({ id: current_device_static_info.owner_id, isReturnResult: true, flags: 1 })).object;
         console.origin.log('peopleR:', peopleR);
-        let oodList = peopleR.object.body().unwrap().content().ood_list;
+        let oodList = peopleR.object.body().content().ood_list;
         if (oodList[0]) {
             let mainStatus: boolean = await this.getOodStatus();
             console.log('--mainStatus', mainStatus)

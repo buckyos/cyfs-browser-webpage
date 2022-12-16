@@ -96,7 +96,7 @@ class AppManager {
         }
         $('.app_detail_dec_id_p').html(`<span class="app_detail_dec_id">Dec-ID：${g_appId}</span><i class="upload_app_info_id_copy" data-id="${g_appId}"></i>`)
         $('.app_detail_developer_p').html(`<span class="app_detail_developer">${LANGUAGESTYPE == 'zh'?'开发者：': 'Developer：'}${peopleName}  (<i class="app_detail_developer_color">${owner}</i>)</span><i class="upload_app_info_id_copy" data-id="${owner}"></i>`)
-        // if(app.app.desc().dec_id().is_some()){
+        // if(app.app.desc().dec_id()){
         //     let decid = app.app.desc().dec_id().unwrap();
         //     $('.app_detail_dec_id_p').html(`<span class="app_detail_dec_id">Dec-ID：${decid}</span><i class="upload_app_info_id_copy" data-id="${decid}"></i>`)
         // }

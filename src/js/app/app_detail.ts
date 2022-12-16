@@ -248,7 +248,7 @@ class ObjectManager {
       owner = APP_OWNER = app.app.desc().owner().unwrap();
       $('.owner_info').html(`<span>${LANGUAGESTYPE == 'zh'?'开&nbsp; 发 者：': 'Developer：'}</span>${owner}`)
     }
-    if(app.app.desc().dec_id().is_some()){
+    if(app.app.desc().dec_id()){
       let decid = app.app.desc().dec_id().unwrap();
       $('.decid_info').html(`<span>Dec-ID：</span>${decid}`)
     }
@@ -256,7 +256,7 @@ class ObjectManager {
     console.log('APP_OWNER, id:', APP_OWNER, id);
     let appBody = app.app.body().unwrap();
     $('.time_info').html(`<span>${LANGUAGESTYPE == 'zh'?'发布时间：': 'Released time：'}</span>${await formatDate(cyfs.bucky_time_2_js_time(appBody.update_time()))}`);
-    if (appBody.content().desc.is_some()) {
+    if (appBody.content().desc) {
       APP_INTRODUCE = appBody.content().desc.unwrap().toString();
       $('.app_introduce').html(`<p>${APP_INTRODUCE}</p>`);
     } else {

@@ -131,7 +131,7 @@ class UploadAppClass {
             if(!g_owner){
                 await UploadApp.getOwner();
             }
-            if(g_app.app.desc().owner()?.unwrap().toString() != g_owner.toString()){
+            if(g_app.app.desc().owner()?.toString() != g_owner.toString()){
                 toast({
                     message: LANGUAGESTYPE == 'zh'? '输入的URL错误': 'URL entered incorrectly.',
                     time: 1500,
@@ -150,7 +150,8 @@ class UploadAppClass {
         if (app.app_icon) {
             $('.upload_app_icon_img').attr('img', '../img/app/app_default_icon.svg');
         }
-        let appExtId = g_appExtId = await cyfs.AppExtInfo.getExtId(app.app);
+        let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
+        g_appExtId = appExtId.toString();
         console.log('appExtId:', appExtId);
         let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
         console.origin.log('appExt:', appExt); 

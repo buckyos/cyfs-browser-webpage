@@ -250,10 +250,10 @@ class FileInfo {
         let author = null;
         if (object_info.author()) {
             author = object_info.author()
-        } else if (object_info.owner() && object_info.owner().is_some()) {
+        } else if (object_info.owner() && object_info.owner()) {
             author = object_info.owner().unwrap();
         }
-        if (object_info.owner() && object_info.owner().is_some()) {
+        if (object_info.owner() && object_info.owner()) {
             OWNER_ID = object_info.owner().unwrap();
             author = author ? author : OWNER_ID;
             document.getElementById('owner_info')!.innerHTML = '拥有者：' + OWNER_ID;

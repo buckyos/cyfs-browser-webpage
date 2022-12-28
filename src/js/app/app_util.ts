@@ -157,7 +157,7 @@ class AppUtilClass {
         }
     }
     async getObjectFromRootState(path:string, owner:cyfs.ObjectId, decId:cyfs.ObjectId, decoder: cyfs.AppLocalListDecoder | cyfs.AppStatusDecoder) {
-        let m_root_state = this.m_sharedStatck.root_state_access_stub(owner, decId);
+        let m_root_state = this.m_sharedStatck.root_state_accessor_stub(owner, decId);
         const ret = await m_root_state.get_object_by_path(path);
         if (ret.err) {
           console.log('getAllAppListFun-ret-err', ret);

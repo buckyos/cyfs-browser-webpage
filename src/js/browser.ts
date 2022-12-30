@@ -401,11 +401,11 @@ function handleGuideBox (last?:string|null, next?: string|null) {
     }
 }
 
-$('.browser_guide_last_next').on('click', async function () {
-    let next = $(this).attr('data-next');
-    let last = $(this).attr('data-last');
-    handleGuideBox(last, next);
-})
+// $('.browser_guide_last_next').on('click', async function () {
+//     let next = $(this).attr('data-next');
+//     let last = $(this).attr('data-last');
+//     handleGuideBox(last, next);
+// })
 
 $('.browser_guide_cancel_btn').on('click', (event) => {
     $('.browser_cover_box_confirm').css('display', 'block');

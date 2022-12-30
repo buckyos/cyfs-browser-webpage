@@ -70,7 +70,6 @@ function isUnbind() {
 
 function setSwitchIntervalFun () {
     $('.guide_switch_box span').each(function(index){
-        console.origin.log('switchSpans', $(this).hasClass('guide_switch_active_span'))
         if($(this).hasClass('guide_switch_active_span')){
             if(index == 2) {
                 g_switchEq = 0;

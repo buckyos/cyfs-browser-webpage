@@ -24,21 +24,12 @@ module.exports = (env, argv) => {
             'build_did': './src/js/build_did.ts',
             'reset_did': './src/js/reset_did.ts',
             'objects': './src/js/objects.ts',
-            'm_objects': './src/js/mobile/objects.ts',
             'info': './src/js/info.ts',
-            'm_info': './src/js/mobile/info.ts',
-            'appmanager': './src/js/appmanager.ts',
-            'm_appmanager': './src/js/mobile/appmanager.ts',
             'index': './src/js/index.ts',
             'activate': './src/js/activate.ts',
             'show': './src/js/show.ts',
-            'm_show': './src/js/mobile/show.ts',
             'tx': './src/js/tx.ts',
-            'm_tx': './src/js/mobile/tx.ts',
             'browser': './src/js/browser.ts',
-            'm_browser': './src/js/mobile/browser.ts',
-            'app_detail': './src/js/app/app_detail.ts',
-            'app_installed': './src/js/app/app_installed.ts',
             'localstate': './src/js/localstate.ts',
             'guide': './src/js/guide.ts',
             'app_util': './src/js/app/app_util.ts',
@@ -135,36 +126,6 @@ module.exports = (env, argv) => {
                 template: './src/browser.html',
                 filename: '../browser.html',
                 chunks: ['browser']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/mobile/objects.html',
-                filename: '../mobile/objects.html',
-                chunks: ['m_objects']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/mobile/info.html',
-                filename: '../mobile/info.html',
-                chunks: ['m_info']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/mobile/show.html',
-                filename: '../mobile/show.html',
-                chunks: ['m_show']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/mobile/tx.html',
-                filename: '../mobile/tx.html',
-                chunks: ['m_tx']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/mobile/appmanager.html',
-                filename: '../mobile/appmanager.html',
-                chunks: ['m_appmanager']
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/mobile/browser.html',
-                filename: '../mobile/browser.html',
-                chunks: ['m_browser']
             }),
             new HtmlWebpackPlugin({
                 template: './src/localstate.html',

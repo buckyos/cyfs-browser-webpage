@@ -121,14 +121,14 @@ class AppUtilClass {
             let get_app_status = await AppUtil.getAppStatus(id);
             console.origin.log('get_app_status', app.name(), get_app_status.version())
             let summary = '';
-            if (app.body().unwrap() && app.body().unwrap().content().desc) {
-                summary = app.body().unwrap().content().desc;
+            if (app.body() && app.body().content().desc) {
+                summary = app.body().content().desc;
             }
             let appObj: appDetailUtilType = {
                 app_id: id,
                 app_name: '',
                 app_icon: '../img/app/app_default_icon.svg',
-                owner: app.desc().owner()?.unwrap(),
+                owner: app.desc().owner(),
                 app: app,
                 fidArray: [],
                 app_status: get_app_status,
@@ -210,7 +210,7 @@ class AppUtilClass {
         result = result.unwrap()
         }
         let current_device = result.device
-        let owner = current_device.desc().owner().unwrap();
+        let owner = current_device.desc().owner();
         const sysDecAppObjId = cyfs.get_system_dec_app().object_id;
         const path = cyfs.AppLocalStatus.get_path(appId);
         const ret = await this.getObjectFromRootState(path, owner, sysDecAppObjId, new cyfs.AppLocalStatusDecoder())

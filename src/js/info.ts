@@ -336,7 +336,7 @@ class Util {
         $('#owner_id').html(`DID: ${getSubStr(OWNER_ID)}`);
         const peopleR = (await ObjectUtil.getObject({ id: OWNER_ID, isReturnResult: true, flags: 1 })).object;
         this.handlerOodList(peopleR.object.body().content().ood_list);
-        console.origin.log('peopleR:', peopleR, peopleR.object_id.to_base_58(), peopleR.object.body().unwrap().content().ood_list, peopleR.object.icon() );
+        console.origin.log('peopleR:', peopleR, peopleR.object_id.to_base_58(), peopleR.object.body().content().ood_list, peopleR.object.icon() );
         $('.info_main_name').html(peopleR.object.name() || 'name not set');
         if(peopleR.object.icon()){
             $('.info_main_portrait').attr('src', 'cyfs://o/'+peopleR.object.icon().object_id);
@@ -386,7 +386,7 @@ class Util {
             let systemInfo = await this.getSystemInfo(element.object_id);
             let category:string = '';
             if(!element.object.category().err){
-                let categoryR = element.object.category().unwrap();
+                let categoryR = element.object.category();
                 if(categoryR == cyfs.DeviceCategory.OOD){
                     category = 'OOD';
                 }else if(categoryR == cyfs.DeviceCategory.VirtualOOD){

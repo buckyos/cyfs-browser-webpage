@@ -73,7 +73,7 @@ class AppStoreListClass {
                       let sortIndex = 0;
                       let isfirstSort = true;
                       timeArr.forEach((time, index)=>{
-                        if(isfirstSort && time < app.app.body().unwrap().update_time()){
+                        if(isfirstSort && time < app.app.body().update_time()){
                           isfirstSort = false;
                           sortIndex = index - 1;
                         }
@@ -85,11 +85,9 @@ class AppStoreListClass {
                       if(sortIndex < 0){
                         sortIndex = 0;
                       }
-                      timeArr.splice(sortIndex, 0, app.app.body().unwrap().update_time());
+                      timeArr.splice(sortIndex, 0, app.app.body().update_time());
                       g_appList.splice(sortIndex, 0, app);
-                      console.origin.log('------------------------------timeArr', timeArr)
-                      console.origin.log('------------------------------app_name', app.app_name, app.app.body().unwrap().update_time().toString(), sortIndex)
-                      let appBody = app.app.body().unwrap();
+                      let appBody = app.app.body();
                       let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
                       if (appBody.content().desc) {
                           app_introduce = appBody.content().desc;
@@ -236,7 +234,7 @@ class AppStoreListClass {
                 let sortIndex = 0;
                 let isfirstSort = true;
                 timeArr.forEach((time, index)=>{
-                    if(isfirstSort && time < app.app.body().unwrap().update_time()){
+                    if(isfirstSort && time < app.app.body().update_time()){
                         isfirstSort = false;
                         sortIndex = index - 1;
                     }
@@ -248,7 +246,7 @@ class AppStoreListClass {
                 if(sortIndex < 0){
                     sortIndex = 0;
                 }
-                timeArr.splice(sortIndex, 0, app.app.body().unwrap().update_time());
+                timeArr.splice(sortIndex, 0, app.app.body().update_time());
                 appList.splice(sortIndex, 0, app);
             }
           }

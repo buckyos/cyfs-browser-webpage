@@ -155,7 +155,7 @@ export const en =  {
         "ActivateFalse": "Activation Failed!",
         "ActivateFalseInfo": "Please ensure you've binded your OOD with your DID, otherwise you cannot activate CYFS Browser.",
         "ActivateSuccess": "Activate successfully!",
-        "ActivateSuccessInfo": "All done, congratulation! CYFS Browser will be restarted automatically to initialize your Digital Identity if you click 'Restart'. Or you can click 'Cancel' to stay in Read-only mode and Digital Identity will be initialized until next time you manually restart CYFS Browser.",
+        "ActivateSuccessInfo": "All done, congratulation! Kalama will be restarted automatically to initialize your Digital Identity if you click 'Restart'. Or you can click 'Cancel' to stay in Read-only mode and Digital Identity will be initialized until next time you manually restart Kalama.",
         "Restart": "Restart",
         "OpenCyberChat": "Open CyberChat",
         "ClickScan": "<span>Click '</span><b class='guide_acivate_info_two_add'></b><span>' -> Click '</span><b class='guide_acivate_info_two_scan'></b><span></span>' to scan the QR code above</span>",

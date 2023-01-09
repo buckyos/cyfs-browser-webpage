@@ -643,7 +643,7 @@ $('.choose_ood_btn').on('click', function () {
 
 $('.reset_ood_btn').on('click', function () {
     localStorage.setItem('is-reset-did', 'true');
-    window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/reset_did.html&desc=#/login';
+    window.location.href = 'https://vfoggie.fogworks.io/#/fogworks';
 })
 
 $('.recovery_phrase_textarea').on('keyup', function () {

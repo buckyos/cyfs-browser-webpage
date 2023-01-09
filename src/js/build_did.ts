@@ -526,7 +526,7 @@ $('.did_buy_ood_btn').on('click', async function () {
     });
     
     localStorage.setItem('cyfs-build-did-buy-ood-time', String((new Date()).getTime()));
-    window.location.href = 'https://vfoggie.fogworks.io/?url=cyfs://static/build_did.html&desc=#/login';
+    window.location.href = 'https://vfoggie.fogworks.io/#/fogworks';
 })
 
 $('.create_did_container').on('click', '.create_mnemonic_btn', async function () {

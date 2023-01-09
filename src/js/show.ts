@@ -179,7 +179,7 @@ class FileInfo {
             return;
         }
         let typeCode = retObject.object.object.desc().obj_type_code();
-        console.log('retObject', retObject, retObject.object.object.body().unwrap(), retObject.object.object.desc());
+        console.log('retObject', retObject, retObject.object.object.body(), retObject.object.object.desc());
         tx_id = retObject.object.object_id;
 
         let object_info = retObject.object.object.desc();
@@ -251,10 +251,10 @@ class FileInfo {
         if (object_info.author()) {
             author = object_info.author()
         } else if (object_info.owner() && object_info.owner()) {
-            author = object_info.owner().unwrap();
+            author = object_info.owner();
         }
         if (object_info.owner() && object_info.owner()) {
-            OWNER_ID = object_info.owner().unwrap();
+            OWNER_ID = object_info.owner();
             author = author ? author : OWNER_ID;
             document.getElementById('owner_info')!.innerHTML = '拥有者：' + OWNER_ID;
         }
@@ -450,7 +450,7 @@ async function showDir(create_time: string, inner_path: string, crumbs: string, 
         console.log('object_info.content().obj_list().info.obj_list', object_info.content().obj_list().info.obj_list)
         crumbs += `<i class="file_back dir_crumbs" ${back_html} title="返回"></i>`;
         $('.folder_object_title').html(crumbs)
-        let TreeData = await file_info.getNodeTree(true, '', object_info, retObject.object.object.body().unwrap(), retObject.object.object)
+        let TreeData = await file_info.getNodeTree(true, '', object_info, retObject.object.object.body(), retObject.object.object)
         console.log('---TreeData', TreeData)
         let trHtml = '';
         if (TreeData) {

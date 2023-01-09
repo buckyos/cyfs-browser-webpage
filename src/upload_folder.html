@@ -1,0 +1,82 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="cyfs://static/css/main.css" rel="stylesheet" />
+    <title>文件上传</title>
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+</head>
+<script>
+</script>
+<body style="background: #F2F3F5;">
+    <div class="file_object_box">
+        <!-- <h2 class="header_titile"><i class="header_titile_i">对象类型：</i><span id="header_titile_name">文件(FileObject)</span></h2> -->
+        <h2 class="header_titile_name" id="header_titile_name"><span>根目录 /</span></h2>
+        <div class="file_object_div_container">
+            <div class="file_object_img_div">
+                <div class="file_object_img_box" id="object_info_div"></div>
+                <div class="file_object_box_icon"></div>
+                <div class="file_object_msg_box"></div>
+            </div>
+            <div class="file_container">
+                <div class="file_atrribute_box">
+                    <h3 class="file_atrribute_title"><i class="file_atrribute_icon"></i>文件属性<button class="file_download_btn">下载</button></h3>
+                    <div class="file_object_subtitle_div">
+                        <p id="owner_info">拥有者：</p>
+                        <p>创建者：<span id="author_info"></span></p>
+                        <p>创建时间：<span id="create_time_info"></span></p>
+                    </div>
+                </div>
+                <div>
+                    <div class="file_reward_record_container">
+                        <h3 class="file_atrribute_title"><i class="file_scan_icon"></i>打赏总收入：<span id="balance_dom2"></span></h3>
+                        <div class="file_reward_record">
+                            <h3 class="file_reward_record_title">打赏记录：</h3>
+                            <h3 class="file_no_reward_record">暂无打赏记录</h3>
+                            <ul class="file_reward_record_list" >
+                            </ul>
+                        </div>
+                        <i class="open_file_reward_record"></i>
+                    </div>
+                    <div class="file_reward_scan_container">
+                        <h3 class="file_reward_scan_title"><i class="file_check_icon"></i>我要打赏</h3>
+                        <div class="file_reward_scan">
+                            <canvas id="scan_code"></canvas>
+                        </div>
+                        <h3 class="file_reward_scan_subtitle">用CYFS通行证扫一扫打赏</h3>
+                    </div>
+                    <div class="clear_both"></div>
+                </div>
+                <div class="clear_both"></div>
+            </div>
+            <div class="clear_both"></div>
+        </div>
+    </div>
+    <div class="folder_object_container">
+        <h3 class="folder_object_title"><span>根目录 /</span></h3>
+        <div class="folder_object_box">
+            <table class="folder_object_table">
+                <thead>
+                    <th width="492">名称</th>
+                    <th width="252">修改时间</th>
+                    <th width="228">操作</th>
+                </thead>
+                <tbody id="folder_object_tbody">
+                </tbody>
+                </table>
+            </table>
+        </div>
+    </div>
+    <div class="no_object_container">
+        <div class="no_object_img">
+            <img src="./img/no_object_img.svg" alt="">
+        </div>
+        <p class="no_object_notice">抱歉，分享链接不存在哦！</p>
+    </div>
+    <div class="anonymous_box">
+        <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
+        <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+    </div>
+</body>
+</html>

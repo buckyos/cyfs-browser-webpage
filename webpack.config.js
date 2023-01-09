@@ -37,6 +37,7 @@ module.exports = (env, argv) => {
             'dec_app_detail': './src/js/app/dec_app_detail.ts',
             'upload_dec_app': './src/js/app/upload_dec_app.ts',
             'app_like_tip_list': './src/js/app/app_like_tip_list.ts',
+            'upload_folder': './src/js/upload_folder.ts',
         },
         mode: env.production ? 'production' : 'development',
         // mode: 'development',
@@ -152,6 +153,11 @@ module.exports = (env, argv) => {
                 template: './src/DecAppStore/app_like_tip_list.html',
                 filename: '../DecAppStore/app_like_tip_list.html',
                 chunks: ['app_like_tip_list', 'app_util']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/upload_folder.html',
+                filename: '../upload_folder.html',
+                chunks: ['upload_folder']
             }),
         ],
         externals: [

@@ -4,6 +4,20 @@ let QRCode = require('qrcode')
 import { toast } from './lib/toast.min'
 import { LANGUAGESTYPE } from './lib/util'
 
+var userAgentInfo = navigator.userAgent;
+console.log('userAgentInfo', userAgentInfo)
+if(userAgentInfo.indexOf('Kalama') > -1){
+    $('.browser_guide_index_title').html('Welcome to Kalama !');
+    $('.kalama_title').html('Web3 starts with CYFS — We are committed to making Kalama the best browser for web3.');
+    $('.kalama_subtitle').html('Kalama will support a variety of decentralized network protocols (currently supports CYFS, IPFS), allowing you to open Web3 links more easily and bring you a better browsing experience.');
+    $('.browser_guide_index_icon').css('background', 'url(./img/browser_guide_index_kalama_icon.png) no-repeat center center');
+}else{
+    $('.browser_guide_index_title').html('Welcome to CYFS Browser !');
+    $('.kalama_title').html('Web3 starts with CYFS — We are committed to making CYFS Browser the best browser for web3.');
+    $('.kalama_subtitle').html('CYFS Browser will support a variety of decentralized network protocols (currently supports CYFS, IPFS), allowing you to open Web3 links more easily and bring you a better browsing experience.');
+    $('.browser_guide_index_icon').css('background', 'url(./img/browser_guide_index_icon.svg) no-repeat center center');
+}
+
 let SCAN_CONTENT:{
     "flag": string,
     "type": string,

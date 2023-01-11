@@ -6,6 +6,18 @@ import { toast } from './lib/toast.min'
 import { ObjectUtil, getSubStr, hasPC, LANGUAGESTYPE, castToLocalUnit } from './lib/util'
 import { AppUtil, AppDetailUtil } from './app/app_util'
 
+var userAgentInfo = navigator.userAgent;
+console.log('userAgentInfo', userAgentInfo)
+if(userAgentInfo.indexOf('Kalama') > -1){
+    $('.browser_guide_box_title').html('Welcome to Kalama !');
+    $('.browser_guide_box_subtitle').html('You can access the real Web3 world with Kalama—High performance, unprecedented protocol, and fast speed to make you browsing the pure Web3 site.');
+    $('.browser_guide_acivate_success_p').html("All done, congratulation! Kalama will be restarted automatically to initialize your Digital Identity if you click 'Restart'. Or you can click 'Cancel' to stay in Read-only mode and Digital Identity will be initialized until next time you manually restart Kalama.");
+    
+}else{
+    $('.browser_guide_box_title').html('Welcome to CYFS Browser !');
+    $('.browser_guide_box_subtitle').html('You can access the real Web3 world with CYFS Browser—High performance, unprecedented protocol, and fast speed to make you browsing the pure Web3 site.');
+    $('.browser_guide_acivate_success_p').html("All done, congratulation! CYFS Browser will be restarted automatically to initialize your Digital Identity if you click 'Restart'. Or you can click 'Cancel' to stay in Read-only mode and Digital Identity will be initialized until next time you manually restart CYFS Browser.");
+}
 
 if (window.location.search == '?success') {
     let isToIndex = localStorage.getItem('is-restart-browser-to-index');

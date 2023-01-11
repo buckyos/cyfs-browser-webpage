@@ -7,11 +7,26 @@
     <script src="./cyfs_sdk/cyfs.js"></script>
     <script src="./js/lib/jquery.js"></script>
 </head>
-<script>
-</script>
+<style>
+    .dir_id_ellipsis{
+        cursor: pointer;
+        width: 252px;
+    }
+    .copy_id_icon{
+        float: left;
+        margin-top: 10px;
+        margin-left: 0px;
+    }
+    .folder_object_table tbody tr td{
+        padding-left: 10px;
+    }
+    .folder_object_table thead th{
+        padding-left: 12px;
+    }
+</style>
 <body style="background: #F2F3F5;">
+    <textarea id="copy_textarea" style="display:none;"></textarea>
     <div class="file_object_box">
-        <!-- <h2 class="header_titile"><i class="header_titile_i">对象类型：</i><span id="header_titile_name">文件(FileObject)</span></h2> -->
         <h2 class="header_titile_name" id="header_titile_name"><span>根目录 /</span></h2>
         <div class="file_object_div_container">
             <div class="file_object_img_div">
@@ -58,9 +73,11 @@
         <div class="folder_object_box">
             <table class="folder_object_table">
                 <thead>
-                    <th width="492">名称</th>
-                    <th width="252">修改时间</th>
-                    <th width="228">操作</th>
+                    <th width="260">Name</th>
+                    <th width="430">ID</th>
+                    <th width="145">upload time</th>
+                    <th>Size</th>
+                    <th>Actions</th>
                 </thead>
                 <tbody id="folder_object_tbody">
                 </tbody>

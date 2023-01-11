@@ -25,7 +25,7 @@ class NONObject {
     dec_id?: cyfs.ObjectId,
     isReturnResult?: boolean
   }) {
-    console.log('-------------get_object-params', params, typeof (params.id))
+    console.log('-------------get_object-params', params)
     let object_id: cyfs.ObjectId;
     if (typeof (params.id) == 'string') {
       let idResult = cyfs.ObjectId.from_base_58(params.id);
@@ -55,9 +55,7 @@ class NONObject {
         dec_id: params.dec_id
       }
     }
-    console.log('-----------------req', req)
     const r = await this.m_router.get_object(req);
-    console.log('-----------------r', r)
     if (r.err) {
       return r;
     } else {

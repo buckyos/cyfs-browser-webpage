@@ -135,7 +135,6 @@ class FileInfo {
                 fileName = decodeURI(uploadNameR);
             }else{
                 fileName = decodeURI(uploadNameR.substring(uploadNameR.indexOf('_')+1, uploadNameR.length));
-
             }
             let id = uploadR.to_base_58();
             const retObject = await ObjectUtil.getObject({ id: id, isReturnResult: true });

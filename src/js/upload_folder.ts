@@ -86,17 +86,17 @@ class FileInfo {
         let root_state = this.m_sharedStatck.root_state_accessor_stub();
         let path:string = g_path ? '/' + g_path : '';
         console.origin.log('path', path);
-        if(g_path){
-            let pathId = g_path.substring(0, g_path.indexOf('_'));
-            console.origin.log('pathId', pathId);
-            const pathIdR = await ObjectUtil.getObject({ id: pathId, isReturnResult: true });
-            console.origin.log('pathIdR', pathIdR, pathIdR.object.object.obj_type_code());
-            if(!pathIdR.err){
-                if(pathIdR.object.object.obj_type_code() == cyfs.ObjectTypeCode.File){
-                    window.location.href = " cyfs://r/$$/system/cyfs_file_upload/" + g_path;
-                }
-            }
-        }
+        // if(g_path){
+        //     let pathId = g_path.substring(0, g_path.indexOf('_'));
+            // console.origin.log('pathId', pathId);
+            // const pathIdR = await ObjectUtil.getObject({ id: pathId, isReturnResult: true });
+            // console.origin.log('pathIdR', pathIdR, pathIdR.object.object.obj_type_code());
+            // if(!pathIdR.err){
+            //     if(pathIdR.object.object.obj_type_code() == cyfs.ObjectTypeCode.File){
+            //         window.location.href = " cyfs://r/$$/system/cyfs_file_upload/" + g_path;
+            //     }
+            // }
+        // }
         let lr: cyfs.Result = await root_state.list('/cyfs_file_upload' + path);
         console.origin.log('lr', lr);
         if (lr.err) {
@@ -228,6 +228,12 @@ $('.next_page_btn').on('click', () => {
     }
 })
 
+$('#page_div').on('click', 'span', function() {
+    currentPage = $(this).index();
+    file_info.renderList();
+    $('#page_div span').eq(currentPage).addClass('choose_index').siblings().removeClass("choose_index");
+})
+
 async function returnFormat(suffix: string) {
     let iconName = '';
     if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff'].indexOf(suffix) > -1) {
@@ -262,7 +268,11 @@ $('#folder_object_tbody').on('click', ".href_entrance", function () {
 
 function routeToNext(hrefStr: string, path: string, name: string, type: string) {
     if(type == 'file'){
-        window.location.href = " cyfs://r/$$/system/cyfs_file_upload/" + hrefStr + '_' + name;
+        if(g_path){
+            window.location.href = " cyfs://r/$$/system/cyfs_file_upload/" + g_path + '/' + name;
+        }else{
+            window.location.href = " cyfs://r/$$/system/cyfs_file_upload/" + hrefStr + '_' + name;
+        }
     }else{
         window.open("cyfs://static/upload_folder.html?path=" + path);
     }

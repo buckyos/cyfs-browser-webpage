@@ -129,7 +129,14 @@ class FileInfo {
         for (let [key, value] of list.entries()) {
             let uploadNameR = value.map.key;
             let uploadR = value.map.value;
-            let fileName = decodeURI(i==0?uploadNameR.substring(uploadNameR.indexOf('_')+1, uploadNameR.length):uploadNameR);
+            console.log('11111', uploadNameR)
+            let fileName:string = '';
+            if(g_path){
+                fileName = decodeURI(uploadNameR);
+            }else{
+                fileName = decodeURI(uploadNameR.substring(uploadNameR.indexOf('_')+1, uploadNameR.length));
+
+            }
             let id = uploadR.to_base_58();
             const retObject = await ObjectUtil.getObject({ id: id, isReturnResult: true });
             let time:string = '';

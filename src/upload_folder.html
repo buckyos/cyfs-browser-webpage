@@ -23,73 +23,58 @@
     .folder_object_table thead th{
         padding-left: 12px;
     }
+    .page_box_container{
+        padding-right: 40px;
+    }
+    .page_box_right {
+        width: 350px;
+    }
+    .page_box {
+        padding: 33px 0;
+        margin: 0;
+    }
+    .folder_object_table {
+        padding-bottom: 0px;
+    }
 </style>
 <body style="background: #F2F3F5;">
     <textarea id="copy_textarea" style="display:none;"></textarea>
-    <div class="file_object_box">
-        <h2 class="header_titile_name" id="header_titile_name"><span>根目录 /</span></h2>
-        <div class="file_object_div_container">
-            <div class="file_object_img_div">
-                <div class="file_object_img_box" id="object_info_div"></div>
-                <div class="file_object_box_icon"></div>
-                <div class="file_object_msg_box"></div>
-            </div>
-            <div class="file_container">
-                <div class="file_atrribute_box">
-                    <h3 class="file_atrribute_title"><i class="file_atrribute_icon"></i>文件属性<button class="file_download_btn">下载</button></h3>
-                    <div class="file_object_subtitle_div">
-                        <p id="owner_info">拥有者：</p>
-                        <p>创建者：<span id="author_info"></span></p>
-                        <p>创建时间：<span id="create_time_info"></span></p>
-                    </div>
-                </div>
-                <div>
-                    <div class="file_reward_record_container">
-                        <h3 class="file_atrribute_title"><i class="file_scan_icon"></i>打赏总收入：<span id="balance_dom2"></span></h3>
-                        <div class="file_reward_record">
-                            <h3 class="file_reward_record_title">打赏记录：</h3>
-                            <h3 class="file_no_reward_record">暂无打赏记录</h3>
-                            <ul class="file_reward_record_list" >
-                            </ul>
-                        </div>
-                        <i class="open_file_reward_record"></i>
-                    </div>
-                    <div class="file_reward_scan_container">
-                        <h3 class="file_reward_scan_title"><i class="file_check_icon"></i>我要打赏</h3>
-                        <div class="file_reward_scan">
-                            <canvas id="scan_code"></canvas>
-                        </div>
-                        <h3 class="file_reward_scan_subtitle">用CYFS通行证扫一扫打赏</h3>
-                    </div>
-                    <div class="clear_both"></div>
-                </div>
-                <div class="clear_both"></div>
-            </div>
-            <div class="clear_both"></div>
-        </div>
-    </div>
     <div class="folder_object_container">
-        <h3 class="folder_object_title"><span>根目录 /</span></h3>
+        <h3 class="folder_object_title"></h3>
         <div class="folder_object_box">
             <table class="folder_object_table">
                 <thead>
                     <th width="260">Name</th>
                     <th width="430">ID</th>
-                    <th width="145">upload time</th>
+                    <!-- <th width="145">upload time</th> -->
+                    <th>upload time</th>
                     <th>Size</th>
-                    <th>Actions</th>
+                    <!-- <th>Actions</th> -->
                 </thead>
                 <tbody id="folder_object_tbody">
                 </tbody>
                 </table>
             </table>
+            <div class="page_box_container">
+                <div class="page_box">
+                    <div class="page_box_right">
+                        <button class="last_page_btn" ></button>
+                        <div class="page_div">
+                            <div id="page_div">
+                                <span class="choose_index">1</span>
+                            </div>
+                        </div>
+                        <button class="next_page_btn" ></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="no_object_container">
         <div class="no_object_img">
             <img src="./img/no_object_img.svg" alt="">
         </div>
-        <p class="no_object_notice">抱歉，分享链接不存在哦！</p>
+        <p class="no_object_notice">抱歉，链接不存在哦！</p>
     </div>
     <div class="anonymous_box">
         <p class="anonymous_title" set-lan="html:AnonymousMode"></p>

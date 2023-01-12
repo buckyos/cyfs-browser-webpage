@@ -1749,3 +1749,98 @@ button{
     float: right;
     margin-right: 72px;
 }
+.page_box{
+    width: 100%;
+    height: 24px;
+    margin: 33px 0 ;
+}
+.page_box_left{
+    float: left;
+    color: #999999;
+    font-size: 14px;
+    line-height: 24px;
+}
+.page_box_right{
+    float: right;
+    width: 510px;
+}
+.page_chose_box{
+    display: inline-block;
+    width: 64px;
+    height: 24px;
+    border: 1px solid #E1E2E2;
+    border-radius: 2px;
+    margin: 0 7px;
+    float: left;
+}
+.page_span{
+    overflow: hidden;
+}
+.first_page{
+    width: 64px;
+    height: 24px;
+    float: left;
+    margin-right: 16px;
+}
+.last_page{
+    width: 64px;
+    height: 24px;
+    float: right;
+    margin-left: 16px;
+}
+.first_page:hover, .last_page:hover{
+    border: 1px solid #333;
+    color: #333;
+}
+.first_page, .last_page{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    border-radius: 2px;
+    border: 1px solid #E1E2E2;
+    color: #999999;
+    background: #FFFFFF;
+}
+.last_page_btn, .next_page_btn{
+    width: 24px;
+    height: 24px;
+    border: none;
+}
+.last_page_btn{
+    float: left;
+    background: url(../img/browser/last_page_icon.svg) no-repeat center center;
+}
+.next_page_btn{
+    float: right;
+    background: url(../img/browser/next_page_icon.svg) no-repeat center center;
+}
+.page_div{
+    display: inline-block;
+    width: 300px;
+    height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    position: relative;
+}
+#page_div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    width: 9999999px;
+}
+.page_div span{
+    float: left;
+    line-height: 24px;
+    width: 32px;
+    text-align: center;
+}
+.page_div .choose_index{
+    width: 32px;
+    height: 22px;
+    color: #26C28D;
+    text-align: center;
+    border: 1px solid #26C28D;
+    padding: 0px;
+}

@@ -86,21 +86,25 @@ class FileInfo {
         let root_state = this.m_sharedStatck.root_state_accessor_stub();
         let path:string = g_path ? '/' + g_path : '';
         console.origin.log('path', path);
-        // if(g_path){
-        //     let pathId = g_path.substring(0, g_path.indexOf('_'));
-            // console.origin.log('pathId', pathId);
-            // const pathIdR = await ObjectUtil.getObject({ id: pathId, isReturnResult: true });
-            // console.origin.log('pathIdR', pathIdR, pathIdR.object.object.obj_type_code());
-            // if(!pathIdR.err){
-            //     if(pathIdR.object.object.obj_type_code() == cyfs.ObjectTypeCode.File){
-            //         window.location.href = " cyfs://r/$$/system/cyfs_file_upload/" + g_path;
-            //     }
-            // }
-        // }
+        let isFile:boolean = false;
+        if(g_path){
+            let pathId = 'cyfs_file_upload/' + g_path;
+            console.log('pathId', pathId)
+            let pathIdR = await this.m_sharedStatck.root_state_accessor().get_object_by_path({inner_path:pathId, common:{flags:1}});
+             console.origin.log('pathIdR', pathIdR, pathIdR.unwrap().object.object.object.obj_type_code());
+            if(!pathIdR.err){
+                if(pathIdR.unwrap().object.object.object.obj_type_code() == cyfs.ObjectTypeCode.File){
+                    isFile = true;
+                    window.location.href = " cyfs://r/$$/system/cyfs_file_upload/" + g_path;
+                }
+            }
+        }
         let lr: cyfs.Result = await root_state.list('/cyfs_file_upload' + path);
         console.origin.log('lr', lr);
         if (lr.err) {
-            $('.no_object_container').css('display', 'block');
+            if(!isFile){
+                $('.no_object_container').css('display', 'block');
+            }
             return;
         }
         let list = lr.unwrap();

@@ -17,6 +17,8 @@ $('.anonymous_subtitle').on('click', async function () {
 })
 
 let g_path: string | undefined = '';
+let g_oodId: cyfs.ObjectId | undefined = '';
+
 export type g_tableDataType = {
     dataPath: string,
     iconName: string,
@@ -78,22 +80,38 @@ function getfilesize(size: number, isByte?: boolean) {
 
 class FileInfo {
     m_sharedStatck: cyfs.SharedCyfsStack;
+    m_util_service: cyfs.UtilRequestor;
     constructor() {
         this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
+        this.m_util_service = this.m_sharedStatck.util();
+
+    }
+
+    async getDeviceInfo() {
+        let current_device_static_info = await this.m_util_service.get_device_static_info({ common: { flags: 0 } });
+        if (!current_device_static_info.err) {
+            current_device_static_info = current_device_static_info.unwrap().info;
+        }
+        const peopleR = (await ObjectUtil.getObject({ id: current_device_static_info.owner_id, isReturnResult: true, flags: 1 })).object;
+        if(peopleR.object.body().content().ood_list.length){
+            g_oodId = peopleR.object.body().content().ood_list[0].object_id;
+            console.log('g_oodId', g_oodId)
+        }
     }
     
     async getFilePath() {
-        let root_state = this.m_sharedStatck.root_state_accessor_stub();
+        await this.getDeviceInfo();
+        let root_state = this.m_sharedStatck.root_state_accessor_stub(g_oodId);
         let path:string = g_path ? '/' + g_path : '';
         console.origin.log('path', path);
         let isFile:boolean = false;
         if(g_path){
             let pathId = 'cyfs_file_upload/' + g_path;
             console.log('pathId', pathId)
-            let pathIdR = await this.m_sharedStatck.root_state_accessor().get_object_by_path({inner_path:pathId, common:{flags:1}});
-             console.origin.log('pathIdR', pathIdR, pathIdR.unwrap().object.object.object.obj_type_code());
+            let pathIdR = await root_state.get_object_by_path(pathId);
+             console.origin.log('pathIdR', pathIdR);
             if(!pathIdR.err){
-                if(pathIdR.unwrap().object.object.object.obj_type_code() == cyfs.ObjectTypeCode.File){
+                if(pathIdR.unwrap().object.object.obj_type_code() == cyfs.ObjectTypeCode.File){
                     isFile = true;
                     window.location.href = " cyfs://r/$$/system/cyfs_file_upload/" + g_path;
                 }
@@ -108,7 +126,7 @@ class FileInfo {
             return;
         }
         let list = lr.unwrap();
-        let crumbs:string = '<span class="dir_crumbs" data-path="*/">根目录 </span>/';
+        let crumbs:string = '<span class="dir_crumbs" data-path="*/">root directory </span>/';
         if(g_path){
             let pathList = g_path.split('/');
             if (pathList.indexOf('') > -1) {

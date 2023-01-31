@@ -98,6 +98,39 @@ class FileInfo {
             console.log('g_oodId', g_oodId)
         }
     }
+
+    async getList(id: string, fileName:string ,obj_type_code: number){
+        let retObject = await ObjectUtil.getObject({ id: id, isReturnResult: true });
+        if (!retObject.err) {
+            let time:string = formatDate(cyfs.bucky_time_2_js_time(retObject.object_update_time));
+            let iconName = 'table_dir_icon';
+            let type:string = 'dir';
+            let dataPath:string = '';
+            let size:string = '';
+            if(obj_type_code == cyfs.ObjectTypeCode.File){
+                type = 'file';
+                let suffix = (fileName.split('.'))[fileName.split('.').length - 1].toLowerCase();
+                iconName = await returnFormat(suffix);
+                size = getfilesize(Number(retObject.object.object.desc().content().len.toString()), true);
+            }
+            if(g_path){
+                dataPath = g_path + '/' + fileName;
+            }else{
+                dataPath = id + '_' + fileName;
+            }
+            let item: g_tableDataType = {
+                dataPath: dataPath,
+                iconName: iconName,
+                id: id,
+                type: type,
+                fileName: fileName,
+                updateTime: retObject.object_update_time,
+                time: time,
+                size: size
+            };
+            return item;
+        }
+    }
     
     async getFilePath() {
         await this.getDeviceInfo();
@@ -148,64 +181,46 @@ class FileInfo {
         let trHtml:string = '';
         let dataList:g_tableDataType[] = [];
         let i:number = 0;
+        let getListPromise:Promise<g_tableDataType|undefined>[] = [];
         for (let [key, value] of list.entries()) {
             let uploadNameR = value.map.key;
             let uploadR = value.map.value;
-            console.log('11111', uploadNameR)
+            console.log('uploadNameR', uploadNameR);
+            let id = uploadR.to_base_58();
             let fileName:string = '';
             if(g_path){
                 fileName = decodeURI(uploadNameR);
             }else{
                 fileName = decodeURI(uploadNameR.substring(uploadNameR.indexOf('_')+1, uploadNameR.length));
             }
-            let id = uploadR.to_base_58();
-            const retObject = await ObjectUtil.getObject({ id: id, isReturnResult: true });
-            let time:string = '';
-            if (!retObject.err) {
-                time = formatDate(cyfs.bucky_time_2_js_time(retObject.object_update_time));
-            }
-            let iconName = 'table_dir_icon';
-            let type:string = 'dir';
-            let dataPath:string = '';
-            let size:string = '';
-            if(uploadR.obj_type_code() == cyfs.ObjectTypeCode.File){
-                type = 'file';
-                let suffix = (fileName.split('.'))[fileName.split('.').length - 1].toLowerCase();
-                iconName = await returnFormat(suffix);
-                size = getfilesize(Number(retObject.object.object.desc().content().len.toString()), true);
-            }
-            if(g_path){
-                dataPath = g_path + '/' + fileName;
-            }else{
-                dataPath = id + '_' + fileName;
-            }
-            let item: g_tableDataType = {
-                dataPath: dataPath,
-                iconName: iconName,
-                id: id,
-                type: type,
-                fileName: fileName,
-                updateTime: retObject.object_update_time,
-                time: time,
-                size: size
-            };
-            dataList.push(item);
-            dataList.sort(function(a,b){
-                if(a.updateTime > b.updateTime) return -1;
-                if(a.updateTime < b.updateTime) return 1;
-                return 0;
+            getListPromise.push(this.getList(id, fileName, uploadR.obj_type_code()))
+        }
+        if(getListPromise){
+            Promise.allSettled(getListPromise).then((list) => {
+                list.forEach((item, index) => {
+                    if(item.status == 'fulfilled' && item.value){
+                        console.origin.log('item', item);
+                        dataList.push(item.value);
+                    }
+                });
+                dataList.sort(function(a,b){
+                    if(a!.updateTime > b!.updateTime) return -1;
+                    if(a!.updateTime < b!.updateTime) return 1;
+                    return 0;
+                });
+                console.origin.log('dataList', dataList);
+                totalData = dataList;
+                totalPage = dataList.length/10;
+                let pageHtml:string = '';
+                for (let index = 1; index < totalPage; index++) {
+                    pageHtml += `<span>${index+1}</span>`;
+                }
+                $('#page_div').append(pageHtml)
+                $('.folder_object_title').html(g_path?crumbs:'File list');
+                this.renderList();
             });
-            i++;
         }
-        totalData = dataList;
-        totalPage = dataList.length/10;
-        let pageHtml:string = '';
-        for (let index = 1; index < totalPage; index++) {
-            pageHtml += `<span>${index+1}</span>`;
-        }
-        $('#page_div').append(pageHtml)
-        $('.folder_object_title').html(g_path?crumbs:'File list');
-        this.renderList();
+        
     }
 
     async renderList() {

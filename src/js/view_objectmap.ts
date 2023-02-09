@@ -202,6 +202,7 @@ class FileInfo {
                 }
                 crumbs += `<span class="dir_crumbs" data-path="${crumbPath}"> ${decodeURI(name)} </span>/`;
             });
+            $('title').html('CYFS-'+decodeURI(crumbPath));
         }
         let trHtml:string = '';
         let dataList:g_tableDataType[] = [];

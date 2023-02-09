@@ -21,7 +21,6 @@ class AppOthersClass {
         let ood_status = await this.m_util_service.get_ood_status(req);
         if (!ood_status.err) {
             ood_status = ood_status.unwrap().status;
-            console.log('ood_status:', ood_status);
             if (ood_status.last_ping_result == 0) {
                 // online
                 return true;
@@ -178,11 +177,9 @@ class AppUtilClass {
           result = result.unwrap()
         }
         let current_device = result.device
-        console.log('current_device: ', current_device)
         let owner = current_device.desc().owner();
         const sysDecAppObjId = cyfs.get_system_dec_app().object_id;
         let ret = await this.getObjectFromRootState(cyfs.APP_LOCAL_LIST_PATH, owner, sysDecAppObjId, new cyfs.AppLocalListDecoder())
-        console.log('ret: ', ret)
 
         return ret;
     }

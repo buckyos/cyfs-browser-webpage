@@ -38,6 +38,7 @@ module.exports = (env, argv) => {
             'upload_dec_app': './src/js/app/upload_dec_app.ts',
             'app_like_tip_list': './src/js/app/app_like_tip_list.ts',
             'upload_folder': './src/js/upload_folder.ts',
+            'view_objectmap': './src/js/view_objectmap.ts',
         },
         mode: env.production ? 'production' : 'development',
         // mode: 'development',
@@ -158,6 +159,11 @@ module.exports = (env, argv) => {
                 template: './src/upload_folder.html',
                 filename: '../upload_folder.html',
                 chunks: ['upload_folder']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/view_objectmap.html',
+                filename: '../view_objectmap.html',
+                chunks: ['view_objectmap']
             }),
         ],
         externals: [

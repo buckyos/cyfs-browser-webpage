@@ -304,11 +304,11 @@ class FileInfo {
     async getArea(desc: cyfs.ObjectDesc | any) {
         let area_info:string = LANGUAGESTYPE == 'zh' ? '其它' : 'others';
         if (desc.area()) {
-            let area_unwrap = desc.area().unwrap();
+            let area_unwrap = desc.area();
             if (!area_unwrap.country && !area_unwrap.city) {
                 area_info = LANGUAGESTYPE == 'zh' ? '其它' : 'others';
             } else {
-                let area = desc.area().unwrap().get_area_info(LANGUAGESTYPE);
+                let area = desc.area().get_area_info(LANGUAGESTYPE);
                 console.log('--------------area', area)
                 if (area) {
                     if (area.country_name && area.city_name) {

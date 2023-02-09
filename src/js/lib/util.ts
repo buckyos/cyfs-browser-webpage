@@ -158,7 +158,6 @@ class NONObject {
     if (!current_device_static_info.err) {
         current_device_static_info = current_device_static_info.unwrap().info;
     }
-    console.info('current_device_static_info:', current_device_static_info);
     let oodStatusIcon:string = '../img/browser_main_ood_offline.svg';
     let peopleName:string = '';
     let peoplePicture:string = '../img/browser_people_icon.svg';

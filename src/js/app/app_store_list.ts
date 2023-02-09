@@ -29,7 +29,6 @@ let g_isInstalledPage: boolean = false;
 let g_isShowSetting: boolean = false;
 let g_appStorgeList: storageAppUtilType[] = [];
 
-
 class AppStoreListClass {
     m_sharedStatck: cyfs.SharedCyfsStack;
     m_util_service: cyfs.UtilRequestor;
@@ -166,18 +165,19 @@ class AppStoreListClass {
       if(list){
         g_hasStorageList = true;
         let appList: storageAppUtilType[] = JSON.parse(list);
-        let appStorageList: storageAppUtilType[] = [];
+        console.origin.log('----------appList---r', appList)
         let r = await AppUtil.getAllAppListFun();
         console.origin.log('-------------r', r)
         if (!r.err) {
           let storeList = r.app_list().array();
-          console.origin.log('storeList', storeList)
           appList.forEach(app => {
-            if(storeList.indexOf(app.id) > -1){
+            var result = $.grep(storeList, function(e:cyfs.DecAppId){ return e.to_string() == app.id; });
+            if(result.length != 0){
               g_appStorgeList.push(app);
             }
           });
         }
+        console.origin.log('g_appStorgeList', g_appStorgeList)
         AppStoreList.getInstalledAppList(g_appStorgeList, true);
         for (let index = 0; index < g_appStorgeList.length; index++) {
           const app = g_appStorgeList[index];
@@ -214,61 +214,50 @@ class AppStoreListClass {
       g_isGettingList = true;
       let appList:appDetailUtilType[] = [];
       console.log('------------list, isStorageList', list, isStorageList);
+      let getListPromise:Promise<appDetailUtilType|cyfs.Result>[] = [];
       if(list){
-        let timeArr:number[] = [];
         if(isStorageList){
           for (let index = 0; index < (list as storageAppUtilType[]).length; index++) {
             const element = list[index];
-            let app = await AppUtil.handleAppDetail(element.id);
-            let app_status = app.status;
-            if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
-                appList.push(app);
-            }
+            getListPromise.push(await AppUtil.handleAppDetail(element.id));
           }
         }else{
           for (const appid of (list as cyfs.AppLocalList).app_list().array()) {
-            console.log('appid.object_id:', appid.object_id)
-            let app = await AppUtil.handleAppDetail(appid.object_id);
-            let app_status = app.status;
-            if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
-                let sortIndex = 0;
-                let isfirstSort = true;
-                timeArr.forEach((time, index)=>{
-                    if(isfirstSort && time < app.app.body().update_time()){
-                        isfirstSort = false;
-                        sortIndex = index - 1;
-                    }
-                    if((index == timeArr.length - 1) && isfirstSort){
-                        isfirstSort = false;
-                        sortIndex = index + 1;
-                    }
-                })
-                if(sortIndex < 0){
-                    sortIndex = 0;
-                }
-                timeArr.splice(sortIndex, 0, app.app.body().update_time());
-                appList.splice(sortIndex, 0, app);
-            }
+            console.log('appid.object_id:', appid.object_id);
+            getListPromise.push(await AppUtil.handleAppDetail(appid.object_id));
           }
         }
       }else{
         for (const appid of g_appList) {
-          console.log('appid.object_id:', appid.app_id)
-          let app = await AppUtil.handleAppDetail(appid.app_id);
-          console.origin.log('------------showApp-app', app);
-          let app_status = app.status;
-          if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
-              console.origin.log('------------app-detail', app);
-              appList.push(app);
-          }
+          console.log('appid.app_id:', appid.app_id);
+          getListPromise.push(await AppUtil.handleAppDetail(appid.app_id));
         }
       }
-      g_installedAppList = appList;
-      g_isGettingList = false;
-      console.origin.log('------------------------------g_installedAppList', g_installedAppList)
-      if(g_isInstalled){
-        AppStoreList.renderInstalledAppList();
+      if(getListPromise){
+        Promise.allSettled(getListPromise).then((list) => {
+            list.forEach((item, index) => {
+                if(item.status == 'fulfilled' && item.value && !item.value.err){
+                    let app_status = item.value.status;
+                    if(app_status != cyfs.AppLocalStatusCode.Init && app_status != cyfs.AppLocalStatusCode.Uninstalled){
+                        console.origin.log('------------app-detail', item.value);
+                        appList.push(item.value);
+                    }
+                }
+              });
+              appList.sort(function(a,b){
+                if(a!.app!.body()!.update_time() > b!.app!.body()!.update_time()) return -1;
+                if(a!.app!.body()!.update_time() < b!.app!.body()!.update_time()) return 1;
+                return 0;
+              });
+              g_installedAppList = appList;
+              g_isGettingList = false;
+              console.origin.log('------------------------------g_installedAppList', g_installedAppList)
+              if(g_isInstalled){
+                AppStoreList.renderInstalledAppList();
+              }
+        });
       }
+      
     }
 
     async renderInstalledAppList () {

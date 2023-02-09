@@ -1,0 +1,116 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="cyfs://static/css/main.css" rel="stylesheet" />
+    <title>view_objectmap</title>
+    <script src="./cyfs_sdk/cyfs.js"></script>
+    <script src="./js/lib/jquery.js"></script>
+</head>
+<style>
+    .dir_id_ellipsis{
+        cursor: pointer;
+        width: 252px;
+    }
+    .copy_id_icon{
+        float: left;
+        margin-top: 10px;
+        margin-left: 0px;
+    }
+    .folder_object_table tbody tr td{
+        padding-left: 10px;
+    }
+    .folder_object_table thead th{
+        padding-left: 12px;
+    }
+    .page_box_container{
+        padding-right: 40px;
+    }
+    .page_box_right {
+        width: 350px;
+    }
+    .page_box {
+        padding: 33px 0;
+        margin: 0;
+    }
+    .folder_object_table {
+        padding-bottom: 0px;
+    }
+    .page_div span{
+        cursor: pointer;
+    }
+    .up_order{
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: url(./img/up_order.svg) no-repeat center center;
+        margin-top: 2px;
+        vertical-align: text-top;
+        background-size: 100%;
+    }
+    .down_order{
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: url(./img/down_order.svg) no-repeat 0px -10px;
+        background-size: 100%;
+        margin-top: 18px;
+        margin-top: 2px;
+        vertical-align: text-top;
+    }
+    .order_icon_box{
+        cursor: pointer;
+    }
+    .folder_object_title{
+        padding: 60px 0 0px 0;
+    }
+    .folder_object_subtitle{
+        padding: 0px 0 20px 0;
+    }
+</style>
+<body style="background: #F2F3F5;">
+    <textarea id="copy_textarea" style="display:none;"></textarea>
+    <div class="folder_object_container">
+        <h3 class="folder_object_title"></h3>
+        <p class="folder_object_subtitle"></p>
+        <div class="folder_object_box">
+            <table class="folder_object_table">
+                <thead>
+                    <th width="260">Name</th>
+                    <th width="430">CYFS ID</th>
+                    <!-- <th width="145">upload time</th> -->
+                    <th><span class="order_icon_box">upload time<i class="up_order order_icon"></i></span></th>
+                    <th>Size</th>
+                    <!-- <th>Actions</th> -->
+                </thead>
+                <tbody id="folder_object_tbody">
+                </tbody>
+                </table>
+            </table>
+            <div class="page_box_container">
+                <div class="page_box">
+                    <div class="page_box_right">
+                        <button class="last_page_btn" ></button>
+                        <div class="page_div">
+                            <div id="page_div">
+                                <span class="choose_index">1</span>
+                            </div>
+                        </div>
+                        <button class="next_page_btn" ></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="no_object_container">
+        <div class="no_object_img">
+            <img src="./img/no_object_img.svg" alt="">
+        </div>
+        <p class="no_object_notice">Oops！Noting founded.<br/>It may caused by wrong URL or connection failed.</p>
+    </div>
+    <div class="anonymous_box">
+        <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
+        <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+    </div>
+</body>
+</html>

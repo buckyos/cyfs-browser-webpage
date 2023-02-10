@@ -171,7 +171,7 @@ class AppStoreListClass {
         if (!r.err) {
           let storeList = r.app_list().array();
           appList.forEach(app => {
-            var result = $.grep(storeList, function(e:cyfs.DecAppId){ return e.to_string() == app.id; });
+            var result = $.grep(storeList, function(e:cyfs.DecAppId){return e.object_id.to_string() == app.id; });
             if(result.length != 0){
               g_appStorgeList.push(app);
             }

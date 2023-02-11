@@ -122,9 +122,11 @@ export function getSubStr(str:string|undefined) {
 class FileInfo {
     m_sharedStatck: cyfs.SharedCyfsStack;
     m_util_service: cyfs.UtilRequestor;
+    m_ndn_service: cyfs.NDNRequestor;
     constructor() {
         this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_util_service = this.m_sharedStatck.util();
+        this.m_ndn_service = this.m_sharedStatck.ndn_service();
     }
 
     async getList(id: string, fileName:string ,obj_type_code: number, root_state: cyfs.GlobalStateAccessorStub){
@@ -259,11 +261,60 @@ class FileInfo {
                             <td ><span style="float:left" title="${element.id}">${getSubStr(element.id)}</span><i class="info_main_copy_svg copy_id_icon" data-id="${element.id}">&nbsp;</i></td>
                             <td>${element.time}</td>
                             <td>${element.size}</td>
+                            <td><button class="download_btn" data-id="${element.id}" data-path="${element.dataPath}" data-name="${element.fileName}">下载</button></td>
                         </tr>`;
         });
         $('.folder_object_container').css('display', 'block');
         $('#folder_object_tbody').html(trHtml);
     }
+
+    async getDeviceId (id: cyfs.ObjectId) {
+        let req: cyfs.UtilResolveOODRequest = {
+            object_id:id,
+            owner_id: g_owner,
+            common:{
+                flags: 1,
+            }
+        }
+        let resolveOodR = await this.m_util_service.resolve_ood(req);
+        if(!resolveOodR.err){
+            let deviceList: cyfs.ObjectId[] = resolveOodR.unwrap().device_list;
+            if(deviceList){
+                let deviceId: cyfs.ObjectId = resolveOodR.unwrap().device_list[0].object_id;
+                return deviceId;
+            }
+        }
+        return undefined;
+    }
+
+    async getUrlDownload(id: string, path:string, name:string){
+        let object_id:cyfs.ObjectId|undefined = await ObjectUtil.objectIdFormat(id);
+        if(object_id){
+            let deviceId: cyfs.ObjectId | undefined = await this.getDeviceId(object_id);
+            let req:cyfs.NDNGetDataOutputRequest={
+                object_id: object_id,
+                inner_path:path,
+                common: {
+                    flags: 1,
+                    target: deviceId,
+                    level: cyfs.NDNAPILevel.NDN, 
+                    dec_id: g_decid
+                }
+            }
+            let getDataR = await this.m_ndn_service.get_data(req);
+            if(!getDataR.err){
+                let getData = getDataR.unwrap().data;
+                var a = window.document.createElement("a");
+                var blob = new Blob([getData]);
+                a.href = window.URL.createObjectURL(blob);
+                a.download =name;
+                document.body.appendChild(a);
+                a.click();  
+                document.body.removeChild(a);
+            }
+        }
+    }
+    
 }
 const file_info = new FileInfo();
 file_info.getFilePath();
@@ -334,6 +385,15 @@ function routeToNext(hrefStr: string, path: string, name: string, type: string) 
         window.location.href = `cyfs://static/view_objectmap.html?owner=${g_owner}&decid=${g_decid}&path=${path}`;
     }
 }
+
+$('#folder_object_tbody').on('click', ".download_btn", function () {
+    const path = $(this).attr("data-path") || '';
+    const id = $(this).attr("data-id") || '';
+    const name = $(this).attr("data-name") || '';
+    if(path && id && name){
+        file_info.getUrlDownload(id, path, name);
+    }
+})
 
 function copyData (data:string) {
     $('#copy_textarea').text(data).show();

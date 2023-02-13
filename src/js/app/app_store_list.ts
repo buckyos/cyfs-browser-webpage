@@ -48,10 +48,8 @@ class AppStoreListClass {
       let current_device = result.device
       g_owner = current_device.desc().owner();
     }
-
     //app store list
     async getAllAppList() {
-      let appStorageList: storageAppUtilType[] = [];
       let r = await AppUtil.getAllAppListFun();
       console.origin.log('-------------r', r)
       if (r.err) {
@@ -60,47 +58,39 @@ class AppStoreListClass {
           let storeList = r.app_list().array();
           console.origin.log('storeList', storeList)
           if (storeList && storeList.length) {
-              console.log('--------------------------rstore_list', storeList)
-              let storeHtml:string = "";
-              let allAppHtml:string[] = [];
-              let timeArr:number[] = [];
-              for (let i = 0; i < storeList.length; i++) {
-                  if (storeList[i]) {
-                      console.log('--------------------element', i, storeList[i], storeList[i].object_id)
-                      let app = await AppUtil.showApp(storeList[i].object_id, false);
-                      console.origin.log('------------------------------app', app)
-                      let sortIndex = 0;
-                      let isfirstSort = true;
-                      timeArr.forEach((time, index)=>{
-                        if(isfirstSort && time < app.app.body().update_time()){
-                          isfirstSort = false;
-                          sortIndex = index - 1;
-                        }
-                        if((index == timeArr.length - 1) && isfirstSort){
-                          isfirstSort = false;
-                          sortIndex = index + 1;
-                        }
-                      })
-                      if(sortIndex < 0){
-                        sortIndex = 0;
-                      }
-                      timeArr.splice(sortIndex, 0, app.app.body().update_time());
-                      g_appList.splice(sortIndex, 0, app);
-                      let appBody = app.app.body();
-                      let app_introduce = LANGUAGESTYPE == 'zh'? '暂未介绍' : 'No introduction yet';
-                      if (appBody.content().desc) {
-                          app_introduce = appBody.content().desc;
-                      }
-                      let tagsHtml = '';
-                      let appExtId = await cyfs.AppExtInfo.getExtId(app.app);
-                      console.log('appExtId:', appExtId);
-                      let appExt = await ObjectUtil.getObject({id:appExtId, decoder:new cyfs.AppExtInfoDecoder, flags: 1});
-                      console.log('appExt:', appExt);
-                      let tags:string[] = [];
-                      if (!appExt.err) {
-                        if (appExt[0]) {
-                          let info = JSON.parse(appExt[0].info());
-                          console.origin.log('appExt-info', app.app_name, info);
+            let getAppListPromise:Promise<{ fid: cyfs.ObjectId, version: string, summary: string } |cyfs.Result>[] = [];
+            for (let i = 0; i < storeList.length; i++) {
+              getAppListPromise.push(AppUtil.showApp(storeList[i].object_id, false));
+            }
+            let appList:{ app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, extId: cyfs.ObjectId }[] = [];
+            if(getAppListPromise){
+              Promise.allSettled(getAppListPromise).then((list) => {
+                list.forEach((item, index) => {
+                    if(item.status == 'fulfilled' && item.value && !item.value.err){
+                      let app:{ app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string, summary: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp, extId: cyfs.ObjectId } = item.value;
+                      app.extId = cyfs.AppExtInfo.getExtId(app.app);
+                      appList.push(app);
+                    }
+                });
+                appList.sort(function(a,b){
+                  if(a!.app.body()!.update_time() > b!.app.body()!.update_time()) return -1;
+                  if(a!.app.body()!.update_time() < b!.app.body()!.update_time()) return 1;
+                  return 0;
+                });
+
+                console.origin.log('------------app-appList', appList);
+              }).then(async() => {
+                let getAppExtListPromise:Promise<cyfs.Result<cyfs.AppExtInfo>>[] = [];
+                  for (let i = 0; i < appList.length; i++) {
+                    getAppExtListPromise.push( ObjectUtil.getObject({id:appList[i].extId, decoder:new cyfs.AppExtInfoDecoder, flags: 1}));
+                  }
+                  let appExtList:{id:string, tagsHtml:string, tag: string[] }[] = [];
+                  Promise.allSettled(getAppExtListPromise).then((extlist) => {
+                    extlist.forEach((extItem, extIndex) => {
+                        if(extItem.status == 'fulfilled' && extItem.value && !extItem.value.err){
+                          let info = JSON.parse(extItem.value[0].info());
+                          let tags:string[] = [];
+                          let tagsHtml:string = '';
                           if (info && info['cyfs-app-store']){
                             if(info['cyfs-app-store'].tag){
                                 tags = info['cyfs-app-store'].tag;
@@ -109,6 +99,28 @@ class AppStoreListClass {
                                 });
                             }
                           }
+                          appExtList.push({id:extItem.value[0].desc().calculate_id().to_base_58() ,tagsHtml: tagsHtml, tag: tags})
+                        }
+                    });
+                  }).then(() => {
+                    let appStorageList: storageAppUtilType[] = [];
+                    let storeHtml:string = '';
+                    for (let i = 0; i < appList.length; i++) {
+                      let app = appList[i]
+                      let appBody = app.app.body();
+                      let app_introduce:string = 'No introduction yet';
+                      if (appBody!.content().desc) {
+                        app_introduce = appBody!.content().desc!;
+                      }
+                      let tags:string[] = [];
+                      let tagsHtml:string = '';
+                      if(app.extId){
+                        console.origin.log('app.extId', app.extId)
+                        var result = $.grep(appExtList, function(e:{id:string, tagsHtml:string, tag: string[] }){return e.id == app.extId.to_base_58(); });
+                        console.origin.log('result', result)
+                        if(result.length != 0){
+                          tags = result[0].tag;
+                          tagsHtml = result[0].tagsHtml;
                         }
                       }
                       let storageApp:storageAppUtilType = {
@@ -117,9 +129,9 @@ class AppStoreListClass {
                         name: app.app_name,
                         tags: tags,
                         introduce: app_introduce
-                      }
-                      appStorageList.splice(sortIndex, 0, storageApp);
-                      storeHtml =  `<li>
+                      };
+                      appStorageList.push(storageApp);
+                      storeHtml +=  `<li>
                                       <div class="app_list_info">
                                         <div class="app_list_info_l" data-id="${app.app_id}">
                                           <img src="${app.app_icon || '../img/app/app_default_icon.svg'}" onerror="this.src='../img/app/app_default_icon.svg';this.οnerrοr=null" alt="">
@@ -134,27 +146,16 @@ class AppStoreListClass {
                                         <div class="app_list_extra_info_r"></div>
                                       </div>
                                     </li>`;
-                      allAppHtml.splice(sortIndex, 0, storeHtml);
-                      if(!g_hasStorageList){
-                        if(sortIndex == 0){
-                          $('.app_list_box').prepend(storeHtml);
-                        }else{
-                          $('.app_list_box li').eq(sortIndex-1).after(storeHtml);
-                        }
-                      }
-                  }
-              }
-              g_appStorgeList = appStorageList;
-              console.log('------------------------------g_hasStorageList', g_hasStorageList)
-              if(g_hasStorageList){
-                let listHtml:string = '';
-                allAppHtml.forEach(html => {
-                  listHtml += html;
-                });
-                $('.app_list_box').html(listHtml);
-              }
-              localStorage.setItem('browser-app-store-list', JSON.stringify(appStorageList));
-              AppStoreList.getInstalledAppList();
+                    }
+                    g_appStorgeList = appStorageList;
+                    if(g_appStorgeList){
+                      $('.app_list_box').html(storeHtml);
+                    }
+                    localStorage.setItem('browser-app-store-list', JSON.stringify(appStorageList));
+                    AppStoreList.getInstalledAppList();
+                  });
+              });
+            }
           }
       }
       console.origin.log('------------------------------g_appList', g_appList)

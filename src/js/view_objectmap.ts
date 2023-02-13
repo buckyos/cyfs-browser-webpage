@@ -288,32 +288,38 @@ class FileInfo {
     }
 
     async getUrlDownload(id: string, path:string, name:string){
-        let object_id:cyfs.ObjectId|undefined = await ObjectUtil.objectIdFormat(id);
-        if(object_id){
-            let deviceId: cyfs.ObjectId | undefined = await this.getDeviceId(object_id);
-            let req:cyfs.NDNGetDataOutputRequest={
-                object_id: object_id,
-                inner_path:path,
-                common: {
-                    flags: 1,
-                    target: deviceId,
-                    level: cyfs.NDNAPILevel.NDN, 
-                    dec_id: g_decid
+        try{
+            let object_id:cyfs.ObjectId|undefined = await ObjectUtil.objectIdFormat(id);
+            if(object_id){
+                let deviceId: cyfs.ObjectId | undefined = await this.getDeviceId(object_id);
+                let req:cyfs.NDNGetDataOutputRequest={
+                    object_id: object_id,
+                    inner_path:path,
+                    common: {
+                        flags: 1,
+                        target: deviceId,
+                        level: cyfs.NDNAPILevel.NDN, 
+                        dec_id: g_decid
+                    }
+                }
+                let getDataR = await this.m_ndn_service.get_data(req);
+                console.origin.log('----------getDataR', getDataR);
+                if(!getDataR.err){
+                    let getData = getDataR.unwrap().data;
+                    var a = window.document.createElement("a");
+                    var blob = new Blob([getData]);
+                    a.href = window.URL.createObjectURL(blob);
+                    a.download =name;
+                    document.body.appendChild(a);
+                    a.click();  
+                    document.body.removeChild(a);
+                    $('.loading_cover_div').css('display', 'none');
                 }
             }
-            let getDataR = await this.m_ndn_service.get_data(req);
-            console.origin.log('----------getDataR', getDataR);
-            if(!getDataR.err){
-                let getData = getDataR.unwrap().data;
-                var a = window.document.createElement("a");
-                var blob = new Blob([getData]);
-                a.href = window.URL.createObjectURL(blob);
-                a.download =name;
-                document.body.appendChild(a);
-                a.click();  
-                document.body.removeChild(a);
-            }
+        }catch{
+            $('.loading_cover_div').css('display', 'none');
         }
+        
     }
     
 }
@@ -389,6 +395,7 @@ function routeToNext(hrefStr: string, path: string, name: string, type: string) 
 }
 
 $('#folder_object_tbody').on('click', ".download_btn", function () {
+    $('.loading_cover_div').css('display', 'block');
     const path = $(this).attr("data-path") || '';
     const id = $(this).attr("data-id") || '';
     const name = $(this).attr("data-name") || '';

@@ -76,6 +76,21 @@
         background: #167EE6;
         height: 24px;
     }
+    .loading_div{
+        width: 300px;
+        height: 200px;
+        margin-top: 300px;
+        margin-left: -150px;
+        left: 50%;
+    }
+    .loading_icon{
+        width: 80px;
+        height: 80px;
+        background: url(./img/browser_cover_loading.gif) no-repeat center center;
+        background-size: 100%;
+        margin: 0 auto;
+        margin-top: 58px;
+    }
 </style>
 <body style="background: #F2F3F5;">
     <textarea id="copy_textarea" style="display:none;"></textarea>
@@ -120,6 +135,11 @@
     <div class="anonymous_box">
         <p class="anonymous_title" set-lan="html:AnonymousMode"></p>
         <p class="anonymous_subtitle"  set-lan="html:ReviewTheTutorial"></p>
+    </div>
+    <div class="cover_box loading_cover_div">
+        <div class="loading_div cover_container_box">
+            <div class="loading_icon"></div>
+        </div>
     </div>
 </body>
 </html>

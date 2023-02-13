@@ -261,7 +261,7 @@ class FileInfo {
                             <td ><span style="float:left" title="${element.id}">${getSubStr(element.id)}</span><i class="info_main_copy_svg copy_id_icon" data-id="${element.id}">&nbsp;</i></td>
                             <td>${element.time}</td>
                             <td>${element.size}</td>
-                            <td><button class="download_btn" data-id="${element.id}" data-path="${element.dataPath}" data-name="${element.fileName}">下载</button></td>
+                            <td>${element.type=='file'?`<button class="download_btn" data-id="${element.id}" data-path="${element.dataPath}" data-name="${element.fileName}">下载</button>`:''}</td>
                         </tr>`;
         });
         $('.folder_object_container').css('display', 'block');
@@ -302,6 +302,7 @@ class FileInfo {
                 }
             }
             let getDataR = await this.m_ndn_service.get_data(req);
+            console.origin.log('----------getDataR', getDataR);
             if(!getDataR.err){
                 let getData = getDataR.unwrap().data;
                 var a = window.document.createElement("a");
@@ -380,6 +381,7 @@ $('#folder_object_tbody').on('click', ".href_entrance", function () {
 
 function routeToNext(hrefStr: string, path: string, name: string, type: string) {
     if(type == 'file'){
+        console.log('111111111111111111111')
         window.open(`cyfs://r/${g_owner}/${g_decid}/${g_path + '/' + name}`);
     }else{
         window.location.href = `cyfs://static/view_objectmap.html?owner=${g_owner}&decid=${g_decid}&path=${path}`;

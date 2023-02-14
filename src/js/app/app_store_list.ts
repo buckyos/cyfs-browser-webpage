@@ -77,7 +77,7 @@ class AppStoreListClass {
                   if(a!.app.body()!.update_time() < b!.app.body()!.update_time()) return 1;
                   return 0;
                 });
-
+                g_appList = appList;
                 console.origin.log('------------app-appList', appList);
               }).then(async() => {
                 let getAppExtListPromise:Promise<cyfs.Result<cyfs.AppExtInfo>>[] = [];
@@ -220,18 +220,18 @@ class AppStoreListClass {
         if(isStorageList){
           for (let index = 0; index < (list as storageAppUtilType[]).length; index++) {
             const element = list[index];
-            getListPromise.push(await AppUtil.handleAppDetail(element.id));
+            getListPromise.push( AppUtil.handleAppDetail(element.id));
           }
         }else{
           for (const appid of (list as cyfs.AppLocalList).app_list().array()) {
             console.log('appid.object_id:', appid.object_id);
-            getListPromise.push(await AppUtil.handleAppDetail(appid.object_id));
+            getListPromise.push( AppUtil.handleAppDetail(appid.object_id));
           }
         }
       }else{
         for (const appid of g_appList) {
           console.log('appid.app_id:', appid.app_id);
-          getListPromise.push(await AppUtil.handleAppDetail(appid.app_id));
+          getListPromise.push( AppUtil.handleAppDetail(appid.app_id));
         }
       }
       if(getListPromise){

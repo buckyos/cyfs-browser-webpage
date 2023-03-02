@@ -260,6 +260,7 @@ class AppStoreListClass {
       }
       
     }
+    
 
     async renderInstalledAppList () {
       console.log('------------app-g_isGettingList', g_isGettingList);

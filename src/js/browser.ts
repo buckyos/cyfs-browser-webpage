@@ -695,24 +695,24 @@ $('.choose_did_container').on('click', '.reset_did_btn', async function () {
     window.location.href = 'cyfs://static/reset_did.html';
 })
 
-$('.choose_did_container').on('mouseover', '.choose_btn', async function () {
-    let operation: string = $(this).attr('data-operation') || '';
-    $('.choose_did_container .choose_btn').attr('style', 'background:#FFFFFF; color:#0AD7B6');
-    $(this).attr('style', 'background:#0AD7B6; color:#FFFFFF');
-    if(operation == 'create'){
-        $('.choose_btn_img').attr('src', './img/did/create_did_img_box.svg');
-    }else if(operation == 'activate'){
-        $('.choose_btn_img').attr('src', './img/did/reset_did_img_box.svg');
-    }else{
-        $('.choose_btn_img').attr('src', './img/did/activate_img_box.svg');
-    }
-})
+// $('.choose_did_container').on('mouseover', '.choose_btn', async function () {
+//     let operation: string = $(this).attr('data-operation') || '';
+//     $('.choose_did_container .choose_btn').attr('style', 'background:#FFFFFF; color:#0AD7B6');
+//     $(this).attr('style', 'background:#0AD7B6; color:#FFFFFF');
+//     if(operation == 'create'){
+//         $('.choose_btn_img').attr('src', './img/did/create_did_img_box.svg');
+//     }else if(operation == 'activate'){
+//         $('.choose_btn_img').attr('src', './img/did/reset_did_img_box.svg');
+//     }else{
+//         $('.choose_btn_img').attr('src', './img/did/activate_img_box.svg');
+//     }
+// })
 
-$('.choose_did_container').on('mouseleave', async function () {
-    $('.choose_did_container .choose_btn').attr('style', 'background:#FFFFFF; color:#0AD7B6');
-    $('.create_did_choose_btn').attr('style', 'background:#0AD7B6; color:#FFFFFF');
-    $('.choose_btn_img').attr('src', './img/did/create_did_img_box.svg');
-})
+// $('.choose_did_container').on('mouseleave', async function () {
+//     $('.choose_did_container .choose_btn').attr('style', 'background:#FFFFFF; color:#0AD7B6');
+//     $('.create_did_choose_btn').attr('style', 'background:#0AD7B6; color:#FFFFFF');
+//     $('.choose_btn_img').attr('src', './img/did/create_did_img_box.svg');
+// })
 
 $('.choose_did_container').on('click', '.reset_back_icon', async function () {
     if(isBindInterval){

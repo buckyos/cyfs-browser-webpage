@@ -254,7 +254,6 @@ class Util {
     }
 
     async renderHeaderInfo() {
-        console.log('1111111111111111111')
         let headerInfo = await ObjectUtil.getHeaderInfo();
         $('#ood_status_icon').css('background', `url(${headerInfo.oodStatusIcon}) no-repeat center center`);
         $('#people_name2').html(headerInfo.peopleName || 'name not set');
@@ -294,7 +293,7 @@ const util = new Util();
 $(function(){
     isUnbind();
     setInterval(() => {
-        util.renderHeaderInfo();
+        isUnbind();
     }, 30000);
 });
 

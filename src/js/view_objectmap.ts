@@ -188,7 +188,7 @@ class FileInfo {
         let list = lr.unwrap();
         let crumbs:string = '';
         if(g_path){
-            let pathList = g_path.split('/');
+            let pathList = decodeURIComponent(g_path).split('/');
             if (pathList.indexOf('') > -1) {
                 pathList.splice(pathList.indexOf(''), 1);
             }
@@ -202,9 +202,9 @@ class FileInfo {
                     name = pathItem;
                     crumbPath += '/' + pathItem;
                 }
-                crumbs += `<span class="dir_crumbs" data-path="${crumbPath}"> ${decodeURI(name)} </span>/`;
+                crumbs += `<span class="dir_crumbs" data-path="${crumbPath}"> ${decodeURIComponent(name)} </span>/`;
             });
-            $('title').html('CYFS-'+decodeURI(crumbPath));
+            $('title').html('CYFS-'+decodeURIComponent(crumbPath));
         }
         let trHtml:string = '';
         let dataList:g_tableDataType[] = [];
@@ -216,9 +216,9 @@ class FileInfo {
             let id = uploadR.to_base_58();
             let fileName:string = '';
             if(g_path){
-                fileName = decodeURI(uploadNameR);
+                fileName = decodeURIComponent(uploadNameR);
             }else{
-                fileName = decodeURI(uploadNameR.substring(uploadNameR.indexOf('_')+1, uploadNameR.length));
+                fileName = decodeURIComponent(uploadNameR.substring(uploadNameR.indexOf('_')+1, uploadNameR.length));
             }
             getListPromise.push(this.getList(id, fileName, uploadR.obj_type_code(),root_state))
         }

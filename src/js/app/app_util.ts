@@ -39,7 +39,6 @@ class AppOthersClass {
     }
 
 }
-
 export const AppOthers = new AppOthersClass;
 
 class AppUtilClass {

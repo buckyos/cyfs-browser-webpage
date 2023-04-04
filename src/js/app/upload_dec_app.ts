@@ -40,7 +40,7 @@ $(async function(){
     }
     let g_isBind = await isBind();
     if(!g_isBind){
-        window.location.href = 'cyfs://static/browser.html';
+        window.location.href = 'https://browser.cyfs.com/init.html';
     }
 });
 

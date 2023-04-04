@@ -13,7 +13,7 @@ $.ajax({
 });
 
 $('.anonymous_subtitle').on('click', async function () {
-    window.open('cyfs://static/guide.html');
+    window.open('https://browser.cyfs.com/init.html?guide');
 })
 
 let g_path: string | undefined = '';

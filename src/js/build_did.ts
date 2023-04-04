@@ -102,7 +102,7 @@ class BuildDid {
             success:function(result){
                 console.log('getStatus-result', result);
                 if(result.is_bind){
-                    window.location.href = 'cyfs://static/browser.html';
+                    window.location.href = 'https://browser.cyfs.com/init.html';
                 }
             }
         });
@@ -818,7 +818,7 @@ $('.did_success_next_btn').on('click', async function () {
                         time: 3000,
                         type: 'warn'
                     });
-                    window.location.href = 'cyfs://static/browser.html';
+                    window.location.href = 'https://browser.cyfs.com/init.html';
                 }else{
                     toast({
                         message: 'Activate runtime failed,' + ret.msg,

@@ -127,7 +127,7 @@ $('.reward_record_div_box').on('click','.with_drawal', () => {
 })
 
 $('.anonymous_subtitle').on('click', async function () {
-    window.open('cyfs://static/guide.html');
+    window.open('https://browser.cyfs.com/init.html?guide');
 })
 
 $.ajax({

@@ -14,7 +14,7 @@ $(async function(){
     }
     g_isBind = await isBind();
     if(!g_isBind){
-      window.location.href = 'cyfs://static/browser.html';
+      window.location.href = 'https://browser.cyfs.com/init.html';
     }
 });
 type g_appType = { app_id: cyfs.ObjectId | string, app_name: string, app_icon: string, fidArray: { fid: cyfs.ObjectId, version: string }[], owner: cyfs.ObjectId | undefined, app: cyfs.DecApp };

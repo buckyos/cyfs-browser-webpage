@@ -23,7 +23,7 @@ if (window.location.search == '?success') {
     let isToIndex = localStorage.getItem('is-restart-browser-to-index');
     if(isToIndex){
         localStorage.removeItem('is-restart-browser-to-index');
-        window.location.href = 'cyfs://static/browser.html';
+        window.location.href = 'https://browser.cyfs.com/init.html';
     }else{
         $('.browser_guide_success_cover').css('display', 'block');
     }
@@ -670,7 +670,7 @@ $('.search_history_list_box').on('click', '.search_history_a', async function ()
 })
 
 $('.guide_acivate_success_cancel_btn').on('click', function () {
-    window.location.href = 'cyfs://static/browser.html';
+    window.location.href = 'https://browser.cyfs.com/init.html';
 })
 
 $('.guide_acivate_success_confirm_btn').on('click', function () {

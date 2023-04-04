@@ -269,7 +269,7 @@ class ResetDid {
             success:function(result){
                 console.log('getStatus-result', result);
                 if(result.is_bind){
-                    window.location.href = 'cyfs://static/browser.html';
+                    window.location.href = 'https://browser.cyfs.com/init.html';
                 }
             }
         });
@@ -437,7 +437,7 @@ async function bindRuntime () {
                     time: 3000,
                     type: 'warn'
                 });
-                window.location.href = 'cyfs://static/browser.html';
+                window.location.href = 'https://browser.cyfs.com/init.html';
             }else{
                 toast({
                     message: 'activate runtime failed,' + ret.msg,

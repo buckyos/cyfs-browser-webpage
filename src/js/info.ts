@@ -37,7 +37,7 @@ function isUnbind() {
 isUnbind();
 
 $('.anonymous_subtitle').on('click', async function () {
-    window.open('cyfs://static/guide.html');
+    window.open('https://browser.cyfs.com/init.html?guide');
 })
 
 function getfilesize(size: number, isByte?: boolean) {
@@ -631,7 +631,7 @@ $('.info_main_introduce_svg').on('mouseleave', function () {
 })
 
 $('.header_box_icon').on('click', function () {
-    window.location.href = 'cyfs://static/browser.html';
+    window.location.href = 'https://browser.cyfs.com/init.html';
 })
 
 $('.info_ood_list_box, .info_device_list_box').on('mouseenter', ".info_intro_pn_svg, .info_intro_sn_svg", function () {

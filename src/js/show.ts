@@ -21,7 +21,8 @@ $.ajax({
 });
 
 $('.anonymous_subtitle').on('click', async function () {
-    window.open('https://browser.cyfs.com/init.html?guide');
+    localStorage.removeItem('is-init-show-guide');
+    window.open('https://browser.cyfs.com/init.html');
 })
 
 var file_id: cyfs.ObjectId;

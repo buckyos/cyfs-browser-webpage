@@ -6,6 +6,7 @@
     <title></title>
     <script src="./cyfs_sdk/cyfs.js"></script>
     <script src="./js/lib/jquery.js"></script>
+    <!-- <script src="./foggie/foggie-drive.js"></script> -->
 </head>
 <style>
     .dir_id_ellipsis{
@@ -91,6 +92,39 @@
         margin: 0 auto;
         margin-top: 58px;
     }
+    .password_box{
+        width: 400px;
+        height: 220px;
+        background: #fff;
+        margin: 0 auto;
+        margin-top: 200px;
+        border-radius: 8px;
+        display: none;
+    }
+    .password_box_title{
+        padding: 35px 0;
+        text-align: center;
+    }
+    .password_ipt{
+        display: block;
+        width: 280px;
+        margin: 0 auto;
+        height: 35px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 0 15px;
+    }
+    .password_btn{
+        display: block;
+        width: 100px;
+        margin: 0 auto;
+        height: 28px;
+        margin-top:25px;
+        background: #0AD7B6;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 4px;
+    }
 </style>
 <body style="background: #F2F3F5;">
     <textarea id="copy_textarea" style="display:none;"></textarea>
@@ -126,11 +160,22 @@
             </div>
         </div>
     </div>
-    <div class="no_object_container">
+    <div class="password_box">
+        <h3 class="password_box_title">Please input a password</h3>
+        <input class="password_ipt"  type="password" />
+        <button class="password_btn">YES</button>
+    </div>
+    <div class="no_object_container no_object_box">
         <div class="no_object_img">
             <img src="./img/no_object_img.svg" alt="">
         </div>
         <p class="no_object_notice">Oops！Noting founded.<br/>It may caused by wrong URL or connection failed.</p>
+    </div>
+    <div class="no_object_container err_object_container">
+        <div class="no_object_img">
+            <img src="./img/no_object_img.svg" alt="">
+        </div>
+        <p class="no_object_notice">Oops！Open failed.</p>
     </div>
     <div class="anonymous_box">
         <p class="anonymous_title" set-lan="html:AnonymousMode"></p>

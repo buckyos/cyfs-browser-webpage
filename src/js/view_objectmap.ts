@@ -1,6 +1,7 @@
 import * as cyfs from '../cyfs_sdk/cyfs'
 import { toast } from './lib/toast.min'
 import { ObjectUtil, formatDate } from './lib/util'
+import { FoggieDrive } from './lib/foggie'
 
 $.ajax({
     url: 'http://127.0.0.1:38090/status',
@@ -34,59 +35,81 @@ let totalPage: number = 0;
 let currentPage: number = 0;
 let totalData:g_tableDataType[] = [];
 
-if (window.location.search.split("?")[1]) {
-    let str = window.location.search.split("?")[1];
-    if (str.indexOf('&') > -1) {
-        let arr = str.split('&');
-        if (arr) {
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'path') {
-                    g_path = arr[i].split('=')[1];
-                }
-            }
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'owner') {
-                    let owner:string | undefined = arr[i].split('=')[1];
-                    let idRet = cyfs.ObjectId.from_base_58(owner);
-                    if (idRet.err) {
-                        toast({
-                        message: 'id error',
-                        time: 1500, 
-                        type: 'warn'
-                        });
-                    } else {
-                        g_owner = idRet.unwrap();
+function initLink(){
+    if (window.location.search.split("?")[1]) {
+        let str = window.location.search.split("?")[1];
+        if (str.indexOf('&') > -1) {
+            let arr = str.split('&');
+            if (arr) {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'path') {
+                        g_path = decodeURIComponent(arr[i].split('=')[1]);
                     }
                 }
-            }
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'decid') {
-                    let decid:string | undefined = arr[i].split('=')[1];
-                    let idRet = cyfs.ObjectId.from_base_58(decid);
-                    if (idRet.err) {
-                        toast({
-                        message: 'dec id error',
-                        time: 1500, 
-                        type: 'warn'
-                        });
-                    } else {
-                        g_decid = idRet.unwrap();
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'owner') {
+                        let owner:string | undefined = arr[i].split('=')[1];
+                        let idRet = cyfs.ObjectId.from_base_58(owner);
+                        if (idRet.err) {
+                            toast({
+                                message: 'id error',
+                                time: 1500, 
+                                type: 'warn'
+                            });
+                        } else {
+                            g_owner = idRet.unwrap();
+                        }
                     }
                 }
-            }
-        }
-    } else {
-        if (str.indexOf('=') > -1) {
-            let strArr = str.split('=');
-            if (strArr) {
-                g_path = strArr[strArr.length - 1];
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'decid') {
+                        let decid:string | undefined = arr[i].split('=')[1];
+                        if(decid == '9tGpLNnCueXrjHFYyMQ9s3dkhKzDFbHbpeu4J7Zi2QAW'){
+                            let cookieName:string = 'view_objectmap' + '-'+ g_owner + '-'+ g_path;
+                            let getCookieR = getCookie(cookieName);
+                            console.origin.log('getCookieR', getCookieR);
+                            if(getCookieR){
+                                let getCookieTime = Number(getCookieR);
+                                let currentTime = (new Date()).getTime();
+                                if(currentTime > getCookieTime){
+                                    delCookie(cookieName);
+                                    file_info.isNeedPassword();
+                                }else{
+                                    setCookie(cookieName);
+                                    file_info.getFilePath();
+                                }
+                            }else{
+                                file_info.isNeedPassword();
+                            }
+                        }else{
+                            file_info.getFilePath();
+                        }
+                        let idRet = cyfs.ObjectId.from_base_58(decid);
+                        if (idRet.err) {
+                            toast({
+                            message: 'dec id error',
+                            time: 1500, 
+                            type: 'warn'
+                            });
+                        } else {
+                            g_decid = idRet.unwrap();
+                        }
+                    }
+                }
             }
         } else {
-            g_path = str;
+            if (str.indexOf('=') > -1) {
+                let strArr = str.split('=');
+                if (strArr) {
+                    g_path = strArr[strArr.length - 1];
+                }
+            } else {
+                g_path = str;
+            }
         }
     }
+    console.log('g_path, g_owner, g_decid', g_path, g_owner, g_decid)
 }
-console.log('g_path, g_owner, g_decid', g_path, g_owner, g_decid)
 
 function getfilesize(size: number, isByte?: boolean) {
     if (!size)
@@ -118,16 +141,87 @@ export function getSubStr(str:string|undefined) {
     } else {
         return '';
     }
-  }
+}
+
+function setCookie(name:string){
+    var exp = new Date();
+    exp.setTime(exp.getTime() + 60*60*1000);
+    document.cookie = name + "="+ escape (exp.getTime().toString()) + ";expires=" + exp.toGMTString();
+}
+
+function getCookie(objName:string){
+    var arrStr = document.cookie.split("; ");
+    for(var i = 0;i < arrStr.length;i ++){
+        var temp = arrStr[i].split("=");
+        if(temp[0] == objName)
+        return unescape(temp[1]);
+    } 
+}
+
+function delCookie(name:string){
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null) {
+        document.cookie = name + "="+cval+";expires="+exp.toGMTString();
+    }
+}
 
 class FileInfo {
     m_sharedStatck: cyfs.SharedCyfsStack;
     m_util_service: cyfs.UtilRequestor;
     m_ndn_service: cyfs.NDNRequestor;
+    m_foggie_drive: FoggieDrive;
     constructor() {
         this.m_sharedStatck = cyfs.SharedCyfsStack.open_runtime(cyfs.get_system_dec_app().object_id);
         this.m_util_service = this.m_sharedStatck.util();
         this.m_ndn_service = this.m_sharedStatck.ndn_service();
+        this.m_foggie_drive = new FoggieDrive(this.m_sharedStatck);
+    }
+
+    async isNeedPassword(){
+        let checkshareAuthR = await this.m_foggie_drive.check_share_auth(g_owner!,g_path!);
+        console.origin.log('checkshareAuthR', checkshareAuthR)
+        if(checkshareAuthR.err){
+            $('.err_object_container').css('display', 'block');
+        }else{
+            let checkshareAuthStr = checkshareAuthR.unwrap();
+            if(checkshareAuthStr == 'secret'){
+                $('.folder_object_container').css('display', 'none');
+                $('.password_box').css('display', 'block');
+            }else{
+                file_info.getFilePath();
+            }
+        }
+    }
+
+    async checkPassword(){
+        let password = String($('.password_ipt').val() || '').trim();
+        if(password){
+            let checkPasswordR = await this.m_foggie_drive.verify_share_password(g_owner!,g_path!, password);
+            console.origin.log('checkPasswordR', checkPasswordR)
+            if(!checkPasswordR.err){
+                let checkPasswordStr:string = checkPasswordR.unwrap();
+                if(checkPasswordStr == 'correct'){
+                    $('.password_box').css('display', 'none');
+                    $('.folder_object_container').css('display', 'block');
+                    file_info.getFilePath();
+                    setCookie('view_objectmap-'+ g_owner + '-' + g_path)
+                }else{
+                    toast({
+                        message: 'Password error, please enter the correct password',
+                        time: 1500, 
+                        type: 'warn'
+                    });
+                }
+            }else{
+                toast({
+                    message: 'Verification failed',
+                    time: 1500, 
+                    type: 'warn'
+                });
+            }
+        }
     }
 
     async getList(id: string, fileName:string ,obj_type_code: number, root_state: cyfs.GlobalStateAccessorStub){
@@ -174,7 +268,7 @@ class FileInfo {
                 $('.folder_object_subtitle').html(pathIdR.unwrap().object.object_id.to_base_58());
                 if(pathIdR.unwrap().object.object.obj_type_code() == cyfs.ObjectTypeCode.File){
                     isFile = true;
-                    window.location.href = `cyfs://r/${g_owner}/${g_decid}/${g_path}`;
+                    // window.location.href = `cyfs://r/${g_owner}/${g_decid}/${g_path}`;
                 }
             }
         }
@@ -182,7 +276,7 @@ class FileInfo {
         console.origin.log('lr', lr);
         if (lr.err) {
             if(!isFile){
-                $('.no_object_container').css('display', 'block');
+                $('.no_object_box').css('display', 'block');
             }
             return;
         }
@@ -325,7 +419,14 @@ class FileInfo {
     
 }
 const file_info = new FileInfo();
-file_info.getFilePath();
+initLink();
+
+$('.password_btn').on('click', () => {
+    file_info.checkPassword();
+})
+$('.password_ipt').on('keydown', (event) => {
+    if (event.keyCode == 13) { file_info.checkPassword(); }
+})
 
 $('.last_page_btn').on('click', () => {
     if(currentPage > 0){
@@ -388,8 +489,7 @@ $('#folder_object_tbody').on('click', ".href_entrance", function () {
 
 function routeToNext(hrefStr: string, path: string, name: string, type: string) {
     if(type == 'file'){
-        console.log('111111111111111111111')
-        window.open(`cyfs://r/${g_owner}/${g_decid}/${g_path + '/' + name}`);
+        // window.open(`cyfs://r/${g_owner}/${g_decid}/${g_path + '/' + name}`);
     }else{
         window.location.href = `cyfs://static/view_objectmap.html?owner=${g_owner}&decid=${g_decid}&path=${path}`;
     }

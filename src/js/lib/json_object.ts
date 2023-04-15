@@ -17,9 +17,9 @@ import {
     NamedObjectDesc,
     NamedObjectDescDecoder,
     ObjectId,
-    SubDescType
+    SubDescType,
+    Ok
 } from '../../cyfs_sdk/cyfs';
-import {Ok} from "ts-results";
 
 const JSONObjectType = 32787;
 

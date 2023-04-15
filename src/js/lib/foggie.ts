@@ -7,10 +7,10 @@ import {
     NONObjectInfo,
     ObjectId,
     SharedCyfsStack, TransTaskRequest,
-    TransTaskState
+    TransTaskState,
+    Ok
 } from '../../cyfs_sdk/cyfs';
 import {JSONObject, JSONObjectDecoder} from "./json_object";
-import {Err, Ok} from "ts-results";
 
 export type ShareType = "fixed" | "latest";
 

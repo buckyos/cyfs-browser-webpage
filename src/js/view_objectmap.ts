@@ -64,6 +64,16 @@ function initLink(){
                 for (let i = 0; i < arr.length; i++) {
                     if (arr[i].indexOf('=') > -1 && arr[i].split('=')[1] && arr[i].split('=')[0] == 'decid') {
                         let decid:string | undefined = arr[i].split('=')[1];
+                        let idRet = cyfs.ObjectId.from_base_58(decid);
+                        if (idRet.err) {
+                            toast({
+                            message: 'dec id error',
+                            time: 1500, 
+                            type: 'warn'
+                            });
+                        } else {
+                            g_decid = idRet.unwrap();
+                        }
                         if(decid == '9tGpLNnCueXrjHFYyMQ9s3dkhKzDFbHbpeu4J7Zi2QAW'){
                             let cookieName:string = 'view_objectmap' + '-'+ g_owner + '-'+ g_path;
                             let getCookieR = getCookie(cookieName);
@@ -83,16 +93,6 @@ function initLink(){
                             }
                         }else{
                             file_info.getFilePath();
-                        }
-                        let idRet = cyfs.ObjectId.from_base_58(decid);
-                        if (idRet.err) {
-                            toast({
-                            message: 'dec id error',
-                            time: 1500, 
-                            type: 'warn'
-                            });
-                        } else {
-                            g_decid = idRet.unwrap();
                         }
                     }
                 }
@@ -254,6 +254,9 @@ class FileInfo {
     }
     
     async getFilePath() {
+        console.origin.log('root_state_accessor_stub', g_decid);
+
+        console.origin.log('root_state_accessor_stub', g_decid.toString());
         let root_state = this.m_sharedStatck.root_state_accessor_stub(g_owner, g_decid);
         console.origin.log('root_state', root_state);
         let path:string = g_path + '/';
@@ -268,7 +271,7 @@ class FileInfo {
                 $('.folder_object_subtitle').html(pathIdR.unwrap().object.object_id.to_base_58());
                 if(pathIdR.unwrap().object.object.obj_type_code() == cyfs.ObjectTypeCode.File){
                     isFile = true;
-                    // window.location.href = `cyfs://r/${g_owner}/${g_decid}/${g_path}`;
+                    window.location.href = `cyfs://r/${g_owner}/${g_decid}/${g_path}`;
                 }
             }
         }
@@ -489,7 +492,7 @@ $('#folder_object_tbody').on('click', ".href_entrance", function () {
 
 function routeToNext(hrefStr: string, path: string, name: string, type: string) {
     if(type == 'file'){
-        // window.open(`cyfs://r/${g_owner}/${g_decid}/${g_path + '/' + name}`);
+        window.open(`cyfs://r/${g_owner}/${g_decid}/${g_path + '/' + name}`);
     }else{
         window.location.href = `cyfs://static/view_objectmap.html?owner=${g_owner}&decid=${g_decid}&path=${path}`;
     }

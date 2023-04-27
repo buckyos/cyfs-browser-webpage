@@ -39,6 +39,7 @@ module.exports = (env, argv) => {
             'app_like_tip_list': './src/js/app/app_like_tip_list.ts',
             'upload_folder': './src/js/upload_folder.ts',
             'view_objectmap': './src/js/view_objectmap.ts',
+            'index_iframe': './src/js/index_iframe.ts',
         },
         mode: env.production ? 'production' : 'development',
         // mode: 'development',
@@ -164,6 +165,11 @@ module.exports = (env, argv) => {
                 template: './src/view_objectmap.html',
                 filename: '../view_objectmap.html',
                 chunks: ['view_objectmap']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/index_iframe.html',
+                filename: '../index_iframe.html',
+                chunks: ['index_iframe']
             }),
         ],
         externals: [

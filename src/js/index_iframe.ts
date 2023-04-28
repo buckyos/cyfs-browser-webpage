@@ -74,7 +74,9 @@ async function getOwnerId(){
 window.addEventListener('message', async function(e){
     console.origin.log("iframe get e.data", e.data)
     g_isAnonymous = e.data.isAnonymous;
-    if(e.data.isAnonymous == false){
+    if(typeof(e.data.isAnonymous) == "undefined"){
+        window.parent.postMessage({ pageAlready: true }, '*');
+    }else if(e.data.isAnonymous == false){
         getOwnerId();
         util.getPeopleInfo();
     }
@@ -84,3 +86,6 @@ window.addEventListener('message', async function(e){
         window.parent.postMessage({searchIdRet: id, searchVal: val },'*');
     }
 }, false);
+
+window.parent.postMessage({ pageAlready: true }, '*');
+

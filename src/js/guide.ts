@@ -217,11 +217,11 @@ $('.guide_content_box').on('click', '.ood_click', function (e) {
 $('.href_to_did').on('click', function () {
     let hrefTo = $(this).attr('data-to');
     if(hrefTo == 'reset'){
-        chrome.runtime.sendMessage('aflijdlgeaclgadgbihdcjpifncfbfle', {"type":"TORESETDID","data":""}, function (data) {
+        chrome.runtime.sendMessage('hnablejhklepcdoaojlaoecgdchkinei', {"type":"TORESETDID","data":""}, function (data) {
             console.log('chrome-reset-data', data)
         });
     }else{
-        chrome.runtime.sendMessage('aflijdlgeaclgadgbihdcjpifncfbfle', {"type":"TOCREATEDID","data":""}, function (data) {
+        chrome.runtime.sendMessage('hnablejhklepcdoaojlaoecgdchkinei', {"type":"TOCREATEDID","data":""}, function (data) {
             console.log('chrome-create-data', data)
         });
     }

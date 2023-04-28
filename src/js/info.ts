@@ -37,8 +37,7 @@ function isUnbind() {
 isUnbind();
 
 $('.anonymous_subtitle').on('click', async function () {
-    localStorage.removeItem('is-init-show-guide');
-    window.open('https://browser.cyfs.com/init.html');
+    window.open('cyfs://static/guide.html');
 })
 
 function getfilesize(size: number, isByte?: boolean) {

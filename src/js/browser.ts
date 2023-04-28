@@ -477,8 +477,7 @@ $('.anonymous_subtitle').on('click', async function () {
     if(isBindInterval){
         clearInterval(isBindInterval);
     }
-    localStorage.removeItem('is-init-show-guide');
-    window.open('https://browser.cyfs.com/init.html');
+    window.open('cyfs://static/guide.html');
 })
 
 $('.browser_activate_false_btn, .browser_activate_false_close').on('click', async function () {

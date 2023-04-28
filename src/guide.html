@@ -1,4 +1,4 @@
-<html style="overflow-x: hidden;">
+<html>
 <head>
     <link rel="shortcut icon" href="./img/favicon.svg" type="image/x-icon" />
     <title></title>
@@ -6,21 +6,20 @@
     <script src="./js/lib/jquery.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
-
-<body style="overflow-x: hidden;">
+<body>
     <div class="guide_box">
         <div class="guide_header_box">
             <div class="browser_cyfs_icon"></div>
         </div>
         <div class="guide_content_box">
-            <div class="browser_guide_index">
+            <!-- <div class="browser_guide_index">
                 <i class="browser_guide_index_icon"></i>
                 <h3 class="browser_guide_index_title browser_guide_title"></h3>
                 <p class="browser_guide_index_subtitle browser_guide_subtitle text_align_center kalama_title"></p>
                 <button class="browser_guide_index_btn browser_guide_btn" data-current="browser_guide_index" data-next="browser_guide_one_box">Get Started</button>
-            </div>
+            </div> -->
             <div class="guide_two_content_box">
-                <div class="browser_guide_one_box box_display_none browser_guide_box"  >
+                <div class="browser_guide_one_box browser_guide_box"  >
                     <i class="browser_guide_one_icon"></i>
                     <h3 class="browser_guide_one_title browser_guide_title">Supports decentralized network protocols</h3>
                     <p class="browser_guide_index_subtitle browser_guide_subtitle kalama_subtitle"></p>
@@ -46,9 +45,9 @@
                 </div>
                 <div class="browser_guide_success_box" style="display: none;">
                     <div class="guide_btn_box">
-                        <!-- <button class="guide_success_confirm_btn browser_guide_btn href_to_did" data-href="cyfs://static/build_did.html">Create Your DID</button>
-                        <button class="guide_success_cancel_btn browser_guide_btn href_to_did" data-href="cyfs://static/reset_did.html">Reset Your DID</button> -->
-                        <button class="guide_success_cancel_btn browser_guide_btn active_with_cyberchat" style="display:none" data-current="browser_guide_success_box" data-next="browser_guide_acivate_box" >Activate your browser with CyberChat</button>
+                        <button class="guide_success_confirm_btn browser_guide_btn href_to_did" data-to="create">Create Your DID</button>
+                        <button class="guide_success_cancel_btn browser_guide_btn href_to_did" data-to="reset">Reset Your DID</button>
+                        <button class="guide_success_cancel_btn browser_guide_btn active_with_cyberchat"  data-current="browser_guide_success_box" data-next="browser_guide_acivate_box" >Activate your browser with CyberChat</button>
                         <!-- <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_intro_one_box" set-lan="html:Guide.learnMoreAboutCYFS"></button> -->
                         <!-- <button class="guide_success_cancel_btn browser_guide_btn" data-current="browser_guide_success_box" data-next="browser_guide_one_box" set-lan="html:Guide.LearnPreviousContents"></button> -->
                     </div>

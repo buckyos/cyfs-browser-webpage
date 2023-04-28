@@ -101,6 +101,17 @@ function setSwitchIntervalFun () {
     }
 }
 
+function initGuide(){
+    $('.browser_guide_one_box').removeClass('box_display_none').addClass('box_display_block animate__animated animate__fadeIn');
+    $('.guide_two_content_box, .app_footer_box, .browser_guide_success_box, .guide_switch_btn_box').addClass('box_display_block');
+    if(typeof(isSwitchInterval) == 'number' || !isSwitchInterval){
+        isSwitchInterval =  setInterval(() => {
+            setSwitchIntervalFun();
+        }, 5000);
+    }
+}
+initGuide();
+
 $('.browser_guide_btn').on('click', async function () {
     let next = $(this).attr('data-next');
     let current = $(this).attr('data-current');
@@ -204,9 +215,15 @@ $('.guide_content_box').on('click', '.ood_click', function (e) {
     }
 })
 $('.href_to_did').on('click', function () {
-    let hrefStr = $(this).attr('data-href');
-    if(hrefStr){
-        window.location.href = hrefStr;
+    let hrefTo = $(this).attr('data-to');
+    if(hrefTo == 'reset'){
+        chrome.runtime.sendMessage('aflijdlgeaclgadgbihdcjpifncfbfle', {"type":"TORESETDID","data":""}, function (data) {
+            console.log('chrome-reset-data', data)
+        });
+    }else{
+        chrome.runtime.sendMessage('aflijdlgeaclgadgbihdcjpifncfbfle', {"type":"TOCREATEDID","data":""}, function (data) {
+            console.log('chrome-create-data', data)
+        });
     }
 })
 

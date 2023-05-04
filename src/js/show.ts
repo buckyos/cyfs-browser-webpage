@@ -20,10 +20,6 @@ $.ajax({
     }
 });
 
-$('.anonymous_subtitle').on('click', async function () {
-    window.open('cyfs://static/guide.html');
-})
-
 var file_id: cyfs.ObjectId;
 var file_id_str: cyfs.ObjectId | string = '';
 var target_id: cyfs.ObjectId | undefined = undefined;

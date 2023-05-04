@@ -81,11 +81,6 @@ window.addEventListener('message', async function(e){
         getOwnerId();
         util.getPeopleInfo();
     }
-    if(e.data.openCreateDid){
-        chrome.runtime.sendMessage('hnablejhklepcdoaojlaoecgdchkinei', {"type":"TOCREATEDID","data":""}, function (data) {
-            console.log('chrome-data', data)
-        });
-    }
     if(e.data.searchVal){
         let val = e.data.searchVal;
         let id = await util.txtToId(val);

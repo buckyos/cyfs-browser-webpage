@@ -32,14 +32,6 @@ let isBindInterval: NodeJS.Timeout | null = null;
 let isSwitchInterval: NodeJS.Timeout | null = null;
 let g_switchEq:number = 1;
 
-$(function(){
-    if(LANGUAGESTYPE == 'zh'){
-        $('title').html('欢迎');
-    }else{
-        $('title').html('Welcome');
-    }
-});
-
 async function getScanContent(){
     $.ajax({
         url: 'http://127.0.0.1:1321/check',

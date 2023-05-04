@@ -636,10 +636,6 @@ function initData(operation?: string) {
     }
 }
 
-$('.anonymous_subtitle').on('click', async function () {
-    window.open('cyfs://static/guide.html');
-})
-
 $.ajax({
     url: 'http://127.0.0.1:38090/status',
     success:function(result){

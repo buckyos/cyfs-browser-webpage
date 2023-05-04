@@ -532,10 +532,6 @@ $.ajax({
     }
 });
 
-$('.anonymous_subtitle').on('click', async function () {
-    window.open('cyfs://static/guide.html');
-})
-
 $('.search_txt_box').on('click', () => {
     if(ANONYMOUS_STATUS){
         toast({

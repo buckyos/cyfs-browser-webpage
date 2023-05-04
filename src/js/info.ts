@@ -36,10 +36,6 @@ function isUnbind() {
 };
 isUnbind();
 
-$('.anonymous_subtitle').on('click', async function () {
-    window.open('cyfs://static/guide.html');
-})
-
 function getfilesize(size: number, isByte?: boolean) {
     if (!size)
         return "0KB";

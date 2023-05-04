@@ -473,13 +473,6 @@ $('.browser_cover_yes_btn, .browser_activate_close').on('click', async function 
     SKIP_COUNT++;
 })
 
-$('.anonymous_subtitle').on('click', async function () {
-    if(isBindInterval){
-        clearInterval(isBindInterval);
-    }
-    window.open('cyfs://static/guide.html');
-})
-
 $('.browser_activate_false_btn, .browser_activate_false_close').on('click', async function () {
     if(isBindInterval){
         clearInterval(isBindInterval);

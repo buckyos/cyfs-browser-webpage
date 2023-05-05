@@ -24,12 +24,6 @@ class Util {
 
     async getPeopleInfo () {
         console.log('getPeopleInfo init')
-        if(!g_ownerId){
-            console.log('getPeopleInfo g_ownerId await')
-            await getOwnerId();
-            console.log('getPeopleInfo g_ownerId await finish')
-        }
-        console.log('getPeopleInfo g_ownerId', g_ownerId)
         if(g_ownerId){
             console.log('getPeopleInfo g_ownerId in', g_ownerId)
             let meta_client = cyfs.create_meta_client(g_environment);
@@ -63,6 +57,7 @@ async function getOwnerId(){
             console.origin.log('getScanContent-check-result', result);
             g_ownerId = result.bind_info?result.bind_info.owner_id:'';
             console.origin.log('g_ownerId', g_ownerId);
+            util.getPeopleInfo();
         },error: function(err) {
             setTimeout(() => {
                 getOwnerId();
@@ -78,11 +73,10 @@ window.addEventListener('message', async function(e){
             window.parent.postMessage({ pageAlready: true }, '*');
         }else{
             g_isAnonymous = e.data.isAnonymous;
+            if(e.data.isAnonymous == false){
+                getOwnerId();
+            }
         }
-    }
-    if(e.data.isAnonymous == false){
-        getOwnerId();
-        util.getPeopleInfo();
     }
     if(e.data.searchVal){
         let val = e.data.searchVal;

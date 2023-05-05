@@ -57,46 +57,27 @@
                     </div>
                 </div>
             </div>
-            <div class="browser_guide_loading_box" style="display: none;">
-                <i class="browser_guide_loading_icon"></i>
-                <p class="browser_guide_loading_p" set-lan="html:Guide.Activating"></p>
-            </div>
-            <div class="browser_guide_false_box" style="display: none;">
-                <i class="browser_guide_false_icon"></i>
-                <p class="browser_guide_false_title" set-lan="html:Guide.ActivateFalse"></p>
-                <p class="browser_guide_false_p" set-lan="html:Guide.ActivateFalseInfo"></p>
-                <button class="guide_false_btn browser_guide_btn"  data-current="browser_guide_false_box" data-next="browser_guide_acivate_box" set-lan="html:Guide.BACK"></button>
-            </div>
-            <div class="browser_guide_acivate_success_box" style="display: none;">
-                <i class="browser_guide_acivate_success_icon"></i>
-                <p class="browser_guide_false_title" set-lan="html:Guide.ActivateSuccess"></p>
-                <p class="browser_guide_acivate_success_p" set-lan="html:Guide.ActivateSuccessInfo"></p>
-                <div class="guide_acivate_success_box">
-                    <button class="guide_acivate_success_cancel_btn" set-lan="html:Cancel"></button>
-                    <button class="guide_acivate_success_confirm_btn" set-lan="html:Guide.Restart"></button>
-                </div>
-            </div>
             <div class="browser_guide_acivate_box" style="display: none;">
                 <i class="browser_guide_acivate_icon">
-                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_acivate_box" data-next="browser_guide_one_box, .guide_two_content_box, .app_footer_box, .browser_guide_success_box, .guide_switch_btn_box"><i class="guide_back_icon">&nbsp;</i> <span set-lan="html:Guide.BACK"></span></button>
+                    <button class="guide_back_btn browser_guide_btn" data-current="browser_guide_acivate_box" data-next="browser_guide_one_box, .guide_two_content_box, .app_footer_box, .browser_guide_success_box, .guide_switch_btn_box"><i class="guide_back_icon">&nbsp;</i> <span>BACK</span></button>
                     <div class="scan_canvas_box">
                         <canvas class="scan_canvas" id="scan_canvas"></canvas>
                     </div>
                 </i>
-                <h3 class="browser_guide_one_title browser_guide_title" set-lan="html:Guide.AlmostThere"></h3>
-                <p class="browser_guide_acivate_p" set-lan="html:Guide.AlmostThereInfo"></p>
+                <h3 class="browser_guide_one_title browser_guide_title" >Almost there!</h3>
+                <p class="browser_guide_acivate_p" >Please use CyberChat to scan the QR code above for activating CYFS Browser.</p>
                 <div class="guide_acivate_info_box">
                     <div class="guide_acivate_info_one">
                         <i></i>
-                        <p set-lan="html:Guide.OpenCyberChat"></p>
+                        <p>Open CyberChat</p>
                     </div>
                     <div class="guide_acivate_info_two">
                         <i></i>
-                        <p set-lan="html:Guide.ClickScan"></p>
+                        <p><span>Click '</span><b class='guide_acivate_info_two_add'></b><span>' -> Click '</span><b class='guide_acivate_info_two_scan'></b><span></span>' to scan the QR code above</span></p>
                     </div>
                     <div class="guide_acivate_info_three">
                         <i></i>
-                        <p set-lan="html:Guide.EditInformation"></p>
+                        <p>Edit your device's information</p>
                     </div>
                     <div class="clear_both" style="display: none;"></div>
                 </div>
@@ -118,7 +99,7 @@
         <div class="guide_confirm_box">
             <p class="guide_confirm_p">Are you sure you don't activate the browser for now and use read-only mode first?</p>
             <div class="guide_confirm_btn_box">
-                <button class="guide_confirm_yes_btn" set-lan="html:Yes"></button>
+                <button class="guide_confirm_yes_btn">Yes</button>
                 <button class="guide_confirm_cancel_btn">NO</button>
             </div>
         </div>

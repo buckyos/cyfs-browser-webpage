@@ -167,7 +167,7 @@ $('.guide_confirm_cancel_btn').on('click', function () {
 })
 
 $('.guide_confirm_yes_btn, .guide_acivate_success_cancel_btn, .browser_cyfs_icon').on('click', function () {
-    window.location.href = 'https://browser.cyfs.com/init.html';
+    window.location.href = 'cyfs://static/init.html';
 })
 
 $('.guide_switch_box span').on('click', function () {

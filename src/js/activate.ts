@@ -65,7 +65,7 @@ import { toast } from './lib/toast.min'
                             type: 'success'
                         });
                     }
-                    window.location.href = 'https://browser.cyfs.com/init.html';
+                    window.location.href = 'cyfs://static/browser.html?success';
                 }
             }
         }

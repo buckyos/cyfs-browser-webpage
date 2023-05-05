@@ -626,10 +626,6 @@ $('.info_main_introduce_svg').on('mouseleave', function () {
     $('.info_floating_window').css('display', 'none');
 })
 
-$('.header_box_icon').on('click', function () {
-    window.location.href = 'https://browser.cyfs.com/init.html';
-})
-
 $('.info_ood_list_box, .info_device_list_box').on('mouseenter', ".info_intro_pn_svg, .info_intro_sn_svg", function () {
     $(this).children().css('display', 'block');
 })

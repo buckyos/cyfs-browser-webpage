@@ -1,5 +1,5 @@
-import * as cyfs from '../cyfs_sdk/cyfs'
 import $ from 'jquery'
+import * as cyfs from '../cyfs_sdk/cyfs'
 
 let g_ownerId = '';
 let g_isAnonymous = false;
@@ -73,10 +73,13 @@ async function getOwnerId(){
 
 window.addEventListener('message', async function(e){
     console.origin.log("iframe get e.data", e.data)
-    g_isAnonymous = e.data.isAnonymous;
-    // if(typeof(e.data.isAnonymous) == "undefined"){
-    //     window.parent.postMessage({ pageAlready: true }, '*');
-    // }else 
+    if(e.data.isSendAnonymous){
+        if(typeof(e.data.isAnonymous) == "undefined"){
+            window.parent.postMessage({ pageAlready: true }, '*');
+        }else{
+            g_isAnonymous = e.data.isAnonymous;
+        }
+    }
     if(e.data.isAnonymous == false){
         getOwnerId();
         util.getPeopleInfo();

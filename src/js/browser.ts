@@ -11,12 +11,12 @@ console.log('userAgentInfo', userAgentInfo)
 if(userAgentInfo.indexOf('Kalama') > -1){
     $('.browser_guide_box_title').html('Welcome to Kalama !');
     $('.browser_guide_box_subtitle').html('You can access the real Web3 world with Kalama—High performance, unprecedented protocol, and fast speed to make you browsing the pure Web3 site.');
-    $('.browser_guide_acivate_success_p').html('All done, congratulation! <br/>Click "Restart" to restart the CYFS browser and start your journey in the world of Kalama.');
+    $('.browser_guide_acivate_success_p').html('All done, congratulation! <br/>Click "Restart" to restart the Kalama Browser and start your journey in the world of Kalama.');
     
 }else{
     $('.browser_guide_box_title').html('Welcome to CYFS Browser !');
     $('.browser_guide_box_subtitle').html('You can access the real Web3 world with CYFS Browser—High performance, unprecedented protocol, and fast speed to make you browsing the pure Web3 site.');
-    $('.browser_guide_acivate_success_p').html('All done, congratulation! <br/>Click "Restart" to restart the CYFS browser and start your journey in the world of CYFS.');
+    $('.browser_guide_acivate_success_p').html('All done, congratulation! <br/>Click "Restart" to restart the CYFS Browser and start your journey in the world of CYFS.');
 }
 
 $(function(){

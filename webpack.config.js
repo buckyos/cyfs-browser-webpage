@@ -40,6 +40,7 @@ module.exports = (env, argv) => {
             'upload_folder': './src/js/upload_folder.ts',
             'view_objectmap': './src/js/view_objectmap.ts',
             'index_iframe': './src/js/index_iframe.ts',
+            'init': './src/js/init.ts',
         },
         mode: env.production ? 'production' : 'development',
         // mode: 'development',
@@ -170,6 +171,11 @@ module.exports = (env, argv) => {
                 template: './src/index_iframe.html',
                 filename: '../index_iframe.html',
                 chunks: ['index_iframe']
+            }),
+            new HtmlWebpackPlugin({
+                template: './src/init.html',
+                filename: '../init.html',
+                chunks: ['init']
             }),
         ],
         externals: [

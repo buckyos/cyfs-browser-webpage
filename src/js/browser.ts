@@ -11,23 +11,12 @@ console.log('userAgentInfo', userAgentInfo)
 if(userAgentInfo.indexOf('Kalama') > -1){
     $('.browser_guide_box_title').html('Welcome to Kalama !');
     $('.browser_guide_box_subtitle').html('You can access the real Web3 world with Kalama—High performance, unprecedented protocol, and fast speed to make you browsing the pure Web3 site.');
-    $('.browser_guide_acivate_success_p').html("All done, congratulation! Kalama will be restarted automatically to initialize your Digital Identity if you click 'Restart'. Or you can click 'Cancel' to stay in Read-only mode and Digital Identity will be initialized until next time you manually restart Kalama.");
+    $('.browser_guide_acivate_success_p').html('All done, congratulation! <br/>Click "Restart" to restart the CYFS browser and start your journey in the world of Kalama.');
     
 }else{
     $('.browser_guide_box_title').html('Welcome to CYFS Browser !');
     $('.browser_guide_box_subtitle').html('You can access the real Web3 world with CYFS Browser—High performance, unprecedented protocol, and fast speed to make you browsing the pure Web3 site.');
-    $('.browser_guide_acivate_success_p').html("All done, congratulation! CYFS Browser will be restarted automatically to initialize your Digital Identity if you click 'Restart'. Or you can click 'Cancel' to stay in Read-only mode and Digital Identity will be initialized until next time you manually restart CYFS Browser.");
-}
-
-if (window.location.search == '?success') {
-    $('.browser_guide_success_cover').css('display', 'block');
-    // let isToIndex = localStorage.getItem('is-restart-browser-to-index');
-    // if(isToIndex){
-    //     localStorage.removeItem('is-restart-browser-to-index');
-    //     window.location.href = 'https://browser.cyfs.com/init.html';
-    // }else{
-    //     $('.browser_guide_success_cover').css('display', 'block');
-    // }
+    $('.browser_guide_acivate_success_p').html('All done, congratulation! <br/>Click "Restart" to restart the CYFS browser and start your journey in the world of CYFS.');
 }
 
 $(function(){
@@ -141,6 +130,14 @@ function isUnbind() {
         url: 'http://127.0.0.1:38090/status',
         success:function(result){
             console.log('getStatus-result', result);
+            if (window.location.search == '?success') {
+                if (result.is_bind) {
+                    $('.browser_guide_success_cover').css('display', 'block');
+                }else{
+                    window.location.href = 'cyfs://static/init.html';
+                }
+                return;
+            }
             ANONYMOUS_STATUS = result.anonymous;
             if (result.is_bind) {
                 // 已绑定

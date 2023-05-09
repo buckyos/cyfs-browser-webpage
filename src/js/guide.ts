@@ -33,26 +33,36 @@ let isSwitchInterval: NodeJS.Timeout | null = null;
 let g_switchEq:number = 1;
 
 async function getScanContent(){
-    $.ajax({
-        url: 'http://127.0.0.1:1321/check',
-        success:function(data){
-            let result = JSON.parse(data);
-            console.log('check-result', result);
-            CHECK_STATUS = result.check_status;
-            console.origin.log('CHECK_STATUS', CHECK_STATUS);
-            let localIps = result.access_info.addrs;
-            let access_token = result.access_info.access_token?result.access_info.access_token:'';
-            SCAN_CONTENT = {
-                "flag": "cyfs",
-                "type": "bindDevice",
-                "data": {
-                    "type": 2,
-                    "ip": localIps,
-                    "access_token": access_token
+    try{
+        $.ajax({
+            url: 'http://127.0.0.1:1321/check',
+            success:function(data){
+                let result = JSON.parse(data);
+                console.log('check-result', result);
+                CHECK_STATUS = result.check_status;
+                console.origin.log('CHECK_STATUS', CHECK_STATUS);
+                let localIps = result.access_info.addrs;
+                let access_token = result.access_info.access_token?result.access_info.access_token:'';
+                SCAN_CONTENT = {
+                    "flag": "cyfs",
+                    "type": "bindDevice",
+                    "data": {
+                        "type": 2,
+                        "ip": localIps,
+                        "access_token": access_token
+                    }
                 }
+                QRCode.toCanvas(document.getElementById('scan_canvas'), JSON.stringify(SCAN_CONTENT), {
+                    errorCorrectionLevel: 'L',
+                    width: 144,
+                    height: 144,
+                    margin: 0
+                });
             }
-        }
-    })
+        })
+    }catch{
+        getScanContent();
+    }
 }
 
 getScanContent();
@@ -137,15 +147,15 @@ $('.browser_guide_btn').on('click', async function () {
         $('.guide_switch_box span').removeClass('guide_switch_active_span');
         $('.guide_switch_box span').eq(0).addClass('guide_switch_active_span');
         $('.guide_two_content_box, .app_footer_box, .browser_guide_success_box, .guide_switch_btn_box, .browser_guide_box').removeClass('box_display_block').addClass('box_display_none');
-        if(!SCAN_CONTENT){
-            await getScanContent();
-        }
-        QRCode.toCanvas(document.getElementById('scan_canvas'), JSON.stringify(SCAN_CONTENT), {
-            errorCorrectionLevel: 'L',
-            width: 144,
-            height: 144,
-            margin: 0
-        });
+        // if(!SCAN_CONTENT){
+        //     await getScanContent();
+        // }
+        // QRCode.toCanvas(document.getElementById('scan_canvas'), JSON.stringify(SCAN_CONTENT), {
+        //     errorCorrectionLevel: 'L',
+        //     width: 144,
+        //     height: 144,
+        //     margin: 0
+        // });
         if(typeof(isBindInterval) == 'number' || !isBindInterval){
             isBindInterval = setInterval(() => {
                 isUnbind();

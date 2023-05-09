@@ -33,36 +33,35 @@ let isSwitchInterval: NodeJS.Timeout | null = null;
 let g_switchEq:number = 1;
 
 async function getScanContent(){
-    try{
-        $.ajax({
-            url: 'http://127.0.0.1:1321/check',
-            success:function(data){
-                let result = JSON.parse(data);
-                console.log('check-result', result);
-                CHECK_STATUS = result.check_status;
-                console.origin.log('CHECK_STATUS', CHECK_STATUS);
-                let localIps = result.access_info.addrs;
-                let access_token = result.access_info.access_token?result.access_info.access_token:'';
-                SCAN_CONTENT = {
-                    "flag": "cyfs",
-                    "type": "bindDevice",
-                    "data": {
-                        "type": 2,
-                        "ip": localIps,
-                        "access_token": access_token
-                    }
+    $.ajax({
+        url: 'http://127.0.0.1:1321/check',
+        success:function(data){
+            let result = JSON.parse(data);
+            console.log('check-result', result);
+            CHECK_STATUS = result.check_status;
+            console.origin.log('CHECK_STATUS', CHECK_STATUS);
+            let localIps = result.access_info.addrs;
+            let access_token = result.access_info.access_token?result.access_info.access_token:'';
+            SCAN_CONTENT = {
+                "flag": "cyfs",
+                "type": "bindDevice",
+                "data": {
+                    "type": 2,
+                    "ip": localIps,
+                    "access_token": access_token
                 }
-                QRCode.toCanvas(document.getElementById('scan_canvas'), JSON.stringify(SCAN_CONTENT), {
-                    errorCorrectionLevel: 'L',
-                    width: 144,
-                    height: 144,
-                    margin: 0
-                });
             }
-        })
-    }catch{
-        getScanContent();
-    }
+            QRCode.toCanvas(document.getElementById('scan_canvas'), JSON.stringify(SCAN_CONTENT), {
+                errorCorrectionLevel: 'L',
+                width: 144,
+                height: 144,
+                margin: 0
+            });
+        }, error:function(){
+            console.log('check-error');
+            getScanContent();
+        }
+    })
 }
 
 getScanContent();

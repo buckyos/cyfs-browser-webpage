@@ -177,6 +177,11 @@ module.exports = (env, argv) => {
                 filename: '../init.html',
                 chunks: ['init']
             }),
+            new HtmlWebpackPlugin({
+                template: './src/test/test.html',
+                filename: '../test.html',
+                chunks: []
+            }),
         ],
         externals: [
             // /cyfs_sdk/,

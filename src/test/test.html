@@ -1,0 +1,36 @@
+<html>
+<head>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="./js/lib/jquery.js"></script>
+    <title></title>
+</head>
+<body style="background: #F2F3F5;">
+    <div style="width: 200px;margin:0 auto;margin-top: 200px;">
+        <p>要绑定的链接：<input type="text" class="bind_inpt"></p>
+        <p class="bind_p"></p>
+        <button class="bind_btn">bind</button>
+        <p class="bind_result"></p>
+    </div>
+   
+</body>
+<script>
+    
+$('.bind_btn').on('click', function () {
+    let bindVal = String($('.bind_inpt').val()).trim() || '';
+    console.log('bindVal', bindVal);
+    let bindUrl = bindVal + ':1321/bind';
+    $('.bind_p').html(bindUrl);
+    chrome.runtime.sendMessage('hnablejhklepcdoaojlaoecgdchkinei', {"type":"BIND_DEVICE","data":
+        {
+            name: 'name',
+            uniqueStr: 'uniqueStr',
+            area: 'area',
+            bindUrl: bindUrl
+        }}, function (data) {
+            console.log('chrome-sendMessage-data', data)
+            $('.bind_result').html(data);
+        });
+    })
+</script>
+
+</html>

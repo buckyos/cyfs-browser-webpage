@@ -22,7 +22,7 @@ $('.bind_btn').on('click', async function () {
     $('.bind_p').html(bindUrl);
     const deviceInfo = await (await fetch(bindVal+':1321/check')).json();
     let uniqueStr = deviceInfo.device_info.mac_address;
-    chrome.runtime.sendMessage('aflijdlgeaclgadgbihdcjpifncfbfle', {"type":"BIND_DEVICE","data":
+    chrome.runtime.sendMessage('hnablejhklepcdoaojlaoecgdchkinei', {"type":"BIND_DEVICE","data":
         {
             name: 'name',
             uniqueStr: uniqueStr,

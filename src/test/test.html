@@ -14,16 +14,18 @@
    
 </body>
 <script>
-    
-$('.bind_btn').on('click', function () {
+
+$('.bind_btn').on('click', async function () {
     let bindVal = String($('.bind_inpt').val()).trim() || '';
     console.log('bindVal', bindVal);
     let bindUrl = bindVal + ':1321/bind';
     $('.bind_p').html(bindUrl);
-    chrome.runtime.sendMessage('hnablejhklepcdoaojlaoecgdchkinei', {"type":"BIND_DEVICE","data":
+    const deviceInfo = await (await fetch(bindVal+':1321/check')).json();
+    let uniqueStr = deviceInfo.device_info.mac_address;
+    chrome.runtime.sendMessage('aflijdlgeaclgadgbihdcjpifncfbfle', {"type":"BIND_DEVICE","data":
         {
             name: 'name',
-            uniqueStr: 'uniqueStr',
+            uniqueStr: uniqueStr,
             area: 'area',
             bindUrl: bindUrl
         }}, function (data) {
